@@ -1,17 +1,17 @@
 import LeadForm from '../components/LeadForm';
 import Reveal from '../components/Reveal';
 
-const u = (id, w = 1200) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
 const IMG = {
-  hero: u('photo-1586528116311-ad8dd3c8310d', 1800),
-  pallet: u('photo-1553413077-190dd305871c'),
-  medium: u('photo-1567789884554-0b844b597180'),
-  archive: u('photo-1586528116311-ad8dd3c8310d'),
-  retail: u('photo-1604719312566-8912e9227c6a'),
-  welder: u('photo-1504328345606-18bbc8c9d7d1', 1600),
-  design: u('photo-1581092160562-40aa08e78837'),
-  aerial: u('photo-1565891741441-64926e441838', 1600),
+  hero: '/works/hero.jpg',
+  pallet: '/works/pallet.jpg',
+  medium: '/works/medium.jpg',
+  archive: '/works/archive.jpg',
+  retail: '/works/retail.jpg',
+  welder: '/works/w6.jpg',
+  design: '/works/w5.jpg',
+  aerial: '/works/w1.jpg',
 };
+const GALLERY = ['/works/w1.jpg', '/works/w2.jpg', '/works/w3.jpg', '/works/w4.jpg', '/works/retail.jpg', '/works/pallet.jpg'];
 
 const PHONE = '+998550555575';
 const PHONE_HUMAN = '+998 55 055 55 75';
@@ -58,6 +58,7 @@ export default function Home() {
           <a href="#top" className="font-black text-2xl tracking-tight">RAX<span className="text-orange-500">PRO</span></a>
           <nav className="hidden md:flex items-center gap-7 text-sm text-steel-300">
             <a href="#products" className="hover:text-white">Продукция</a>
+            <a href="#works" className="hover:text-white">Работы</a>
             <a href="#why" className="hover:text-white">Почему мы</a>
             <a href="#process" className="hover:text-white">Как работаем</a>
             <a href="#contacts" className="hover:text-white">Контакты</a>
@@ -173,6 +174,33 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* WORKS */}
+      <section id="works" className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <Reveal>
+          <h2 className="text-3xl sm:text-4xl font-black tracking-tight">Наши работы</h2>
+          <p className="text-steel-300 mt-2 max-w-2xl">Реальные объекты RAXPRO — спроектировано, изготовлено и смонтировано «под ключ».</p>
+        </Reveal>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+          {GALLERY.map((src, i) => (
+            <Reveal key={src} delay={i * 60}>
+              <div className="rounded-2xl overflow-hidden border border-ink-600 aspect-[4/3]">
+                <img src={src} alt={`Объект RAXPRO ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition duration-500" />
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal>
+          <div className="mt-6 rounded-2xl bg-ink-800 border border-ink-600 p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-center">
+            <img src="/works/retail.jpg" alt="Кейс Bloom Shop" className="w-full sm:w-64 h-44 object-cover rounded-xl" />
+            <div>
+              <span className="text-xs text-orange-400 font-semibold uppercase tracking-wider">Кейс · Bloom Shop</span>
+              <h3 className="text-xl font-bold mt-1">Склад косметики для маркетплейса</h3>
+              <p className="text-steel-300 text-sm mt-2">30 комплектов среднегрузовых стеллажей · высота 2.5 м · 5 ярусов · до 400 кг на ярус. Спроектировано, поставлено и смонтировано RAXPRO «под ключ».</p>
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* GUARANTEE BAND */}
