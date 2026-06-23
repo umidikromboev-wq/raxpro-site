@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body { background: #0a0c10; color: #eef2f6; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: -0.011em; }
+
+a, button { transition: all .22s cubic-bezier(.16,1,.3,1); }
+.reveal { opacity: 0; transform: translateY(20px); }
+.reveal.in { opacity: 1; transform: none; transition: all .7s cubic-bezier(.16,1,.3,1); }
+
+.grain { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0); background-size: 22px 22px; }
+::selection { background: #ff6a0055; }
+::-webkit-scrollbar { width: 10px; } ::-webkit-scrollbar-thumb { background: #2b3645; border-radius: 8px; }
