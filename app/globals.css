@@ -4,12 +4,48 @@
 
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; }
-body { background: #0a0c10; color: #eef2f6; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: -0.011em; }
+html, body { overflow-x: hidden; max-width: 100%; }
+body {
+  background: #ffffff;
+  color: #132234;
+  font-family: var(--font-inter), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  letter-spacing: -0.006em;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-montserrat), var(--font-inter), system-ui, sans-serif; }
 
 a, button { transition: all .22s cubic-bezier(.16,1,.3,1); }
-.reveal { opacity: 0; transform: translateY(20px); }
+
+.reveal { opacity: 0; transform: translateY(22px); }
 .reveal.in { opacity: 1; transform: none; transition: all .7s cubic-bezier(.16,1,.3,1); }
 
-.grain { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0); background-size: 22px 22px; }
-::selection { background: #ff6a0055; }
-::-webkit-scrollbar { width: 10px; } ::-webkit-scrollbar-thumb { background: #2b3645; border-radius: 8px; }
+/* Section eyebrow underline accent */
+.eyebrow { position: relative; display: inline-flex; align-items: center; gap: .5rem; }
+
+/* Subtle blueprint grid used on dark bands */
+.grid-lines {
+  background-image:
+    linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.dot-grid { background-image: radial-gradient(circle at 1px 1px, rgba(30,78,130,.10) 1px, transparent 0); background-size: 22px 22px; }
+
+::selection { background: #2e80c033; color: #0d2a4d; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #eef3f9; }
+::-webkit-scrollbar-thumb { background: #c3d0e0; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #a9bcd2; }
+
+/* horizontal snap slider for products */
+.snap-x-mandatory { scroll-snap-type: x mandatory; }
+.snap-start { scroll-snap-align: start; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.prose-article p { margin-top: 1rem; line-height: 1.8; color: #334155; }
+.prose-article h2 { margin-top: 2.2rem; font-size: 1.6rem; font-weight: 800; color: #0d2a4d; }
+.prose-article h3 { margin-top: 1.6rem; font-size: 1.2rem; font-weight: 700; color: #123a63; }
+.prose-article ul { margin-top: 1rem; padding-left: 1.1rem; list-style: disc; color: #334155; }
+.prose-article li { margin-top: .5rem; line-height: 1.7; }
+.prose-article strong { color: #123a63; }
