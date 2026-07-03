@@ -59,7 +59,7 @@ export default function LeadForm({ compact = false }) {
       )}
       <button
         disabled={state === 'sending'}
-        className="w-full mt-4 bg-gold-500 hover:bg-gold-600 text-navy-900 font-bold py-3.5 rounded-xl disabled:opacity-60 shadow-card"
+        className="w-full mt-4 bg-brand-grad text-white font-bold py-3.5 rounded-xl disabled:opacity-60 shadow-glow hover:brightness-110"
       >
         {state === 'sending' ? 'Отправляем…' : 'Получить бесплатный расчёт'}
       </button>

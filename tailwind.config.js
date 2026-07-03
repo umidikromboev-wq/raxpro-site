@@ -4,24 +4,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // RAXPRO brand — derived from logo (navy shelf + gold accents)
-        navy: { 900: '#0d2a4d', 800: '#123a63', 700: '#1e4e82', 600: '#2a5f9e' },
-        sky: { 600: '#2e80c0', 500: '#3a90cf', 400: '#5aa8e0', 300: '#9ccbef' },
-        gold: { 600: '#cf9a26', 500: '#e6b23c', 400: '#f0c65f', 300: '#f7dd9e' },
-        ink: '#132234',
-        slate: { 700: '#334155', 600: '#48566a', 500: '#64748b', 400: '#94a3b8', 300: '#cbd5e1' },
-        cloud: { 50: '#f6f9fc', 100: '#eef3f9', 200: '#e2e9f2', 300: '#d3dde9' },
+        // RAXPRO brand — vivid azure blue + white (from Instagram logo gradient #00A2EB → #0166B3)
+        navy: { 900: '#052a4d', 800: '#073a68', 700: '#0a5296', 600: '#0a66b8' },
+        sky: { 800: '#014e91', 700: '#0166b3', 600: '#0a86d8', 500: '#00a2eb', 400: '#26b8f2', 300: '#7dd4f7', 200: '#bce7fb' },
+        ink: '#0c2438',
+        slate: { 700: '#2f4257', 600: '#42566b', 500: '#607388', 400: '#8ea1b5', 300: '#c2d3e2' },
+        cloud: { 50: '#f2f8fd', 100: '#e8f2fb', 200: '#d7e7f5', 300: '#c2d9ee' },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-montserrat)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-manrope)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-unbounded)', 'var(--font-manrope)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 1px 2px rgba(15,42,77,.04), 0 8px 24px -12px rgba(15,42,77,.14)',
-        'card-hover': '0 10px 44px -14px rgba(30,78,130,.34)',
-        band: '0 24px 60px -24px rgba(13,42,77,.45)',
+        card: '0 1px 2px rgba(5,42,77,.04), 0 10px 30px -14px rgba(10,102,184,.20)',
+        'card-hover': '0 14px 46px -16px rgba(10,134,216,.38)',
+        band: '0 24px 60px -22px rgba(1,102,179,.55)',
+        glow: '0 8px 30px -8px rgba(0,162,235,.5)',
       },
       borderRadius: { xl2: '1.25rem' },
+      backgroundImage: {
+        'brand-grad': 'linear-gradient(140deg, #26b8f2 0%, #0a86d8 45%, #0166b3 100%)',
+      },
       keyframes: {
         fadeup: { '0%': { opacity: '0', transform: 'translateY(18px)' }, '100%': { opacity: '1', transform: 'none' } },
       },

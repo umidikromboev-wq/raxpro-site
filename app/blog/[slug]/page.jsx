@@ -39,7 +39,7 @@ function Block({ b }) {
         <div className="flex-1">
           <p className="text-cloud-200/90 leading-relaxed">{b.c}</p>
         </div>
-        <a href="/#zayavka" className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-900 font-bold px-6 py-3 rounded-xl shrink-0">
+        <a href="/#zayavka" className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-6 py-3 rounded-xl shrink-0">
           Оставить заявку <IcoArrow className="w-5 h-5" />
         </a>
       </div>
@@ -79,12 +79,12 @@ export default async function ArticlePage({ params }) {
         </div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 py-14 sm:py-16">
           <nav className="text-sm text-cloud-200/60 mb-4">
-            <a href="/" className="hover:text-gold-400">Главная</a> <span className="mx-1">/</span>
-            <a href="/blog" className="hover:text-gold-400"> Новости</a> <span className="mx-1">/</span>
+            <a href="/" className="hover:text-sky-400">Главная</a> <span className="mx-1">/</span>
+            <a href="/blog" className="hover:text-sky-400"> Новости</a> <span className="mx-1">/</span>
             <span className="text-cloud-200"> Статья</span>
           </nav>
           <div className="flex items-center gap-3 text-sm">
-            <span className="font-semibold text-gold-400">{a.category}</span>
+            <span className="font-semibold text-sky-400">{a.category}</span>
             <span className="text-cloud-200/70 inline-flex items-center gap-1"><IcoClock className="w-4 h-4" /> {a.readMins} мин</span>
             <span className="text-cloud-200/70">{formatDate(a.date)}</span>
           </div>

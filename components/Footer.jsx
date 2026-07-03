@@ -14,13 +14,13 @@ export default function Footer() {
             {SITE.legal} · Стеллажи и системы хранения полного цикла. Замер, проектирование, производство и монтаж по всему Узбекистану.
           </p>
           <div className="flex gap-2.5 mt-5">
-            <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-gold-500 hover:text-navy-900 transition text-cloud-200">
+            <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-sky-400 hover:text-navy-900 transition text-cloud-200">
               <IcoIg className="w-5 h-5" />
             </a>
-            <a href={SITE.telegram} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-gold-500 hover:text-navy-900 transition text-cloud-200">
+            <a href={SITE.telegram} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-sky-400 hover:text-navy-900 transition text-cloud-200">
               <IcoTg className="w-5 h-5" />
             </a>
-            <a href={`tel:${SITE.phoneMain}`} aria-label="Позвонить" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-gold-500 hover:text-navy-900 transition text-cloud-200">
+            <a href={`tel:${SITE.phoneMain}`} aria-label="Позвонить" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-sky-400 hover:text-navy-900 transition text-cloud-200">
               <IcoPhone className="w-5 h-5" />
             </a>
           </div>
@@ -30,7 +30,7 @@ export default function Footer() {
           <h4 className="text-white font-semibold mb-4">Разделы</h4>
           <ul className="space-y-2.5 text-sm">
             {NAV.map((n) => (
-              <li key={n.href}><a href={n.href} className="text-cloud-200/70 hover:text-gold-400">{n.label}</a></li>
+              <li key={n.href}><a href={n.href} className="text-cloud-200/70 hover:text-sky-400">{n.label}</a></li>
             ))}
           </ul>
         </div>
@@ -38,10 +38,10 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-semibold mb-4">Продукция</h4>
           <ul className="space-y-2.5 text-sm text-cloud-200/70">
-            <li><a href="/napravleniya/palletnye-stellazhi" className="hover:text-gold-400">Паллетные (Mega) стеллажи</a></li>
-            <li><a href="/napravleniya/srednegruzovye-stellazhi" className="hover:text-gold-400">Среднегрузовые стеллажи</a></li>
-            <li><a href="/napravleniya/arhivnye-stellazhi" className="hover:text-gold-400">Архивные стеллажи</a></li>
-            <li><a href="/napravleniya/torgovye-stellazhi" className="hover:text-gold-400">Торговые стеллажи</a></li>
+            <li><a href="/napravleniya/palletnye-stellazhi" className="hover:text-sky-400">Паллетные (Mega) стеллажи</a></li>
+            <li><a href="/napravleniya/srednegruzovye-stellazhi" className="hover:text-sky-400">Среднегрузовые стеллажи</a></li>
+            <li><a href="/napravleniya/arhivnye-stellazhi" className="hover:text-sky-400">Архивные стеллажи</a></li>
+            <li><a href="/napravleniya/torgovye-stellazhi" className="hover:text-sky-400">Торговые стеллажи</a></li>
           </ul>
         </div>
 
@@ -49,20 +49,20 @@ export default function Footer() {
           <h4 className="text-white font-semibold mb-4">Контакты</h4>
           <ul className="space-y-3 text-sm">
             <li>
-              <a href={`tel:${SITE.phoneMain}`} className="flex items-start gap-2.5 text-white font-semibold hover:text-gold-400">
-                <IcoPhone className="w-4 h-4 mt-0.5 text-gold-500 shrink-0" /> {SITE.phoneMainHuman}
+              <a href={`tel:${SITE.phoneMain}`} className="flex items-start gap-2.5 text-white font-semibold hover:text-sky-400">
+                <IcoPhone className="w-4 h-4 mt-0.5 text-sky-400 shrink-0" /> {SITE.phoneMainHuman}
               </a>
               <div className="pl-6.5 mt-1 space-y-1 text-cloud-200/60">
-                <a href={`tel:${SITE.phoneAlt}`} className="block hover:text-gold-400">{SITE.phoneAltHuman}</a>
-                <a href={`tel:${SITE.landline}`} className="block hover:text-gold-400">{SITE.landlineHuman}</a>
+                <a href={`tel:${SITE.phoneAlt}`} className="block hover:text-sky-400">{SITE.phoneAltHuman}</a>
+                <a href={`tel:${SITE.landline}`} className="block hover:text-sky-400">{SITE.landlineHuman}</a>
               </div>
             </li>
             <li className="flex items-start gap-2.5 text-cloud-200/70">
-              <IcoPin className="w-4 h-4 mt-0.5 text-gold-500 shrink-0" />
+              <IcoPin className="w-4 h-4 mt-0.5 text-sky-400 shrink-0" />
               <span>{SITE.addressCity}, {SITE.address}</span>
             </li>
             <li className="flex items-start gap-2.5 text-cloud-200/70">
-              <IcoClock className="w-4 h-4 mt-0.5 text-gold-500 shrink-0" />
+              <IcoClock className="w-4 h-4 mt-0.5 text-sky-400 shrink-0" />
               <span>{SITE.hours}</span>
             </li>
           </ul>

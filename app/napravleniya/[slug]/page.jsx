@@ -43,17 +43,17 @@ export default async function DirectionPage({ params }) {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-16 grid lg:grid-cols-[1.1fr,0.9fr] gap-10 items-center">
           <div>
             <nav className="text-sm text-cloud-200/60 mb-4">
-              <a href="/" className="hover:text-gold-400">Главная</a> <span className="mx-1">/</span>
-              <a href="/#napravleniya" className="hover:text-gold-400"> Направления</a> <span className="mx-1">/</span>
+              <a href="/" className="hover:text-sky-400">Главная</a> <span className="mx-1">/</span>
+              <a href="/#napravleniya" className="hover:text-sky-400"> Направления</a> <span className="mx-1">/</span>
               <span className="text-cloud-200"> {d.short}</span>
             </nav>
             <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08]">{d.name}</h1>
             <p className="mt-5 text-lg text-cloud-200/85 max-w-xl leading-relaxed">{d.intro}</p>
             <div className="flex flex-wrap gap-3 mt-7">
-              <a href="#zayavka" className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">
+              <a href="#zayavka" className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">
                 Рассчитать стоимость <IcoArrow className="w-5 h-5" />
               </a>
-              <a href="/#proekty" className="inline-flex items-center gap-2 border border-white/25 hover:border-gold-400 text-white px-7 py-3.5 rounded-xl font-semibold">Смотреть проекты</a>
+              <a href="/#proekty" className="inline-flex items-center gap-2 border border-white/25 hover:border-sky-400 text-white px-7 py-3.5 rounded-xl font-semibold">Смотреть проекты</a>
             </div>
           </div>
           <div className="w-full max-w-md lg:justify-self-end">

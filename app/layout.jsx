@@ -1,8 +1,8 @@
 import './globals.css';
-import { Inter, Montserrat } from 'next/font/google';
+import { Manrope, Unbounded } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-inter', display: 'swap' });
-const montserrat = Montserrat({ subsets: ['latin', 'cyrillic'], weight: ['600', '700', '800', '900'], variable: '--font-montserrat', display: 'swap' });
+const manrope = Manrope({ subsets: ['latin', 'cyrillic'], variable: '--font-manrope', display: 'swap' });
+const unbounded = Unbounded({ subsets: ['latin', 'cyrillic'], weight: ['600', '700', '800'], variable: '--font-unbounded', display: 'swap' });
 
 export const metadata = {
   metadataBase: new URL('https://raxpro.uz'),
@@ -23,11 +23,11 @@ export const metadata = {
   robots: { index: true, follow: true },
 };
 
-export const viewport = { themeColor: '#0d2a4d' };
+export const viewport = { themeColor: '#00a2eb' };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ru" className={`${inter.variable} ${montserrat.variable}`}>
+    <html lang="ru" className={`${manrope.variable} ${unbounded.variable}`}>
       <body>{children}</body>
     </html>
   );
