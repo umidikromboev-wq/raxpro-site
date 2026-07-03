@@ -88,7 +88,7 @@ export default async function ArticlePage({ params }) {
             <span className="text-cloud-200/70 inline-flex items-center gap-1"><IcoClock className="w-4 h-4" /> {a.readMins} мин</span>
             <span className="text-cloud-200/70">{formatDate(a.date)}</span>
           </div>
-          <h1 className="font-display font-extrabold text-3xl sm:text-4xl tracking-tight mt-4 leading-tight">{a.title}</h1>
+          <h1 className="font-display font-medium text-3xl sm:text-4xl tracking-tight mt-4 leading-tight">{a.title}</h1>
           <p className="mt-4 text-lg text-cloud-200/85 leading-relaxed">{a.excerpt}</p>
         </div>
       </section>
@@ -114,7 +114,7 @@ export default async function ArticlePage({ params }) {
       <section id="zayavka" className="bg-cloud-50 border-y border-cloud-200">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-14 grid sm:grid-cols-[1fr,0.9fr] gap-8 items-center">
           <div>
-            <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-navy-800 tracking-tight">Нужен расчёт стеллажей?</h2>
+            <h2 className="font-display font-medium text-2xl sm:text-3xl text-navy-800 tracking-tight">Нужен расчёт стеллажей?</h2>
             <p className="text-slate-600 mt-2">Бесплатный замер, проект и цена за 24 часа. Оставьте заявку — свяжемся с вами.</p>
           </div>
           <LeadForm compact />
@@ -123,7 +123,7 @@ export default async function ArticlePage({ params }) {
 
       {/* RELATED */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
-        <h2 className="font-display font-extrabold text-2xl text-navy-800 tracking-tight">Читайте также</h2>
+        <h2 className="font-display font-medium text-2xl text-navy-800 tracking-tight">Читайте также</h2>
         <div className="grid sm:grid-cols-3 gap-5 mt-6">
           {related.map((r) => (
             <a key={r.slug} href={`/blog/${r.slug}`} className="group block rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition">

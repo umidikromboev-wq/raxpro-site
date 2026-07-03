@@ -47,7 +47,7 @@ export default async function DirectionPage({ params }) {
               <a href="/#napravleniya" className="hover:text-sky-400"> Направления</a> <span className="mx-1">/</span>
               <span className="text-cloud-200"> {d.short}</span>
             </nav>
-            <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08]">{d.name}</h1>
+            <h1 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08]">{d.name}</h1>
             <p className="mt-5 text-lg text-cloud-200/85 max-w-xl leading-relaxed">{d.intro}</p>
             <div className="flex flex-wrap gap-3 mt-7">
               <a href="#zayavka" className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">
@@ -68,14 +68,14 @@ export default async function DirectionPage({ params }) {
           {d.specs.map((s) => (
             <div key={s.k} className="rounded-xl2 bg-white border border-cloud-200 shadow-card p-5">
               <div className="text-slate-400 text-sm">{s.k}</div>
-              <div className="font-display font-extrabold text-xl text-navy-800 mt-1">{s.v}</div>
+              <div className="font-display font-medium text-xl text-navy-800 mt-1">{s.v}</div>
             </div>
           ))}
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 mt-12 items-start">
           <div>
-            <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-navy-800 tracking-tight">Преимущества</h2>
+            <h2 className="font-display font-medium text-2xl sm:text-3xl text-navy-800 tracking-tight">Преимущества</h2>
             <ul className="mt-5 space-y-3">
               {d.features.map((f) => (
                 <li key={f} className="flex items-start gap-3 text-slate-700">
@@ -110,7 +110,7 @@ export default async function DirectionPage({ params }) {
         <div className="absolute inset-0 grid-lines opacity-20" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-14 grid lg:grid-cols-2 gap-10 items-center">
           <div className="text-white">
-            <h2 className="font-display font-extrabold text-3xl sm:text-4xl tracking-tight">Рассчитать {d.short.toLowerCase()}</h2>
+            <h2 className="font-display font-medium text-3xl sm:text-4xl tracking-tight">Рассчитать {d.short.toLowerCase()}</h2>
             <p className="mt-4 text-cloud-200/80 max-w-lg">Бесплатный замер, проектирование и цена за 24 часа. Оставьте заявку — подберём оптимальное решение под вашу задачу.</p>
           </div>
           <div className="w-full max-w-md lg:justify-self-end"><LeadForm /></div>
@@ -119,7 +119,7 @@ export default async function DirectionPage({ params }) {
 
       {/* OTHER DIRECTIONS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
-        <h2 className="font-display font-extrabold text-2xl text-navy-800 tracking-tight">Другие направления</h2>
+        <h2 className="font-display font-medium text-2xl text-navy-800 tracking-tight">Другие направления</h2>
         <div className="grid sm:grid-cols-3 gap-5 mt-6">
           {others.map((o) => (
             <a key={o.slug} href={`/napravleniya/${o.slug}`} className="group block rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition">

@@ -1,8 +1,9 @@
 import './globals.css';
-import { Manrope, Unbounded } from 'next/font/google';
+import { Manrope, Onest } from 'next/font/google';
 
 const manrope = Manrope({ subsets: ['latin', 'cyrillic'], variable: '--font-manrope', display: 'swap' });
-const unbounded = Unbounded({ subsets: ['latin', 'cyrillic'], weight: ['600', '700', '800'], variable: '--font-unbounded', display: 'swap' });
+// Display font: Onest — clean, elegant, lighter weights (thin look, not heavy/bold)
+const onest = Onest({ subsets: ['latin', 'cyrillic'], weight: ['300', '400', '500', '600'], variable: '--font-unbounded', display: 'swap' });
 
 export const metadata = {
   metadataBase: new URL('https://raxpro.uz'),
@@ -27,7 +28,7 @@ export const viewport = { themeColor: '#00a2eb' };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ru" className={`${manrope.variable} ${unbounded.variable}`}>
+    <html lang="ru" className={`${manrope.variable} ${onest.variable}`}>
       <body>{children}</body>
     </html>
   );

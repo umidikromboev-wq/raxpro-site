@@ -33,7 +33,7 @@ export default function BlogIndex() {
           <nav className="text-sm text-white/70 mb-4">
             <a href="/" className="hover:text-white">Главная</a> <span className="mx-1">/</span> <span className="text-white">Новости</span>
           </nav>
-          <h1 className="font-display font-extrabold text-3xl sm:text-5xl leading-tight">Библиотека статей о стеллажах</h1>
+          <h1 className="font-display font-medium text-3xl sm:text-5xl leading-tight">Библиотека статей о стеллажах</h1>
           <p className="mt-4 text-white/85 max-w-2xl">
             Экспертные материалы RAXPRO о системах хранения: как выбрать, рассчитать и не переплатить за стеллажи для склада, магазина и архива.
           </p>
@@ -52,7 +52,7 @@ export default function BlogIndex() {
                 <span className="font-semibold text-sky-600">{lead.category}</span>
                 <span className="text-slate-400 inline-flex items-center gap-1"><IcoClock className="w-4 h-4" /> {lead.readMins} мин · {formatDate(lead.date)}</span>
               </div>
-              <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-navy-800 mt-3 leading-tight group-hover:text-sky-600">{lead.title}</h2>
+              <h2 className="font-display font-medium text-2xl sm:text-3xl text-navy-800 mt-3 leading-tight group-hover:text-sky-600">{lead.title}</h2>
               <p className="text-slate-600 mt-3 leading-relaxed">{lead.excerpt}</p>
               <span className="mt-5 inline-flex items-center gap-2 text-navy-700 font-semibold">Читать статью <IcoArrow className="w-5 h-5" /></span>
             </div>

@@ -19,9 +19,9 @@ export default function ProductSlider({ items }) {
               <span key={k} className={`h-1.5 rounded-full transition-all ${k === i ? 'w-6 bg-sky-400' : 'w-1.5 bg-white/25'}`} />
             ))}
           </div>
-          <h3 className="font-display font-extrabold text-2xl sm:text-3xl mt-6">{p.t}</h3>
+          <h3 className="font-display font-medium text-2xl sm:text-3xl mt-6">{p.t}</h3>
           <p className="text-cloud-200/75 mt-3 max-w-sm leading-relaxed">{p.d}</p>
-          <div className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-gold-400 bg-white/5 rounded-full px-3.5 py-1.5">
+          <div className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-sky-300 bg-white/5 rounded-full px-3.5 py-1.5">
             {p.load}
           </div>
           <a href="#zayavka" className="mt-auto pt-6 inline-flex items-center gap-2 self-start bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 transition">

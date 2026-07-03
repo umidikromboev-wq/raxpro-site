@@ -14,7 +14,7 @@ export function SplitHead({ eyebrow, title, desc, light = false }) {
     <div className="grid lg:grid-cols-2 gap-4 lg:gap-10 items-end">
       <div>
         <Eyebrow light={light}>{eyebrow}</Eyebrow>
-        <h2 className={`mt-4 font-display font-extrabold text-3xl sm:text-[2.6rem] leading-[1.1] tracking-tight ${light ? 'text-white' : 'text-navy-800'}`}>
+        <h2 className={`mt-4 font-display font-medium text-3xl sm:text-[2.6rem] leading-[1.1] tracking-tight ${light ? 'text-white' : 'text-navy-800'}`}>
           {title}
         </h2>
       </div>

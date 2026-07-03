@@ -81,7 +81,7 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 pb-16 sm:pb-20 pt-32">
           <div className="animate-fadeup max-w-3xl text-white">
             <Eyebrow light>{SITE.legal} · системы хранения</Eyebrow>
-            <h1 className="mt-6 font-display font-extrabold text-4xl sm:text-5xl lg:text-[3.7rem] leading-[1.08]">
+            <h1 className="mt-6 font-display font-medium text-4xl sm:text-5xl lg:text-[3.7rem] leading-[1.08]">
               Стеллажи и системы<br />хранения <span className="text-sky-400">полного цикла</span>
             </h1>
             <p className="mt-6 text-lg text-cloud-200/85 max-w-xl leading-relaxed">
@@ -132,7 +132,7 @@ export default function Home() {
                   <div className="w-12 h-12 rounded-xl bg-navy-900 text-white grid place-items-center">
                     <s.Ico className="w-6 h-6" />
                   </div>
-                  <span className="font-display font-extrabold text-3xl text-cloud-300">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-display font-medium text-3xl text-cloud-300">{String(i + 1).padStart(2, '0')}</span>
                 </div>
                 <h3 className="font-bold text-lg text-navy-800 mt-4">{s.t}</h3>
                 <p className="text-slate-500 text-sm mt-1.5 leading-relaxed">{s.d}</p>
@@ -149,7 +149,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-[1fr,1.5fr] gap-10 items-center">
             <div>
               <Eyebrow light>Цифры</Eyebrow>
-              <h2 className="mt-4 font-display font-extrabold text-3xl sm:text-4xl">RAXPRO в цифрах</h2>
+              <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl">RAXPRO в цифрах</h2>
               <p className="mt-3 text-cloud-200/75 max-w-md">
                 Мы построили системы хранения для складов, заводов, магазинов и маркетплейсов по всему Узбекистану.
               </p>
@@ -160,7 +160,7 @@ export default function Home() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-white/10 rounded-xl2 overflow-hidden border border-white/10">
               {STATS.map((s) => (
                 <div key={s.l} className="bg-navy-900 p-6">
-                  <div className="font-display font-extrabold text-4xl sm:text-5xl text-sky-400 leading-none">
+                  <div className="font-display font-medium text-4xl sm:text-5xl text-sky-400 leading-none">
                     {s.n}<span className="text-2xl text-sky-300 ml-1">{s.s}</span>
                   </div>
                   <div className="text-cloud-200/70 text-sm mt-2 leading-snug">{s.l}</div>
@@ -247,9 +247,9 @@ export default function Home() {
           <Reveal>
             <div className="inline-flex items-center gap-3">
               <span className="w-16 h-16 rounded-2xl bg-white/15 grid place-items-center"><IcoShield className="w-9 h-9 text-white" /></span>
-              <span className="font-display font-extrabold text-6xl sm:text-7xl">10 лет</span>
+              <span className="font-display font-medium text-6xl sm:text-7xl">10 лет</span>
             </div>
-            <h2 className="font-display font-extrabold text-2xl sm:text-3xl mt-4">официальной гарантии по документу</h2>
+            <h2 className="font-display font-medium text-2xl sm:text-3xl mt-4">официальной гарантии по документу</h2>
             <p className="text-white/90 mt-4 max-w-2xl mx-auto leading-relaxed">
               Сегодня на рынке Узбекистана только RAXPRO предоставляет 10 лет гарантии в письменном виде.
               Металл 1 сорта, оцинковка и порошковая краска — стеллаж служит десятилетиями.
@@ -263,7 +263,7 @@ export default function Home() {
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
             <Eyebrow>Новости и статьи</Eyebrow>
-            <h2 className="mt-4 font-display font-extrabold text-3xl sm:text-4xl text-navy-800">Полезное о стеллажах</h2>
+            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">Полезное о стеллажах</h2>
           </div>
           <a href="/blog" className="inline-flex items-center gap-2 text-navy-700 font-semibold hover:text-sky-600">
             Все статьи <IcoArrow className="w-5 h-5" />
@@ -293,7 +293,7 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-white">
             <Eyebrow light>Заявка</Eyebrow>
-            <h2 className="mt-4 font-display font-extrabold text-3xl sm:text-4xl">
+            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl">
               Оставьте заявку — и мы свяжемся с вами
             </h2>
             <p className="mt-4 text-cloud-200/80 max-w-lg leading-relaxed">
@@ -320,7 +320,7 @@ export default function Home() {
       <section id="kontakty" className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 grid md:grid-cols-2 gap-10">
         <div>
           <Eyebrow>Контакты</Eyebrow>
-          <h2 className="mt-4 font-display font-extrabold text-3xl sm:text-4xl text-navy-800">Свяжитесь с нами</h2>
+          <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">Свяжитесь с нами</h2>
           <div className="mt-6 space-y-5">
             <div>
               <div className="text-slate-400 text-sm">Телефоны</div>
