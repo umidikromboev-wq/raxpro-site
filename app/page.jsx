@@ -1,6 +1,7 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import LeadForm from '../components/LeadForm';
+import Calculator from '../components/Calculator';
 import Reveal from '../components/Reveal';
 import ProductSlider from '../components/ProductSlider';
 import { SplitHead, Eyebrow } from '../components/Section';
@@ -98,15 +99,15 @@ export default function Home() {
               Производим и монтируем стеллажи любого типа по всему Узбекистану. Нагрузка до 3.5 тонн · гарантия 10 лет · бесплатный замер за 24 часа.
             </p>
             <div className="flex flex-wrap gap-3 mt-7">
-              <a href="#zayavka" className="inline-flex items-center gap-2 bg-brand-grad text-white font-bold px-7 py-3.5 rounded-xl shadow-glow hover:brightness-110">
-                Обсудить проект <IcoArrow className="w-5 h-5" />
+              <a href="#kalkulyator" className="inline-flex items-center gap-2 bg-brand-grad text-white font-bold px-7 py-3.5 rounded-xl shadow-glow hover:brightness-110">
+                Рассчитать стоимость за 1 минуту <IcoArrow className="w-5 h-5" />
               </a>
               <a href="#napravleniya" className="inline-flex items-center gap-2 border border-white/30 hover:bg-white hover:text-navy-800 text-white px-7 py-3.5 rounded-xl font-semibold backdrop-blur-sm">
                 Смотреть направления
               </a>
             </div>
             <div className="flex flex-wrap gap-x-7 gap-y-2 mt-8 text-sm text-cloud-200/80">
-              {['Гарантия 10 лет', 'Металл 1 сорта', 'Бесплатный замер'].map((c) => (
+              {['Гарантия 10 лет по документу', 'Отвечаем за 5 минут', 'Рассрочка Uzum Nasiya'].map((c) => (
                 <span key={c} className="inline-flex items-center gap-1.5"><IcoCheck className="w-4 h-4 text-sky-400" /> {c}</span>
               ))}
             </div>
@@ -122,6 +123,33 @@ export default function Home() {
             {CLIENTS.map((c) => (
               <span key={c} className="text-navy-800/70 font-display font-bold text-lg">{c}</span>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ CALCULATOR ============ */}
+      <section id="kalkulyator" className="relative bg-navy-900 overflow-hidden">
+        <div className="absolute inset-0 grid-lines opacity-20" />
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 grid lg:grid-cols-[1fr,1.1fr] gap-12 items-center">
+          <div className="text-white">
+            <Eyebrow light>Калькулятор</Eyebrow>
+            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl leading-tight">
+              Рассчитайте стоимость стеллажей <span className="text-sky-400">за 1 минуту</span>
+            </h2>
+            <p className="mt-4 text-cloud-200/80 max-w-lg leading-relaxed">
+              Ответьте на 4 вопроса — менеджер подготовит точный расчёт и коммерческое предложение. Бесплатный замер и проект за 24 часа, отвечаем в течение 5 минут.
+            </p>
+            <ul className="mt-6 space-y-2.5">
+              {['Точная цена под вашу задачу', 'Бесплатный выезд и замер', 'Рассрочка Uzum Nasiya до 25 млн сум', 'Гарантия 10 лет по документу'].map((f) => (
+                <li key={f} className="flex items-center gap-3 text-cloud-200/90">
+                  <span className="w-6 h-6 rounded-full bg-white/10 grid place-items-center text-sky-300 shrink-0"><IcoCheck className="w-4 h-4" /></span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="w-full max-w-xl lg:justify-self-end">
+            <Calculator />
           </div>
         </div>
       </section>
