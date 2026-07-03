@@ -16,7 +16,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 inset-x-0 z-50">
-      <div className="max-w-7xl mx-auto px-3 sm:px-5 mt-3">
+      <div className="w-full px-4 sm:px-6 lg:px-10 mt-3">
         {/* Floating frosted glass bar — nav in normal flow (flex-1) so it never overlaps actions */}
         <div className={`relative flex items-center gap-4 h-16 rounded-2xl px-4 sm:px-5 border transition-all ${scrolled ? 'bg-navy-900/90 backdrop-blur-md border-white/10 shadow-band' : 'bg-white/10 backdrop-blur-md border-white/15'}`}>
           {/* Logo */}

@@ -122,7 +122,7 @@ export default async function ArticlePage({ params }) {
       </section>
 
       {/* RELATED */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14">
         <h2 className="font-display font-medium text-2xl text-navy-800 tracking-tight">Читайте также</h2>
         <div className="grid sm:grid-cols-3 gap-5 mt-6">
           {related.map((r) => (

@@ -11,7 +11,7 @@ export default function ProductSlider({ items }) {
   return (
     <div className="relative rounded-xl2 bg-navy-900 text-white overflow-hidden">
       <div className="absolute inset-0 grid-lines opacity-20" />
-      <div className="relative grid md:grid-cols-2 gap-6 p-7 sm:p-9 min-h-[380px]">
+      <div className="relative grid md:grid-cols-2 gap-6 p-6 sm:p-8 min-h-[300px]">
         {/* Left: dots + text */}
         <div className="flex flex-col">
           <div className="flex gap-1.5">

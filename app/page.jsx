@@ -4,7 +4,7 @@ import LeadForm from '../components/LeadForm';
 import Reveal from '../components/Reveal';
 import ProductSlider from '../components/ProductSlider';
 import { SplitHead, Eyebrow } from '../components/Section';
-import { SITE, CLIENTS } from '../lib/site';
+import { SITE, CLIENTS, ISO_CERTS } from '../lib/site';
 import { getLatest } from '../lib/articles';
 import {
   IcoRuler, IcoDraft, IcoFactory, IcoWrench, IcoShield, IcoWeight,
@@ -71,7 +71,7 @@ export default function Home() {
       <Header />
 
       {/* ============ HERO — bottom-left, no form ============ */}
-      <section className="relative min-h-[92vh] flex flex-col justify-end overflow-hidden">
+      <section className="relative min-h-[82vh] flex flex-col justify-end overflow-hidden">
         <div className="absolute inset-0 bg-navy-900">
           <video
             autoPlay
@@ -88,17 +88,16 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900/70 to-transparent" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 pb-16 sm:pb-20 pt-32">
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pb-14 sm:pb-16 pt-28">
           <div className="animate-fadeup max-w-3xl text-white">
-            <Eyebrow light>{SITE.legal} · системы хранения</Eyebrow>
-            <h1 className="mt-6 font-display font-medium text-4xl sm:text-5xl lg:text-[3.7rem] leading-[1.08]">
+            <Eyebrow light>Системы хранения · Ташкент</Eyebrow>
+            <h1 className="mt-5 font-display font-medium text-4xl sm:text-5xl lg:text-[3.7rem] leading-[1.08]">
               Стеллажи и системы<br />хранения <span className="text-sky-400">полного цикла</span>
             </h1>
-            <p className="mt-6 text-lg text-cloud-200/85 max-w-xl leading-relaxed">
-              Проектируем, производим и монтируем складские, паллетные, архивные и торговые стеллажи в Ташкенте и по всему Узбекистану.
-              Нагрузка до 3.5 тонн, гарантия 10 лет, бесплатный замер и расчёт за 24 часа.
+            <p className="mt-5 text-lg text-cloud-200/85 max-w-xl leading-relaxed">
+              Производим и монтируем стеллажи любого типа по всему Узбекистану. Нагрузка до 3.5 тонн · гарантия 10 лет · бесплатный замер за 24 часа.
             </p>
-            <div className="flex flex-wrap gap-3 mt-8">
+            <div className="flex flex-wrap gap-3 mt-7">
               <a href="#zayavka" className="inline-flex items-center gap-2 bg-brand-grad text-white font-bold px-7 py-3.5 rounded-xl shadow-glow hover:brightness-110">
                 Обсудить проект <IcoArrow className="w-5 h-5" />
               </a>
@@ -117,7 +116,7 @@ export default function Home() {
 
       {/* ============ CLIENTS STRIP ============ */}
       <section className="border-b border-cloud-200 bg-cloud-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-7">
+        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-7">
           <p className="text-center text-slate-500 text-xs uppercase tracking-widest mb-4">Нам доверяют компании Узбекистана</p>
           <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-3">
             {CLIENTS.map((c) => (
@@ -128,7 +127,7 @@ export default function Home() {
       </section>
 
       {/* ============ PROCESS ============ */}
-      <section id="o-kompanii" className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+      <section id="o-kompanii" className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
         <SplitHead
           eyebrow="Циклы"
           title="Контроль на всех этапах — от замера до готового объекта"
@@ -155,7 +154,7 @@ export default function Home() {
       {/* ============ METRICS BAND ============ */}
       <section className="relative bg-navy-900 text-white overflow-hidden notch-tr">
         <div className="absolute inset-0 grid-lines opacity-30" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16">
           <div className="grid lg:grid-cols-[1fr,1.5fr] gap-10 items-center">
             <div>
               <Eyebrow light>Цифры</Eyebrow>
@@ -182,7 +181,7 @@ export default function Home() {
       </section>
 
       {/* ============ DIRECTIONS — big 2-up overlay cards ============ */}
-      <section id="napravleniya" className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+      <section id="napravleniya" className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
         <SplitHead
           eyebrow="Направления"
           title="Наши основные направления работы"
@@ -213,9 +212,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ============ INCOME / VALUE — quality shelving grows revenue ============ */}
+      <section className="bg-cloud-50 border-y border-cloud-200">
+        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
+          <SplitHead
+            eyebrow="Выгода"
+            title="Качественные стеллажи увеличивают доход"
+            desc="Хорошая система хранения — это не расход, а инвестиция, которая возвращается вместимостью, сроком службы и порядком."
+          />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
+            {[
+              { Ico: IcoLayers, t: 'Больше вместимости', d: 'Правильная система поднимает товар вверх и использует всю высоту помещения — вы храните в разы больше на той же площади и не платите за лишние метры.' },
+              { Ico: IcoShield, t: 'Качество и долговечность', d: 'Металл 1 сорта, оцинковка и 10 лет гарантии. Стеллажи служат десятилетиями без замены и ремонта — экономия вместо постоянных трат.' },
+              { Ico: IcoShop, t: 'Дизайн и порядок', d: 'Аккуратные, продуманные стеллажи улучшают вид склада и торгового зала, ускоряют выкладку и работу — а значит, повышают продажи.' },
+            ].map((a, i) => (
+              <Reveal key={a.t} delay={i * 70}>
+                <div className="h-full rounded-xl2 bg-white border border-cloud-200 shadow-card p-6">
+                  <div className="w-12 h-12 rounded-xl bg-brand-grad text-white grid place-items-center shadow-glow">
+                    <a.Ico className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-bold text-lg text-navy-800 mt-4">{a.t}</h3>
+                  <p className="text-slate-500 text-sm mt-2 leading-relaxed">{a.d}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ============ PROJECTS SLIDER (real works, not a repeat of types) ============ */}
       <section id="proekty" className="bg-cloud-50 border-y border-cloud-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
           <SplitHead
             eyebrow="Проекты"
             title="Реальные объекты RAXPRO"
@@ -228,7 +255,7 @@ export default function Home() {
       </section>
 
       {/* ============ WHY / ADVANTAGES ============ */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
         <SplitHead
           eyebrow="Преимущества"
           title="Не обещания, а факты"
@@ -246,6 +273,48 @@ export default function Home() {
               </div>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* ============ FOUNDER ============ */}
+      <section id="osnovatel" className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
+        <div className="grid lg:grid-cols-[0.85fr,1.15fr] gap-10 lg:gap-14 items-center">
+          <div className="relative">
+            <div className="rounded-xl2 overflow-hidden border border-cloud-200 shadow-card max-w-md">
+              <img src="/brand/founder.jpg" alt="Хуршид Касимов — основатель RAXPRO" className="w-full h-full object-cover" />
+            </div>
+            <div className="absolute -bottom-4 left-6 bg-white rounded-xl shadow-card border border-cloud-200 px-5 py-3">
+              <div className="font-display font-medium text-navy-800 text-lg leading-tight">Хуршид Касимов</div>
+              <div className="text-sm text-sky-600">Основатель RAXPRO</div>
+            </div>
+          </div>
+          <div>
+            <Eyebrow>Основатель</Eyebrow>
+            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800 leading-tight">
+              «Доверие и порядок клиента — моя главная ценность»
+            </h2>
+            <div className="mt-5 space-y-4 text-slate-600 leading-relaxed max-w-2xl">
+              <p>
+                Я из семьи предпринимателей и строителей, в бизнес пришёл в 16 лет. К 25 годам создал около 10 небольших сервисных компаний — и через множество ошибок и побед клиенты признали меня чемпионом по качественному сервису.
+              </p>
+              <p>
+                Сегодня через RAXPRO я поставляю качественные, прочные и эстетичные металлические стеллажи — это часть моей жизни. За несколько лет мы стали одними из ведущих на рынке Узбекистана, предлагая готовые решения для магазинов, складов и фабрик.
+              </p>
+              <p>
+                Как основатель, я лично отвечаю за каждый проект. Когда вижу упорядоченный, правильно систематизированный склад или магазин — получаю настоящее удовольствие. Буду искренне рад навести порядок и на вашем объекте.
+              </p>
+            </div>
+            <div className="mt-7">
+              <div className="text-slate-400 text-sm mb-2">Продукция сертифицирована по международным стандартам:</div>
+              <div className="flex flex-wrap gap-2.5">
+                {ISO_CERTS.map((c) => (
+                  <span key={c} className="inline-flex items-center gap-2 rounded-lg bg-cloud-50 border border-cloud-200 px-3.5 py-2 text-sm font-semibold text-navy-800">
+                    <IcoShield className="w-4 h-4 text-sky-600" /> {c}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -269,7 +338,7 @@ export default function Home() {
       </section>
 
       {/* ============ NEWS / BLOG (links to separate library page) ============ */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
             <Eyebrow>Новости и статьи</Eyebrow>
@@ -300,7 +369,7 @@ export default function Home() {
       {/* ============ CALLBACK FORM ============ */}
       <section id="zayavka" className="relative bg-navy-900 overflow-hidden notch-tr">
         <div className="absolute inset-0 grid-lines opacity-25" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-white">
             <Eyebrow light>Заявка</Eyebrow>
             <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl">
@@ -327,7 +396,7 @@ export default function Home() {
       </section>
 
       {/* ============ CONTACTS + MAP ============ */}
-      <section id="kontakty" className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 grid md:grid-cols-2 gap-10">
+      <section id="kontakty" className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 grid md:grid-cols-2 gap-10">
         <div>
           <Eyebrow>Контакты</Eyebrow>
           <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">Свяжитесь с нами</h2>

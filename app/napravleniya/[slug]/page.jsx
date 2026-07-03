@@ -40,7 +40,7 @@ export default async function DirectionPage({ params }) {
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/92 to-navy-900/60" />
           <div className="absolute inset-0 grid-lines opacity-25" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-16 grid lg:grid-cols-[1.1fr,0.9fr] gap-10 items-center">
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 sm:py-16 grid lg:grid-cols-[1.1fr,0.9fr] gap-10 items-center">
           <div>
             <nav className="text-sm text-cloud-200/60 mb-4">
               <a href="/" className="hover:text-sky-400">Главная</a> <span className="mx-1">/</span>
@@ -63,7 +63,7 @@ export default async function DirectionPage({ params }) {
       </section>
 
       {/* SPECS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {d.specs.map((s) => (
             <div key={s.k} className="rounded-xl2 bg-white border border-cloud-200 shadow-card p-5">
@@ -108,7 +108,7 @@ export default async function DirectionPage({ params }) {
       {/* CTA FORM */}
       <section id="zayavka" className="relative bg-navy-900 overflow-hidden">
         <div className="absolute inset-0 grid-lines opacity-20" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-14 grid lg:grid-cols-2 gap-10 items-center">
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 grid lg:grid-cols-2 gap-10 items-center">
           <div className="text-white">
             <h2 className="font-display font-medium text-3xl sm:text-4xl tracking-tight">Рассчитать {d.short.toLowerCase()}</h2>
             <p className="mt-4 text-cloud-200/80 max-w-lg">Бесплатный замер, проектирование и цена за 24 часа. Оставьте заявку — подберём оптимальное решение под вашу задачу.</p>
@@ -118,7 +118,7 @@ export default async function DirectionPage({ params }) {
       </section>
 
       {/* OTHER DIRECTIONS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14">
         <h2 className="font-display font-medium text-2xl text-navy-800 tracking-tight">Другие направления</h2>
         <div className="grid sm:grid-cols-3 gap-5 mt-6">
           {others.map((o) => (

@@ -29,7 +29,7 @@ export default function BlogIndex() {
       <section className="relative pt-24 bg-navy-900 text-white overflow-hidden notch-tr">
         <div className="absolute inset-0 bg-brand-grad opacity-90" />
         <div className="absolute inset-0 grid-lines opacity-30" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
           <nav className="text-sm text-white/70 mb-4">
             <a href="/" className="hover:text-white">Главная</a> <span className="mx-1">/</span> <span className="text-white">Новости</span>
           </nav>
@@ -40,7 +40,7 @@ export default function BlogIndex() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-16">
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 sm:py-16">
         {/* Featured */}
         <Reveal>
           <a href={`/blog/${lead.slug}`} className="group grid md:grid-cols-2 gap-0 rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover transition mb-12">
