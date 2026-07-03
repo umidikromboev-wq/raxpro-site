@@ -5,7 +5,7 @@ import Calculator from '../components/Calculator';
 import Reveal from '../components/Reveal';
 import ProductSlider from '../components/ProductSlider';
 import { SplitHead, Eyebrow } from '../components/Section';
-import { SITE, CLIENTS, ISO_CERTS } from '../lib/site';
+import { SITE, CLIENT_LOGOS, ISO_CERTS } from '../lib/site';
 import { getLatest } from '../lib/articles';
 import {
   IcoRuler, IcoDraft, IcoFactory, IcoWrench, IcoShield, IcoWeight,
@@ -117,11 +117,13 @@ export default function Home() {
 
       {/* ============ CLIENTS STRIP ============ */}
       <section className="border-b border-cloud-200 bg-cloud-50">
-        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-7">
-          <p className="text-center text-slate-500 text-xs uppercase tracking-widest mb-4">Нам доверяют компании Узбекистана</p>
-          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-3">
-            {CLIENTS.map((c) => (
-              <span key={c} className="text-navy-800/70 font-display font-bold text-lg">{c}</span>
+        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-8">
+          <p className="text-center text-slate-500 text-xs uppercase tracking-widest mb-6">Нам доверяют компании Узбекистана</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-6 gap-y-6 items-center">
+            {CLIENT_LOGOS.map((c) => (
+              <div key={c.alt} className="flex items-center justify-center h-12">
+                <img src={c.src} alt={c.alt} className="max-h-11 max-w-[120px] w-auto object-contain opacity-70 hover:opacity-100 transition grayscale hover:grayscale-0" />
+              </div>
             ))}
           </div>
         </div>
