@@ -71,7 +71,7 @@ export default function Home() {
       <Header />
 
       {/* ============ HERO — bottom-left, no form ============ */}
-      <section className="relative min-h-[82vh] flex flex-col justify-end overflow-hidden">
+      <section className="relative min-h-svh flex flex-col justify-end overflow-hidden">
         <div className="absolute inset-0 bg-navy-900">
           <video
             autoPlay
