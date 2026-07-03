@@ -7,13 +7,13 @@ const FT = {
     tagline: 'Стеллажи и системы хранения полного цикла. Замер, проектирование, производство и монтаж по всему Узбекистану.',
     sections: 'Разделы', products: 'Продукция', contacts: 'Контакты',
     prod: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи'],
-    rights: 'Все права защищены.', tail: 'Стеллажи и системы хранения · Ташкент, Узбекистан', madeBy: 'Сделано в',
+    rights: 'Все права защищены.', tail: 'Стеллажи и системы хранения · Ташкент, Узбекистан', madeBy: 'Сделано в', reviews: 'Отзывы',
   },
   uz: {
     tagline: 'Toʻliq sikl stellajlar va saqlash tizimlari. Butun Oʻzbekiston boʻylab oʻlchov, loyihalash, ishlab chiqarish va montaj.',
     sections: 'Boʻlimlar', products: 'Mahsulotlar', contacts: 'Aloqa',
     prod: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari'],
-    rights: 'Barcha huquqlar himoyalangan.', tail: 'Stellajlar va saqlash tizimlari · Toshkent, Oʻzbekiston', madeBy: 'Ishlab chiqildi',
+    rights: 'Barcha huquqlar himoyalangan.', tail: 'Stellajlar va saqlash tizimlari · Toshkent, Oʻzbekiston', madeBy: 'Ishlab chiqildi', reviews: 'Sharhlar',
   },
 };
 
@@ -40,6 +40,7 @@ export default function Footer({ lang = 'ru' }) {
             <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-sky-400 hover:text-navy-900 transition text-cloud-200"><IcoIg className="w-5 h-5" /></a>
             <a href={SITE.telegram} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-sky-400 hover:text-navy-900 transition text-cloud-200"><IcoTg className="w-5 h-5" /></a>
             <a href={`tel:${SITE.phoneMain}`} aria-label="Phone" className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 hover:bg-sky-400 hover:text-navy-900 transition text-cloud-200"><IcoPhone className="w-5 h-5" /></a>
+            <a href={SITE.reviewsChannel} target="_blank" rel="noopener noreferrer" aria-label={t.reviews} className="inline-flex items-center gap-1.5 h-10 px-3 rounded-lg bg-white/5 hover:bg-sky-400 hover:text-navy-900 transition text-cloud-200 text-sm font-semibold">★ {t.reviews}</a>
           </div>
         </div>
 

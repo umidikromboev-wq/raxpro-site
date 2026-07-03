@@ -12,7 +12,7 @@ const STEPS_BY_LANG = {
     { key: 'place', q: 'Где будете использовать?', options: [
       { v: 'Склад' }, { v: 'Магазин / торговый зал' }, { v: 'Производство' }, { v: 'Архив / офис' }, { v: 'Маркетплейс (склад селлера)' }, { v: 'Другое' } ] },
     { key: 'load', q: 'Нагрузка на ярус?', options: [
-      { v: 'до 300 кг' }, { v: '300–800 кг' }, { v: '800–1500 кг' }, { v: 'до 3.5 тонны' }, { v: 'Не знаю' } ] },
+      { v: 'до 300 кг' }, { v: '300–800 кг' }, { v: '800–1500 кг' }, { v: 'до 4 тонн' }, { v: 'Не знаю' } ] },
     { key: 'volume', q: 'Примерный объём?', options: [
       { v: '1–5 секций' }, { v: '5–20 секций' }, { v: '20–50 секций' }, { v: '50+ секций / большой склад' }, { v: 'Не знаю' } ] },
   ],
@@ -24,7 +24,7 @@ const STEPS_BY_LANG = {
     { key: 'place', q: 'Qayerda foydalanasiz?', options: [
       { v: 'Ombor' }, { v: 'Doʻkon / savdo zali' }, { v: 'Ishlab chiqarish' }, { v: 'Arxiv / ofis' }, { v: 'Marketpleys (sotuvchi ombori)' }, { v: 'Boshqa' } ] },
     { key: 'load', q: 'Har bir qavatga yuklama?', options: [
-      { v: '300 kg gacha' }, { v: '300–800 kg' }, { v: '800–1500 kg' }, { v: '3.5 tonnagacha' }, { v: 'Bilmayman' } ] },
+      { v: '300 kg gacha' }, { v: '300–800 kg' }, { v: '800–1500 kg' }, { v: '4 tonnagacha' }, { v: 'Bilmayman' } ] },
     { key: 'volume', q: 'Taxminiy hajm?', options: [
       { v: '1–5 seksiya' }, { v: '5–20 seksiya' }, { v: '20–50 seksiya' }, { v: '50+ seksiya / katta ombor' }, { v: 'Bilmayman' } ] },
   ],
@@ -125,7 +125,7 @@ export default function Calculator({ lang = 'ru' }) {
                 <button
                   key={o.v}
                   onClick={() => pick(cur.key, o.v)}
-                  className={`flex items-center gap-3 text-left rounded-xl border px-4 py-3.5 transition ${
+                  className={`flex items-center gap-3 text-left rounded-xl border px-4 py-4 transition ${
                     answers[cur.key] === o.v
                       ? 'border-sky-500 bg-sky-500/5 text-navy-800'
                       : 'border-cloud-200 hover:border-sky-400 hover:bg-cloud-50 text-slate-700'
@@ -161,7 +161,7 @@ export default function Calculator({ lang = 'ru' }) {
             </div>
             <button
               disabled={state === 'sending'}
-              className="w-full mt-4 bg-brand-grad text-white font-bold py-3.5 rounded-xl shadow-glow hover:brightness-110 disabled:opacity-60 inline-flex items-center justify-center gap-2"
+              className="w-full mt-4 bg-brand-grad text-white font-bold py-4 rounded-xl shadow-glow hover:brightness-110 disabled:opacity-60 inline-flex items-center justify-center gap-2"
             >
               {state === 'sending' ? c.sending : <>{c.submit} <IcoArrow className="w-5 h-5" /></>}
             </button>
