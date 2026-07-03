@@ -1,6 +1,8 @@
 import './globals.css';
 import { Manrope, Onest } from 'next/font/google';
 import FloatingContact from '../components/FloatingContact';
+import SmoothScroll from '../components/SmoothScroll';
+import ScrollProgress from '../components/ScrollProgress';
 
 const manrope = Manrope({ subsets: ['latin', 'cyrillic'], variable: '--font-manrope', display: 'swap' });
 // Display font: Onest — clean, elegant, lighter weights (thin look, not heavy/bold)
@@ -30,7 +32,12 @@ export const viewport = { themeColor: '#00a2eb' };
 export default function RootLayout({ children }) {
   return (
     <html lang="ru" className={`${manrope.variable} ${onest.variable}`}>
-      <body>{children}<FloatingContact /></body>
+      <body>
+        <SmoothScroll />
+        <ScrollProgress />
+        {children}
+        <FloatingContact />
+      </body>
     </html>
   );
 }

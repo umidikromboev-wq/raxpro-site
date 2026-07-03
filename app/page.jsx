@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import LeadForm from '../components/LeadForm';
 import Calculator from '../components/Calculator';
 import Reveal from '../components/Reveal';
+import Parallax from '../components/Parallax';
 import ProductSlider from '../components/ProductSlider';
 import { SplitHead, Eyebrow } from '../components/Section';
 import { SITE, CLIENT_LOGOS, ISO_CERTS } from '../lib/site';
@@ -77,7 +78,7 @@ export default async function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900/70 to-transparent" />
         </div>
 
-        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pb-14 sm:pb-16 pt-28">
+        <Parallax speed={0.09} className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pb-14 sm:pb-16 pt-28">
           <div className="animate-fadeup max-w-3xl text-white">
             <Eyebrow light>{t.heroEyebrow}</Eyebrow>
             <h1 className="mt-5 font-display font-medium text-4xl sm:text-5xl lg:text-[3.7rem] leading-[1.08]">
@@ -99,7 +100,7 @@ export default async function Home() {
             </div>
             <div className="mt-4 inline-block text-sm font-semibold text-sky-300 border border-sky-400/30 bg-sky-500/10 rounded-lg px-3.5 py-2">{t.heroPrice}</div>
           </div>
-        </div>
+        </Parallax>
       </section>
 
       {/* CLIENTS */}
@@ -176,14 +177,14 @@ export default async function Home() {
                 {t.numsCta} <IcoArrow className="w-5 h-5" />
               </a>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-white/10 rounded-xl2 overflow-hidden border border-white/10">
+            <Reveal as="div" variant="fade" stagger={70} className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-white/10 rounded-xl2 overflow-hidden border border-white/10">
               {t.stats.map((s) => (
                 <div key={s.l} className="bg-navy-900 p-6">
                   <div className="font-display font-medium text-4xl sm:text-5xl text-sky-400 leading-none">{s.n}<span className="text-2xl text-sky-300 ml-1">{s.s}</span></div>
                   <div className="text-cloud-200/70 text-sm mt-2 leading-snug">{s.l}</div>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
