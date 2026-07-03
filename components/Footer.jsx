@@ -79,7 +79,7 @@ export default function Footer({ lang = 'ru' }) {
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-5 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-cloud-200/50">
           <p>© {year} RAXPRO. {t.rights}</p>
           <p>{t.tail}</p>
-          <a href="https://prototype.uz" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-cloud-200/60 hover:text-white transition">
+          <a href="https://umid-site.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-cloud-200/60 hover:text-white transition">
             {t.madeBy} <span className="font-semibold text-white">Prototype</span>
           </a>
         </div>
