@@ -3,8 +3,8 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Reveal from '../../components/Reveal';
 import BlogLibrary from '../../components/BlogLibrary';
-import { getAllArticles } from '../../lib/articles';
-import { normalizeLang } from '../../lib/i18n';
+import { getAllArticles, localize } from '../../lib/articles';
+import { normalizeLang, BLOG_UI, MONTHS } from '../../lib/i18n';
 import { IcoArrow, IcoClock } from '../../components/Icons';
 
 export const metadata = {
@@ -14,16 +14,16 @@ export const metadata = {
   alternates: { canonical: '/blog' },
 };
 
-function formatDate(d) {
-  const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+function formatDate(d, lang) {
   const [y, m, day] = d.split('-');
-  return `${parseInt(day, 10)} ${months[parseInt(m, 10) - 1]} ${y}`;
+  return `${parseInt(day, 10)} ${MONTHS[lang][parseInt(m, 10) - 1]} ${y}`;
 }
 
 export default async function BlogIndex() {
   const L = normalizeLang((await cookies()).get('lang')?.value);
-  const articles = getAllArticles();
-  const [lead, ...rest] = articles;
+  const ui = BLOG_UI[L];
+  const articles = getAllArticles().map((a) => localize(a, L));
+  const [lead] = articles;
 
   return (
     <div className="bg-white text-ink">
@@ -34,17 +34,14 @@ export default async function BlogIndex() {
         <div className="absolute inset-0 grid-lines opacity-30" />
         <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
           <nav className="text-sm text-white/70 mb-4">
-            <a href="/" className="hover:text-white">Главная</a> <span className="mx-1">/</span> <span className="text-white">Новости</span>
+            <a href="/" className="hover:text-white">{ui.home}</a> <span className="mx-1">/</span> <span className="text-white">{ui.news}</span>
           </nav>
-          <h1 className="font-display font-medium text-3xl sm:text-5xl leading-tight">Библиотека статей о стеллажах</h1>
-          <p className="mt-4 text-white/85 max-w-2xl">
-            Экспертные материалы RAXPRO о системах хранения: как выбрать, рассчитать и не переплатить за стеллажи для склада, магазина и архива.
-          </p>
+          <h1 className="font-display font-medium text-3xl sm:text-5xl leading-tight">{ui.libTitle}</h1>
+          <p className="mt-4 text-white/85 max-w-2xl">{ui.libText}</p>
         </div>
       </section>
 
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 sm:py-16">
-        {/* Featured */}
         <Reveal>
           <a href={`/blog/${lead.slug}`} className="group grid md:grid-cols-2 gap-0 rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover transition mb-12">
             <div className="aspect-[16/10] md:aspect-auto overflow-hidden bg-cloud-100">
@@ -53,17 +50,16 @@ export default async function BlogIndex() {
             <div className="p-7 sm:p-9 flex flex-col justify-center">
               <div className="flex items-center gap-3 text-sm">
                 <span className="font-semibold text-sky-600">{lead.category}</span>
-                <span className="text-slate-400 inline-flex items-center gap-1"><IcoClock className="w-4 h-4" /> {lead.readMins} мин · {formatDate(lead.date)}</span>
+                <span className="text-slate-400 inline-flex items-center gap-1"><IcoClock className="w-4 h-4" /> {lead.readMins} {ui.min} · {formatDate(lead.date, L)}</span>
               </div>
               <h2 className="font-display font-medium text-2xl sm:text-3xl text-navy-800 mt-3 leading-tight group-hover:text-sky-600">{lead.title}</h2>
               <p className="text-slate-600 mt-3 leading-relaxed">{lead.excerpt}</p>
-              <span className="mt-5 inline-flex items-center gap-2 text-navy-700 font-semibold">Читать статью <IcoArrow className="w-5 h-5" /></span>
+              <span className="mt-5 inline-flex items-center gap-2 text-navy-700 font-semibold">{ui.read} <IcoArrow className="w-5 h-5" /></span>
             </div>
           </a>
         </Reveal>
 
-        {/* Library with category filter (all articles incl. featured) */}
-        <BlogLibrary articles={articles} />
+        <BlogLibrary articles={articles} lang={L} />
       </section>
 
       <Footer lang={L} />

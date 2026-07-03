@@ -8,7 +8,7 @@ import ProductSlider from '../components/ProductSlider';
 import { SplitHead, Eyebrow } from '../components/Section';
 import { SITE, CLIENT_LOGOS, ISO_CERTS } from '../lib/site';
 import { T, normalizeLang } from '../lib/i18n';
-import { getLatest } from '../lib/articles';
+import { getLatest, localize } from '../lib/articles';
 import {
   IcoRuler, IcoDraft, IcoFactory, IcoWrench, IcoShield, IcoWeight,
   IcoLayers, IcoPallet, IcoArchive, IcoShop, IcoClock, IcoCheck, IcoArrow, IcoPin, IcoPhone, IcoTg,
@@ -50,7 +50,7 @@ export default async function Home() {
   const store = await cookies();
   const L = normalizeLang(store.get('lang')?.value);
   const t = T[L];
-  const latest = getLatest(3);
+  const latest = getLatest(3).map((a) => localize(a, L));
   const steps = t.steps.map((s, i) => ({ ...s, Ico: STEP_ICONS[i] }));
   const directions = t.directions.map((d, i) => ({ ...d, ...DIR_META[i] }));
   const adv = t.adv.map((a, i) => ({ ...a, Ico: ADV_ICONS[i] }));
