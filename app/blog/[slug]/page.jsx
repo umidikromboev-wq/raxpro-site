@@ -72,7 +72,7 @@ export default async function ArticlePage({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* HERO */}
-      <section className="relative pt-[68px] bg-navy-900 text-white overflow-hidden">
+      <section className="relative pt-24 bg-navy-900 text-white overflow-hidden">
         <div className="absolute inset-0">
           <img src={a.cover} alt={a.title} className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-b from-navy-900/70 to-navy-900" />

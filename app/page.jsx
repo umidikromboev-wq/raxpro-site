@@ -72,8 +72,8 @@ export default function Home() {
 
       {/* ============ HERO — bottom-left, no form ============ */}
       <section className="relative min-h-[92vh] flex flex-col justify-end overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={IMG.hero} alt="Складские стеллажи RAXPRO" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-navy-900">
+          <img src={IMG.hero} alt="Складские стеллажи RAXPRO" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/70 to-navy-900/45" />
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900/70 to-transparent" />
         </div>

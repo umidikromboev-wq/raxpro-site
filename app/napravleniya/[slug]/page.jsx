@@ -34,7 +34,7 @@ export default async function DirectionPage({ params }) {
       <Header />
 
       {/* HERO */}
-      <section className="relative pt-[68px] bg-navy-900 text-white overflow-hidden">
+      <section className="relative pt-24 bg-navy-900 text-white overflow-hidden">
         <div className="absolute inset-0">
           <img src={d.cover} alt={d.name} className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/92 to-navy-900/60" />

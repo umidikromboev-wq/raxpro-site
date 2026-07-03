@@ -26,7 +26,7 @@ export default function BlogIndex() {
     <div className="bg-white text-ink">
       <Header />
 
-      <section className="relative pt-[70px] bg-navy-900 text-white overflow-hidden notch-tr">
+      <section className="relative pt-24 bg-navy-900 text-white overflow-hidden notch-tr">
         <div className="absolute inset-0 bg-brand-grad opacity-90" />
         <div className="absolute inset-0 grid-lines opacity-30" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
