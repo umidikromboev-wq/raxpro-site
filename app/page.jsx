@@ -7,7 +7,8 @@ import Reveal from '../components/Reveal';
 import ProductSlider from '../components/ProductSlider';
 import { SplitHead, Eyebrow } from '../components/Section';
 import { SITE, CLIENT_LOGOS, ISO_CERTS } from '../lib/site';
-import { T, normalizeLang } from '../lib/i18n';
+import { T, EXTRA, normalizeLang } from '../lib/i18n';
+import Faq from '../components/Faq';
 import { getLatest, localize } from '../lib/articles';
 import {
   IcoRuler, IcoDraft, IcoFactory, IcoWrench, IcoShield, IcoWeight,
@@ -50,7 +51,12 @@ export default async function Home() {
   const store = await cookies();
   const L = normalizeLang(store.get('lang')?.value);
   const t = T[L];
+  const x = EXTRA[L];
   const latest = getLatest(3).map((a) => localize(a, L));
+  const faqJsonLd = {
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: x.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  };
   const steps = t.steps.map((s, i) => ({ ...s, Ico: STEP_ICONS[i] }));
   const directions = t.directions.map((d, i) => ({ ...d, ...DIR_META[i] }));
   const adv = t.adv.map((a, i) => ({ ...a, Ico: ADV_ICONS[i] }));
@@ -221,6 +227,40 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* COMPARISON — factory vs artisan */}
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
+        <SplitHead eyebrow={x.cmpEyebrow} title={x.cmpTitle} desc={x.cmpText} />
+        <div className="grid md:grid-cols-2 gap-4 mt-10">
+          <div className="rounded-xl2 bg-navy-900 text-white overflow-hidden relative">
+            <div className="absolute inset-0 bg-brand-grad opacity-90" />
+            <div className="relative p-6 sm:p-8">
+              <div className="font-display font-medium text-xl sm:text-2xl">{x.cmpUs}</div>
+              <ul className="mt-5 space-y-3">
+                {x.cmpRows.map((r) => (
+                  <li key={r.us} className="flex items-start gap-3">
+                    <span className="w-6 h-6 rounded-full bg-white/20 grid place-items-center shrink-0 mt-0.5"><IcoCheck className="w-4 h-4 text-white" /></span>
+                    <span className="text-white/95">{r.us}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="rounded-xl2 bg-white border border-cloud-200 shadow-card p-6 sm:p-8">
+            <div className="font-display font-medium text-xl sm:text-2xl text-slate-500">{x.cmpThem}</div>
+            <ul className="mt-5 space-y-3">
+              {x.cmpRows.map((r) => (
+                <li key={r.them} className="flex items-start gap-3">
+                  <span className="w-6 h-6 rounded-full bg-cloud-100 grid place-items-center shrink-0 mt-0.5 text-slate-400">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                  </span>
+                  <span className="text-slate-500">{r.them}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* PROJECTS SLIDER */}
       <section id="proekty" className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
         <SplitHead eyebrow={t.projEyebrow} title={t.projTitle} desc={t.projText} />
@@ -356,6 +396,16 @@ export default async function Home() {
               </a>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-cloud-50 border-y border-cloud-200">
+        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+          <Eyebrow>{x.faqEyebrow}</Eyebrow>
+          <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">{x.faqTitle}</h2>
+          <Faq items={x.faq} />
         </div>
       </section>
 
