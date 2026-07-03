@@ -3,9 +3,27 @@ import { useState } from 'react';
 import { SITE } from '../lib/site';
 import { IcoCheck } from './Icons';
 
-export default function LeadForm({ compact = false }) {
+const FT = {
+  ru: {
+    name: 'Ваше имя', phone: 'Телефон *', selectDefault: 'Тип стеллажей (необязательно)',
+    options: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи', 'Не знаю — нужна консультация'],
+    comment: 'Комментарий: объём, размеры, задача…', submit: 'Получить бесплатный расчёт', sending: 'Отправляем…',
+    okTitle: 'Заявка принята!', okText: 'Свяжемся с вами в ближайшее время для бесплатного замера и расчёта.',
+    err: 'Ошибка отправки. Позвоните:', consent: 'Нажимая кнопку, вы соглашаетесь на обработку персональных данных',
+  },
+  uz: {
+    name: 'Ismingiz', phone: 'Telefon *', selectDefault: 'Stellaj turi (ixtiyoriy)',
+    options: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari', 'Bilmayman — konsultatsiya kerak'],
+    comment: 'Izoh: hajm, oʻlchamlar, vazifa…', submit: 'Bepul hisob-kitob olish', sending: 'Yuborilmoqda…',
+    okTitle: 'Ariza qabul qilindi!', okText: 'Bepul oʻlchov va hisob-kitob uchun tez orada siz bilan bogʻlanamiz.',
+    err: 'Yuborishda xatolik. Qoʻngʻiroq qiling:', consent: 'Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz',
+  },
+};
+
+export default function LeadForm({ compact = false, lang = 'ru' }) {
+  const t = FT[lang === 'uz' ? 'uz' : 'ru'];
   const [f, setF] = useState({ name: '', phone: '', product: '', message: '' });
-  const [state, setState] = useState('idle'); // idle | sending | ok | err
+  const [state, setState] = useState('idle');
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
 
   async function submit(e) {
@@ -34,8 +52,8 @@ export default function LeadForm({ compact = false }) {
         <div className="w-14 h-14 mx-auto rounded-full bg-green-50 grid place-items-center text-green-600 mb-3">
           <IcoCheck className="w-8 h-8" />
         </div>
-        <h3 className="text-xl font-bold text-navy-800">Заявка принята!</h3>
-        <p className="text-slate-600 mt-2">Свяжемся с вами в ближайшее время для бесплатного замера и расчёта.</p>
+        <h3 className="text-xl font-bold text-navy-800">{t.okTitle}</h3>
+        <p className="text-slate-600 mt-2">{t.okText}</p>
       </div>
     );
   }
@@ -43,30 +61,26 @@ export default function LeadForm({ compact = false }) {
   return (
     <form onSubmit={submit} className={`rounded-xl2 bg-white border border-cloud-200 shadow-card ${compact ? 'p-5' : 'p-6 sm:p-7'}`}>
       <div className="grid sm:grid-cols-2 gap-3">
-        <input value={f.name} onChange={set('name')} placeholder="Ваше имя" className={field} />
-        <input value={f.phone} onChange={set('phone')} required type="tel" placeholder="Телефон *" className={field} />
+        <input value={f.name} onChange={set('name')} placeholder={t.name} className={field} />
+        <input value={f.phone} onChange={set('phone')} required type="tel" placeholder={t.phone} className={field} />
       </div>
       <select value={f.product} onChange={set('product')} className={`${field} mt-3 ${f.product ? 'text-ink' : 'text-slate-400'}`}>
-        <option value="">Тип стеллажей (необязательно)</option>
-        <option className="text-ink">Паллетные (Mega) стеллажи</option>
-        <option className="text-ink">Среднегрузовые стеллажи</option>
-        <option className="text-ink">Архивные стеллажи</option>
-        <option className="text-ink">Торговые стеллажи</option>
-        <option className="text-ink">Не знаю — нужна консультация</option>
+        <option value="">{t.selectDefault}</option>
+        {t.options.map((o) => <option key={o} className="text-ink">{o}</option>)}
       </select>
       {!compact && (
-        <textarea value={f.message} onChange={set('message')} rows={3} placeholder="Комментарий: объём, размеры, задача…" className={`${field} mt-3`} />
+        <textarea value={f.message} onChange={set('message')} rows={3} placeholder={t.comment} className={`${field} mt-3`} />
       )}
       <button
         disabled={state === 'sending'}
         className="w-full mt-4 bg-brand-grad text-white font-bold py-3.5 rounded-xl disabled:opacity-60 shadow-glow hover:brightness-110"
       >
-        {state === 'sending' ? 'Отправляем…' : 'Получить бесплатный расчёт'}
+        {state === 'sending' ? t.sending : t.submit}
       </button>
       {state === 'err' && (
-        <p className="text-red-600 text-sm mt-2 text-center">Ошибка отправки. Позвоните: {SITE.phoneMainHuman}</p>
+        <p className="text-red-600 text-sm mt-2 text-center">{t.err} {SITE.phoneMainHuman}</p>
       )}
-      <p className="text-slate-400 text-xs mt-3 text-center">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+      <p className="text-slate-400 text-xs mt-3 text-center">{t.consent}</p>
     </form>
   );
 }

@@ -24,7 +24,7 @@ export default function ProductSlider({ items }) {
           <div className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-sky-300 bg-white/5 rounded-full px-3.5 py-1.5">
             {p.load}
           </div>
-          <a href="#zayavka" className="mt-auto pt-6 inline-flex items-center gap-2 self-start bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 transition">
+          <a href="#zayavka" className="mt-auto inline-flex items-center justify-center gap-2 self-start bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 transition">
             Перейти <IcoArrow className="w-5 h-5" />
           </a>
         </div>

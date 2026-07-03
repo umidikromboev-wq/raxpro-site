@@ -3,43 +3,50 @@ import { useState } from 'react';
 import { SITE } from '../lib/site';
 import { IcoArrow, IcoCheck, IcoPallet, IcoLayers, IcoArchive, IcoShop, IcoClock } from './Icons';
 
-const STEPS = [
-  {
-    key: 'type',
-    q: 'Какой тип стеллажей нужен?',
-    options: [
-      { v: 'Паллетные (Mega)', Ico: IcoPallet },
-      { v: 'Среднегрузовые', Ico: IcoLayers },
-      { v: 'Архивные', Ico: IcoArchive },
-      { v: 'Торговые', Ico: IcoShop },
-      { v: 'Не знаю — нужна консультация', Ico: IcoClock },
-    ],
-  },
-  {
-    key: 'place',
-    q: 'Где будете использовать?',
-    options: [
-      { v: 'Склад' }, { v: 'Магазин / торговый зал' }, { v: 'Производство' },
-      { v: 'Архив / офис' }, { v: 'Маркетплейс (склад селлера)' }, { v: 'Другое' },
-    ],
-  },
-  {
-    key: 'load',
-    q: 'Нагрузка на ярус?',
-    options: [
-      { v: 'до 300 кг' }, { v: '300–800 кг' }, { v: '800–1500 кг' }, { v: 'до 3.5 тонны' }, { v: 'Не знаю' },
-    ],
-  },
-  {
-    key: 'volume',
-    q: 'Примерный объём?',
-    options: [
-      { v: '1–5 секций' }, { v: '5–20 секций' }, { v: '20–50 секций' }, { v: '50+ секций / большой склад' }, { v: 'Не знаю' },
-    ],
-  },
-];
+const STEPS_BY_LANG = {
+  ru: [
+    { key: 'type', q: 'Какой тип стеллажей нужен?', options: [
+      { v: 'Паллетные (Mega)', Ico: IcoPallet }, { v: 'Среднегрузовые', Ico: IcoLayers },
+      { v: 'Архивные', Ico: IcoArchive }, { v: 'Торговые', Ico: IcoShop },
+      { v: 'Не знаю — нужна консультация', Ico: IcoClock } ] },
+    { key: 'place', q: 'Где будете использовать?', options: [
+      { v: 'Склад' }, { v: 'Магазин / торговый зал' }, { v: 'Производство' }, { v: 'Архив / офис' }, { v: 'Маркетплейс (склад селлера)' }, { v: 'Другое' } ] },
+    { key: 'load', q: 'Нагрузка на ярус?', options: [
+      { v: 'до 300 кг' }, { v: '300–800 кг' }, { v: '800–1500 кг' }, { v: 'до 3.5 тонны' }, { v: 'Не знаю' } ] },
+    { key: 'volume', q: 'Примерный объём?', options: [
+      { v: '1–5 секций' }, { v: '5–20 секций' }, { v: '20–50 секций' }, { v: '50+ секций / большой склад' }, { v: 'Не знаю' } ] },
+  ],
+  uz: [
+    { key: 'type', q: 'Qanday turdagi stellaj kerak?', options: [
+      { v: 'Palletli (Mega)', Ico: IcoPallet }, { v: 'Oʻrta yuklamali', Ico: IcoLayers },
+      { v: 'Arxiv', Ico: IcoArchive }, { v: 'Savdo', Ico: IcoShop },
+      { v: 'Bilmayman — konsultatsiya kerak', Ico: IcoClock } ] },
+    { key: 'place', q: 'Qayerda foydalanasiz?', options: [
+      { v: 'Ombor' }, { v: 'Doʻkon / savdo zali' }, { v: 'Ishlab chiqarish' }, { v: 'Arxiv / ofis' }, { v: 'Marketpleys (sotuvchi ombori)' }, { v: 'Boshqa' } ] },
+    { key: 'load', q: 'Har bir qavatga yuklama?', options: [
+      { v: '300 kg gacha' }, { v: '300–800 kg' }, { v: '800–1500 kg' }, { v: '3.5 tonnagacha' }, { v: 'Bilmayman' } ] },
+    { key: 'volume', q: 'Taxminiy hajm?', options: [
+      { v: '1–5 seksiya' }, { v: '5–20 seksiya' }, { v: '20–50 seksiya' }, { v: '50+ seksiya / katta ombor' }, { v: 'Bilmayman' } ] },
+  ],
+};
 
-export default function Calculator() {
+const CT = {
+  ru: { step: 'Шаг', of: 'из', back: '← Назад', contactQ: 'Куда прислать расчёт?',
+    contactSub: 'Оставьте телефон — менеджер посчитает стоимость и ответит за 5 минут. Ни к чему не обязывает.',
+    name: 'Ваше имя', phone: 'Телефон *', submit: 'Получить расчёт', sending: 'Отправляем…',
+    okTitle: 'Заявка принята!', okText: 'Менеджер подготовит расчёт и свяжется с вами — обычно отвечаем в течение 5 минут. Замер и проект — бесплатно, за 24 часа.',
+    callOr: 'Или позвоните:', err: 'Ошибка. Позвоните:', consent: 'Нажимая кнопку, вы соглашаетесь на обработку персональных данных' },
+  uz: { step: 'Bosqich', of: '/', back: '← Orqaga', contactQ: 'Hisobni qayerga yuboraylik?',
+    contactSub: 'Telefon qoldiring — menejer narxni hisoblab, 5 daqiqada javob beradi. Hech narsaga majbur qilmaydi.',
+    name: 'Ismingiz', phone: 'Telefon *', submit: 'Hisobni olish', sending: 'Yuborilmoqda…',
+    okTitle: 'Ariza qabul qilindi!', okText: 'Menejer hisob-kitobni tayyorlab, siz bilan bogʻlanadi — odatda 5 daqiqada javob beramiz. Oʻlchov va loyiha — bepul, 24 soatda.',
+    callOr: 'Yoki qoʻngʻiroq qiling:', err: 'Xatolik. Qoʻngʻiroq qiling:', consent: 'Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz' },
+};
+
+export default function Calculator({ lang = 'ru' }) {
+  const L = lang === 'uz' ? 'uz' : 'ru';
+  const STEPS = STEPS_BY_LANG[L];
+  const c = CT[L];
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [contact, setContact] = useState({ name: '', phone: '' });
@@ -81,12 +88,10 @@ export default function Calculator() {
         <div className="w-16 h-16 mx-auto rounded-full bg-brand-grad grid place-items-center text-white mb-4 shadow-glow">
           <IcoCheck className="w-9 h-9" />
         </div>
-        <h3 className="font-display font-medium text-2xl text-navy-800">Заявка принята!</h3>
-        <p className="text-slate-600 mt-2 max-w-md mx-auto">
-          Менеджер подготовит расчёт и свяжется с вами — обычно отвечаем в течение 5 минут. Замер и проект — бесплатно, за 24 часа.
-        </p>
+        <h3 className="font-display font-medium text-2xl text-navy-800">{c.okTitle}</h3>
+        <p className="text-slate-600 mt-2 max-w-md mx-auto">{c.okText}</p>
         <a href={`tel:${SITE.phoneMain}`} className="inline-flex mt-5 items-center gap-2 text-navy-700 font-semibold hover:text-sky-600">
-          Или позвоните: {SITE.phoneMainHuman}
+          {c.callOr} {SITE.phoneMainHuman}
         </a>
       </div>
     );
@@ -105,10 +110,10 @@ export default function Calculator() {
       <div className="p-6 sm:p-8">
         <div className="flex items-center justify-between mb-5">
           <span className="text-xs font-semibold uppercase tracking-wide text-sky-600">
-            Шаг {Math.min(step + 1, total)} из {total}
+            {c.step} {Math.min(step + 1, total)} {c.of} {total}
           </span>
           {step > 0 && state !== 'sending' && (
-            <button onClick={() => setStep((s) => s - 1)} className="text-sm text-slate-400 hover:text-navy-700">← Назад</button>
+            <button onClick={() => setStep((s) => s - 1)} className="text-sm text-slate-400 hover:text-navy-700">{c.back}</button>
           )}
         </div>
 
@@ -136,13 +141,13 @@ export default function Calculator() {
 
         {isContact && (
           <form onSubmit={submit}>
-            <h3 className="font-display font-medium text-xl sm:text-2xl text-navy-800">Куда прислать расчёт?</h3>
-            <p className="text-slate-500 text-sm mt-2">Оставьте телефон — менеджер посчитает стоимость и ответит за 5 минут. Ни к чему не обязывает.</p>
+            <h3 className="font-display font-medium text-xl sm:text-2xl text-navy-800">{c.contactQ}</h3>
+            <p className="text-slate-500 text-sm mt-2">{c.contactSub}</p>
             <div className="mt-5 space-y-3">
               <input
                 value={contact.name}
                 onChange={(e) => setContact({ ...contact, name: e.target.value })}
-                placeholder="Ваше имя"
+                placeholder={c.name}
                 className="w-full bg-cloud-50 border border-cloud-200 rounded-xl px-4 py-3 text-ink outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400"
               />
               <input
@@ -150,7 +155,7 @@ export default function Calculator() {
                 onChange={(e) => setContact({ ...contact, phone: e.target.value })}
                 required
                 type="tel"
-                placeholder="Телефон *"
+                placeholder={c.phone}
                 className="w-full bg-cloud-50 border border-cloud-200 rounded-xl px-4 py-3 text-ink outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400"
               />
             </div>
@@ -158,10 +163,10 @@ export default function Calculator() {
               disabled={state === 'sending'}
               className="w-full mt-4 bg-brand-grad text-white font-bold py-3.5 rounded-xl shadow-glow hover:brightness-110 disabled:opacity-60 inline-flex items-center justify-center gap-2"
             >
-              {state === 'sending' ? 'Отправляем…' : <>Получить расчёт <IcoArrow className="w-5 h-5" /></>}
+              {state === 'sending' ? c.sending : <>{c.submit} <IcoArrow className="w-5 h-5" /></>}
             </button>
-            {state === 'err' && <p className="text-red-600 text-sm mt-2 text-center">Ошибка. Позвоните: {SITE.phoneMainHuman}</p>}
-            <p className="text-slate-400 text-xs mt-3 text-center">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+            {state === 'err' && <p className="text-red-600 text-sm mt-2 text-center">{c.err} {SITE.phoneMainHuman}</p>}
+            <p className="text-slate-400 text-xs mt-3 text-center">{c.consent}</p>
           </form>
         )}
       </div>

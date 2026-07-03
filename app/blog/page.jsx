@@ -1,8 +1,10 @@
+import { cookies } from 'next/headers';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Reveal from '../../components/Reveal';
 import BlogLibrary from '../../components/BlogLibrary';
 import { getAllArticles } from '../../lib/articles';
+import { normalizeLang } from '../../lib/i18n';
 import { IcoArrow, IcoClock } from '../../components/Icons';
 
 export const metadata = {
@@ -18,13 +20,14 @@ function formatDate(d) {
   return `${parseInt(day, 10)} ${months[parseInt(m, 10) - 1]} ${y}`;
 }
 
-export default function BlogIndex() {
+export default async function BlogIndex() {
+  const L = normalizeLang((await cookies()).get('lang')?.value);
   const articles = getAllArticles();
   const [lead, ...rest] = articles;
 
   return (
     <div className="bg-white text-ink">
-      <Header />
+      <Header lang={L} />
 
       <section className="relative pt-24 bg-navy-900 text-white overflow-hidden notch-tr">
         <div className="absolute inset-0 bg-brand-grad opacity-90" />
@@ -63,7 +66,7 @@ export default function BlogIndex() {
         <BlogLibrary articles={articles} />
       </section>
 
-      <Footer />
+      <Footer lang={L} />
     </div>
   );
 }
