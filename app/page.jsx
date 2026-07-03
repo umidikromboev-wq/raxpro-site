@@ -133,16 +133,21 @@ export default async function Home() {
       {/* PROCESS */}
       <section id="o-kompanii" className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
         <SplitHead eyebrow={t.procEyebrow} title={t.procTitle} desc={t.procText} />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
+        {/* Editorial numbered timeline (not uniform cards) */}
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 relative">
           {steps.map((s, i) => (
-            <Reveal key={s.t} delay={i * 80}>
-              <div className="relative h-full rounded-xl2 bg-cloud-50 border border-cloud-200 p-6 hover:bg-white hover:shadow-card transition">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-xl bg-navy-900 text-white grid place-items-center"><s.Ico className="w-6 h-6" /></div>
-                  <span className="font-display font-medium text-3xl text-cloud-300">{String(i + 1).padStart(2, '0')}</span>
+            <Reveal key={s.t} delay={i * 90}>
+              <div className="relative">
+                {/* connector line */}
+                {i < steps.length - 1 && (
+                  <span className="hidden lg:block absolute top-7 left-16 right-[-2rem] h-px bg-gradient-to-r from-cloud-300 to-transparent" />
+                )}
+                <div className="flex items-end gap-3">
+                  <span className="font-display text-6xl leading-[0.8] text-navy-800/12">{String(i + 1).padStart(2, '0')}</span>
+                  <s.Ico className="w-8 h-8 text-sky-600 mb-1" />
                 </div>
-                <h3 className="font-bold text-lg text-navy-800 mt-4">{s.t}</h3>
-                <p className="text-slate-500 text-sm mt-1.5 leading-relaxed">{s.d}</p>
+                <h3 className="font-bold text-xl text-navy-800 mt-5">{s.t}</h3>
+                <p className="text-slate-500 text-[15px] mt-2 leading-relaxed max-w-xs">{s.d}</p>
               </div>
             </Reveal>
           ))}
@@ -224,16 +229,32 @@ export default async function Home() {
       <section id="produkciya" className="bg-cloud-50 border-y border-cloud-200">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
           <SplitHead eyebrow={t.advEyebrow} title={t.advTitle} desc={t.advText} />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-            {adv.map((a, i) => (
-              <Reveal key={a.t} delay={i * 70}>
-                <div className="h-full rounded-xl2 bg-white border border-cloud-200 shadow-card p-6 hover:border-sky-300 transition">
-                  <div className="w-12 h-12 rounded-xl bg-gold-500/0 text-sky-600 grid place-items-center bg-sky-500/10"><a.Ico className="w-6 h-6" /></div>
-                  <h3 className="font-bold text-lg text-navy-800 mt-4">{a.t}</h3>
-                  <p className="text-slate-500 text-sm mt-2 leading-relaxed">{a.d}</p>
-                </div>
-              </Reveal>
-            ))}
+          {/* Bento — first advantage is a large dark feature card, rest varied */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 lg:auto-rows-[1fr]">
+            {adv.map((a, i) => {
+              const big = i === 0;
+              return (
+                <Reveal key={a.t} delay={i * 60} className={big ? 'sm:col-span-2 lg:row-span-2' : ''}>
+                  {big ? (
+                    <div className="relative h-full rounded-xl2 bg-navy-900 text-white p-8 overflow-hidden flex flex-col justify-between min-h-[240px]">
+                      <div className="absolute inset-0 bg-brand-grad opacity-90" />
+                      <div className="absolute inset-0 grid-lines opacity-25" />
+                      <div className="relative">
+                        <a.Ico className="w-10 h-10 text-white" />
+                        <h3 className="font-display font-medium text-2xl sm:text-3xl mt-6 leading-tight">{a.t}</h3>
+                      </div>
+                      <p className="relative text-white/85 mt-4 leading-relaxed max-w-md">{a.d}</p>
+                    </div>
+                  ) : (
+                    <div className="h-full rounded-xl2 bg-white border border-cloud-200 p-6 hover:border-sky-300 hover:shadow-card transition">
+                      <a.Ico className="w-8 h-8 text-sky-600" />
+                      <h3 className="font-bold text-navy-800 mt-4">{a.t}</h3>
+                      <p className="text-slate-500 text-sm mt-2 leading-relaxed">{a.d}</p>
+                    </div>
+                  )}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
