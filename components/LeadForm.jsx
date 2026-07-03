@@ -10,6 +10,7 @@ const FT = {
     comment: 'Комментарий: объём, размеры, задача…', submit: 'Получить бесплатный расчёт', sending: 'Отправляем…',
     okTitle: 'Заявка принята!', okText: 'Свяжемся с вами в ближайшее время для бесплатного замера и расчёта.',
     err: 'Ошибка отправки. Позвоните:', consent: 'Нажимая кнопку, вы соглашаетесь на обработку персональных данных',
+    altContact: 'Не любите звонки? Напишите в',
   },
   uz: {
     name: 'Ismingiz', phone: 'Telefon *', selectDefault: 'Stellaj turi (ixtiyoriy)',
@@ -17,6 +18,7 @@ const FT = {
     comment: 'Izoh: hajm, oʻlchamlar, vazifa…', submit: 'Bepul hisob-kitob olish', sending: 'Yuborilmoqda…',
     okTitle: 'Ariza qabul qilindi!', okText: 'Bepul oʻlchov va hisob-kitob uchun tez orada siz bilan bogʻlanamiz.',
     err: 'Yuborishda xatolik. Qoʻngʻiroq qiling:', consent: 'Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz',
+    altContact: 'Qoʻngʻiroqni yoqtirmaysizmi? Yozing:',
   },
 };
 
@@ -81,6 +83,12 @@ export default function LeadForm({ compact = false, lang = 'ru' }) {
         <p className="text-red-600 text-sm mt-2 text-center">{t.err} {SITE.phoneMainHuman}</p>
       )}
       <p className="text-slate-400 text-xs mt-3 text-center">{t.consent}</p>
+      <div className="mt-3 pt-3 border-t border-cloud-100 text-center text-sm text-slate-500">
+        {t.altContact}{' '}
+        <a href={SITE.telegram} target="_blank" rel="noopener noreferrer" className="font-semibold text-sky-600 hover:text-sky-700">Telegram</a>
+        {' · '}
+        <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" className="font-semibold text-green-600 hover:text-green-700">WhatsApp</a>
+      </div>
     </form>
   );
 }

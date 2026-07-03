@@ -97,6 +97,7 @@ export default async function Home() {
                 <span key={c} className="inline-flex items-center gap-1.5"><IcoCheck className="w-4 h-4 text-sky-400" /> {c}</span>
               ))}
             </div>
+            <div className="mt-4 inline-block text-sm font-semibold text-sky-300 border border-sky-400/30 bg-sky-500/10 rounded-lg px-3.5 py-2">{t.heroPrice}</div>
           </div>
         </div>
       </section>
@@ -406,6 +407,26 @@ export default async function Home() {
           <Eyebrow>{x.faqEyebrow}</Eyebrow>
           <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">{x.faqTitle}</h2>
           <Faq items={x.faq} />
+        </div>
+      </section>
+
+      {/* WHAT HAPPENS AFTER — removes the "scary to leave a request" fear */}
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
+        <div className="max-w-2xl">
+          <Eyebrow>{x.afterEyebrow}</Eyebrow>
+          <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">{x.afterTitle}</h2>
+          <p className="mt-3 text-slate-500">{x.afterText}</p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+          {x.afterSteps.map((s, i) => (
+            <Reveal key={s.t} delay={i * 80}>
+              <div className="relative">
+                <div className="w-12 h-12 rounded-full bg-brand-grad text-white grid place-items-center font-display font-medium text-lg shadow-glow">{i + 1}</div>
+                <h3 className="font-bold text-navy-800 mt-4">{s.t}</h3>
+                <p className="text-slate-500 text-sm mt-1.5 leading-relaxed">{s.d}</p>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
