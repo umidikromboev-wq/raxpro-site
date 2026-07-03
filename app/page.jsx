@@ -11,8 +11,10 @@ import { T, normalizeLang } from '../lib/i18n';
 import { getLatest } from '../lib/articles';
 import {
   IcoRuler, IcoDraft, IcoFactory, IcoWrench, IcoShield, IcoWeight,
-  IcoLayers, IcoPallet, IcoArchive, IcoShop, IcoClock, IcoCheck, IcoArrow, IcoPin, IcoPhone,
+  IcoLayers, IcoPallet, IcoArchive, IcoShop, IcoClock, IcoCheck, IcoArrow, IcoPin, IcoPhone, IcoTg,
 } from '../components/Icons';
+
+const REVIEWS = ['/reviews/r1.jpg', '/reviews/r2.jpg', '/reviews/r3.jpg', '/reviews/r4.jpg', '/reviews/r5.jpg', '/reviews/r6.jpg'];
 
 const IMG = { hero: '/works/hero.jpg', pallet: '/works/pallet.jpg', medium: '/works/medium.jpg', archive: '/works/archive.jpg', retail: '/works/retail.jpg', welder: '/works/w6.jpg' };
 const STEP_ICONS = [IcoRuler, IcoDraft, IcoFactory, IcoWrench];
@@ -304,6 +306,31 @@ export default async function Home() {
             <h2 className="font-display font-medium text-2xl sm:text-3xl mt-4">{t.guaranteeTitle}</h2>
             <p className="text-white/90 mt-4 max-w-2xl mx-auto leading-relaxed">{t.guaranteeText}</p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* REVIEWS — real screenshots from the Telegram channel */}
+      <section className="bg-cloud-50 border-y border-cloud-200 overflow-hidden">
+        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
+          <div className="flex items-end justify-between gap-4 flex-wrap">
+            <div>
+              <Eyebrow>{t.revEyebrow}</Eyebrow>
+              <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">{t.revTitle}</h2>
+              <p className="mt-3 text-slate-500 max-w-xl">{t.revText}</p>
+            </div>
+            <a href={SITE.reviewsChannel} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white font-semibold px-5 py-2.5 rounded-xl transition">
+              <IcoTg className="w-5 h-5" /> {t.revCta}
+            </a>
+          </div>
+          <div className="flex gap-5 overflow-x-auto no-scrollbar mt-10 pb-2 snap-x-mandatory">
+            {REVIEWS.map((src, i) => (
+              <div key={src} className="snap-start shrink-0 w-[260px] sm:w-[280px] rounded-xl2 bg-white border border-cloud-200 shadow-card overflow-hidden">
+                <div className="h-[400px] bg-cloud-100 overflow-hidden flex items-start justify-center">
+                  <img src={src} alt={`Отзыв клиента RAXPRO ${i + 1}`} className="w-full object-cover object-top" />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
