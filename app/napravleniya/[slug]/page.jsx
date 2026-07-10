@@ -93,8 +93,16 @@ export default async function DirectionPage({ params }) {
               <p className="text-navy-800 font-medium mt-1">{c.useCases}</p>
             </div>
           </div>
-          <div className="rounded-xl2 overflow-hidden border border-cloud-200 shadow-card">
-            <img src={d.cover} alt={c.name} className="w-full h-full object-cover" />
+          {/* Capped height + sticky: the image used to run far past the text column,
+              forcing an extra scroll to reach the copy. */}
+          <div className="rounded-xl2 overflow-hidden border border-cloud-200 shadow-card md:sticky md:top-28">
+            <img
+              src={d.cover}
+              alt={c.name}
+              width={1200}
+              height={900}
+              className="w-full h-auto max-h-[420px] object-cover"
+            />
           </div>
         </div>
 

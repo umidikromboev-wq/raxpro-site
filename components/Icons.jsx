@@ -52,6 +52,9 @@ export function IcoPin(p) {
 export function IcoTg(p) {
   return (<svg viewBox="0 0 24 24" {...base} {...p}><path d="M21 5L3 12l5 2 2 5 3-4 4 3z" /></svg>);
 }
+export function IcoQuote(p) {
+  return (<svg viewBox="0 0 24 24" {...base} {...p} fill="currentColor" stroke="none"><path d="M9.5 5C6.5 6.6 5 9.2 5 12.8V19h6.2v-6.2H8.1c0-2.4.9-4 3-5.1L9.5 5zm9.3 0c-3 1.6-4.5 4.2-4.5 7.8V19h6.2v-6.2h-3.1c0-2.4.9-4 3-5.1L18.8 5z" /></svg>);
+}
 export function IcoIg(p) {
   return (<svg viewBox="0 0 24 24" {...base} {...p}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none" /></svg>);
 }

@@ -11,12 +11,12 @@ import { SITE, CLIENT_LOGOS, ISO_CERTS } from '../lib/site';
 import { T, EXTRA, normalizeLang } from '../lib/i18n';
 import Faq from '../components/Faq';
 import { getLatest, localize } from '../lib/articles';
+import { REVIEWS, localizeReview } from '../lib/reviews';
+import LogoMarquee from '../components/LogoMarquee';
 import {
   IcoRuler, IcoDraft, IcoFactory, IcoWrench, IcoShield, IcoWeight,
-  IcoLayers, IcoPallet, IcoArchive, IcoShop, IcoClock, IcoCheck, IcoArrow, IcoPin, IcoPhone, IcoTg,
+  IcoLayers, IcoPallet, IcoArchive, IcoShop, IcoClock, IcoCheck, IcoArrow, IcoPin, IcoPhone, IcoTg, IcoQuote,
 } from '../components/Icons';
-
-const REVIEWS = ['/reviews/r1.jpg', '/reviews/r2.jpg', '/reviews/r3.jpg', '/reviews/r4.jpg', '/reviews/r5.jpg', '/reviews/r6.jpg'];
 
 const IMG = { hero: '/works/hero.jpg', pallet: '/works/pallet.jpg', medium: '/works/medium.jpg', archive: '/works/archive.jpg', retail: '/works/retail.jpg', welder: '/works/w6.jpg' };
 const STEP_ICONS = [IcoRuler, IcoDraft, IcoFactory, IcoWrench];
@@ -63,6 +63,7 @@ export default async function Home() {
   const adv = t.adv.map((a, i) => ({ ...a, Ico: ADV_ICONS[i] }));
   const income = t.income.map((a, i) => ({ ...a, Ico: INC_ICONS[i] }));
   const projects = PROJECTS[L];
+  const reviews = REVIEWS.map((r) => localizeReview(r, L));
 
   return (
     <div className="bg-white text-ink">
@@ -105,15 +106,9 @@ export default async function Home() {
 
       {/* CLIENTS */}
       <section className="border-b border-cloud-200 bg-cloud-50">
-        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-8">
+        <div className="w-full py-8">
           <p className="text-center text-slate-500 text-xs uppercase tracking-widest mb-6">{t.clients}</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-6 gap-y-6 items-center">
-            {CLIENT_LOGOS.map((c) => (
-              <div key={c.alt} className="flex items-center justify-center h-12">
-                <img src={c.src} alt={c.alt} className="max-h-11 max-w-[120px] w-auto object-contain opacity-70 hover:opacity-100 transition grayscale hover:grayscale-0" />
-              </div>
-            ))}
-          </div>
+          <LogoMarquee logos={CLIENT_LOGOS} />
         </div>
       </section>
 
@@ -270,7 +265,7 @@ export default async function Home() {
       </section>
 
       {/* ADVANTAGES */}
-      <section id="produkciya" className="bg-cloud-50 border-y border-cloud-200">
+      <section id="preimushchestva" className="bg-cloud-50 border-y border-cloud-200">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
           <SplitHead eyebrow={t.advEyebrow} title={t.advTitle} desc={t.advText} />
           {/* Bento — first advantage is a large dark feature card, rest varied */}
@@ -351,7 +346,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* REVIEWS — real screenshots from the Telegram channel */}
+      {/* REVIEWS — designed testimonial cards (no chat screenshots: they exposed phone numbers) */}
       <section className="bg-cloud-50 border-y border-cloud-200 overflow-hidden">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
           <div className="flex items-end justify-between gap-4 flex-wrap">
@@ -364,13 +359,23 @@ export default async function Home() {
               <IcoTg className="w-5 h-5" /> {t.revCta}
             </a>
           </div>
-          <div className="flex gap-5 overflow-x-auto no-scrollbar mt-10 pb-2 snap-x-mandatory">
-            {REVIEWS.map((src, i) => (
-              <div key={src} className="snap-start shrink-0 w-[260px] sm:w-[280px] rounded-xl2 bg-white border border-cloud-200 shadow-card overflow-hidden">
-                <div className="h-[400px] bg-cloud-100 overflow-hidden flex items-start justify-center">
-                  <img src={src} alt={`Отзыв клиента RAXPRO ${i + 1}`} className="w-full object-cover object-top" />
-                </div>
-              </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
+            {reviews.map((r, i) => (
+              <Reveal key={r.id} delay={i * 60}>
+                <figure className="h-full flex flex-col rounded-xl2 bg-white border border-cloud-200 shadow-card p-6 hover:border-sky-300 hover:shadow-card-hover transition">
+                  <IcoQuote className="w-9 h-9 text-sky-500/25 shrink-0" />
+                  <blockquote className="mt-4 text-slate-700 leading-relaxed flex-1">{r.text}</blockquote>
+                  <figcaption className="mt-6 pt-5 border-t border-cloud-200 flex items-center gap-3">
+                    <span className="w-11 h-11 rounded-full bg-brand-grad text-white grid place-items-center font-display font-medium text-lg shrink-0">
+                      {r.name.charAt(0)}
+                    </span>
+                    <span>
+                      <span className="block font-bold text-navy-800 leading-tight">{r.name}</span>
+                      <span className="block text-slate-400 text-sm mt-0.5">{r.role}</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              </Reveal>
             ))}
           </div>
         </div>

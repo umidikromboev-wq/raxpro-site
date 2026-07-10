@@ -96,6 +96,27 @@ a, button { transition: all .22s cubic-bezier(.16,1,.3,1); }
 .prose-article li { margin-top: .5rem; line-height: 1.7; }
 .prose-article strong { color: #073a68; }
 
+
+/* Anchor targets must clear the floating header, or the section title lands under it. */
+html { scroll-padding-top: 7rem; }
+
+/* ── Client logo marquee — one row, seamless loop, even rhythm ──────────── */
+.marquee { overflow: hidden; -webkit-mask-image: none; }
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: max-content;
+  animation: marquee-scroll 42s linear infinite;
+}
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-fade { position: absolute; top: 0; bottom: 0; width: 56px; pointer-events: none; }
+.marquee-fade-l { left: 0;  background: linear-gradient(to right, #f2f8fd, transparent); }
+.marquee-fade-r { right: 0; background: linear-gradient(to left,  #f2f8fd, transparent); }
+
 /* ── Reduced motion: disable all reveal / parallax / smooth-scroll ─────── */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -108,4 +129,6 @@ a, button { transition: all .22s cubic-bezier(.16,1,.3,1); }
     transition: none !important;
   }
   .animate-fadeup { animation: none !important; }
+  .marquee-track { animation: none !important; }
+  .marquee { overflow-x: auto; }
 }
