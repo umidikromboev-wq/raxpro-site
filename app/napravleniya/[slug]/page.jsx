@@ -106,6 +106,26 @@ export default async function DirectionPage({ params }) {
           </div>
         </div>
 
+        {d.gallery?.length > 1 && (
+          <div className="mt-14">
+            <h2 className="font-display font-medium text-2xl sm:text-3xl text-navy-800 tracking-tight">{ui.gallery}</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
+              {d.gallery.map((src, i) => (
+                <div key={src} className="rounded-xl2 overflow-hidden border border-cloud-200 shadow-card bg-cloud-100">
+                  <img
+                    src={src}
+                    alt={`${c.name} — ${ui.galleryAlt} ${i + 1}`}
+                    width={1200}
+                    height={900}
+                    loading="lazy"
+                    className="w-full h-[280px] object-cover hover:scale-105 transition duration-500"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {related && (
           <a href={`/blog/${related.slug}`} className="group mt-10 flex items-center justify-between gap-4 rounded-xl2 bg-white border border-cloud-200 shadow-card p-5 hover:shadow-card-hover transition">
             <div>

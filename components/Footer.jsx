@@ -1,4 +1,4 @@
-import { SITE } from '../lib/site';
+import { SITE, siteLoc } from '../lib/site';
 import { NAV_T, normalizeLang } from '../lib/i18n';
 import { IcoPhone, IcoPin, IcoTg, IcoIg, IcoClock } from './Icons';
 
@@ -6,13 +6,13 @@ const FT = {
   ru: {
     tagline: 'Стеллажи и системы хранения полного цикла. Замер, проектирование, производство и монтаж по всему Узбекистану.',
     sections: 'Разделы', products: 'Продукция', contacts: 'Контакты',
-    prod: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи'],
+    prod: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи', 'Набивные (Drive-in) стеллажи'],
     rights: 'Все права защищены.', tail: 'Стеллажи и системы хранения · Ташкент, Узбекистан', madeBy: 'Сделано в', reviews: 'Отзывы',
   },
   uz: {
     tagline: 'Toʻliq sikl stellajlar va saqlash tizimlari. Butun Oʻzbekiston boʻylab oʻlchov, loyihalash, ishlab chiqarish va montaj.',
     sections: 'Boʻlimlar', products: 'Mahsulotlar', contacts: 'Aloqa',
-    prod: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari'],
+    prod: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari', 'Zich (Drive-in) stellajlar'],
     rights: 'Barcha huquqlar himoyalangan.', tail: 'Stellajlar va saqlash tizimlari · Toshkent, Oʻzbekiston', madeBy: 'Ishlab chiqildi', reviews: 'Sharhlar',
   },
 };
@@ -20,12 +20,14 @@ const FT = {
 const PROD_HREFS = [
   '/napravleniya/palletnye-stellazhi', '/napravleniya/srednegruzovye-stellazhi',
   '/napravleniya/arhivnye-stellazhi', '/napravleniya/torgovye-stellazhi',
+  '/napravleniya/nabivnye-stellazhi',
 ];
 
 export default function Footer({ lang = 'ru' }) {
   const L = normalizeLang(lang);
   const t = FT[L];
   const nav = NAV_T[L];
+  const loc = siteLoc(L);
   const year = 2026;
 
   return (
@@ -70,8 +72,8 @@ export default function Footer({ lang = 'ru' }) {
                 <a href={`tel:${SITE.landline}`} className="block hover:text-sky-400">{SITE.landlineHuman}</a>
               </div>
             </li>
-            <li className="flex items-start gap-2.5 text-cloud-200/70"><IcoPin className="w-4 h-4 mt-0.5 text-sky-400 shrink-0" /><span>{SITE.addressCity}, {SITE.address}</span></li>
-            <li className="flex items-start gap-2.5 text-cloud-200/70"><IcoClock className="w-4 h-4 mt-0.5 text-sky-400 shrink-0" /><span>{SITE.hours}</span></li>
+            <li className="flex items-start gap-2.5 text-cloud-200/70"><IcoPin className="w-4 h-4 mt-0.5 text-sky-400 shrink-0" /><span>{loc.addressCity}, {loc.address}</span></li>
+            <li className="flex items-start gap-2.5 text-cloud-200/70"><IcoClock className="w-4 h-4 mt-0.5 text-sky-400 shrink-0" /><span>{loc.hours}</span></li>
           </ul>
         </div>
       </div>
