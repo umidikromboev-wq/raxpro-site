@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { SITE } from "../lib/site";
-import { IcoCheck } from "./Icons";
 
 const FT = {
   ru: {
@@ -18,9 +18,6 @@ const FT = {
     comment: "Комментарий: объём, размеры, задача…",
     submit: "Получить бесплатный расчёт",
     sending: "Отправляем…",
-    okTitle: "Заявка принята!",
-    okText:
-      "Свяжемся с вами в ближайшее время для бесплатного замера и расчёта.",
     err: "Ошибка отправки. Позвоните:",
     consent: "Нажимая кнопку, вы соглашаетесь на обработку персональных данных",
     altContact: "Не любите звонки? Напишите в",
@@ -39,9 +36,6 @@ const FT = {
     comment: "Izoh: hajm, oʻlchamlar, vazifa…",
     submit: "Bepul hisob-kitob olish",
     sending: "Yuborilmoqda…",
-    okTitle: "Ariza qabul qilindi!",
-    okText:
-      "Bepul oʻlchov va hisob-kitob uchun tez orada siz bilan bogʻlanamiz.",
     err: "Yuborishda xatolik. Qoʻngʻiroq qiling:",
     consent:
       "Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz",
@@ -50,23 +44,34 @@ const FT = {
 };
 
 export default function LeadForm({ compact = false, lang = "ru" }) {
+  const router = useRouter();
   const t = FT[lang === "uz" ? "uz" : "ru"];
   const [f, setF] = useState({ name: "", phone: "", product: "", message: "" });
   const [state, setState] = useState("idle");
+
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
 
   async function submit(e) {
     e.preventDefault();
     if (!f.phone.trim()) return;
     setState("sending");
+
     try {
       const r = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(f),
       });
-      setState(r.ok ? "ok" : "err");
-      if (r.ok) setF({ name: "", phone: "", product: "", message: "" });
+
+      if (r.ok) {
+        setF({ name: "", phone: "", product: "", message: "" });
+        setState("idle");
+
+        // Statik /thank-you sahifasiga joriy tilni query parametr qilib uzatamiz
+        router.push(`/thank-you?lang=${lang}`);
+      } else {
+        setState("err");
+      }
     } catch {
       setState("err");
     }
@@ -74,18 +79,6 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
 
   const field =
     "w-full bg-cloud-50 border border-cloud-200 rounded-xl px-4 py-3 text-ink outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400 transition";
-
-  if (state === "ok") {
-    return (
-      <div className="rounded-xl2 bg-white border border-cloud-200 p-8 text-center shadow-card">
-        <div className="w-14 h-14 mx-auto rounded-full bg-green-50 grid place-items-center text-green-600 mb-3">
-          <IcoCheck className="w-8 h-8" />
-        </div>
-        <h3 className="text-xl font-bold text-navy-800">{t.okTitle}</h3>
-        <p className="text-slate-600 mt-2">{t.okText}</p>
-      </div>
-    );
-  }
 
   return (
     <form
@@ -108,6 +101,7 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
           className={field}
         />
       </div>
+
       <select
         value={f.product}
         onChange={set("product")}
@@ -115,11 +109,12 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
       >
         <option value="">{t.selectDefault}</option>
         {t.options.map((o) => (
-          <option key={o} className="text-ink">
+          <option key={o} value={o} className="text-ink">
             {o}
           </option>
         ))}
       </select>
+
       {!compact && (
         <textarea
           value={f.message}
@@ -129,18 +124,22 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
           className={`${field} mt-3`}
         />
       )}
+
       <button
         disabled={state === "sending"}
         className="w-full mt-4 bg-brand-grad text-white font-bold py-3.5 rounded-xl disabled:opacity-60 shadow-glow hover:brightness-110"
       >
         {state === "sending" ? t.sending : t.submit}
       </button>
+
       {state === "err" && (
         <p className="text-red-600 text-sm mt-2 text-center">
           {t.err} {SITE.phoneMainHuman}
         </p>
       )}
+
       <p className="text-slate-400 text-xs mt-3 text-center">{t.consent}</p>
+
       <div className="mt-3 pt-3 border-t border-cloud-100 text-center text-sm text-slate-500">
         {t.altContact}{" "}
         <a
