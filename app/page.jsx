@@ -7,7 +7,7 @@ import Reveal from '../components/Reveal';
 import Parallax from '../components/Parallax';
 import ProductSlider from '../components/ProductSlider';
 import { SplitHead, Eyebrow } from '../components/Section';
-import { SITE, CLIENT_LOGOS, ISO_CERTS } from '../lib/site';
+import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from '../lib/site';
 import { T, EXTRA, normalizeLang } from '../lib/i18n';
 import Faq from '../components/Faq';
 import { getLatest, localize } from '../lib/articles';
@@ -18,13 +18,14 @@ import {
   IcoLayers, IcoPallet, IcoArchive, IcoShop, IcoClock, IcoCheck, IcoArrow, IcoPin, IcoPhone, IcoTg, IcoQuote,
 } from '../components/Icons';
 
-const IMG = { hero: '/works/hero.jpg', pallet: '/works/pallet.jpg', medium: '/works/medium.jpg', archive: '/works/archive.jpg', retail: '/works/retail.jpg', welder: '/works/w6.jpg' };
+const IMG = { hero: '/works/hero.jpg', pallet: '/works/pallet.jpg', medium: '/works/medium-1.jpg', archive: '/works/archive-1.jpg', retail: '/works/retail-1.jpg', drivein: '/works/w1.jpg', welder: '/works/w6.jpg' };
 const STEP_ICONS = [IcoRuler, IcoDraft, IcoFactory, IcoWrench];
 const DIR_META = [
   { Ico: IcoPallet, img: IMG.pallet, href: '/napravleniya/palletnye-stellazhi' },
   { Ico: IcoLayers, img: IMG.medium, href: '/napravleniya/srednegruzovye-stellazhi' },
   { Ico: IcoArchive, img: IMG.archive, href: '/napravleniya/arhivnye-stellazhi' },
   { Ico: IcoShop, img: IMG.retail, href: '/napravleniya/torgovye-stellazhi' },
+  { Ico: IcoPallet, img: IMG.drivein, href: '/napravleniya/nabivnye-stellazhi' },
 ];
 const ADV_ICONS = [IcoShield, IcoWeight, IcoFactory, IcoWeight, IcoWrench, IcoClock];
 const INC_ICONS = [IcoLayers, IcoShield, IcoShop];
@@ -52,6 +53,7 @@ export default async function Home() {
   const store = await cookies();
   const L = normalizeLang(store.get('lang')?.value);
   const t = T[L];
+  const loc = siteLoc(L);
   const x = EXTRA[L];
   const latest = getLatest(3).map((a) => localize(a, L));
   const faqJsonLd = {
@@ -189,7 +191,7 @@ export default async function Home() {
         <SplitHead eyebrow={t.dirEyebrow} title={t.dirTitle} desc={t.dirText} />
         <div className="grid md:grid-cols-2 gap-5 mt-10">
           {directions.map((d, i) => (
-            <Reveal key={d.t} delay={i * 80}>
+            <Reveal key={d.t} delay={i * 80} className={i === directions.length - 1 && directions.length % 2 ? 'md:col-span-2' : undefined}>
               <a href={d.href} className="group relative block rounded-xl2 overflow-hidden min-h-[320px] shadow-card">
                 <img src={d.img} alt={d.t} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-900/95 via-navy-900/55 to-navy-900/20" />
@@ -451,7 +453,7 @@ export default async function Home() {
               </a>
               <div className="flex items-center gap-3 text-cloud-200/70">
                 <span className="w-10 h-10 rounded-lg bg-white/10 grid place-items-center text-sky-300"><IcoPin className="w-5 h-5" /></span>
-                {SITE.addressCity}, {SITE.address}
+                {loc.addressCity}, {loc.address}
               </div>
             </div>
           </div>
@@ -477,8 +479,8 @@ export default async function Home() {
             </div>
             <div>
               <div className="text-slate-400 text-sm">{t.address}</div>
-              <p className="text-navy-700">{SITE.addressCity}, {SITE.address}</p>
-              <p className="text-slate-400 text-sm">{SITE.landmark}</p>
+              <p className="text-navy-700">{loc.addressCity}, {loc.address}</p>
+              <p className="text-slate-400 text-sm">{loc.landmark}</p>
             </div>
             <div>
               <div className="text-slate-400 text-sm">{t.socials}</div>

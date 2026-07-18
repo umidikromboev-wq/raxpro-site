@@ -8,6 +8,7 @@ const STEPS_BY_LANG = {
     { key: 'type', q: 'Какой тип стеллажей нужен?', options: [
       { v: 'Паллетные (Mega)', Ico: IcoPallet }, { v: 'Среднегрузовые', Ico: IcoLayers },
       { v: 'Архивные', Ico: IcoArchive }, { v: 'Торговые', Ico: IcoShop },
+      { v: 'Набивные (Drive-in)', Ico: IcoPallet },
       { v: 'Не знаю — нужна консультация', Ico: IcoClock } ] },
     { key: 'place', q: 'Где будете использовать?', options: [
       { v: 'Склад' }, { v: 'Магазин / торговый зал' }, { v: 'Производство' }, { v: 'Архив / офис' }, { v: 'Маркетплейс (склад селлера)' }, { v: 'Другое' } ] },
@@ -20,6 +21,7 @@ const STEPS_BY_LANG = {
     { key: 'type', q: 'Qanday turdagi stellaj kerak?', options: [
       { v: 'Palletli (Mega)', Ico: IcoPallet }, { v: 'Oʻrta yuklamali', Ico: IcoLayers },
       { v: 'Arxiv', Ico: IcoArchive }, { v: 'Savdo', Ico: IcoShop },
+      { v: 'Zich (Drive-in)', Ico: IcoPallet },
       { v: 'Bilmayman — konsultatsiya kerak', Ico: IcoClock } ] },
     { key: 'place', q: 'Qayerda foydalanasiz?', options: [
       { v: 'Ombor' }, { v: 'Doʻkon / savdo zali' }, { v: 'Ishlab chiqarish' }, { v: 'Arxiv / ofis' }, { v: 'Marketpleys (sotuvchi ombori)' }, { v: 'Boshqa' } ] },
