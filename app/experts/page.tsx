@@ -2,51 +2,185 @@ import React from "react";
 import { cookies } from "next/headers";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { T, EXTRA, normalizeLang } from "../../lib/i18n";
+import { T, normalizeLang } from "../../lib/i18n";
 
-export default async function Home() {
+import { Eyebrow } from "../../components/Section";
+import Reveal from "../../components/Reveal";
+import { IcoArrow } from "../../components/Icons";
+
+export default async function Page() {
   const store = await cookies();
   const L = normalizeLang(store.get("lang")?.value);
+  const t = T[L];
+
+  // Ma'lumotlar to'g'ridan-to'g'ri i18n ichidan keladi
+  const currentSpecialists = t.specialists || [];
 
   return (
-    <div className="bg-[#f4f7fa] text-[#1c2e4a] min-h-screen font-sans overflow-x-hidden">
-      {/* Navbar shu Header komponenti ichida */}
+    <div className="bg-white text-ink">
       <Header lang={L} />
-      <div className="w-full min-h-[85vh] flex items-center justify-center bg-[#f5f7fa] px-4 md:px-12 py-12">
-        <div className="flex flex-col space-y-6">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.15] text-[#16233f]">
-            <span className="text-[#2fb6f5]">RAX PRO</span> Muhandislari va
-            Mutaxassislari
-          </h1>
-          <p className="text-[#98a2b3] text-base md:text-lg leading-relaxed max-w-md">
-            RAX PRO mutaxassislari bilan ombor va savdo stellajlari bo'yicha
-            professional maslahat oling. Loyihalash, o'lchov, ishlab chiqarish
-            va montaj xizmatlari.
-          </p>
-          <div className="pt-2">
-            <button className="flex items-center gap-3 bg-gradient-to-r from-[#3fc2ff] to-[#0072e5] text-white font-medium text-sm md:text-base px-7 py-4 rounded-full hover:opacity-90 transition-all shadow-md">
-              <span>Kansultatsiyaga yozilish</span>
-              <span className="flex items-center justify-center w-6 h-6">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
-                </svg>
-              </span>
-            </button>
+
+      {/* METRICS */}
+      <section className="relative bg-navy-900 text-white overflow-hidden notch-tr">
+        <div className="absolute inset-0 grid-lines opacity-30" />
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16">
+          <div className="grid lg:grid-cols-[1fr,1.5fr] gap-10 items-center">
+            <div>
+              <Eyebrow light>{t.numsEyebrow}</Eyebrow>
+              <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl">
+                {t.numsTitle}
+              </h2>
+              <p className="mt-3 text-cloud-200/75 max-w-md">{t.numsText}</p>
+              <a
+                href="#zayavka"
+                className="inline-flex items-center gap-2 mt-6 bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 hover:text-white transition"
+              >
+                {t.numsCta} <IcoArrow className="w-5 h-5" />
+              </a>
+            </div>
+
+            <Reveal
+              as="div"
+              variant="fade"
+              stagger={70}
+              className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-white/10 rounded-xl2 overflow-hidden border border-white/10"
+            >
+              {t.stats?.map((s, idx) => (
+                <div key={s.l || idx} className="bg-navy-900 p-6">
+                  <div className="font-display font-medium text-4xl sm:text-5xl text-sky-400 leading-none">
+                    {s.n}
+                    <span className="text-2xl text-sky-300 ml-1">{s.s}</span>
+                  </div>
+                  <div className="text-cloud-200/70 text-sm mt-2 leading-snug">
+                    {s.l}
+                  </div>
+                </div>
+              ))}
+            </Reveal>
           </div>
         </div>
-        <div></div>
-      </div>
-      <Footer lang={L} />{" "}
+      </section>
+
+      {/* SPECIALISTS SECTION */}
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 bg-white">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="font-display font-medium text-3xl sm:text-4xl text-navy-800 tracking-tight">
+            {t.teamTitle}
+          </h2>
+          <p className="mt-4 text-slate-500 text-sm sm:text-base leading-relaxed">
+            {t.teamText}
+          </p>
+        </div>
+
+        {/* Grid cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {currentSpecialists.map((person, idx) => (
+            <Reveal key={person.id || idx} delay={idx * 80}>
+              <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden group shadow-sm">
+                <img
+                  src={person.img || "/images/command.png"}
+                  alt={person.name}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+
+                {/* Ism tugmasi - Faqat chap burchakda turishi uchun to'g'irlandi */}
+                {/* Ism tugmasi - Chetga yopishib qolishini oldini olish uchun qayta sozlandi */}
+                <div className="absolute bottom-0 left-0 z-30 p-5 w-full pointer-events-none">
+                  <div className="bg-white text-navy-900 font-medium text-sm sm:text-base py-3 px-5 rounded-2xl shadow-lg inline-block w-max max-w-full truncate pointer-events-auto">
+                    {person.name}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Slider Navigations */}
+        <div
+          className="flex items-center justify-center mt-12"
+          style={{ gap: "24px" }}
+        >
+          {/* Chapga o'q */}
+          <button
+            className="rounded-full bg-sky-500 text-white flex items-center justify-center hover:bg-sky-600 transition shrink-0 shadow-sm"
+            style={{ width: "48px", height: "48px" }}
+          >
+            <IcoArrow className="w-5 h-5 rotate-180" />
+          </button>
+
+          {/* Karusel nuqtalari */}
+          <div
+            className="flex items-center justify-center shrink-0"
+            style={{ gap: "12px", minWidth: "max-content" }}
+          >
+            <div
+              style={{
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+                backgroundColor: "#00a2eb",
+                flexShrink: 0,
+                display: "block",
+              }}
+            />
+            <div
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                backgroundColor: "#c2d3e2",
+                flexShrink: 0,
+                display: "block",
+              }}
+            />
+            <div
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                backgroundColor: "#c2d3e2",
+                flexShrink: 0,
+                display: "block",
+              }}
+            />
+            <div
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                backgroundColor: "#c2d3e2",
+                flexShrink: 0,
+                display: "block",
+              }}
+            />
+            <div
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                backgroundColor: "#c2d3e2",
+                flexShrink: 0,
+                display: "block",
+              }}
+            />
+          </div>
+
+          {/* O'ngga o'q — Ichidagi o'q rangi ham border bilan bir xil rangga o'tkazildi */}
+          <button
+            className="rounded-full bg-white flex items-center justify-center hover:bg-sky-50 transition shrink-0"
+            style={{
+              width: "48px",
+              height: "48px",
+              border: "2px solid #00a2eb",
+              color: "#00a2eb",
+            }}
+          >
+            <IcoArrow className="w-5 h-5" style={{ color: "#00a2eb" }} />
+          </button>
+        </div>
+      </section>
+
+      <Footer lang={L} />
     </div>
   );
 }
