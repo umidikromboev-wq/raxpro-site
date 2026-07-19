@@ -39,7 +39,7 @@ const IMG = {
   medium: "/works/medium-1.jpg",
   archive: "/works/archive-1.jpg",
   retail: "/works/retail-1.jpg",
-  drivein: "/works/w1.jpg",
+  drivein: "/works/max1.jpg",
   welder: "/works/w6.jpg",
 };
 const STEP_ICONS = [IcoRuler, IcoDraft, IcoFactory, IcoWrench];
@@ -177,6 +177,39 @@ export default async function Home() {
   const income = t.income.map((a, i) => ({ ...a, Ico: INC_ICONS[i] }));
   const projects = PROJECTS[L];
   const reviews = REVIEWS.map((r) => localizeReview(r, L));
+
+  const certificates = [
+    {
+      id: 1,
+      img: "/images/ser1.png",
+      title: "ISO 14001:2015",
+    },
+    {
+      id: 2,
+      img: "/images/ser2.png",
+      title: "ISO 45001:2018",
+    },
+    {
+      id: 3,
+      img: "/images/ser3.png",
+      title: "ISO 9001:2015",
+    },
+    {
+      id: 4,
+      img: "/images/ser4.png",
+      title: "ISO 9001:2015 Quality Management",
+    },
+    {
+      id: 5,
+      img: "/images/ser5.png",
+      title: "ISO 9001:2015 Quality Management",
+    },
+    {
+      id: 6,
+      img: "/images/ser6.png",
+      title: "ISO 9001:2015 Quality Management",
+    },
+  ];
 
   return (
     <div className="bg-white text-ink">
@@ -673,6 +706,32 @@ export default async function Home() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* NEW CERTIFICATES SECTION */}
+      <section className="w-full px-5 sm:px-8  py-16 sm:py-20 bg-[#f8fafc]">
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <h2 className="font-display font-medium text-3xl sm:text-4xl text-navy-800 tracking-tight">
+            {L === "uz" ? "Bizning Sertifikatlar" : "Наши Сертификаты"}
+          </h2>
+        </div>
+
+        {/* Certificates Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1340px] mx-auto">
+          {certificates.map((cert, idx) => (
+            <Reveal key={cert.id} delay={idx * 60}>
+              <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-between h-full group hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300">
+                <div className="w-full aspect-[4/5] bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center border border-slate-200/60">
+                  <img
+                    src={cert.img}
+                    alt={cert.title}
+                    className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 

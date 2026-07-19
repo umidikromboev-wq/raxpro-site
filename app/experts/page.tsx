@@ -15,6 +15,8 @@ export default async function Page() {
 
   const currentSpecialists = t.specialists || [];
 
+  // Sertifikatlar uchun testiviy ma'lumotlar massivi
+
   return (
     <div className="bg-white text-ink">
       <Header lang={L} />
@@ -120,7 +122,6 @@ export default async function Page() {
                     : "Получите профессиональную консультацию по складским и торговым стеллажам от специалистов RAX PRO. Проектирование, замер, производство и монтаж.")}
               </p>
 
-              {/* AYNAN MANA SHU TUGMA #kontakty GA O'TADIGAN QILINDI */}
               <a
                 href="#kontakty"
                 className="rax-btn"
@@ -367,7 +368,6 @@ export default async function Page() {
                 {t.numsTitle}
               </h2>
               <p className="mt-3 text-cloud-200/75 max-w-md">{t.numsText}</p>
-              {/* METRICS QISMIDAGI CTA TUGMA HAM SIZNING XOHISHINGIZGA QARAB #kontakty GA YO'NALTIRILDI */}
               <a
                 href="#kontakty"
                 className="inline-flex items-center gap-2 mt-6 bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 hover:text-white transition"
@@ -431,7 +431,7 @@ export default async function Page() {
 
         {/* Slider Navigations */}
         <div
-          className="hidden sm:flex items-center justify-center mt-12"
+          className="flex items-center justify-center mt-12"
           style={{ gap: "24px" }}
         >
           <a
