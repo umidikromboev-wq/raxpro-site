@@ -431,7 +431,7 @@ export default async function Page() {
 
         {/* Slider Navigations */}
         <div
-          className="flex items-center justify-center mt-12"
+          className="hidden sm:flex items-center justify-center mt-12"
           style={{ gap: "24px" }}
         >
           <a
