@@ -13,14 +13,350 @@ export default async function Page() {
   const L = normalizeLang(store.get("lang")?.value);
   const t = T[L];
 
-  // Ma'lumotlar to'g'ridan-to'g'ri i18n ichidan keladi
   const currentSpecialists = t.specialists || [];
 
   return (
     <div className="bg-white text-ink">
       <Header lang={L} />
 
-      {/* METRICS */}
+      <section
+        style={{
+          width: "100%",
+          backgroundColor: "#f4f6f9",
+          paddingTop: "149px",
+          paddingBottom: "40px",
+          overflow: "hidden",
+        }}
+      >
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          .rax-btn:hover {
+            transform: scale(1.03) !important;
+          }
+          .rax-btn:active {
+            transform: scale(0.98) !important;
+          }
+          @media (min-width: 768px) {
+            .rax-section { padding-top: 64px !important; padding-bottom: 64px !important; }
+            .rax-container { padding-left: 32px !important; padding-right: 32px !important; }
+            .rax-row { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 48px !important; }
+            .rax-text-col { max-width: 643px !important; align-items: flex-start !important; text-align: left !important; gap: 29px !important; }
+            .rax-title { font-size: 48px !important; }
+            .rax-desc { font-size: 21px !important; }
+            .rax-btn { font-size: 15px !important; }
+            .rax-mobile-images { display: none !important; }
+            .rax-desktop-images { display: flex !important; gap: 30px !important; margin-left: auto !important; }
+          }
+        `,
+          }}
+        />
+
+        <div
+          className="rax-container"
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            maxWidth: "1320px",
+            paddingLeft: "20px",
+            paddingRight: "20px",
+          }}
+        >
+          <div
+            className="rax-row"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "40px",
+            }}
+          >
+            {/* Text Column */}
+            <div
+              className="rax-text-col"
+              style={{
+                width: "100%",
+                flexShrink: 0,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
+                gap: "24px",
+              }}
+            >
+              <h2
+                className="rax-title"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "28px",
+                  fontWeight: 600,
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.03em",
+                  color: "#22282B",
+                  margin: 0,
+                }}
+              >
+                <span style={{ color: "#26B8F2" }}>RAX PRO</span>{" "}
+                {t.raxProTitle ||
+                  (L === "uz"
+                    ? "Muhandislari va Mutaxassislari"
+                    : "Инженеры и Специалисты")}
+              </h2>
+
+              <p
+                className="rax-desc"
+                style={{
+                  maxWidth: "565px",
+                  fontSize: "15px",
+                  fontWeight: 500,
+                  lineHeight: 1.3,
+                  letterSpacing: "-0.02em",
+                  color: "#909DA2",
+                  margin: 0,
+                }}
+              >
+                {t.raxProText ||
+                  (L === "uz"
+                    ? "RAX PRO mutaxassislari bilan ombor va savdo stellajlari bo‘yicha professional maslahat oling. Loyihalash, o‘lchov, ishlab chiqarish va montaj xizmatlari."
+                    : "Получите профессиональную консультацию по складским и торговым стеллажам от специалистов RAX PRO. Проектирование, замер, производство и монтаж.")}
+              </p>
+
+              {/* AYNAN MANA SHU TUGMA #kontakty GA O'TADIGAN QILINDI */}
+              <a
+                href="#kontakty"
+                className="rax-btn"
+                style={{
+                  display: "inline-flex",
+                  width: "fit-content",
+                  alignItems: "center",
+                  gap: "8px",
+                  borderRadius: "9999px",
+                  background: "linear-gradient(to right, #1E88E5, #42A5F5)",
+                  paddingLeft: "24px",
+                  paddingRight: "24px",
+                  paddingTop: "12px",
+                  paddingBottom: "12px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "white",
+                  textDecoration: "none",
+                  boxShadow:
+                    "0 4px 6px -1px rgba(66, 165, 245, 0.2), 0 2px 4px -1px rgba(66, 165, 245, 0.15)",
+                  transition: "transform 0.3s ease",
+                }}
+              >
+                {t.raxProCta ||
+                  (L === "uz"
+                    ? "Konsultatsiyaga yozilish"
+                    : "Записаться на консультацию")}
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+
+            {/* Images - Mobile */}
+            <div
+              className="rax-mobile-images"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gap: "14px",
+                width: "calc(100% + 48px)",
+                marginLeft: "-24px",
+                marginRight: "-24px",
+                marginTop: "8px",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "28px",
+                  transform: "translateX(-12px)",
+                }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    aspectRatio: "235/153",
+                    overflow: "hidden",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/head1.png"
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    width: "100%",
+                    aspectRatio: "235/153",
+                    overflow: "hidden",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/head2.png"
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "28px",
+                  paddingTop: "36px",
+                  transform: "translateX(12px)",
+                }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    aspectRatio: "235/153",
+                    overflow: "hidden",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/head3.png"
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    width: "100%",
+                    aspectRatio: "235/153",
+                    overflow: "hidden",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <img
+                    src="/images/head4.png"
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Images - Desktop */}
+            <div className="rax-desktop-images" style={{ display: "none" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "40px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "411px",
+                    height: "231px",
+                    overflow: "hidden",
+                    borderRadius: "25px",
+                  }}
+                >
+                  <img
+                    src="/images/head1.png"
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    width: "411px",
+                    height: "231px",
+                    overflow: "hidden",
+                    borderRadius: "25px",
+                  }}
+                >
+                  <img
+                    src="/images/head2.png"
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "40px",
+                  paddingTop: "37px",
+                  transform: "translateX(20px)",
+                }}
+              >
+                <div
+                  style={{
+                    width: "411px",
+                    height: "231px",
+                    overflow: "hidden",
+                    borderRadius: "25px",
+                  }}
+                >
+                  <img
+                    src="/images/head3.png"
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    width: "411px",
+                    height: "231px",
+                    overflow: "hidden",
+                    borderRadius: "25px",
+                  }}
+                >
+                  <img
+                    src="/images/head4.png"
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* METRICS SECTION */}
       <section className="relative bg-navy-900 text-white overflow-hidden notch-tr">
         <div className="absolute inset-0 grid-lines opacity-30" />
         <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16">
@@ -31,8 +367,9 @@ export default async function Page() {
                 {t.numsTitle}
               </h2>
               <p className="mt-3 text-cloud-200/75 max-w-md">{t.numsText}</p>
+              {/* METRICS QISMIDAGI CTA TUGMA HAM SIZNING XOHISHINGIZGA QARAB #kontakty GA YO'NALTIRILDI */}
               <a
-                href="#zayavka"
+                href="#kontakty"
                 className="inline-flex items-center gap-2 mt-6 bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 hover:text-white transition"
               >
                 {t.numsCta} <IcoArrow className="w-5 h-5" />
@@ -82,9 +419,6 @@ export default async function Page() {
                   alt={person.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-
-                {/* Ism tugmasi - Faqat chap burchakda turishi uchun to'g'irlandi */}
-                {/* Ism tugmasi - Chetga yopishib qolishini oldini olish uchun qayta sozlandi */}
                 <div className="absolute bottom-0 left-0 z-30 p-5 w-full pointer-events-none">
                   <div className="bg-white text-navy-900 font-medium text-sm sm:text-base py-3 px-5 rounded-2xl shadow-lg inline-block w-max max-w-full truncate pointer-events-auto">
                     {person.name}
@@ -100,15 +434,14 @@ export default async function Page() {
           className="flex items-center justify-center mt-12"
           style={{ gap: "24px" }}
         >
-          {/* Chapga o'q */}
-          <button
+          <a
+            href="#kontakty"
             className="rounded-full bg-sky-500 text-white flex items-center justify-center hover:bg-sky-600 transition shrink-0 shadow-sm"
-            style={{ width: "48px", height: "48px" }}
+            style={{ width: "48px", height: "48px", textDecoration: "none" }}
           >
             <IcoArrow className="w-5 h-5 rotate-180" />
-          </button>
+          </a>
 
-          {/* Karusel nuqtalari */}
           <div
             className="flex items-center justify-center shrink-0"
             style={{ gap: "12px", minWidth: "max-content" }}
@@ -165,18 +498,19 @@ export default async function Page() {
             />
           </div>
 
-          {/* O'ngga o'q — Ichidagi o'q rangi ham border bilan bir xil rangga o'tkazildi */}
-          <button
+          <a
+            href="#kontakty"
             className="rounded-full bg-white flex items-center justify-center hover:bg-sky-50 transition shrink-0"
             style={{
               width: "48px",
               height: "48px",
               border: "2px solid #00a2eb",
               color: "#00a2eb",
+              textDecoration: "none",
             }}
           >
             <IcoArrow className="w-5 h-5" style={{ color: "#00a2eb" }} />
-          </button>
+          </a>
         </div>
       </section>
 

@@ -6,7 +6,8 @@ import { SITE } from "../lib/site";
 const FT = {
   ru: {
     name: "Ваше имя",
-    phone: "Телефон *",
+    phone: "Телефон (например: +998 90 123 45 67) *",
+    phoneErr: "Введите корректный номер Узбекистана (+998XXXXXXXXX)",
     selectDefault: "Тип стеллажей (необязательно)",
     options: [
       "Паллетные (Mega) стеллажи",
@@ -24,7 +25,8 @@ const FT = {
   },
   uz: {
     name: "Ismingiz",
-    phone: "Telefon *",
+    phone: "Telefon (masalan: +998 90 123 45 67) *",
+    phoneErr: "Oʻzbekiston telefon raqamini toʻgʻri kiriting (+998XXXXXXXXX)",
     selectDefault: "Stellaj turi (ixtiyoriy)",
     options: [
       "Palletli (Mega) stellajlar",
@@ -51,23 +53,45 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
 
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
 
+  // Telefon inputida faqat raqamlar, probel va "+" belgisini qoldirish
+  const handlePhoneChange = (e) => {
+    let val = e.target.value;
+    // Faqat raqamlar, "+" va bo'shliqlarni qoldiramiz, qolgan harflarni o'chiramiz
+    val = val.replace(/[^0-9+\s-]/g, "");
+    setF({ ...f, phone: val });
+  };
+
   async function submit(e) {
     e.preventDefault();
     if (!f.phone.trim()) return;
+
+    // Telefon raqamidan faqat raqamlar va boshidagi "+" ni qoldirib tozalaymiz
+    const cleanPhone = f.phone.replace(/[^0-9+]/g, "");
+
+    // O'zbekiston raqamlari formati uchun qat'iy tekshiruv (RegEx)
+    // +998 bilan boshlangan 9 ta raqam yoki shunchaki 998 bilan boshlangan 9 ta raqam
+    const uzbPhoneRegex = /^(\+?998)\d{9}$/;
+
+    if (!uzbPhoneRegex.test(cleanPhone)) {
+      setState("phone_invalid");
+      return;
+    }
+
     setState("sending");
 
     try {
       const r = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(f),
+        body: JSON.stringify({
+          ...f,
+          phone: cleanPhone.startsWith("+") ? cleanPhone : `+${cleanPhone}`, // Har doim + belgi bilan yuboradi
+        }),
       });
 
       if (r.ok) {
         setF({ name: "", phone: "", product: "", message: "" });
         setState("idle");
-
-        // Statik /thank-you sahifasiga joriy tilni query parametr qilib uzatamiz
         router.push(`/thank-you?lang=${lang}`);
       } else {
         setState("err");
@@ -94,13 +118,19 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
         />
         <input
           value={f.phone}
-          onChange={set("phone")}
+          onChange={handlePhoneChange}
           required
           type="tel"
           placeholder={t.phone}
-          className={field}
+          className={`${field} ${state === "phone_invalid" ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""}`}
         />
       </div>
+
+      {state === "phone_invalid" && (
+        <p className="text-red-600 text-xs mt-1.5 px-1 font-medium">
+          ⚠️ {t.phoneErr}
+        </p>
+      )}
 
       <select
         value={f.product}
