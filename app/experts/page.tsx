@@ -95,7 +95,7 @@ export default async function Page() {
                   margin: 0,
                 }}
               >
-                <span style={{ color: "#26B8F2" }}>RAX PRO</span>{" "}
+                <span style={{ color: "#26B8F2" }}>RaxPro</span>{" "}
                 {t.raxProTitle ||
                   (L === "uz"
                     ? "Muhandislari va Mutaxassislari"
