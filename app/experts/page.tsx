@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { T, normalizeLang } from "../../lib/i18n";
-import OpinionsSlider from "../../components/OpinionsSlider";
 import { Eyebrow } from "../../components/Section";
 import Reveal from "../../components/Reveal";
 import { IcoArrow } from "../../components/Icons";
@@ -356,8 +355,6 @@ export default async function Page() {
           </div>
         </div>
       </section>
-
-      <OpinionsSlider L={L} translations={t} />
 
       {/* METRICS SECTION */}
       <section className="relative bg-navy-900 text-white overflow-hidden notch-tr">

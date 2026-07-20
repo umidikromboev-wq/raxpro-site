@@ -12,6 +12,8 @@ import { T, EXTRA, normalizeLang } from "../lib/i18n";
 import Faq from "../components/Faq";
 import { getLatest, localize } from "../lib/articles";
 import { REVIEWS, localizeReview } from "../lib/reviews";
+import OpinionsSlider from "../components/OpinionsSlider";
+
 import LogoMarquee from "../components/LogoMarquee";
 import {
   IcoRuler,
@@ -734,6 +736,8 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      <OpinionsSlider L={L} translations={t} />
 
       {/* BLOG */}
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
