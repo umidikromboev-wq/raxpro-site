@@ -10,12 +10,12 @@ export default function OpinionsSlider({ L, translations }) {
   const opinionsData = [
     {
       id: 1,
-      name: "Nigora",
-      name_ru: "Нигора",
+      name: "Xamid Jo'rayev",
+      name_ru: "Хамид Джураев",
       role: "Hamkor",
       role_ru: "Партнер",
       rating: 4.8,
-      image: "/opinions/opinion1.jpg",
+      image: "/images/comment.jpg",
       text: "RAX PRO bilan hamkorlik davomida mahsulot sifati, o‘z vaqtida yetkazib berish va professional yondashuvdan to‘liq mamnun bo‘ldik. Jamoa har bir loyihaga mas'uliyat bilan yondashadi va ishonchli yechimlarni taklif qiladi. Kelgusida ham hamkorligimizni davom ettirishni rejalashtirganmiz.",
       text_ru:
         "В ходе сотрудничества с RAX PRO мы остались полностью довольны качеством продукции, своевременной доставкой и профессиональным подходом. Команда с высокой ответственностью подходит к каждому проекту и предлагает надежные решения. Мы планируем продолжать наше сотрудничество и в будущем.",
@@ -27,7 +27,7 @@ export default function OpinionsSlider({ L, translations }) {
       role: "Mijoz",
       role_ru: "Клиент",
       rating: 5.0,
-      image: "/opinions/opinion8.jpg",
+      image: "/images/comment2.jpg",
       text: "RAX PRO jamoasini erishilgan muvaffaqiyatlar bilan chin dildan tabriklayman. Ayniqsa, loyiha menejeri Bekzod Omonovga alohida rahmat. Juda xushmuomala va o‘z kasbining fidoyisi bo‘lgan mutaxassis ekanlar.",
       text_ru:
         "От всего сердца поздравляю команду RAX PRO с достигнутыми успехами. В частности, хочу отдельно поблагодарить проект-менеджера Бекзода Омонова. Он очень вежливый и преданный своему делу специалист.",
@@ -39,7 +39,7 @@ export default function OpinionsSlider({ L, translations }) {
       role: "Hamkor",
       role_ru: "Партнер",
       rating: 4.9,
-      image: "/opinions/opinion3.jpg",
+      image: "/images/comment3.jpg",
       text: "RAX PRO bilan hamkorlik qilayotganimizga 2 yil bo‘ldi. Ish o‘z vaqtida va yuqori sifatda bajariladi. Barcha xodimlarga va rahbariyatga minnatdorchilik bildiraman! Qozog‘iston Respublikasi, Aqtau shahridan salomlar! Do‘stligimiz va hamkorligimiz abadiy bo‘lsin.",
       text_ru:
         "Уже 2 года сотрудничаем с RAX PRO. Вся работа выполняется в срок и на высоком уровне. Выражаю благодарность всему персоналу и руководству! Привет из Республики Казахстан, город Актау! Пусть наша дружба и сотрудничество будут вечными.",
@@ -51,7 +51,7 @@ export default function OpinionsSlider({ L, translations }) {
       role: "Mijoz",
       role_ru: "Клиент",
       rating: 4.7,
-      image: "/opinions/opinion4.jpg",
+      image: "/images/comment.jpg",
       text: "RAX PRO jamoasiga ulkan muvaffaqiyatlar tilayman. Ayniqsa, texnik mutaxassis Ahmad Eshonqulovga rahmat. Avval boshqa joyda yechimini topa olmagan murakkab topshirig‘imizni qisqa muddatda hal qilib berishdi. Mana 2 yil bo‘ldi, tizim barqaror ishlamoqda.",
       text_ru:
         "Желаю команде RAX PRO больших успехов. Особенно хочу поблагодарить технического специалиста Ахмада Эшонкулова. Нашу сложную задачу, которую не смогли решить в другом месте, они решили в кратчайшие сроки. Вот уже 2 года система работает стабильно.",
@@ -63,7 +63,7 @@ export default function OpinionsSlider({ L, translations }) {
       role: "Hamkor",
       role_ru: "Партнер",
       rating: 5.0,
-      image: "/opinions/opinion2.jpg",
+      image: "/images/comment2.jpg",
       text: "RAX PRO xizmat ko‘rsatish sifatiga gap bo‘lishi mumkin emas. O‘zim shaxsan hamkorlik qilib bunga guvoh bo‘ldim. Xalqaro ekspertlar xulosasi va RAX PRO taqdim etgan yechimlar bir xil darajada yuqori chiqdi. To‘liq ishonsa bo‘ladi.",
       text_ru:
         "К качеству услуг RAX PRO нет никаких претензий. Я сам лично убедился в этом в ходе сотрудничества. Заключения международных экспертов и решения RAX PRO оказались на одинаково высоком уровне. Можно полностью доверять.",
@@ -75,7 +75,7 @@ export default function OpinionsSlider({ L, translations }) {
       role: "Mijoz",
       role_ru: "Клиент",
       rating: 4.9,
-      image: "/opinions/opinion5.jpg",
+      image: "/images/comment3.jpg",
       text: "RAX PRO kompaniyasiga katta rahmat. Ko‘p yillardan buyon to‘g‘ri yechim topilmagan texnik muammomizga ularning malakali mutaxassislari aniq va tushunarli yechim berishdi. Uzoq izlanishlardan so‘ng faqat shu jamoadan aniq natija oldik.",
       text_ru:
         "Большое спасибо компании RAX PRO. Их квалифицированные специалисты дали четкое и понятное решение нашей технической проблемы, которую не могли решить много лет. После долгих поисков мы получили точный результат только от этой команды.",
@@ -87,7 +87,7 @@ export default function OpinionsSlider({ L, translations }) {
       role: "Mijoz",
       role_ru: "Клиент",
       rating: 4.8,
-      image: "/opinions/opinion6.jpg",
+      image: "/images/comment.jpg",
       text: "Assalomu alaykum. RAX PRO bilan birinchi marta ishlasak ham, xodimlarining muomalasi va mas'uliyati juda yoqdi. Bizning kompaniya loyihasini juda qisqa muddatda muvaffaqiyatli amalga oshirib berishdi. Barcha mutaxassislarga rahmat!",
       text_ru:
         "Ассалому алейкум. Хотя мы впервые работаем с RAX PRO, отношение и ответственность сотрудников нам очень понравились. Они в кратчайшие сроки успешно реализовали проект нашей компании. Спасибо всем специалистам!",
@@ -99,7 +99,7 @@ export default function OpinionsSlider({ L, translations }) {
       role: "Hamkor",
       role_ru: "Партнер",
       rating: 5.0,
-      image: "/opinions/opinion7.jpg",
+      image: "/images/comment2.jpg",
       text: "RAX PRO jamoasiga o‘z tashakkurimni bildirmoqchiman. Loyihamiz boshiqdan oxirigacha tajribali mutaxassislar nazoratida bo‘ldi. Birinchi kundan boshlab barcha masalalar tezkorlik bilan hal etildi. RAX PRO bilan hamkorlik qilishdan juda mamnunmiz.",
       text_ru:
         "Хочу выразить огромную благодарность команде RAX PRO. Наш проект от начала до конца находился под контролем опытных специалистов. С первого дня все вопросы решались оперативно. Мы очень довольны сотрудничеством с RAX PRO.",
@@ -111,7 +111,7 @@ export default function OpinionsSlider({ L, translations }) {
       role: "Mijoz",
       role_ru: "Клиент",
       rating: 4.9,
-      image: "/opinions/opinion9.jpg",
+      image: "/images/comment2.jpg",
       text: "RAX PRO juda ham ajoyib kompaniya ekan, ham sifatli, ham narxlari hamyonbop. Mutaxassislarning muomalasi va bilimi juda yuqori darajada. Bizga ajratilgan menejerga alohida rahmat, o‘z ishining ustasi.",
       text_ru:
         "RAX PRO — действительно замечательная компания, с отличным качеством и доступными ценами. Отношение и знания специалистов на высшем уровне. Отдельное спасибо выделенному нам менеджеру, настоящий мастер своего дела.",
