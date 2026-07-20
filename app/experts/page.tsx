@@ -122,7 +122,7 @@ export default async function Page() {
               </p>
 
               <a
-                href="#kontakty"
+                href="https://raxpro.uz/#kontakty"
                 className="rax-btn"
                 style={{
                   display: "inline-flex",
@@ -368,7 +368,7 @@ export default async function Page() {
               </h2>
               <p className="mt-3 text-cloud-200/75 max-w-md">{t.numsText}</p>
               <a
-                href="#kontakty"
+                href="https://raxpro.uz/#kontakty"
                 className="inline-flex items-center gap-2 mt-6 bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 hover:text-white transition"
               >
                 {t.numsCta} <IcoArrow className="w-5 h-5" />
