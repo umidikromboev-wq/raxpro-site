@@ -430,7 +430,7 @@ export default async function Page() {
 
         {/* Slider Navigations */}
         <div
-          className="flex items-center justify-center mt-12"
+          className="hidden sm:flex items-center justify-center mt-12"
           style={{ gap: "24px" }}
         >
           <a
@@ -497,8 +497,7 @@ export default async function Page() {
             />
           </div>
 
-          <a
-            href="#kontakty"
+          <span
             className="rounded-full bg-white flex items-center justify-center hover:bg-sky-50 transition shrink-0"
             style={{
               width: "48px",
@@ -509,7 +508,7 @@ export default async function Page() {
             }}
           >
             <IcoArrow className="w-5 h-5" style={{ color: "#00a2eb" }} />
-          </a>
+          </span>
         </div>
       </section>
 
