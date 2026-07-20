@@ -146,8 +146,8 @@ export default function OpinionsSlider({ L, translations }) {
           __html: `
           @media (min-width: 768px) {
             .opinions-section { padding-top: 64px !important; padding-bottom: 64px !important; }
-            .opinions-title { font-size: 48px !important; text-align: left !important; }
-            .opinions-eyebrow { font-size: 20px !important; justify-content: flex-start !important; }
+            .opinions-title { text-align: left !important; }
+            .opinions-eyebrow { justify-content: flex-start !important; }
             .opinions-flex-row { flex-direction: row !important; justify-content: space-between !important; }
             .opinions-card { flex-direction: row !important; gap: 80px !important; }
             .opinions-img-box { width: 390px !important; }
@@ -159,8 +159,6 @@ export default function OpinionsSlider({ L, translations }) {
             .opinions-desktop-only { display: flex !important; }
           }
           @media (min-width: 1024px) {
-            .opinions-title { font-size: 56px !important; }
-            .opinions-eyebrow { font-size: 24px !important; }
             .opinions-card { gap: 112px !important; }
           }
         `,
@@ -188,52 +186,16 @@ export default function OpinionsSlider({ L, translations }) {
             }}
           >
             <div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "8px",
-                }}
-              >
-                <p
-                  className="opinions-eyebrow"
-                  style={{
-                    display: "flex",
-                    fontWeight: 500,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    color: "#1E293B",
-                    fontSize: "12px",
-                    marginBottom: "8px",
-                    width: "100%",
-                  }}
-                >
-                  {L === "uz" ? "Mijozlarimiz fikri" : "Отзывы пациентов"}
-                </p>
-              </div>
-
-              <h2
-                className="opinions-title"
-                style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  fontWeight: 600,
-                  fontSize: "26px",
-                  textAlign: "center",
-                  color: "#1E293B",
-                  maxWidth: "1000px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  margin: 0,
-                }}
-              >
+              <h2 className="opinions-title font-display font-medium text-3xl sm:text-4xl text-navy-800 tracking-tight">
                 {L === "uz" ? (
                   <>Ishonchli Hamkorlar Fikri</>
                 ) : (
                   <>Мнения надежных партнеров</>
                 )}
               </h2>
+              <p className="mt-2 text-slate-500 text-sm sm:text-base leading-relaxed">
+                {L === "uz" ? "Mijozlarimiz fikri" : "Отзывы пациентов"}
+              </p>
             </div>
           </div>
 
