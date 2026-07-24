@@ -289,7 +289,7 @@ html {
   }
 }
 
-/* 11 - Tugmaning o'z rangini saqlagan holda barcha effektlar */
+/* 11 - Tugmaning o'z rangini saqlagan holda original chaqnash (scale/rotate) animatsiyasi */
 .btn-11 {
   position: relative;
   border: none;
@@ -299,22 +299,18 @@ html {
 
 .btn-11:hover {
   text-decoration: none;
-  opacity: 0.85;
+  opacity: 0.7;
 }
 
 .btn-11::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
+  display: inline-block;
+  top: -180px;
+  left: 0;
+  width: 30px;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
+  background-color: #fff;
   animation: shiny-btn1 3s ease-in-out infinite;
   pointer-events: none;
 }
@@ -329,12 +325,19 @@ html {
 
 @keyframes shiny-btn1 {
   0% {
-    left: -100%;
+    transform: scale(0) rotate(45deg);
+    opacity: 0;
   }
-  20% {
-    left: 100%;
+  80% {
+    transform: scale(0) rotate(45deg);
+    opacity: 0.5;
+  }
+  81% {
+    transform: scale(4) rotate(45deg);
+    opacity: 1;
   }
   100% {
-    left: 100%;
+    transform: scale(50) rotate(45deg);
+    opacity: 0;
   }
 }
