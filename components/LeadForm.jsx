@@ -157,7 +157,7 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
 
       <button
         disabled={state === "sending"}
-        className="w-full mt-4 bg-brand-grad text-white font-bold py-3.5 rounded-xl disabled:opacity-60 shadow-glow hover:brightness-110"
+        className="btn-11 w-full mt-4 bg-brand-grad text-white font-bold py-3.5 rounded-xl disabled:opacity-60 shadow-glow hover:brightness-110"
       >
         {state === "sending" ? t.sending : t.submit}
       </button>

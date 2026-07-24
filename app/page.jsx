@@ -253,7 +253,7 @@ export default async function Home() {
             <div className="flex flex-wrap gap-3 mt-7">
               <a
                 href="#kalkulyator"
-                className="inline-flex items-center gap-2 bg-brand-grad text-white font-bold px-7 py-3.5 rounded-xl shadow-glow hover:brightness-110"
+                className="btn-11 inline-flex items-center gap-2 bg-brand-grad text-white font-bold px-7 py-3.5 rounded-xl shadow-glow hover:brightness-110"
               >
                 {t.heroCta1} <IcoArrow className="w-5 h-5" />
               </a>
@@ -372,7 +372,7 @@ export default async function Home() {
               <p className="mt-3 text-cloud-200/75 max-w-md">{t.numsText}</p>
               <a
                 href="#zayavka"
-                className="inline-flex items-center gap-2 mt-6 bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 hover:text-white transition"
+                className="btn-11 inline-flex items-center gap-2 mt-6 bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 hover:text-white transition"
               >
                 {t.numsCta} <IcoArrow className="w-5 h-5" />
               </a>
@@ -678,7 +678,7 @@ export default async function Home() {
               href={SITE.reviewsChannel}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white font-semibold px-5 py-2.5 rounded-xl transition"
+              className="btn-11 inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white font-semibold px-5 py-2.5 rounded-xl transition"
             >
               <IcoTg className="w-5 h-5" /> {t.revCta}
             </a>

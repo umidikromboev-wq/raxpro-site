@@ -122,7 +122,7 @@ export default async function Page() {
 
               <a
                 href="https://raxpro.uz/#kontakty"
-                className="rax-btn"
+                className="btn-11 rax-btn"
                 style={{
                   display: "inline-flex",
                   width: "fit-content",
