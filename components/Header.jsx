@@ -90,7 +90,7 @@ export default function Header({ lang = "ru" }) {
             </a>
             <a
               href="#zayavka"
-              className="hidden lg:inline-flex text-sm font-medium px-5 py-2.5 rounded-xl bg-white/12 border border-white/20 text-white hover:bg-white hover:text-navy-800 transition backdrop-blur-sm whitespace-nowrap"
+              className="btn-11 hidden lg:inline-flex text-sm font-medium px-5 py-2.5 rounded-xl bg-white/12 !border !border-white/20 text-white hover:bg-white hover:text-navy-800 transition backdrop-blur-sm whitespace-nowrap"
             >
               {tr.consult}
             </a>

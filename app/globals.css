@@ -292,7 +292,6 @@ html {
 /* 11 - Tugmaning o'z rangini saqlagan holda original chaqnash (scale/rotate) animatsiyasi */
 .btn-11 {
   position: relative;
-  border: none;
   overflow: hidden;
   transition: opacity 0.2s ease;
 }
