@@ -46,9 +46,16 @@ export default function SpecialistsSection({ t }) {
                   alt={person.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute bottom-0 left-0 z-30 p-5 w-full pointer-events-none">
-                  <div className="bg-white text-navy-900 font-medium text-sm py-3 px-5 rounded-2xl shadow-lg inline-block w-max max-w-full truncate pointer-events-auto">
-                    {person.name}
+                <div className="absolute bottom-0 left-0 z-30 p-4 w-full pointer-events-none">
+                  <div className="bg-white text-navy-900 py-3 px-4 rounded-2xl shadow-lg w-full pointer-events-auto leading-tight">
+                    <div className="font-semibold text-sm sm:text-base">
+                      {person.name}
+                    </div>
+                    {person.role && (
+                      <div className="text-xs text-slate-500 mt-1 font-normal">
+                        {person.role}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -77,9 +84,16 @@ export default function SpecialistsSection({ t }) {
                     alt={person.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute bottom-0 left-0 z-30 p-5 w-full pointer-events-none">
-                    <div className="bg-white text-navy-900 font-medium text-sm sm:text-base py-3 px-5 rounded-2xl shadow-lg inline-block w-max max-w-full truncate pointer-events-auto">
-                      {person.name}
+                  <div className="absolute bottom-0 left-0 z-30 p-4 w-full pointer-events-none">
+                    <div className="bg-white text-navy-900 py-3 px-4 rounded-2xl shadow-lg w-full pointer-events-auto leading-tight">
+                      <div className="font-semibold text-sm sm:text-base">
+                        {person.name}
+                      </div>
+                      {person.role && (
+                        <div className="text-xs text-slate-500 mt-1 font-normal">
+                          {person.role}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -91,7 +105,7 @@ export default function SpecialistsSection({ t }) {
 
       {/* Slider Navigations (Desktop va Tabletda) */}
       <div className="hidden sm:flex items-center justify-center mt-12 gap-6">
-        {/* Prev Button: O'ng tarafga surilganda to'liq ko'k bo'ladi, boshida bo'lsa ochiq (outline) turadi */}
+        {/* Prev Button */}
         <button
           onClick={handlePrev}
           type="button"
@@ -129,7 +143,7 @@ export default function SpecialistsSection({ t }) {
           ))}
         </div>
 
-        {/* Next Button: Boshida yoki o'ngga surilishi kerak bo'lganda to'liq ko'k bo'ladi, oxiriga yetganda ochiq bo'ladi */}
+        {/* Next Button */}
         <button
           onClick={handleNext}
           type="button"
