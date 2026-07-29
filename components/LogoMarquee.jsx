@@ -19,7 +19,7 @@ export default function LogoMarquee({ logos }) {
             className="shrink-0 w-[150px] h-14 grid place-items-center"
             aria-hidden={i >= logos.length ? 'true' : undefined}
           >
-            <img
+            <img loading="lazy" decoding="async"
               src={c.src}
               alt={i >= logos.length ? '' : c.alt}
               width={150}

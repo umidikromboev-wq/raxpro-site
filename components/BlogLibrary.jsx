@@ -1,4 +1,5 @@
 'use client';
+import { href } from '../lib/lang';
 import { useMemo, useState } from 'react';
 import { BLOG_UI, MONTHS } from '../lib/i18n';
 import { IcoArrow, IcoClock } from './Icons';
@@ -34,9 +35,9 @@ export default function BlogLibrary({ articles, lang = 'ru' }) {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
         {list.map((a) => (
-          <a key={a.slug} href={`/blog/${a.slug}`} className="group block h-full rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition">
+          <a key={a.slug} href={href(L, `/blog/${a.slug}`)} className="group block h-full rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition">
             <div className="aspect-[16/9] overflow-hidden bg-cloud-100 relative">
-              <img src={a.cover} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <img loading="lazy" decoding="async" src={a.cover} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
               <span className="absolute top-3 left-3 text-xs font-semibold text-white bg-navy-900/80 backdrop-blur px-2.5 py-1 rounded-full">{a.category}</span>
             </div>
             <div className="p-5 flex flex-col">

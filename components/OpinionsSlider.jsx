@@ -211,7 +211,7 @@ export default function OpinionsSlider({ L, translations }) {
             }}
           >
             <div className="opinions-img-box" style={{ width: "100%" }}>
-              <img
+              <img loading="lazy" decoding="async"
                 src={activeOpinion.image}
                 alt={activeOpinion.name}
                 className="opinions-img"

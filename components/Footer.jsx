@@ -1,6 +1,7 @@
 import { SITE, siteLoc } from '../lib/site';
 import { NAV_T, normalizeLang } from '../lib/i18n';
 import { IcoPhone, IcoPin, IcoTg, IcoIg, IcoClock } from './Icons';
+import { href } from '../lib/lang';
 
 const FT = {
   ru: {
@@ -29,13 +30,15 @@ export default function Footer({ lang = 'ru' }) {
   const nav = NAV_T[L];
   const loc = siteLoc(L);
   const year = 2026;
+  const home = href(L, '/');
+  const navHref = (h) => (h.startsWith('/#') ? home + h.slice(1) : href(L, h));
 
   return (
     <footer className="bg-navy-900 text-cloud-200">
       <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-1">
           <div className="bg-white inline-block rounded-lg px-3 py-2">
-            <img src="/brand/raxpro-logo.png" alt="RAXPRO" className="h-9 w-auto" />
+            <img loading="lazy" decoding="async" src="/brand/raxpro-logo.png" alt="RAXPRO" className="h-9 w-auto" />
           </div>
           <p className="mt-4 text-sm text-cloud-200/70 leading-relaxed">{t.tagline}</p>
           <div className="flex gap-2.5 mt-5">
@@ -49,14 +52,14 @@ export default function Footer({ lang = 'ru' }) {
         <div>
           <h4 className="text-white font-semibold mb-4">{t.sections}</h4>
           <ul className="space-y-2.5 text-sm">
-            {nav.map((n) => <li key={n.href}><a href={n.href} className="text-cloud-200/70 hover:text-sky-400">{n.label}</a></li>)}
+            {nav.map((n) => <li key={n.href}><a href={navHref(n.href)} className="text-cloud-200/70 hover:text-sky-400">{n.label}</a></li>)}
           </ul>
         </div>
 
         <div>
           <h4 className="text-white font-semibold mb-4">{t.products}</h4>
           <ul className="space-y-2.5 text-sm text-cloud-200/70">
-            {t.prod.map((p, i) => <li key={p}><a href={PROD_HREFS[i]} className="hover:text-sky-400">{p}</a></li>)}
+            {t.prod.map((p, i) => <li key={p}><a href={href(L, PROD_HREFS[i])} className="hover:text-sky-400">{p}</a></li>)}
           </ul>
         </div>
 

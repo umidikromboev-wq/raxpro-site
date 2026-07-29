@@ -1,20 +1,22 @@
-import { cookies } from "next/headers";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import LeadForm from "../components/LeadForm";
-import Calculator from "../components/Calculator";
-import Reveal from "../components/Reveal";
-import Parallax from "../components/Parallax";
-import ProductSlider from "../components/ProductSlider";
-import { SplitHead, Eyebrow } from "../components/Section";
-import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../lib/site";
-import { T, EXTRA, normalizeLang } from "../lib/i18n";
-import Faq from "../components/Faq";
-import { getLatest, localize } from "../lib/articles";
-import { REVIEWS, localizeReview } from "../lib/reviews";
-import OpinionsSlider from "../components/OpinionsSlider";
+import Header from "../../components/Header";
+import { alternatesFor, href, absHref, LANGS } from "../../lib/lang";
+import Footer from "../../components/Footer";
+import LeadForm from "../../components/LeadForm";
+import Calculator from "../../components/Calculator";
+import Reveal from "../../components/Reveal";
+import Parallax from "../../components/Parallax";
+import HeroVideo from "../../components/HeroVideo";
+import ProductSlider from "../../components/ProductSlider";
+import { SplitHead, Eyebrow } from "../../components/Section";
+import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
+import { T, EXTRA, normalizeLang } from "../../lib/i18n";
+import Faq from "../../components/Faq";
+import { getLatest, localize } from "../../lib/articles";
+import { organizationSchema, JsonLd } from "../../lib/schema";
+import { REVIEWS, localizeReview } from "../../lib/reviews";
+import OpinionsSlider from "../../components/OpinionsSlider";
 
-import LogoMarquee from "../components/LogoMarquee";
+import LogoMarquee from "../../components/LogoMarquee";
 import {
   IcoRuler,
   IcoDraft,
@@ -33,7 +35,7 @@ import {
   IcoPhone,
   IcoTg,
   IcoQuote,
-} from "../components/Icons";
+} from "../../components/Icons";
 
 const IMG = {
   hero: "/works/hero.jpg",
@@ -157,9 +159,8 @@ const PROJECTS = {
   ],
 };
 
-export default async function Home() {
-  const store = await cookies();
-  const L = normalizeLang(store.get("lang")?.value);
+export default async function Home({ params }) {
+  const L = normalizeLang((await params).lang);
   const t = T[L];
   const loc = siteLoc(L);
   const x = EXTRA[L];
@@ -220,17 +221,11 @@ export default async function Home() {
       {/* HERO */}
       <section className="relative min-h-svh flex flex-col justify-end overflow-hidden">
         <div className="absolute inset-0 bg-navy-900">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
+          <HeroVideo
             poster={IMG.hero}
+            src="/hero.mp4"
             className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src="/hero.mp4" type="video/mp4" />
-          </video>
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/70 to-navy-900/45" />
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900/70 to-transparent" />
         </div>
@@ -420,7 +415,7 @@ export default async function Home() {
                 href={d.href}
                 className="group relative block rounded-xl2 overflow-hidden min-h-[320px] shadow-card"
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src={d.img}
                   alt={d.t}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"
@@ -599,7 +594,7 @@ export default async function Home() {
         <div className="grid lg:grid-cols-[0.85fr,1.15fr] gap-10 lg:gap-14 items-center">
           <div className="relative">
             <div className="rounded-xl2 overflow-hidden border border-cloud-200 shadow-card max-w-md">
-              <img
+              <img loading="lazy" decoding="async"
                 src="/brand/founder.jpg"
                 alt={t.founderName}
                 className="w-full h-full object-cover"
@@ -725,7 +720,7 @@ export default async function Home() {
             <Reveal key={cert.id} delay={idx * 60}>
               <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-between h-full group hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300">
                 <div className="w-full aspect-[4/5] bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center border border-slate-200/60">
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={cert.img}
                     alt={cert.title}
                     className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.02]"
@@ -749,7 +744,7 @@ export default async function Home() {
             </h2>
           </div>
           <a
-            href="/blog"
+            href={href(L, "/blog")}
             className="inline-flex items-center gap-2 text-navy-700 font-semibold hover:text-sky-600"
           >
             {t.blogAll} <IcoArrow className="w-5 h-5" />
@@ -759,11 +754,11 @@ export default async function Home() {
           {latest.map((a, i) => (
             <Reveal key={a.slug} delay={i * 80}>
               <a
-                href={`/blog/${a.slug}`}
+                href={href(L, `/blog/${a.slug}`)}
                 className="group block h-full rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition"
               >
                 <div className="aspect-[16/9] overflow-hidden bg-cloud-100">
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={a.cover}
                     alt={a.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
@@ -793,6 +788,7 @@ export default async function Home() {
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
           />
+          <JsonLd data={organizationSchema(L)} />
           <Eyebrow>{x.faqEyebrow}</Eyebrow>
           <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
             {x.faqTitle}

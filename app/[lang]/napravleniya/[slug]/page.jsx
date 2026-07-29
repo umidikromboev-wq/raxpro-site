@@ -1,54 +1,67 @@
-import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
-import LeadForm from '../../../components/LeadForm';
-import { DIRECTIONS, DIR_UI, getDirection } from '../../../lib/directions';
-import { getArticle, localize } from '../../../lib/articles';
-import { normalizeLang } from '../../../lib/i18n';
-import { IcoCheck, IcoArrow } from '../../../components/Icons';
+import { alternatesFor, href, absHref, LANGS } from "../../../../lib/lang";
+import { breadcrumbSchema, productSchema, JsonLd } from "../../../../lib/schema";
+import Header from '../../../../components/Header';
+import Footer from '../../../../components/Footer';
+import LeadForm from '../../../../components/LeadForm';
+import { DIRECTIONS, DIR_UI, getDirection } from '../../../../lib/directions';
+import { getArticle, localize } from '../../../../lib/articles';
+import { normalizeLang } from '../../../../lib/i18n';
+import { IcoCheck, IcoArrow } from '../../../../components/Icons';
+
+export function generateStaticParams() {
+  return LANGS.flatMap((lang) => DIRECTIONS.map((d) => ({ lang, slug: d.slug })));
+}
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  const { slug, lang } = await params;
   const d = getDirection(slug);
   if (!d) return { title: 'Страница не найдена | RAXPRO' };
-  const L = normalizeLang((await cookies()).get('lang')?.value);
+  const L = normalizeLang(lang);
   const c = d[L];
   return {
     title: c.seoTitle,
     description: c.seoDesc,
-    alternates: { canonical: `/napravleniya/${d.slug}` },
+    alternates: alternatesFor(`/napravleniya/${d.slug}`, L),
     openGraph: { title: c.seoTitle, description: c.seoDesc, type: 'website', images: [d.cover] },
   };
 }
 
 export default async function DirectionPage({ params }) {
-  const { slug } = await params;
+  const { slug, lang } = await params;
   const d = getDirection(slug);
   if (!d) notFound();
-  const L = normalizeLang((await cookies()).get('lang')?.value);
+  const L = normalizeLang(lang);
   const c = d[L];
   const ui = DIR_UI[L];
   const related = d.relatedSlug ? localize(getArticle(d.relatedSlug), L) : null;
   const relatedTitle = related ? related.title : null;
   const others = DIRECTIONS.filter((x) => x.slug !== d.slug);
 
+  const crumbs = breadcrumbSchema(L, [
+    { name: ui.home, path: '/' },
+    { name: ui.dirs, path: '/' },
+    { name: c.short, path: `/napravleniya/${d.slug}` },
+  ]);
+
   return (
     <div className="bg-white text-ink">
+      <JsonLd data={crumbs} />
+      <JsonLd data={productSchema(L, d)} />
       <Header lang={L} />
 
       {/* HERO */}
       <section className="relative pt-24 bg-navy-900 text-white overflow-hidden">
         <div className="absolute inset-0">
-          <img src={d.cover} alt={c.name} className="w-full h-full object-cover opacity-30" />
+          <img loading="lazy" decoding="async" src={d.cover} alt={c.name} className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/92 to-navy-900/60" />
           <div className="absolute inset-0 grid-lines opacity-25" />
         </div>
         <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 sm:py-16 grid lg:grid-cols-[1.1fr,0.9fr] gap-10 items-center">
           <div>
             <nav className="text-sm text-cloud-200/60 mb-4">
-              <a href="/" className="hover:text-sky-400">{ui.home}</a> <span className="mx-1">/</span>
-              <a href="/#napravleniya" className="hover:text-sky-400"> {ui.dirs}</a> <span className="mx-1">/</span>
+              <a href={href(L, "/")} className="hover:text-sky-400">{ui.home}</a> <span className="mx-1">/</span>
+              <a href={href(L, "/") + "#napravleniya"} className="hover:text-sky-400"> {ui.dirs}</a> <span className="mx-1">/</span>
               <span className="text-cloud-200"> {c.short}</span>
             </nav>
             <h1 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08]">{c.name}</h1>
@@ -57,7 +70,7 @@ export default async function DirectionPage({ params }) {
               <a href="#zayavka" className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">
                 {ui.calcPrice} <IcoArrow className="w-5 h-5" />
               </a>
-              <a href="/#proekty" className="inline-flex items-center gap-2 border border-white/25 hover:border-sky-400 text-white px-7 py-3.5 rounded-xl font-semibold">{ui.seeProjects}</a>
+              <a href={href(L, "/") + "#proekty"} className="inline-flex items-center gap-2 border border-white/25 hover:border-sky-400 text-white px-7 py-3.5 rounded-xl font-semibold">{ui.seeProjects}</a>
             </div>
           </div>
           <div className="w-full max-w-md lg:justify-self-end">
@@ -96,7 +109,7 @@ export default async function DirectionPage({ params }) {
           {/* Capped height + sticky: the image used to run far past the text column,
               forcing an extra scroll to reach the copy. */}
           <div className="rounded-xl2 overflow-hidden border border-cloud-200 shadow-card md:sticky md:top-28">
-            <img
+            <img loading="eager" fetchPriority="high" decoding="async"
               src={d.cover}
               alt={c.name}
               width={1200}
@@ -127,7 +140,7 @@ export default async function DirectionPage({ params }) {
         )}
 
         {related && (
-          <a href={`/blog/${related.slug}`} className="group mt-10 flex items-center justify-between gap-4 rounded-xl2 bg-white border border-cloud-200 shadow-card p-5 hover:shadow-card-hover transition">
+          <a href={href(L, `/blog/${related.slug}`)} className="group mt-10 flex items-center justify-between gap-4 rounded-xl2 bg-white border border-cloud-200 shadow-card p-5 hover:shadow-card-hover transition">
             <div>
               <div className="text-xs font-semibold text-sky-600">{ui.relatedArticle}</div>
               <div className="font-bold text-navy-800 mt-1 group-hover:text-sky-600">{relatedTitle}</div>
@@ -154,9 +167,9 @@ export default async function DirectionPage({ params }) {
         <h2 className="font-display font-medium text-2xl text-navy-800 tracking-tight">{ui.other}</h2>
         <div className="grid sm:grid-cols-3 gap-5 mt-6">
           {others.map((o) => (
-            <a key={o.slug} href={`/napravleniya/${o.slug}`} className="group block rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition">
+            <a key={o.slug} href={href(L, `/napravleniya/${o.slug}`)} className="group block rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition">
               <div className="aspect-[16/9] overflow-hidden bg-cloud-100">
-                <img src={o.cover} alt={o[L].name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <img loading="lazy" decoding="async" src={o.cover} alt={o[L].name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
               </div>
               <div className="p-5 flex items-center justify-between gap-2">
                 <h3 className="font-bold text-navy-800 group-hover:text-sky-600">{o[L].short}</h3>

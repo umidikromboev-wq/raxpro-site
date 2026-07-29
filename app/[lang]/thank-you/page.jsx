@@ -1,12 +1,23 @@
 import React from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import { T, normalizeLang } from "../../lib/i18n";
-import { cookies } from "next/headers";
+import { alternatesFor, href, absHref, LANGS } from "../../../lib/lang";
+import Header from "../../../components/Header";
+import Footer from "../../../components/Footer";
+import { T, normalizeLang } from "../../../lib/i18n";
 
-export default async function ThankYouPage() {
-  const store = await cookies();
-  const L = normalizeLang(store.get("lang")?.value);
+const TY_META = {
+  ru: { title: 'Заявка принята — RAXPRO', description: 'Спасибо за заявку. Свяжемся с вами в ближайшее время.' },
+  uz: { title: 'Ariza qabul qilindi — RAXPRO', description: 'Ariza uchun rahmat. Tez orada siz bilan bogʻlanamiz.' },
+};
+
+// Страница благодарности не должна попадать в выдачу: её адрес не является
+// точкой входа и в поиске он только путает.
+export async function generateMetadata({ params }) {
+  const L = normalizeLang((await params).lang);
+  return { ...TY_META[L], robots: { index: false, follow: false }, alternates: alternatesFor('/thank-you', L) };
+}
+
+export default async function ThankYouPage({ params }) {
+  const L = normalizeLang((await params).lang);
   const t = T[L];
 
   return (
@@ -51,7 +62,7 @@ export default async function ThankYouPage() {
 
           {/* Bosh sahifaga qaytish tugmasi */}
           <a
-            href="/"
+            href={href(L, "/")}
             className="inline-flex items-center justify-center w-full py-4 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-medium text-base shadow-glow hover:shadow-lg transition-all duration-300 transform active:scale-[0.98]"
           >
             {t.backToHome || "Bosh sahifaga qaytish"}

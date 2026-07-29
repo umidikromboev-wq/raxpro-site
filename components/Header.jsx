@@ -1,13 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { SITE } from "../lib/site";
 import { NAV_T, T, normalizeLang } from "../lib/i18n";
 import { IcoTg, IcoPhone } from "./Icons";
+import { href, switchLangPath } from "../lib/lang";
 
 export default function Header({ lang = "ru" }) {
   const L = normalizeLang(lang);
   const nav = NAV_T[L];
   const tr = T[L];
+  const pathname = usePathname();
+  const home = href(L, "/");
+  // Пункты-якоря ведут на главную своего языка, разделы — на её подстраницы.
+  const navHref = (h) => (h.startsWith("/#") ? home + h.slice(1) : href(L, h));
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -18,24 +24,21 @@ export default function Header({ lang = "ru" }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  function switchLang(next) {
-    if (next === L) return;
-    document.cookie = `lang=${next};path=/;max-age=31536000`;
-    window.location.reload();
-  }
-
+  // Переключатель — обычные ссылки на тот же путь с другим языковым
+  // префиксом: их видит поисковик и можно открыть в новой вкладке.
   const LangToggle = ({ className = "" }) => (
     <div
       className={`flex items-center rounded-lg border border-white/20 overflow-hidden text-sm ${className}`}
     >
       {["ru", "uz"].map((l) => (
-        <button
+        <a
           key={l}
-          onClick={() => switchLang(l)}
+          href={switchLangPath(pathname, l)}
+          hrefLang={l}
           className={`px-2.5 py-1.5 font-semibold uppercase transition ${L === l ? "bg-white text-navy-800" : "text-white/80 hover:text-white"}`}
         >
           {l}
-        </button>
+        </a>
       ))}
     </div>
   );
@@ -47,11 +50,11 @@ export default function Header({ lang = "ru" }) {
           className={`relative bg-navy-900/90 flex items-center gap-4 h-16 rounded-2xl px-4 sm:px-5 border transition-all ${scrolled ? "bg-navy-900/90 backdrop-blur-md border-white/10 shadow-band" : "bg-navy-900/90 backdrop-blur-md border-white/15"}`}
         >
           <a
-            href="/"
+            href={home}
             className="flex items-center shrink-0"
             aria-label="RAXPRO"
           >
-            <img
+            <img loading="lazy" decoding="async"
               src="/brand/raxpro-logo-white.png"
               alt="RAXPRO"
               className="h-8 w-auto"
@@ -62,7 +65,7 @@ export default function Header({ lang = "ru" }) {
             {nav.map((n) => (
               <a
                 key={n.href}
-                href={n.href}
+                href={navHref(n.href)}
                 className="hover:text-sky-300 transition-colors whitespace-nowrap"
               >
                 {n.label}
@@ -89,7 +92,7 @@ export default function Header({ lang = "ru" }) {
               <IcoTg className="w-5 h-5" />
             </a>
             <a
-              href="#zayavka"
+              href={home + "#zayavka"}
               className="btn-11 hidden lg:inline-flex text-sm font-medium px-5 py-2.5 rounded-xl bg-white/12 !border !border-white/20 text-white hover:bg-white hover:text-navy-800 transition backdrop-blur-sm whitespace-nowrap"
             >
               {tr.consult}
@@ -124,7 +127,7 @@ export default function Header({ lang = "ru" }) {
               {nav.map((n) => (
                 <a
                   key={n.href}
-                  href={n.href}
+                  href={navHref(n.href)}
                   onClick={() => setOpen(false)}
                   className="py-3 text-white/90 font-medium"
                 >
@@ -143,7 +146,7 @@ export default function Header({ lang = "ru" }) {
               <LangToggle />
             </div>
             <a
-              href="#zayavka"
+              href={home + "#zayavka"}
               onClick={() => setOpen(false)}
               className="mt-3 block bg-brand-grad text-white text-center font-semibold px-5 py-3 rounded-xl"
             >

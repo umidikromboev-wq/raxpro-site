@@ -1,25 +1,30 @@
 import { ARTICLES } from '../lib/articles';
 import { DIRECTIONS } from '../lib/directions';
+import { LANGS, LANG_DEFAULT } from '../lib/i18n';
+import { absHref } from '../lib/lang';
 
-const BASE = 'https://raxpro.uz';
+// У каждой страницы два адреса — /ru/… и /uz/…. Каждая запись несёт полный
+// взаимный набор hreflang, чтобы поисковик связал версии между собой,
+// а не счёл их дублями.
+function entry(path, lastModified, changeFrequency, priority) {
+  const languages = Object.fromEntries(LANGS.map((l) => [l, absHref(l, path)]));
+  const alternates = { languages: { ...languages, 'x-default': absHref(LANG_DEFAULT, path) } };
+  return LANGS.map((lang) => ({
+    url: absHref(lang, path),
+    lastModified,
+    changeFrequency,
+    priority,
+    alternates,
+  }));
+}
 
 export default function sitemap() {
-  const now = new Date('2026-07-02');
-  const pages = [
-    { url: `${BASE}/`, changeFrequency: 'weekly', priority: 1 },
-    { url: `${BASE}/blog`, changeFrequency: 'weekly', priority: 0.8 },
+  const now = new Date('2026-07-29');
+  return [
+    ...entry('/', now, 'weekly', 1),
+    ...entry('/blog', now, 'weekly', 0.8),
+    ...entry('/experts', now, 'monthly', 0.6),
+    ...DIRECTIONS.flatMap((d) => entry(`/napravleniya/${d.slug}`, now, 'monthly', 0.9)),
+    ...ARTICLES.flatMap((a) => entry(`/blog/${a.slug}`, new Date(a.date), 'monthly', 0.7)),
   ];
-  const dirs = DIRECTIONS.map((d) => ({
-    url: `${BASE}/napravleniya/${d.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly',
-    priority: 0.9,
-  }));
-  const posts = ARTICLES.map((a) => ({
-    url: `${BASE}/blog/${a.slug}`,
-    lastModified: new Date(a.date),
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }));
-  return [...pages.map((p) => ({ ...p, lastModified: now })), ...dirs, ...posts];
 }

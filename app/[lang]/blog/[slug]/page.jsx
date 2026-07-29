@@ -1,23 +1,29 @@
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import Header from "../../../components/Header";
-import Footer from "../../../components/Footer";
-import LeadForm from "../../../components/LeadForm";
-import { getArticle, getAllArticles, localize } from "../../../lib/articles";
-import { normalizeLang, BLOG_UI, MONTHS } from "../../../lib/i18n";
-import { IcoArrow, IcoClock, IcoCheck } from "../../../components/Icons";
+import { alternatesFor, href, absHref, LANGS } from "../../../../lib/lang";
+import { breadcrumbSchema, JsonLd } from "../../../../lib/schema";
+import Header from "../../../../components/Header";
+import Footer from "../../../../components/Footer";
+import LeadForm from "../../../../components/LeadForm";
+import { getArticle, getAllArticles, localize } from "../../../../lib/articles";
+import { normalizeLang, BLOG_UI, MONTHS } from "../../../../lib/i18n";
+import { IcoArrow, IcoClock, IcoCheck } from "../../../../components/Icons";
+
+// Все статьи на обоих языках собираются заранее — это статические страницы.
+export function generateStaticParams() {
+  return LANGS.flatMap((lang) => getAllArticles().map((a) => ({ lang, slug: a.slug })));
+}
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  const { slug, lang } = await params;
   let a = getArticle(slug);
   if (!a) return { title: "Статья не найдена | RAXPRO" };
-  const L = normalizeLang((await cookies()).get("lang")?.value);
+  const L = normalizeLang(lang);
   a = localize(a, L);
   return {
     title: `${a.title} | RAXPRO`,
     description: a.excerpt,
     keywords: a.keywords?.join(", "),
-    alternates: { canonical: `/blog/${a.slug}` },
+    alternates: alternatesFor(`/blog/${a.slug}`, L),
     openGraph: {
       title: a.title,
       description: a.excerpt,
@@ -32,7 +38,7 @@ function formatDate(d, lang) {
   return `${parseInt(day, 10)} ${MONTHS[lang][parseInt(m, 10) - 1]} ${y}`;
 }
 
-function Block({ b, cta }) {
+function Block({ b, cta, ctaHref }) {
   // Matnli kontentni HTML sifatida chiqarish uchun yordamchi funksiya
   const renderHtml = (content) => ({ __html: content });
 
@@ -69,7 +75,7 @@ function Block({ b, cta }) {
           />
         </div>
         <a
-          href="/#zayavka"
+          href={ctaHref}
           className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-6 py-3 rounded-xl shrink-0"
         >
           {cta} <IcoArrow className="w-5 h-5" />
@@ -82,10 +88,10 @@ function Block({ b, cta }) {
 }
 
 export default async function ArticlePage({ params }) {
-  const { slug } = await params;
+  const { slug, lang } = await params;
   let a = getArticle(slug);
   if (!a) notFound();
-  const L = normalizeLang((await cookies()).get("lang")?.value);
+  const L = normalizeLang(lang);
   const ui = BLOG_UI[L];
   a = localize(a, L);
   const related = getAllArticles()
@@ -100,22 +106,27 @@ export default async function ArticlePage({ params }) {
     description: a.excerpt,
     image: a.cover,
     datePublished: a.date,
+    inLanguage: L,
+    mainEntityOfPage: absHref(L, `/blog/${a.slug}`),
     author: { "@type": "Organization", name: "RAXPRO" },
     publisher: { "@type": "Organization", name: "RAXPRO" },
   };
+  const crumbs = breadcrumbSchema(L, [
+    { name: ui.home, path: "/" },
+    { name: ui.blog, path: "/blog" },
+    { name: a.title, path: `/blog/${a.slug}` },
+  ]);
 
   return (
     <div className="bg-white text-ink">
       <Header lang={L} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={crumbs} />
 
       {/* HERO */}
       <section className="relative pt-24 bg-navy-900 text-white overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <img loading="lazy" decoding="async"
             src={a.cover}
             alt={a.title}
             className="w-full h-full object-cover opacity-25"
@@ -124,11 +135,11 @@ export default async function ArticlePage({ params }) {
         </div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 py-14 sm:py-16">
           <nav className="text-sm text-cloud-200/60 mb-4">
-            <a href="/" className="hover:text-sky-400">
+            <a href={href(L, "/")} className="hover:text-sky-400">
               {ui.home}
             </a>{" "}
             <span className="mx-1">/</span>
-            <a href="/blog" className="hover:text-sky-400">
+            <a href={href(L, "/blog")} className="hover:text-sky-400">
               {" "}
               {ui.news}
             </a>{" "}
@@ -155,7 +166,7 @@ export default async function ArticlePage({ params }) {
       <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-14">
         <div className="prose-article">
           {a.body.map((b, i) => (
-            <Block key={i} b={b} cta={ui.leaveReq} />
+            <Block key={i} b={b} cta={ui.leaveReq} ctaHref={href(L, "/") + "#zayavka"} />
           ))}
         </div>
       </article>
@@ -182,11 +193,11 @@ export default async function ArticlePage({ params }) {
           {related.map((r) => (
             <a
               key={r.slug}
-              href={`/blog/${r.slug}`}
+              href={href(L, `/blog/${r.slug}`)}
               className="group block rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition"
             >
               <div className="aspect-[16/9] overflow-hidden bg-cloud-100">
-                <img
+                <img loading="eager" fetchPriority="high" decoding="async"
                   src={r.cover}
                   alt={r.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"

@@ -1,16 +1,33 @@
 import React from "react";
-import { cookies } from "next/headers";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import { T, normalizeLang } from "../../lib/i18n";
-import { Eyebrow } from "../../components/Section";
-import Reveal from "../../components/Reveal";
-import { IcoArrow } from "../../components/Icons";
-import SpecialistsSection from "../../components/SpecialistsSection";
+import { alternatesFor, href, absHref, LANGS } from "../../../lib/lang";
+import Header from "../../../components/Header";
+import Footer from "../../../components/Footer";
+import { T, normalizeLang } from "../../../lib/i18n";
+import { Eyebrow } from "../../../components/Section";
+import Reveal from "../../../components/Reveal";
+import { IcoArrow } from "../../../components/Icons";
+import SpecialistsSection from "../../../components/SpecialistsSection";
 
-export default async function Page() {
-  const store = await cookies();
-  const L = normalizeLang(store.get("lang")?.value);
+const EXPERTS_META = {
+  ru: {
+    title: 'Специалисты RAXPRO — команда инженеров и монтажников | Ташкент',
+    description:
+      'Кто проектирует, производит и монтирует ваши стеллажи: инженеры, замерщики и монтажные бригады RAXPRO. Сертификаты ISO, гарантия 10 лет, 1000+ выполненных проектов.',
+  },
+  uz: {
+    title: 'RAXPRO mutaxassislari — muhandis va montajchilar jamoasi | Toshkent',
+    description:
+      'Stellajlaringizni kim loyihalaydi, ishlab chiqaradi va oʻrnatadi: RAXPRO muhandislari, oʻlchovchilari va montaj brigadalari. ISO sertifikatlari, 10 yil kafolat, 1000+ loyiha.',
+  },
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const L = normalizeLang((await params).lang) as 'ru' | 'uz';
+  return { ...EXPERTS_META[L], alternates: alternatesFor('/experts', L) };
+}
+
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const L = normalizeLang((await params).lang);
   const t = T[L];
 
   // Sertifikatlar uchun testiviy ma'lumotlar massivi
@@ -83,7 +100,7 @@ export default async function Page() {
                 gap: "24px",
               }}
             >
-              <h2
+              <h1
                 className="rax-title"
                 style={{
                   fontFamily: "Inter, sans-serif",
@@ -100,7 +117,7 @@ export default async function Page() {
                   (L === "uz"
                     ? "Muhandislari va Mutaxassislari"
                     : "Инженеры и Специалисты")}
-              </h2>
+              </h1>
 
               <p
                 className="rax-desc"
@@ -181,7 +198,7 @@ export default async function Page() {
                     borderRadius: "20px",
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/images/head1.png"
                     alt=""
                     style={{
@@ -199,7 +216,7 @@ export default async function Page() {
                     borderRadius: "20px",
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/images/head2.png"
                     alt=""
                     style={{
@@ -227,7 +244,7 @@ export default async function Page() {
                     borderRadius: "20px",
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/images/head3.png"
                     alt=""
                     style={{
@@ -245,7 +262,7 @@ export default async function Page() {
                     borderRadius: "20px",
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/images/head4.png"
                     alt=""
                     style={{
@@ -275,7 +292,7 @@ export default async function Page() {
                     borderRadius: "25px",
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/images/head1.png"
                     alt=""
                     style={{
@@ -293,7 +310,7 @@ export default async function Page() {
                     borderRadius: "25px",
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/images/head2.png"
                     alt=""
                     style={{
@@ -321,7 +338,7 @@ export default async function Page() {
                     borderRadius: "25px",
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/images/head3.png"
                     alt=""
                     style={{
@@ -339,7 +356,7 @@ export default async function Page() {
                     borderRadius: "25px",
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/images/head4.png"
                     alt=""
                     style={{
