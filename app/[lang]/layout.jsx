@@ -5,13 +5,20 @@ import FloatingContact from "../../components/FloatingContact";
 import SmoothScroll from "../../components/SmoothScroll";
 import ScrollProgress from "../../components/ScrollProgress";
 import MobileCta from "../../components/MobileCta";
-import { alternatesFor, normalizeLang, href, LANGS, SITE_ORIGIN } from "../../lib/lang";
+import {
+  alternatesFor,
+  normalizeLang,
+  href,
+  LANGS,
+  SITE_ORIGIN,
+} from "../../lib/lang";
 
 const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
   variable: "--font-manrope",
   display: "swap",
 });
+
 const onest = Onest({
   subsets: ["latin", "cyrillic"],
   weight: ["300", "400", "500", "600"],
@@ -50,40 +57,129 @@ export function generateStaticParams() {
   return LANGS.map((lang) => ({ lang }));
 }
 
-// Неизвестный языковой префикс — 404, а не «русская страница по адресу /en».
 export const dynamicParams = false;
 
 export async function generateMetadata({ params }) {
   const L = normalizeLang((await params).lang);
-  const m = HOME_META[L];
+  const m = HOME_META[L] || HOME_META.ru;
+
   return {
     metadataBase: new URL(SITE_ORIGIN),
     title: m.title,
     description: m.description,
     keywords: m.keywords,
-    authors: [{ name: "RAXPRO" }],
+    authors: [{ name: "RAXPRO", url: SITE_ORIGIN }],
+    creator: "RAXPRO",
+    publisher: "RAXPRO",
+    formatDetection: {
+      telephone: true,
+      address: true,
+      email: true,
+    },
+    icons: {
+      icon: [
+        { url: "/favicon.ico" },
+        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      ],
+      apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+      shortcut: ["/favicon.ico"],
+    },
+    manifest: "/site.webmanifest",
     openGraph: {
       title: m.ogTitle,
       description: m.ogDescription,
-      type: "website",
-      locale: m.ogLocale,
+      url: `${SITE_ORIGIN}/${L}`,
       siteName: "RAXPRO",
+      locale: m.ogLocale,
+      type: "website",
+      images: [
+        {
+          url: `${SITE_ORIGIN}/works/hero.jpg`,
+          width: 1200,
+          height: 630,
+          alt: m.ogTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: m.ogTitle,
+      description: m.ogDescription,
+      images: [`${SITE_ORIGIN}/og-image.jpg`],
     },
     alternates: alternatesFor("/", L),
-    robots: { index: true, follow: true },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     other: {
       "google-site-verification": "3j10nRub3ShhVaxFP7G4_ant8G7QzhxdrBAIJqabAaw",
     },
   };
 }
 
-export const viewport = { themeColor: "#00a2eb" };
+export const viewport = {
+  themeColor: "#00a2eb",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export default async function RootLayout({ children, params }) {
   const lang = normalizeLang((await params).lang);
+
+  // Schema.org structured data (JSON-LD) for LocalBusiness/Organization
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "RAXPRO",
+    image: `${SITE_ORIGIN}/works/hero.jpg`,
+    "@id": SITE_ORIGIN,
+    url: SITE_ORIGIN,
+    telephone: "+998785551555", // Haqiqiy raqamingiz bilan almashtiring
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Tashkent City",
+      addressLocality: "Tashkent",
+      addressCountry: "UZ",
+    },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "08:00",
+      closes: "21:00",
+    },
+    sameAs: [
+      "https://www.instagram.com/raxpro_stellaj/", // Ijtimoiy tarmoq tarmoqlaringiz
+      "https://t.me/raxproo",
+    ],
+  };
+
   return (
     <html lang={lang} className={`${manrope.variable} ${onest.variable}`}>
       <head>
+        {/* Schema.org Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+
         {/* Google Tag Manager - Head Script */}
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -93,6 +189,7 @@ export default async function RootLayout({ children, params }) {
           })(window,document,'script','dataLayer','GTM-W25KKCT7');`}
         </Script>
 
+        {/* Google Analytics GA4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-XZ0K3N301W"
           strategy="afterInteractive"
@@ -106,6 +203,7 @@ export default async function RootLayout({ children, params }) {
           `}
         </Script>
 
+        {/* Phone Click Tracker */}
         <Script id="phone-click-tracker" strategy="afterInteractive">
           {`
             document.addEventListener("click", function(e) {
@@ -122,7 +220,7 @@ export default async function RootLayout({ children, params }) {
         </Script>
       </head>
       <body>
-        {/* Google Tag Manager (noscript) - Body Element */}
+        {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-W25KKCT7"
@@ -136,7 +234,7 @@ export default async function RootLayout({ children, params }) {
         <ScrollProgress />
         {children}
         <FloatingContact />
-        <MobileCta lang={lang} calcHref={href(lang, '/') + '#kalkulyator'} />
+        <MobileCta lang={lang} calcHref={href(lang, "/") + "#kalkulyator"} />
       </body>
     </html>
   );
