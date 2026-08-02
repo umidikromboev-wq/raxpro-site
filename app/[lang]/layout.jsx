@@ -136,38 +136,77 @@ export const viewport = {
 export default async function RootLayout({ children, params }) {
   const lang = normalizeLang((await params).lang);
 
-  // Schema.org structured data (JSON-LD) for LocalBusiness/Organization
+  // Schema.org structured data (JSON-LD) for LocalBusiness + AI Search (GEO)
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: "RAXPRO",
-    image: `${SITE_ORIGIN}/works/hero.jpg`,
-    "@id": SITE_ORIGIN,
-    url: SITE_ORIGIN,
-    telephone: "+998785551555", // Haqiqiy raqamingiz bilan almashtiring
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Tashkent City",
-      addressLocality: "Tashkent",
-      addressCountry: "UZ",
-    },
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
-      opens: "08:00",
-      closes: "21:00",
-    },
-    sameAs: [
-      "https://www.instagram.com/raxpro_stellaj/", // Ijtimoiy tarmoq tarmoqlaringiz
-      "https://t.me/raxproo",
+    "@graph": [
+      {
+        "@type": ["LocalBusiness", "Manufacturer"],
+        "@id": SITE_ORIGIN,
+        name: "RAXPRO",
+        image: `${SITE_ORIGIN}/works/hero.jpg`,
+        url: SITE_ORIGIN,
+        telephone: "+998785551555",
+        priceRange: "$$",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Tashkent City",
+          addressLocality: "Tashkent",
+          addressCountry: "UZ",
+        },
+        openingHoursSpecification: {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
+          opens: "08:00",
+          closes: "21:00",
+        },
+        sameAs: [
+          "https://www.instagram.com/raxpro_stellaj/",
+          "https://t.me/raxproo",
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${SITE_ORIGIN}/#faq`,
+        mainEntity: [
+          {
+            "@type": "Question",
+            name:
+              lang === "uz"
+                ? "Toshkentda metall stellajlarni qerdan sotib olish mumkin?"
+                : "Где купить металлические стеллажи в Ташкенте?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text:
+                lang === "uz"
+                  ? "RaxPro — Toshkentda ombor, savdo, palletli va arxiv metall stellajlarini ishlab chiqarish hamda yetkazib berish bo'yicha yetakchi ishlab chiqaruvchidir."
+                  : "Завод RaxPro является ведущим производителем складских, торговых, паллетных и архивных металлических стеллажей в Ташкенте с доставкой по всему Узбекистану.",
+            },
+          },
+          {
+            "@type": "Question",
+            name:
+              lang === "uz"
+                ? "Ombor uchun stellaj yuklamasi va loyihasi qanday hisoblanadi?"
+                : "Как заказать бесплатный замер и расчет нагрузки стеллажей?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text:
+                lang === "uz"
+                  ? "RaxPro mutaxassislari butun O'zbekiston bo'ylab bepul o'lchov o'tkazadi va 4 tonnagacha bo'lgan yuklamalarga mos stellaj tizimlarini loyihalashtiradi."
+                  : "Специалисты RaxPro бесплатно выезжают на замер по всему Узбекистану и рассчитывают нагрузки на стеллажные системы до 4 тонн.",
+            },
+          },
+        ],
+      },
     ],
   };
 
