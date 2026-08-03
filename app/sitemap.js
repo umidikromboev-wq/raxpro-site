@@ -1,5 +1,7 @@
 import { ARTICLES } from '../lib/articles';
 import { DIRECTIONS } from '../lib/directions';
+import { PRODUCTS } from '../lib/products';
+import { POLICY_SLUGS } from '../lib/policies';
 import { LANGS, LANG_DEFAULT } from '../lib/i18n';
 import { absHref } from '../lib/lang';
 
@@ -19,9 +21,14 @@ function entry(path, lastModified, changeFrequency, priority) {
 }
 
 export default function sitemap() {
-  const now = new Date('2026-07-29');
+  const now = new Date('2026-08-03');
   return [
     ...entry('/', now, 'weekly', 1),
+    ...entry('/katalog', now, 'weekly', 0.95),
+    ...PRODUCTS.flatMap((p) => entry(`/katalog/${p.slug}`, now, 'weekly', 0.9)),
+    ...entry('/o-kompanii', now, 'monthly', 0.7),
+    ...entry('/kontakty', now, 'monthly', 0.7),
+    ...POLICY_SLUGS.flatMap((s) => entry(`/${s}`, now, 'yearly', 0.4)),
     ...entry('/blog', now, 'weekly', 0.8),
     ...entry('/experts', now, 'monthly', 0.6),
     ...DIRECTIONS.flatMap((d) => entry(`/napravleniya/${d.slug}`, now, 'monthly', 0.9)),

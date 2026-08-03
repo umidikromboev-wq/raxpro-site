@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { SITE } from "../lib/site";
 import { NAV_T, T, normalizeLang } from "../lib/i18n";
 import { IcoTg, IcoPhone } from "./Icons";
+import CartLink from "./CartLink";
 import { href, switchLangPath } from "../lib/lang";
 
 export default function Header({ lang = "ru" }) {
@@ -61,7 +62,9 @@ export default function Header({ lang = "ru" }) {
             />
           </a>
 
-          <nav className="hidden xl:flex flex-1 items-center justify-center gap-6 text-[15px] font-normal text-white/85">
+          {/* gap ужат: в меню появился «Каталог», при gap-6 восьмой пункт
+              наезжал на телефон на 1440. */}
+          <nav className="hidden xl:flex flex-1 items-center justify-center gap-4 2xl:gap-5 text-[14px] 2xl:text-[15px] font-normal text-white/85">
             {nav.map((n) => (
               <a
                 key={n.href}
@@ -87,10 +90,11 @@ export default function Header({ lang = "ru" }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Telegram"
-              className="hidden sm:grid place-items-center w-10 h-10 rounded-xl bg-white/12 border border-white/15 text-white hover:bg-sky-500 hover:border-sky-500 transition"
+              className="hidden md:grid place-items-center w-10 h-10 rounded-xl bg-white/12 border border-white/15 text-white hover:bg-sky-500 hover:border-sky-500 transition"
             >
               <IcoTg className="w-5 h-5" />
             </a>
+            <CartLink lang={L} />
             <a
               href={home + "#zayavka"}
               className="btn-11 hidden lg:inline-flex text-sm font-medium px-5 py-2.5 rounded-xl bg-white/12 !border !border-white/20 text-white hover:bg-white hover:text-navy-800 transition backdrop-blur-sm whitespace-nowrap"

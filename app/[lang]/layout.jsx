@@ -5,6 +5,7 @@ import FloatingContact from "../../components/FloatingContact";
 import SmoothScroll from "../../components/SmoothScroll";
 import ScrollProgress from "../../components/ScrollProgress";
 import MobileCta from "../../components/MobileCta";
+import { CartProvider } from "../../components/CartProvider";
 import {
   alternatesFor,
   normalizeLang,
@@ -271,9 +272,13 @@ export default async function RootLayout({ children, params }) {
 
         <SmoothScroll />
         <ScrollProgress />
-        {children}
-        <FloatingContact />
-        <MobileCta lang={lang} calcHref={href(lang, "/") + "#kalkulyator"} />
+        {/* Корзина общая для всех страниц языка: счётчик в шапке должен
+            переживать переходы между каталогом и карточкой товара. */}
+        <CartProvider>
+          {children}
+          <FloatingContact />
+          <MobileCta lang={lang} calcHref={href(lang, "/") + "#kalkulyator"} />
+        </CartProvider>
       </body>
     </html>
   );

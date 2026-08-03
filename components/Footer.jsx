@@ -9,12 +9,30 @@ const FT = {
     sections: 'Разделы', products: 'Продукция', contacts: 'Контакты',
     prod: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи', 'Набивные (Drive-in) стеллажи'],
     rights: 'Все права защищены.', tail: 'Стеллажи и системы хранения · Ташкент, Узбекистан', madeBy: 'Сделано в', reviews: 'Отзывы',
+    info: 'Покупателю',
+    infoLinks: [
+      { label: 'Каталог с ценами', href: '/katalog' },
+      { label: 'Доставка и оплата', href: '/dostavka-i-oplata' },
+      { label: 'Возврат и обмен', href: '/vozvrat-i-obmen' },
+      { label: 'Публичная оферта', href: '/publichnaya-oferta' },
+      { label: 'О компании', href: '/o-kompanii' },
+      { label: 'Контакты', href: '/kontakty' },
+    ],
   },
   uz: {
     tagline: 'Toʻliq sikl stellajlar va saqlash tizimlari. Butun Oʻzbekiston boʻylab oʻlchov, loyihalash, ishlab chiqarish va montaj.',
     sections: 'Boʻlimlar', products: 'Mahsulotlar', contacts: 'Aloqa',
     prod: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari', 'Zich (Drive-in) stellajlar'],
     rights: 'Barcha huquqlar himoyalangan.', tail: 'Stellajlar va saqlash tizimlari · Toshkent, Oʻzbekiston', madeBy: 'Ishlab chiqildi', reviews: 'Sharhlar',
+    info: 'Xaridorga',
+    infoLinks: [
+      { label: 'Narxlar bilan katalog', href: '/katalog' },
+      { label: 'Yetkazib berish va toʻlov', href: '/dostavka-i-oplata' },
+      { label: 'Qaytarish va almashtirish', href: '/vozvrat-i-obmen' },
+      { label: 'Ommaviy oferta', href: '/publichnaya-oferta' },
+      { label: 'Kompaniya haqida', href: '/o-kompanii' },
+      { label: 'Aloqa', href: '/kontakty' },
+    ],
   },
 };
 
@@ -35,7 +53,7 @@ export default function Footer({ lang = 'ru' }) {
 
   return (
     <footer className="bg-navy-900 text-cloud-200">
-      <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 grid gap-10 md:grid-cols-4">
+      <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 grid gap-10 md:grid-cols-3 xl:grid-cols-5">
         <div className="md:col-span-1">
           <div className="bg-white inline-block rounded-lg px-3 py-2">
             <img loading="lazy" decoding="async" src="/brand/raxpro-logo.png" alt="RAXPRO" className="h-9 w-auto" />
@@ -60,6 +78,21 @@ export default function Footer({ lang = 'ru' }) {
           <h4 className="text-white font-semibold mb-4">{t.products}</h4>
           <ul className="space-y-2.5 text-sm text-cloud-200/70">
             {t.prod.map((p, i) => <li key={p}><a href={href(L, PROD_HREFS[i])} className="hover:text-sky-400">{p}</a></li>)}
+          </ul>
+        </div>
+
+        {/* Требование Merchant Center: доставка, возврат, оферта и контакты
+            должны быть доступны с любой страницы. */}
+        <div>
+          <h4 className="text-white font-semibold mb-4">{t.info}</h4>
+          <ul className="space-y-2.5 text-sm text-cloud-200/70">
+            {t.infoLinks.map((l) => (
+              <li key={l.href}>
+                <a href={href(L, l.href)} className="hover:text-sky-400">
+                  {l.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
