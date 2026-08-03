@@ -1,15 +1,19 @@
-import { notFound } from 'next/navigation';
-import Header from '../../../../components/Header';
-import Footer from '../../../../components/Footer';
-import AddToCart from '../../../../components/AddToCart';
-import LeadForm from '../../../../components/LeadForm';
-import { IcoCheck, IcoArrow } from '../../../../components/Icons';
-import { PRODUCTS, getProduct, formatPrice } from '../../../../lib/products';
-import { getDirection } from '../../../../lib/directions';
-import { SHOP } from '../../../../lib/shop';
-import { normalizeLang } from '../../../../lib/i18n';
-import { alternatesFor, href, LANGS } from '../../../../lib/lang';
-import { breadcrumbSchema, productOfferSchema, JsonLd } from '../../../../lib/schema';
+import { notFound } from "next/navigation";
+import Header from "../../../../components/Header";
+import Footer from "../../../../components/Footer";
+import AddToCart from "../../../../components/AddToCart";
+import LeadForm from "../../../../components/LeadForm";
+import { IcoCheck, IcoArrow } from "../../../../components/Icons";
+import { PRODUCTS, getProduct, formatPrice } from "../../../../lib/products";
+import { getDirection } from "../../../../lib/directions";
+import { SHOP } from "../../../../lib/shop";
+import { normalizeLang } from "../../../../lib/i18n";
+import { alternatesFor, href, LANGS } from "../../../../lib/lang";
+import {
+  breadcrumbSchema,
+  productOfferSchema,
+  JsonLd,
+} from "../../../../lib/schema";
 
 export function generateStaticParams() {
   return LANGS.flatMap((lang) => PRODUCTS.map((p) => ({ lang, slug: p.slug })));
@@ -18,14 +22,19 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug, lang } = await params;
   const p = getProduct(slug);
-  if (!p) return { title: 'Страница не найдена | RAXPRO' };
+  if (!p) return { title: "Страница не найдена | RAXPRO" };
   const L = normalizeLang(lang);
   const c = p[L];
   return {
     title: c.seoTitle,
     description: c.seoDesc,
     alternates: alternatesFor(`/katalog/${p.slug}`, L),
-    openGraph: { title: c.seoTitle, description: c.seoDesc, type: 'website', images: [p.image] },
+    openGraph: {
+      title: c.seoTitle,
+      description: c.seoDesc,
+      type: "website",
+      images: [p.image],
+    },
   };
 }
 
@@ -41,8 +50,8 @@ export default async function ProductPage({ params }) {
   const others = PRODUCTS.filter((x) => x.slug !== p.slug);
 
   const crumbs = breadcrumbSchema(L, [
-    { name: t.home, path: '/' },
-    { name: t.catalog, path: '/katalog' },
+    { name: t.home, path: "/" },
+    { name: t.catalog, path: "/katalog" },
     { name: c.short, path: `/katalog/${p.slug}` },
   ]);
 
@@ -55,11 +64,11 @@ export default async function ProductPage({ params }) {
       <div className="pt-24">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-5">
           <nav className="text-sm text-slate-400">
-            <a href={href(L, '/')} className="hover:text-sky-600">
+            <a href={href(L, "/")} className="hover:text-sky-600">
               {t.home}
             </a>
             <span className="mx-1.5">/</span>
-            <a href={href(L, '/katalog')} className="hover:text-sky-600">
+            <a href={href(L, "/katalog")} className="hover:text-sky-600">
               {t.catalog}
             </a>
             <span className="mx-1.5">/</span>
@@ -124,7 +133,9 @@ export default async function ProductPage({ params }) {
           <div className="mt-7 rounded-xl2 border border-cloud-200 bg-white shadow-card p-6">
             <div className="text-sm text-slate-400">{t.from}</div>
             <div className="font-display font-medium text-4xl text-navy-800 mt-1">
-              {formatPrice(p.price, L)}
+              {L === "ru"
+                ? `от ${formatPrice(p.price, L)}`
+                : `${formatPrice(p.price, L)} dan boshlanadi`}
             </div>
             <div className="mt-2 text-sm text-slate-500">{t.madeDays}</div>
 
@@ -142,7 +153,10 @@ export default async function ProductPage({ params }) {
 
             <ul className="mt-6 space-y-2.5 border-t border-cloud-200 pt-5">
               {t.included.map((i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
+                <li
+                  key={i}
+                  className="flex items-start gap-2.5 text-sm text-slate-700"
+                >
                   <span className="w-5 h-5 rounded-full bg-sky-600/10 text-sky-600 grid place-items-center shrink-0 mt-0.5">
                     <IcoCheck className="w-3.5 h-3.5" />
                   </span>
@@ -152,8 +166,11 @@ export default async function ProductPage({ params }) {
             </ul>
 
             <p className="mt-5 text-sm text-slate-500 leading-relaxed">
-              {t.deliveryShort}{' '}
-              <a href={href(L, '/dostavka-i-oplata')} className="text-sky-600 hover:underline">
+              {t.deliveryShort}{" "}
+              <a
+                href={href(L, "/dostavka-i-oplata")}
+                className="text-sky-600 hover:underline"
+              >
                 {t.delivery}
               </a>
             </p>
@@ -169,7 +186,10 @@ export default async function ProductPage({ params }) {
           </h2>
           <dl className="mt-5 rounded-xl2 border border-cloud-200 bg-white shadow-card divide-y divide-cloud-200">
             {c.specs.map((s) => (
-              <div key={s.k} className="flex items-baseline justify-between gap-4 px-5 py-3.5">
+              <div
+                key={s.k}
+                className="flex items-baseline justify-between gap-4 px-5 py-3.5"
+              >
                 <dt className="text-slate-500">{s.k}</dt>
                 <dd className="font-medium text-navy-800 text-right">{s.v}</dd>
               </div>
@@ -199,7 +219,9 @@ export default async function ProductPage({ params }) {
               className="group mt-7 flex items-center justify-between gap-4 rounded-xl2 bg-cloud-50 border border-cloud-200 p-5 hover:border-sky-400 transition"
             >
               <div>
-                <div className="text-xs font-semibold text-sky-600">{t.aboutType}</div>
+                <div className="text-xs font-semibold text-sky-600">
+                  {t.aboutType}
+                </div>
                 <div className="font-bold text-navy-800 mt-1 group-hover:text-sky-600">
                   {direction[L].name}
                 </div>
@@ -218,7 +240,9 @@ export default async function ProductPage({ params }) {
             <h2 className="font-display font-medium text-3xl sm:text-4xl tracking-tight">
               {t.otherSize}
             </h2>
-            <p className="mt-4 text-cloud-200/80 max-w-lg leading-relaxed">{t.otherSizeText}</p>
+            <p className="mt-4 text-cloud-200/80 max-w-lg leading-relaxed">
+              {t.otherSizeText}
+            </p>
           </div>
           <div className="w-full max-w-md lg:justify-self-end">
             <LeadForm lang={L} />
