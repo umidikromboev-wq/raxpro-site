@@ -5,7 +5,7 @@ import { SITE } from "../lib/site";
 
 const FT = {
   ru: {
-    name: "Ваше имя",
+    name: "Ваше имя *",
     phone: "Телефон (например: +998 90 123 45 67) *",
     phoneErr: "Введите корректный номер Узбекистана (+998XXXXXXXXX)",
     selectDefault: "Тип стеллажей (необязательно)",
@@ -24,7 +24,7 @@ const FT = {
     altContact: "Не любите звонки? Напишите в",
   },
   uz: {
-    name: "Ismingiz",
+    name: "Ismingiz *",
     phone: "Telefon (masalan: +998 90 123 45 67) *",
     phoneErr: "Oʻzbekiston telefon raqamini toʻgʻri kiriting (+998XXXXXXXXX)",
     selectDefault: "Stellaj turi (ixtiyoriy)",
@@ -63,7 +63,8 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
 
   async function submit(e) {
     e.preventDefault();
-    if (!f.phone.trim()) return;
+    // Ism yoki telefon bo'sh bo'lsa yoki faqat bo'sh joy bo'lsa formani yubormaydi
+    if (!f.name.trim() || !f.phone.trim()) return;
 
     // Telefon raqamidan faqat raqamlar va boshidagi "+" ni qoldirib tozalaymiz
     const cleanPhone = f.phone.replace(/[^0-9+]/g, "");
@@ -113,6 +114,7 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
         <input
           value={f.name}
           onChange={set("name")}
+          required
           placeholder={t.name}
           className={field}
         />
