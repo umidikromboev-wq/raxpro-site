@@ -7,7 +7,7 @@ const FT = {
   ru: {
     name: "Ваше имя *",
     phone: "Телефон (например: +998 90 123 45 67) *",
-    phoneErr: "Введите корректный номер Узбекистана (+998XXXXXXXXX)",
+    phoneErr: "Введите корректный номер Узбекистана (+998 XX XXX XX XX)",
     selectDefault: "Тип стеллажей (необязательно)",
     options: [
       "Паллетные (Mega) стеллажи",
@@ -26,7 +26,8 @@ const FT = {
   uz: {
     name: "Ismingiz *",
     phone: "Telefon (masalan: +998 90 123 45 67) *",
-    phoneErr: "Oʻzbekiston telefon raqamini toʻgʻri kiriting (+998XXXXXXXXX)",
+    phoneErr:
+      "Oʻzbekiston telefon raqamini toʻgʻri kiriting (+998 XX XXX XX XX)",
     selectDefault: "Stellaj turi (ixtiyoriy)",
     options: [
       "Palletli (Mega) stellajlar",
@@ -48,32 +49,57 @@ const FT = {
 export default function LeadForm({ compact = false, lang = "ru" }) {
   const router = useRouter();
   const t = FT[lang === "uz" ? "uz" : "ru"];
-  const [f, setF] = useState({ name: "", phone: "", product: "", message: "" });
+  const [f, setF] = useState({
+    name: "",
+    phone: "+998 ",
+    product: "",
+    message: "",
+  });
   const [state, setState] = useState("idle");
 
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
 
-  // Telefon inputida faqat raqamlar, probel va "+" belgisini qoldirish
+  // Raqamni +998 XX XXX XX XX formatiga o'tkazuvchi funksiya (Mask)
+  const formatPhone = (value) => {
+    // Faqat raqamlarni ajratib olamiz
+    let digits = value.replace(/\D/g, "");
+
+    // Agar foydalanuvchi barcha raqamlarni o'chirib tashlasa, +998 ni saqlab qolamiz
+    if (!digits.startsWith("998")) {
+      digits = "998" + digits;
+    }
+
+    // Maksimal 12 ta raqam (998 + 9 ta raqam)
+    digits = digits.slice(0, 12);
+
+    // Formatlash logic: +998 93 002 95 71
+    let formatted = "+998";
+    if (digits.length > 3) formatted += " " + digits.slice(3, 5);
+    if (digits.length > 5) formatted += " " + digits.slice(5, 8);
+    if (digits.length > 8) formatted += " " + digits.slice(8, 10);
+    if (digits.length > 10) formatted += " " + digits.slice(10, 12);
+
+    return formatted;
+  };
+
   const handlePhoneChange = (e) => {
-    let val = e.target.value;
-    // Faqat raqamlar, "+" va bo'shliqlarni qoldiramiz, qolgan harflarni o'chiramiz
-    val = val.replace(/[^0-9+\s-]/g, "");
-    setF({ ...f, phone: val });
+    const formatted = formatPhone(e.target.value);
+    setF({ ...f, phone: formatted });
+
+    if (state === "phone_invalid") {
+      setState("idle");
+    }
   };
 
   async function submit(e) {
     e.preventDefault();
-    // Ism yoki telefon bo'sh bo'lsa yoki faqat bo'sh joy bo'lsa formani yubormaydi
     if (!f.name.trim() || !f.phone.trim()) return;
 
-    // Telefon raqamidan faqat raqamlar va boshidagi "+" ni qoldirib tozalaymiz
-    const cleanPhone = f.phone.replace(/[^0-9+]/g, "");
+    // Tekshirish uchun faqat raqamlarni olamiz
+    const digitsOnly = f.phone.replace(/\D/g, "");
 
-    // O'zbekiston raqamlari formati uchun qat'iy tekshiruv (RegEx)
-    // +998 bilan boshlangan 9 ta raqam yoki shunchaki 998 bilan boshlangan 9 ta raqam
-    const uzbPhoneRegex = /^(\+?998)\d{9}$/;
-
-    if (!uzbPhoneRegex.test(cleanPhone)) {
+    // O'zbekiston raqami to'liq kiritilganini tekshirish (998 + 9 ta raqam = 12 ta raqam)
+    if (digitsOnly.length !== 12) {
       setState("phone_invalid");
       return;
     }
@@ -86,12 +112,12 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...f,
-          phone: cleanPhone.startsWith("+") ? cleanPhone : `+${cleanPhone}`, // Har doim + belgi bilan yuboradi
+          phone: f.phone, // Formatlangan holda yuboriladi: +998 93 002 95 71
         }),
       });
 
       if (r.ok) {
-        setF({ name: "", phone: "", product: "", message: "" });
+        setF({ name: "", phone: "+998 ", product: "", message: "" });
         setState("idle");
         router.push(`/thank-you?lang=${lang}`);
       } else {
