@@ -135,9 +135,7 @@ export default async function CatalogPage({ params }) {
 
                   <div className="mt-auto pt-6">
                     <div className="font-display font-medium text-2xl text-navy-800">
-                      {L === "ru"
-                        ? `от ${formatPrice(p.price, L)}`
-                        : `${formatPrice(p.price, L)} dan boshlanadi`}
+                      {formatPrice(p.price, L)}
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2.5">
                       <AddToCart

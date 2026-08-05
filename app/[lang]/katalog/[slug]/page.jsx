@@ -133,11 +133,10 @@ export default async function ProductPage({ params }) {
           <div className="mt-7 rounded-xl2 border border-cloud-200 bg-white shadow-card p-6">
             <div className="text-sm text-slate-400">{t.from}</div>
             <div className="font-display font-medium text-4xl text-navy-800 mt-1">
-              {L === "ru"
-                ? `от ${formatPrice(p.price, L)}`
-                : `${formatPrice(p.price, L)} dan boshlanadi`}
+              {formatPrice(p.price, L)}
             </div>
-            <div className="mt-2 text-sm text-slate-500">{t.madeDays}</div>
+            <div className="mt-2 text-sm text-slate-500">{t.priceNote}</div>
+            <div className="mt-1 text-sm text-slate-500">{t.madeDays}</div>
 
             <div className="mt-5 flex flex-col sm:flex-row gap-3">
               <AddToCart product={p} lang={L} className="flex-1" />
