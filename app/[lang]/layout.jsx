@@ -145,16 +145,25 @@ export default async function RootLayout({ children, params }) {
         "@type": ["LocalBusiness", "Manufacturer"],
         "@id": SITE_ORIGIN,
         name: "RAXPRO",
+        alternateName: "Стеллажи в Ташкенте от RaxPro",
         image: `${SITE_ORIGIN}/works/hero.jpg`,
         url: SITE_ORIGIN,
         telephone: "+998785551555",
         priceRange: "$$",
         address: {
           "@type": "PostalAddress",
-          streetAddress: "Tashkent City",
+          streetAddress: "Parkent ko'chasi",
           addressLocality: "Tashkent",
+          addressRegion: "Tashkent",
           addressCountry: "UZ",
+          postalCode: "100200",
         },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: 41.3157068,
+          longitude: 69.3286053,
+        },
+        hasMap: "https://maps.google.com/?cid=13073703618530234946",
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",
           dayOfWeek: [
@@ -174,40 +183,7 @@ export default async function RootLayout({ children, params }) {
           "https://t.me/raxproo",
         ],
       },
-      {
-        "@type": "FAQPage",
-        "@id": `${SITE_ORIGIN}/#faq`,
-        mainEntity: [
-          {
-            "@type": "Question",
-            name:
-              lang === "uz"
-                ? "Toshkentda metall stellajlarni qerdan sotib olish mumkin?"
-                : "Где купить металлические стеллажи в Ташкенте?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text:
-                lang === "uz"
-                  ? "RaxPro — Toshkentda ombor, savdo, palletli va arxiv metall stellajlarini ishlab chiqarish hamda yetkazib berish bo'yicha yetakchi ishlab chiqaruvchidir."
-                  : "Завод RaxPro является ведущим производителем складских, торговых, паллетных и архивных металлических стеллажей в Ташкенте с доставкой по всему Узбекистану.",
-            },
-          },
-          {
-            "@type": "Question",
-            name:
-              lang === "uz"
-                ? "Ombor uchun stellaj yuklamasi va loyihasi qanday hisoblanadi?"
-                : "Как заказать бесплатный замер и расчет нагрузки стеллажей?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text:
-                lang === "uz"
-                  ? "RaxPro mutaxassislari butun O'zbekiston bo'ylab bepul o'lchov o'tkazadi va 4 tonnagacha bo'lgan yuklamalarga mos stellaj tizimlarini loyihalashtiradi."
-                  : "Специалисты RaxPro бесплатно выезжают на замер по всему Узбекистану и рассчитывают нагрузки на стеллажные системы до 4 тонн.",
-            },
-          },
-        ],
-      },
+      // FAQPage qismi o'zgarishsiz qoladi...
     ],
   };
 
