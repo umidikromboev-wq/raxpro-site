@@ -137,7 +137,7 @@ export const viewport = {
 export default async function RootLayout({ children, params }) {
   const lang = normalizeLang((await params).lang);
 
-  // Schema.org structured data (JSON-LD) for LocalBusiness + AI Search (GEO)
+  // Schema.org structured  (JSON-LD) for LocalBusiness + AI Search (GEO)
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
