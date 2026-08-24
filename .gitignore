@@ -3,3 +3,11 @@ node_modules
 .env*
 .DS_Store
 .vercel
+tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Сырьё разбора: выгрузка Telegram-группы, 3D-файлы .max и PDF клиентов.
+# 867 МБ, часть — коммерческие документы заказчиков. В репозиторий не идёт,
+# живёт локально в ~/Downloads/Проекты/raxpro-site/research/.
+research/tg-group/
+research/rack-calc/__pycache__/
