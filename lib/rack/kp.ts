@@ -20,6 +20,8 @@ export interface KpRequest {
   date?: Date;
   planImage?: string | null;
   renderImage?: string | null;
+  /** Раскладка посчитана — план рисуется генератором. */
+  hasComputedPlan?: boolean;
   /** Только то, что действительно меняется от клиента к клиенту. */
   extraNote?: string;
 }
@@ -198,6 +200,7 @@ export function buildKp(req: KpRequest): Kp {
       : undefined,
     planImage: req.planImage ?? null,
     renderImage: req.renderImage ?? null,
+    hasComputedPlan: Boolean(req.hasComputedPlan),
   };
   const issues = validateKp(draft);
 

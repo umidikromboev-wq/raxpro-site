@@ -3,6 +3,7 @@
 import { fmtSum } from '@/lib/rack/pricing';
 import { specLabel, specUnit } from '@/lib/rack/spec';
 import { COMPANY, SCOPE } from '@/lib/rack/company';
+import LayoutPlan from './LayoutPlan';
 
 // Документ, который увидит клиент.
 //
@@ -12,7 +13,7 @@ import { COMPANY, SCOPE } from '@/lib/rack/company';
 // В фактических КП RaxPro сумма и объём лежали на девятой странице,
 // а первые восемь были про поставщика.
 
-export default function KpPreview({ kp, planImage, renderImage }) {
+export default function KpPreview({ kp, planImage, renderImage, layout }) {
   const { meta, product, spec, price, positions } = kp;
   const byList = price.mode === 'sectionList';
   const lang = meta.lang;
@@ -116,6 +117,18 @@ export default function KpPreview({ kp, planImage, renderImage }) {
       </Sheet>
 
       {/* ————————————————————————————— 3. План */}
+      {layout && !planImage && (
+        <Sheet>
+          <SheetTitle>{t('План расстановки', 'Joylashuv rejasi')}</SheetTitle>
+          <LayoutPlan room={layout.room} layout={layout} lang={lang} />
+          <p className="mt-3 text-[11px] leading-snug text-slate-500">
+            {t(
+              'Расстановка рассчитана под габариты вашего помещения, колонны и ширину прохода под выбранную технику. Точные отметки уточняются после замера.',
+              'Joylashuv binoyingiz oʻlchamlari, ustunlar va tanlangan texnika uchun yoʻlak kengligiga qarab hisoblangan. Aniq belgilar oʻlchovdan soʻng aniqlanadi.'
+            )}
+          </p>
+        </Sheet>
+      )}
       {planImage && (
         <Sheet>
           <SheetTitle>{t('План объекта', 'Obyekt rejasi')}</SheetTitle>

@@ -1,5 +1,7 @@
 'use client';
 
+import { Children, cloneElement, isValidElement, useId } from 'react';
+
 export function Panel({ title, tone = 'plain', children }) {
   const border =
     tone === 'block' ? 'border-red-400' : tone === 'warn' ? 'border-amber-400' : tone === 'ok' ? 'border-emerald-400' : 'border-cloud-300';
@@ -13,24 +15,30 @@ export function Panel({ title, tone = 'plain', children }) {
   );
 }
 
+/** Подпись связывается с полем через for/id, а не только вложением:
+ *  так поле находят и скринридер, и автотесты — вложенный label
+ *  не даёт имени элементу <select>. */
 export function Field({ label, children }) {
+  const id = useId();
+  const only = Children.only(children);
+  const control =
+    isValidElement(only) && (only.type === 'input' || only.type === 'select' || only.type === 'textarea')
+      ? cloneElement(only, { id })
+      : only;
   return (
-    <label className="block">
-      <span className="mb-1 block text-[10px] uppercase tracking-wide text-slate-400">{label}</span>
-      {children}
-    </label>
+    <div>
+      <label htmlFor={id} className="mb-1 block text-[10px] uppercase tracking-wide text-slate-400">
+        {label}
+      </label>
+      {control}
+    </div>
   );
 }
 
 export function NumField({ label, value, onChange }) {
   return (
     <Field label={label}>
-      <input
-        type="number"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="inp"
-      />
+      <input type="number" value={value} onChange={(e) => onChange(Number(e.target.value))} className="inp" />
     </Field>
   );
 }

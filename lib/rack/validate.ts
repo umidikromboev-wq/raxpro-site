@@ -23,7 +23,8 @@ export interface KpDraft {
   bodyText: string;          // весь текст документа — для проверки согласованности
   freeText: string;          // только то, что менеджер вписал руками
   discountReason?: string;
-  planImage?: string | null; // план объекта
+  planImage?: string | null;   // загруженный план объекта
+  hasComputedPlan?: boolean;   // план рассчитан генератором и вставлен в КП
   renderImage?: string | null;
 }
 
@@ -102,7 +103,8 @@ export function validateKp(d: KpDraft): Issue[] {
     add("warn", "no-position-price", "Не посчитана цена за паллето-место — единственная величина, по которой клиент сравнит вас с конкурентом.");
 
   // ——— комплектность документа
-  if (!d.planImage) add("warn", "no-plan", "Нет плана объекта. В фактических КП план — одна из двух уникальных страниц.");
+  if (!d.planImage && !d.hasComputedPlan)
+    add("warn", "no-plan", "Нет плана объекта. Рассчитайте раскладку или загрузите план — в фактических КП план был одной из двух уникальных страниц.");
   if (!d.renderImage) add("warn", "no-render", "Нет рендера расстановки.");
   if (p.priceMode === "project" && d.price.mode === "components" && d.price.rows.every((r) => r.unitPrice === 0))
     add("block", "project-price", `${p.ru.name} считается индивидуально — цены нужно ввести вручную.`);

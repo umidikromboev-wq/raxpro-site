@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { PRODUCTS, getProduct } from '@/lib/rack/catalog';
 import { buildKp, fmtSum } from '@/lib/rack/kp';
 import { palletPositions } from '@/lib/rack/spec';
+import { design, columnGrid, DesignError, TRUCKS } from '@/lib/rack/layout';
+import LayoutPlan from './LayoutPlan';
 import { UNIT_PRICE_DEFAULTS, PRESETS, EMPTY_GEOMETRY } from './defaults';
 import KpPreview from './KpPreview';
 import { Field, NumField, Row, Panel, Verdict } from './ui';
@@ -20,6 +22,14 @@ export default function KpGenerator() {
   const [paymentKey, setPaymentKey] = useState('split5050');
   const [deliveryHours, setDeliveryHours] = useState(48);
   const [extraNote, setExtraNote] = useState('');
+  const [room, setRoom] = useState({
+    width: 45000, depth: 24000, ceiling: 10500,
+    palletHeight: 1500, palletLoad: 800,
+    truck: 'reachtruck', beam: 2700, rackDepth: 1050,
+    colStepX: 12000, colStepY: 12000, colSize: 400,
+  });
+  const [layout, setLayout] = useState(null);
+  const [layoutError, setLayoutError] = useState('');
   const [sizeCode, setSizeCode] = useState('');
   const [framePrice, setFramePrice] = useState(0);
   const [benchmark, setBenchmark] = useState(null);
@@ -120,16 +130,41 @@ export default function KpGenerator() {
         deliveryHours: Number(deliveryHours) || 0,
         planImage,
         renderImage,
+        hasComputedPlan: Boolean(layout),
         extraNote,
       }),
     [client, productKey, lang, geometry, unitPrices, discountPercent, discountReason,
      discountNote, paymentKey, deliveryHours, extraNote, planImage, renderImage,
-     sizeCode, framePrice, product]
+     sizeCode, framePrice, product, layout]
   );
 
   const blockers = kp.issues.filter((i) => i.severity === 'block');
   const warnings = kp.issues.filter((i) => i.severity === 'warn');
   const positions = geometry.palletsPerLevel ? palletPositions(geometry) : null;
+
+  function calcLayout() {
+    setLayoutError('');
+    try {
+      const columns = room.colStepX > 0 && room.colStepY > 0
+        ? columnGrid(room.width, room.depth, room.colStepX, room.colStepY, room.colSize)
+        : [];
+      const r = { ...room, columns };
+      const l = design(r);
+      setLayout({ ...l, room: r });
+      setGeometry((g) => ({
+        ...g,
+        rows: l.rows,
+        sections: l.sections,
+        levels: l.levels,
+        palletsPerLevel: Math.round(l.positions / (l.sections * (l.levels + 1))) || 3,
+        countGroundLevel: true,
+      }));
+      setBenchmark(null);
+    } catch (e) {
+      setLayout(null);
+      setLayoutError(e instanceof DesignError ? e.message : String(e?.message || e));
+    }
+  }
 
   function readFile(file, set) {
     if (!file) return set(null);
@@ -180,7 +215,8 @@ export default function KpGenerator() {
               ))}
             </select>
           </Field>
-          <Field label="Язык документа">
+          <div>
+            <p className="mb-1 block text-[10px] uppercase tracking-wide text-slate-400">Язык документа</p>
             <div className="flex gap-2">
               {['ru', 'uz'].map((l) => (
                 <button key={l} onClick={() => setLang(l)}
@@ -189,11 +225,65 @@ export default function KpGenerator() {
                 </button>
               ))}
             </div>
-          </Field>
-          <p className="text-[11px] text-neutral-500">{product.notesRu}</p>
+          </div>
+          <p className="text-[11px] text-slate-500">{product.notesRu}</p>
         </Panel>
 
-        <Panel title="2 · Геометрия">
+        {productKey.startsWith('pallet') && (
+          <Panel title="2 · Помещение — раскладка считается сама">
+            <Row>
+              <NumField label="Ширина, мм" value={room.width} onChange={(v) => setRoom({ ...room, width: v })} />
+              <NumField label="Глубина, мм" value={room.depth} onChange={(v) => setRoom({ ...room, depth: v })} />
+              <NumField label="Потолок, мм" value={room.ceiling} onChange={(v) => setRoom({ ...room, ceiling: v })} />
+            </Row>
+            <Row>
+              <Field label="Техника">
+                <select value={room.truck} className="inp" onChange={(e) => setRoom({ ...room, truck: e.target.value })}>
+                  {Object.entries(TRUCKS).map(([k, v]) => (
+                    <option key={k} value={k}>{v.ru} — проход {(v.aisle / 1000).toFixed(1)} м</option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Длина балки">
+                <select value={room.beam} className="inp" onChange={(e) => setRoom({ ...room, beam: Number(e.target.value) })}>
+                  <option value={2700}>2700 мм — 3 паллеты</option>
+                  <option value={3300}>3300 мм — 4 паллеты</option>
+                </select>
+              </Field>
+            </Row>
+            <Row>
+              <NumField label="Высота паллеты, мм" value={room.palletHeight} onChange={(v) => setRoom({ ...room, palletHeight: v })} />
+              <NumField label="Вес паллеты, кг" value={room.palletLoad} onChange={(v) => setRoom({ ...room, palletLoad: v })} />
+              <NumField label="Глубина ряда, мм" value={room.rackDepth} onChange={(v) => setRoom({ ...room, rackDepth: v })} />
+            </Row>
+            <Row>
+              <NumField label="Шаг колонн X, мм" value={room.colStepX} onChange={(v) => setRoom({ ...room, colStepX: v })} />
+              <NumField label="Шаг колонн Y, мм" value={room.colStepY} onChange={(v) => setRoom({ ...room, colStepY: v })} />
+              <NumField label="Колонна, мм" value={room.colSize} onChange={(v) => setRoom({ ...room, colSize: v })} />
+            </Row>
+            <button onClick={calcLayout} className="w-full bg-sky-700 px-4 py-2 text-sm text-white hover:bg-sky-800">
+              Рассчитать раскладку
+            </button>
+            {layoutError && <p className="border-l-2 border-red-500 pl-2 text-xs text-red-700">{layoutError}</p>}
+            {layout && (
+              <div className="border border-cloud-300 bg-white p-2">
+                <LayoutPlan room={layout.room} layout={layout} compact />
+                <p className="mt-1 text-[11px] text-slate-600">
+                  {layout.rows} ряд(ов) · {layout.sections} секций · {layout.levels} яруса ·{' '}
+                  рама {layout.frameHeight} мм · заполнение {(layout.fillRatio * 100).toFixed(0)} %
+                </p>
+                {layout.cappedByFrame && (
+                  <p className="mt-1 border-l-2 border-amber-500 pl-2 text-[11px] text-amber-800">
+                    Ярусы ограничены высотой рамы 6000 мм, а не потолком. Под такой потолок
+                    имеет смысл считать мезонин — второй уровень хранения.
+                  </p>
+                )}
+              </div>
+            )}
+          </Panel>
+        )}
+
+        <Panel title="3 · Геометрия">
           <Row>
             <NumField label="Рядов" value={geometry.rows}
               onChange={(v) => setGeometry({ ...geometry, rows: v })} />
@@ -235,7 +325,7 @@ export default function KpGenerator() {
         </Panel>
 
         {product.pricingModel === 'sectionList' ? (
-          <Panel title="3 · Прайс за секцию">
+          <Panel title="4 · Прайс за секцию">
             <Field label="Типоразмер из прайса">
               <select value={sizeCode} className="inp"
                 onChange={(e) => {
@@ -260,7 +350,7 @@ export default function KpGenerator() {
             </p>
           </Panel>
         ) : (
-          <Panel title="3 · Цены за единицу, сум">
+          <Panel title="4 · Цены за единицу, сум">
             <Row>
               {kp.spec.map((l) => (
                 <NumField key={l.item} label={l.labelRu} value={unitPrices[l.item] ?? 0}
@@ -270,7 +360,7 @@ export default function KpGenerator() {
           </Panel>
         )}
 
-        <Panel title="4 · Скидка">
+        <Panel title="5 · Скидка">
           <Row>
             <NumField label="Процент" value={discountPercent} onChange={setDiscountPercent} />
             <Field label="Причина">
@@ -290,7 +380,7 @@ export default function KpGenerator() {
           </Field>
         </Panel>
 
-        <Panel title="5 · Условия">
+        <Panel title="6 · Условия">
           <Field label="Оплата">
             <select value={paymentKey} onChange={(e) => setPaymentKey(e.target.value)} className="inp">
               <option value="prepay100">100 % предоплата за 5 банковских дней</option>
@@ -304,7 +394,7 @@ export default function KpGenerator() {
           </Field>
         </Panel>
 
-        <Panel title="6 · План и рендер">
+        <Panel title="7 · План и рендер">
           <Field label="План объекта">
             <input type="file" accept="image/*" className="text-xs"
               onChange={(e) => readFile(e.target.files?.[0], setPlanImage)} />
@@ -353,7 +443,7 @@ export default function KpGenerator() {
       </div>
 
       {/* ——————————————————————— документ */}
-      <KpPreview kp={kp} planImage={planImage} renderImage={renderImage} />
+      <KpPreview kp={kp} planImage={planImage} renderImage={renderImage} layout={layout} />
     </div>
   );
 }
