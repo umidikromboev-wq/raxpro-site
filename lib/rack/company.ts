@@ -8,9 +8,16 @@
 
 export const FOUNDED_YEAR = 2022;
 
+/** Часовой пояс компании. Дата в документе и все производные от неё
+ *  величины считаются по нему, а не по часовому поясу сервера. */
+export const TIMEZONE = "Asia/Tashkent";
+
 /** Опыт считается от года основания, а не пишется руками. */
 export function yearsOnMarket(now: Date = new Date()): number {
-  return Math.max(1, now.getFullYear() - FOUNDED_YEAR);
+  const year = Number(
+    new Intl.DateTimeFormat("en-CA", { timeZone: TIMEZONE, year: "numeric" }).format(now)
+  );
+  return Math.max(1, year - FOUNDED_YEAR);
 }
 
 export const COMPANY = {

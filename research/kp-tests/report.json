@@ -9,7 +9,10 @@
     "issues": [
       "Нет рендера расстановки."
     ],
-    "errs": []
+    "errs": [
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    ]
   },
   {
     "id": "2-pallet-drivein",
@@ -22,7 +25,10 @@
       "Нет плана объекта. Рассчитайте раскладку или загрузите план — в фактических КП план был одной из двух уникальных страниц.",
       "Нет рендера расстановки."
     ],
-    "errs": []
+    "errs": [
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    ]
   },
   {
     "id": "3-medium-duty",
@@ -35,7 +41,10 @@
       "Нет плана объекта. Рассчитайте раскладку или загрузите план — в фактических КП план был одной из двух уникальных страниц.",
       "Нет рендера расстановки."
     ],
-    "errs": []
+    "errs": [
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    ]
   },
   {
     "id": "4-archive",
@@ -48,7 +57,10 @@
       "Нет плана объекта. Рассчитайте раскладку или загрузите план — в фактических КП план был одной из двух уникальных страниц.",
       "Нет рендера расстановки."
     ],
-    "errs": []
+    "errs": [
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    ]
   },
   {
     "id": "5-retail",
@@ -61,7 +73,10 @@
       "Нет плана объекта. Рассчитайте раскладку или загрузите план — в фактических КП план был одной из двух уникальных страниц.",
       "Нет рендера расстановки."
     ],
-    "errs": []
+    "errs": [
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    ]
   },
   {
     "id": "6-mezzanine",
@@ -74,6 +89,9 @@
       "Нет плана объекта. Рассчитайте раскладку или загрузите план — в фактических КП план был одной из двух уникальных страниц.",
       "Нет рендера расстановки."
     ],
-    "errs": []
+    "errs": [
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+    ]
   }
 ]

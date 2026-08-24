@@ -2,7 +2,7 @@
 // а не правится в Word: у RaxPro один шаблон дал семь КП, в которых
 // разошлись год основания, число клиентов, номер ISO и условия оплаты.
 
-import { COMPANY, TERMS, Lang, PaymentKey, yearsOnMarket } from "./company";
+import { COMPANY, TERMS, TIMEZONE, Lang, PaymentKey, yearsOnMarket } from "./company";
 import { getProduct, Product } from "./catalog";
 import { buildSpec, palletPositions, Geometry, SpecLine } from "./spec";
 import { priceKp, PriceInput, PriceResult, fmtSum, DISCOUNT_REASON_TEXT } from "./pricing";
@@ -214,16 +214,30 @@ export function buildKp(req: KpRequest): Kp {
 /** Номер КП. В фактических документах номера не было вовсе — вернуться
  *  к конкретному предложению по переписке было нечем. */
 export function kpNumber(client: string, date: Date): string {
-  const p = (n: number) => String(n).padStart(2, "0");
-  const ymd = `${String(date.getFullYear()).slice(2)}${p(date.getMonth() + 1)}${p(date.getDate())}`;
+  const p = dateParts(date);
+  const ymd = `${p.y.slice(2)}${p.m}${p.d}`;
   let h = 0;
   for (const ch of client) h = (h * 31 + ch.charCodeAt(0)) % 997;
   return `KP-${ymd}-${String(h).padStart(3, "0")}`;
 }
 
+/** Дата всегда считается по Ташкенту.
+ *  Сервер Vercel живёт в UTC, браузер менеджера — в Asia/Tashkent: после
+ *  19:00 UTC они расходятся на сутки, и React ронял гидратацию (ошибка 418).
+ *  Заодно в документе стоит дата рабочего дня клиента, а не серверная. */
+const TZ = TIMEZONE;
+
+export function dateParts(d: Date) {
+  const f = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
+  });
+  const [y, m, day] = f.format(d).split("-");
+  return { y, m, d: day };
+}
+
 export function fmtDate(d: Date) {
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()}`;
+  const p = dateParts(d);
+  return `${p.d}.${p.m}.${p.y}`;
 }
 
 export { fmtSum };

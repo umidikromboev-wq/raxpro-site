@@ -3,6 +3,7 @@
 import { fmtSum } from '@/lib/rack/pricing';
 import { specLabel, specUnit } from '@/lib/rack/spec';
 import { COMPANY, SCOPE } from '@/lib/rack/company';
+import { fmtDate } from '@/lib/rack/kp';
 import LayoutPlan from './LayoutPlan';
 
 // Документ, который увидит клиент.
@@ -338,8 +339,7 @@ function Line({ k, v, strong }) {
   );
 }
 
+// дата — всегда по Ташкенту, иначе сервер и браузер расходятся на сутки
 function fmtDateShort(d) {
-  const p = (n) => String(n).padStart(2, '0');
-  const dt = d instanceof Date ? d : new Date(d);
-  return `${p(dt.getDate())}.${p(dt.getMonth() + 1)}.${dt.getFullYear()}`;
+  return fmtDate(d instanceof Date ? d : new Date(d));
 }
