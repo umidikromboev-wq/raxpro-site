@@ -18,9 +18,12 @@ export interface PriceInput {
   discountPercent?: number;
   discountReason?: DiscountReason;
   discountNote?: string;
-  /** Для комплектных продуктов (архивный): цена за комплект × количество. */
-  kitPrice?: number;
-  kitQty?: number;
+  /** Модель sectionList: цена отдельно стоящей секции по прайсу и цена рамы.
+   *  Ряд делит рамы между соседними секциями, поэтому сумма меньше,
+   *  чем «секции × прайс». */
+  sectionPrice?: number;
+  framePrice?: number;
+  sizeCode?: string;
 }
 
 export interface PriceRow {
@@ -32,7 +35,10 @@ export interface PriceRow {
 }
 
 export interface PriceResult {
+  mode: "components" | "sectionList";
   rows: PriceRow[];
+  sectionPrice?: number;
+  sections?: number;
   subtotal: number;
   discountPercent: number;
   discountAmount: number;
@@ -51,12 +57,17 @@ export function priceKp(
   let rows: PriceRow[];
   let subtotal: number;
 
-  if (input.kitPrice != null && input.kitQty != null) {
-    subtotal = input.kitPrice * input.kitQty;
-    rows = [{
-      labelRu: "Комплект стеллажа", labelUz: "Stellaj toʻplami",
-      qty: input.kitQty, unitPrice: input.kitPrice, sum: subtotal,
-    }];
+  if (input.sectionPrice != null) {
+    const sections = spec.length ? sectionsFromSpec(spec) : 0;
+    const rowsCount = rowsFromSpec(spec, sections);
+    subtotal = Math.max(
+      0,
+      sections * input.sectionPrice - (sections - rowsCount) * (input.framePrice ?? 0)
+    );
+    rows = spec.map((l) => ({
+      labelRu: l.labelRu, labelUz: l.labelUz,
+      qty: l.qty, unitPrice: 0, sum: 0,
+    }));
   } else {
     rows = spec.map((l) => {
       const unitPrice = input.unitPrices[l.item] ?? 0;
@@ -74,6 +85,9 @@ export function priceKp(
   const vat = Math.round(totalNoVat * COMPANY.vatRate);
 
   return {
+    mode: input.sectionPrice != null ? "sectionList" : "components",
+    sectionPrice: input.sectionPrice,
+    sections: input.sectionPrice != null ? sectionsFromSpec(spec) : undefined,
     rows,
     subtotal,
     discountPercent,
@@ -83,6 +97,19 @@ export function priceKp(
     totalWithVat: totalNoVat + vat,
     perPalletPosition: palletPositions ? Math.round(totalNoVat / palletPositions) : null,
   };
+}
+
+/** Секции и ряды восстанавливаются из самой спецификации: рамы = секции + ряды,
+ *  балки = секции × ярусы × 2 — обе величины уже посчитаны в spec. */
+function sectionsFromSpec(spec: SpecLine[]): number {
+  const beams = spec.find((l) => l.item === "beam")?.qty ?? 0;
+  const m = spec.find((l) => l.item === "beam")?.formula.match(/ярусы (\d+)/);
+  const levels = m ? Number(m[1]) : 1;
+  return levels ? beams / (levels * 2) : 0;
+}
+function rowsFromSpec(spec: SpecLine[], sections: number): number {
+  const frames = spec.find((l) => l.item === "frame")?.qty ?? 0;
+  return Math.max(0, frames - sections);
 }
 
 export function fmtSum(n: number, lang: "ru" | "uz" = "ru"): string {

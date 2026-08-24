@@ -85,8 +85,12 @@ export function validateKp(d: KpDraft): Issue[] {
 
   // ——— цена
   if (d.price.totalNoVat <= 0) add("block", "price-zero", "Итоговая сумма нулевая или отрицательная.");
-  for (const r of d.price.rows)
-    if (r.unitPrice <= 0) add("block", "unit-price", `Нет цены за единицу: «${r.labelRu}».`);
+  if (d.price.mode === "components") {
+    for (const r of d.price.rows)
+      if (r.unitPrice <= 0) add("block", "unit-price", `Нет цены за единицу: «${r.labelRu}».`);
+  } else if (!d.price.sectionPrice) {
+    add("block", "section-price", "Не выбран типоразмер из прайса — нет цены за секцию.");
+  }
   const expectedVat = Math.round(d.price.totalNoVat * COMPANY.vatRate);
   if (Math.abs(d.price.vat - expectedVat) > 1)
     add("block", "vat", `НДС ${d.price.vat} не равен ${Math.round(COMPANY.vatRate * 100)} % от суммы (${expectedVat}).`);
@@ -100,7 +104,7 @@ export function validateKp(d: KpDraft): Issue[] {
   // ——— комплектность документа
   if (!d.planImage) add("warn", "no-plan", "Нет плана объекта. В фактических КП план — одна из двух уникальных страниц.");
   if (!d.renderImage) add("warn", "no-render", "Нет рендера расстановки.");
-  if (p.priceMode === "project" && d.price.rows.every((r) => r.unitPrice === 0))
+  if (p.priceMode === "project" && d.price.mode === "components" && d.price.rows.every((r) => r.unitPrice === 0))
     add("block", "project-price", `${p.ru.name} считается индивидуально — цены нужно ввести вручную.`);
 
   // ——— сроки

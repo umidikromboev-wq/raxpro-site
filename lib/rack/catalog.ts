@@ -6,13 +6,26 @@
 
 export type PriceMode = "list" | "range" | "project";
 
+/** Как считается сумма.
+ *  components  — по позициям спецификации (паллетный: в КП есть цены за единицу).
+ *  sectionList — по прайсу за секцию (среднегрузовой, архивный: в их КП колонка
+ *                «Цена» пустая, стоит только ИТОГО — компания продаёт секциями).
+ *
+ *  Модель sectionList выведена из прайса и проверена на нём же:
+ *      цена секции = 2 × рама(высота) + ярусы × ярус(длина балки)
+ *  Четвёртая строка прайса в вывод не участвовала и сошлась в ноль.
+ *  Ряд из N секций делит рамы между соседями, поэтому
+ *      сумма = N × цена секции − (N − ряды) × цена рамы
+ *  На КП BLOOMSHOP это даёт 219 847 158 против 219 847 178 в документе. */
+export type PricingModel = "components" | "sectionList";
+
 export interface SizeVariant {
   code: string;
   h: number;      // высота рамы, мм
   w: number;      // длина балки / ширина секции, мм
   d: number;      // глубина, мм
   levels: number; // ярусов (полок) в секции
-  price?: number; // сум за секцию в сборе, без НДС
+  price?: number; // сум за отдельно стоящую секцию в сборе, без НДС
 }
 
 export interface Product {
@@ -21,6 +34,9 @@ export interface Product {
   ru: { name: string; short: string };
   uz: { name: string; short: string };
   priceMode: PriceMode;
+  pricingModel: PricingModel;
+  /** Цена рамы по высоте, сум. Нужна модели sectionList. */
+  framePrices?: Record<number, number>;
   priceRange?: [number, number];
   loadPerLevelKg: [number, number];  // вилка нагрузки на ярус
   bayStepMm: number[];               // применяемые шаги секции
@@ -49,6 +65,7 @@ export const PRODUCTS: Product[] = [
     ru: { name: "Паллетный стеллаж (фронтальный)", short: "Паллетный фронтальный" },
     uz: { name: "Frontal paletli stellaj", short: "Frontal paletli" },
     priceMode: "range",
+    pricingModel: "components",
     priceRange: [7_000_000, 28_000_000],
     loadPerLevelKg: [2000, 3000],
     bayStepMm: [2500, 2700, 3300],
@@ -73,6 +90,7 @@ export const PRODUCTS: Product[] = [
     ru: { name: "Паллетный стеллаж (набивной, drive-in)", short: "Набивной" },
     uz: { name: "Kirib chiqiladigan paletli stellaj (drive-in)", short: "Drive-in" },
     priceMode: "project",
+    pricingModel: "components",
     loadPerLevelKg: [1000, 1500],
     bayStepMm: [1200],
     depthMm: [2700, 4000, 5400],
@@ -90,6 +108,8 @@ export const PRODUCTS: Product[] = [
     ru: { name: "Среднегрузовой стеллаж", short: "Среднегрузовой" },
     uz: { name: "Oʻrta yuklama stellaj", short: "Oʻrta yuklama" },
     priceMode: "list",
+    pricingModel: "sectionList",
+    framePrices: { 2000: 1_260_832, 2500: 1_536_100 },
     loadPerLevelKg: [300, 400],
     bayStepMm: [1500, 1700, 2000],
     depthMm: [600],
@@ -112,6 +132,8 @@ export const PRODUCTS: Product[] = [
     ru: { name: "Архивный стеллаж", short: "Архивный" },
     uz: { name: "Arxiv stellaj", short: "Arxiv" },
     priceMode: "list",
+    pricingModel: "sectionList",
+    framePrices: { 2000: 300_000 },
     loadPerLevelKg: [80, 100],
     bayStepMm: [1000],
     depthMm: [300, 400],
@@ -133,6 +155,7 @@ export const PRODUCTS: Product[] = [
     ru: { name: "Торговый стеллаж", short: "Торговый" },
     uz: { name: "Savdo stellaji", short: "Savdo stellaji" },
     priceMode: "project",
+    pricingModel: "components",
     loadPerLevelKg: [100, 150],
     bayStepMm: [900, 1200],
     depthMm: [400, 500, 600],
@@ -153,6 +176,7 @@ export const PRODUCTS: Product[] = [
     ru: { name: "Мезонин", short: "Мезонин" },
     uz: { name: "Mezanin", short: "Mezanin" },
     priceMode: "project",
+    pricingModel: "components",
     loadPerLevelKg: [300, 500],
     bayStepMm: [2700],
     depthMm: [1050],

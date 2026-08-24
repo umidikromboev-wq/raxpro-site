@@ -14,6 +14,7 @@ import { COMPANY, SCOPE } from '@/lib/rack/company';
 
 export default function KpPreview({ kp, planImage, renderImage }) {
   const { meta, product, spec, price, positions } = kp;
+  const byList = price.mode === 'sectionList';
   const lang = meta.lang;
   const L = lang === 'uz';
   const s = (id) => kp.sections.find((x) => x.id === id);
@@ -137,8 +138,8 @@ export default function KpPreview({ kp, planImage, renderImage }) {
               <th className="py-2 font-medium">{t('Наименование', 'Nomi')}</th>
               <th className="py-2 text-right font-medium">{t('Ед.', 'Birlik')}</th>
               <th className="py-2 text-right font-medium">{t('Кол-во', 'Soni')}</th>
-              <th className="py-2 text-right font-medium">{t('Цена', 'Narx')}</th>
-              <th className="py-2 text-right font-medium">{t('Сумма', 'Summa')}</th>
+              {!byList && <th className="py-2 text-right font-medium">{t('Цена', 'Narx')}</th>}
+              {!byList && <th className="py-2 text-right font-medium">{t('Сумма', 'Summa')}</th>}
             </tr>
           </thead>
           <tbody>
@@ -149,8 +150,8 @@ export default function KpPreview({ kp, planImage, renderImage }) {
                   <td className="py-2 text-ink">{specLabel(line, lang)}</td>
                   <td className="py-2 text-right text-slate-400">{specUnit(line, lang)}</td>
                   <td className="py-2 text-right tabular-nums">{line.qty}</td>
-                  <td className="py-2 text-right tabular-nums text-slate-600">{fmtSum(row?.unitPrice ?? 0, lang)}</td>
-                  <td className="py-2 text-right font-medium tabular-nums">{fmtSum(row?.sum ?? 0, lang)}</td>
+                  {!byList && <td className="py-2 text-right tabular-nums text-slate-600">{fmtSum(row?.unitPrice ?? 0, lang)}</td>}
+                  {!byList && <td className="py-2 text-right font-medium tabular-nums">{fmtSum(row?.sum ?? 0, lang)}</td>}
                 </tr>
               );
             })}
@@ -169,6 +170,12 @@ export default function KpPreview({ kp, planImage, renderImage }) {
           ) : <div />}
 
           <dl className="w-full max-w-xs space-y-1 text-[13px]">
+            {byList && price.sectionPrice != null && (
+              <Line
+                k={`${t('Секций', 'Seksiya')} ${price.sections} × ${fmtSum(price.sectionPrice, lang)}`}
+                v={fmtSum(price.subtotal, lang)}
+              />
+            )}
             {price.discountPercent > 0 && (
               <Line k={t('Сумма', 'Summa')} v={fmtSum(price.subtotal, lang)} />
             )}

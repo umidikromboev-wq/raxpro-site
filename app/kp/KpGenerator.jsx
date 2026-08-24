@@ -20,6 +20,8 @@ export default function KpGenerator() {
   const [paymentKey, setPaymentKey] = useState('split5050');
   const [deliveryHours, setDeliveryHours] = useState(48);
   const [extraNote, setExtraNote] = useState('');
+  const [sizeCode, setSizeCode] = useState('');
+  const [framePrice, setFramePrice] = useState(0);
   const [benchmark, setBenchmark] = useState(null);
   const [planImage, setPlanImage] = useState(null);
   const [renderImage, setRenderImage] = useState(null);
@@ -68,6 +70,9 @@ export default function KpGenerator() {
     setProductKey(key);
     setUnitPrices(UNIT_PRICE_DEFAULTS[key] || {});
     const p = getProduct(key);
+    const first = p.sizes.find((x) => x.price) || p.sizes[0];
+    setSizeCode(first?.code || '');
+    setFramePrice(first && p.framePrices ? p.framePrices[first.h] || 0 : 0);
     setGeometry((g) => ({
       ...g,
       decksPerLevel: p.bom.includes('deck') ? 5 : 0,
@@ -85,7 +90,13 @@ export default function KpGenerator() {
     setClient(p.label.split(' · ')[0]);
     setDiscountPercent(0);
     setDiscountReason('');
-    setBenchmark({ label: p.label, total: p.total });
+    if (p.sizeCode) {
+      setSizeCode(p.sizeCode);
+      const prod = getProduct(p.productKey);
+      const v = prod.sizes.find((x) => x.code === p.sizeCode);
+      setFramePrice(v && prod.framePrices ? prod.framePrices[v.h] || 0 : 0);
+    }
+    setBenchmark({ label: p.label, total: p.total, note: p.note });
   }
 
   const kp = useMemo(
@@ -97,6 +108,10 @@ export default function KpGenerator() {
         geometry,
         price: {
           unitPrices,
+          ...(product.pricingModel === 'sectionList'
+            ? { sectionPrice: product.sizes.find((x) => x.code === sizeCode)?.price ?? 0,
+                framePrice, sizeCode }
+            : {}),
           discountPercent: Number(discountPercent) || 0,
           discountReason: discountReason || undefined,
           discountNote,
@@ -108,7 +123,8 @@ export default function KpGenerator() {
         extraNote,
       }),
     [client, productKey, lang, geometry, unitPrices, discountPercent, discountReason,
-     discountNote, paymentKey, deliveryHours, extraNote, planImage, renderImage]
+     discountNote, paymentKey, deliveryHours, extraNote, planImage, renderImage,
+     sizeCode, framePrice, product]
   );
 
   const blockers = kp.issues.filter((i) => i.severity === 'block');
@@ -218,14 +234,41 @@ export default function KpGenerator() {
           )}
         </Panel>
 
-        <Panel title="3 · Цены за единицу, сум">
-          <Row>
-            {kp.spec.map((l) => (
-              <NumField key={l.item} label={l.labelRu} value={unitPrices[l.item] ?? 0}
-                onChange={(v) => setUnitPrices({ ...unitPrices, [l.item]: v })} />
-            ))}
-          </Row>
-        </Panel>
+        {product.pricingModel === 'sectionList' ? (
+          <Panel title="3 · Прайс за секцию">
+            <Field label="Типоразмер из прайса">
+              <select value={sizeCode} className="inp"
+                onChange={(e) => {
+                  const c = e.target.value;
+                  setSizeCode(c);
+                  const v = product.sizes.find((x) => x.code === c);
+                  setFramePrice(v && product.framePrices ? product.framePrices[v.h] || 0 : 0);
+                  if (v) setGeometry((g) => ({ ...g, levels: v.levels }));
+                }}>
+                {product.sizes.map((v) => (
+                  <option key={v.code} value={v.code}>
+                    {v.h}×{v.w}×{v.d}, {v.levels} полок — {v.price ? fmtSum(v.price) : 'цены нет'}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <NumField label="Цена рамы, сум" value={framePrice} onChange={setFramePrice} />
+            <p className="text-[11px] leading-snug text-slate-500">
+              Сумма = секции × прайс − (секции − ряды) × цена рамы. Соседние секции делят раму,
+              поэтому ряд дешевле, чем столько же отдельных стеллажей. Цена рамы выведена
+              из прайса и проверена на КП BLOOMSHOP.
+            </p>
+          </Panel>
+        ) : (
+          <Panel title="3 · Цены за единицу, сум">
+            <Row>
+              {kp.spec.map((l) => (
+                <NumField key={l.item} label={l.labelRu} value={unitPrices[l.item] ?? 0}
+                  onChange={(v) => setUnitPrices({ ...unitPrices, [l.item]: v })} />
+              ))}
+            </Row>
+          </Panel>
+        )}
 
         <Panel title="4 · Скидка">
           <Row>
@@ -281,7 +324,8 @@ export default function KpGenerator() {
               ({kp.price.totalNoVat >= benchmark.total ? '+' : '−'}
               {Math.abs((kp.price.totalNoVat / benchmark.total - 1) * 100).toFixed(1)} %)
             </span>
-            . Расхождение больше 5 % означает, что цены за единицу пора обновить.
+            . Расхождение больше 5 % означает, что цены пора обновить.
+            {benchmark.note && <> Примечание: {benchmark.note}.</>}
           </p>
         )}
 

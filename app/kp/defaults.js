@@ -35,14 +35,18 @@ export const PRESETS = [
     label: 'BLOOMSHOP · среднегрузовой · 54 секции',
     productKey: 'medium-duty',
     geometry: { rows: 9, sections: 54, levels: 5, anchorsPerFrame: 4, decksPerLevel: 5, palletsPerLevel: 0, countGroundLevel: false },
-    total: 186_870_000,
+    sizeCode: 'MD-2500-2000-600-5',
+    total: 219_847_178,          // сумма до скидки 15 %, как в таблице КП
+    note: 'в КП скидка 15 % → 186 870 000',
   },
   {
     id: 'star',
     label: 'Star Distribution · среднегрузовой · 10 секций',
     productKey: 'medium-duty',
     geometry: { rows: 3, sections: 10, levels: 4, anchorsPerFrame: 4, decksPerLevel: 5, palletsPerLevel: 0, countGroundLevel: false },
-    total: 28_000_000,
+    sizeCode: 'MD-2000-2000-600-4',
+    total: 28_000_000,           // круглое число: похоже, уже с уступкой
+    note: 'круглая сумма — вероятно, уже с уступкой',
   },
 ];
 
