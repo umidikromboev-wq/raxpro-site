@@ -75,13 +75,24 @@ export default function RackScene({ room, layout, height = 460 }) {
       fill.position.set(-L * 0.3, H * 1.3, W * 1.4);
       scene.add(fill);
 
-      // пол
+      // Пол повторяет контур помещения. Прямоугольник под L-образным складом
+      // выглядел так, будто стеллажи стоят в вырезе на улице.
+      const outline = layout.polygon?.length
+        ? layout.polygon
+        : [[0, 0], [room.width, 0], [room.width, room.depth], [0, room.depth]];
+      const shape = new THREE.Shape();
+      outline.forEach(([x, y], i) => {
+        const px = x * MM, py = y * MM;
+        if (i === 0) shape.moveTo(px, py); else shape.lineTo(px, py);
+      });
+      shape.closePath();
       const floor = new THREE.Mesh(
-        new THREE.PlaneGeometry(L, W),
-        new THREE.MeshStandardMaterial({ color: 0x5f666d, roughness: 0.9, metalness: 0.05 })
+        new THREE.ShapeGeometry(shape),
+        new THREE.MeshStandardMaterial({
+          color: 0x5f666d, roughness: 0.9, metalness: 0.05, side: THREE.DoubleSide,
+        })
       );
-      floor.rotation.x = -Math.PI / 2;
-      floor.position.set(L / 2, 0, W / 2);
+      floor.rotation.x = Math.PI / 2;   // фигура строится в XY, кладём её в XZ
       scene.add(floor);
 
       // оболочка здания: нормали внутрь, снаружи стены отбраковываются сами,
@@ -105,6 +116,7 @@ export default function RackScene({ room, layout, height = 460 }) {
         shellGroup.add(t);
       }
       shellGroup.visible = false;
+      if (layout.polygon && layout.polygon.length > 4) shellGroup.userData.approx = true;
       scene.add(shellGroup);
 
       // колонны здания

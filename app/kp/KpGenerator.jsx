@@ -6,6 +6,7 @@ import { buildKp, fmtSum } from '@/lib/rack/kp';
 import { palletPositions } from '@/lib/rack/spec';
 import { design, roomWithColumns, DesignError, TRUCKS } from '@/lib/rack/layout';
 import LayoutPlan from './LayoutPlan';
+import PlanEditor from './PlanEditor';
 import RackScene from './RackScene';
 import { encodeShare } from '@/lib/rack/share';
 import { UNIT_PRICE_DEFAULTS, PRESETS, EMPTY_GEOMETRY } from './defaults';
@@ -32,6 +33,10 @@ export default function KpGenerator() {
   });
   const [layout, setLayout] = useState(null);
   const [layoutError, setLayoutError] = useState('');
+  // Откуда берётся форма помещения: прямоугольник или обводка по фото драфта.
+  const [roomMode, setRoomMode] = useState('rect');
+  const [planDraft, setPlanDraft] = useState(null);
+  const [editorOpen, setEditorOpen] = useState(false);
   // Режим печати: страницу открывает сервер, форма не нужна — только документ.
   const [printMode, setPrintMode] = useState(false);
   const [pdfBusy, setPdfBusy] = useState(false);
@@ -245,7 +250,17 @@ export default function KpGenerator() {
   function calcLayout() {
     setLayoutError('');
     try {
-      const r = roomWithColumns(room);
+      const fromDraft = roomMode === 'draft' && planDraft?.geometry;
+      const r = fromDraft
+        ? {
+            ...room,
+            width: planDraft.geometry.width,
+            depth: planDraft.geometry.depth,
+            polygon: planDraft.geometry.polygon,
+            columns: planDraft.geometry.columns,
+            docks: planDraft.geometry.docks,
+          }
+        : roomWithColumns(room);
       const l = design(r);
       setLayout({ ...l, room: r });
       setGeometry((g) => ({
@@ -280,6 +295,23 @@ export default function KpGenerator() {
 
   return (
     <div className="mx-auto grid max-w-[1600px] gap-6 p-6 lg:grid-cols-[400px_1fr] print:block print:p-0">
+      {editorOpen && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-cloud-50 p-4 print:hidden">
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.24em] text-sky-700">RAX PRO</p>
+              <h2 className="font-display text-lg leading-tight">Обводка склада по драфту</h2>
+            </div>
+            <button onClick={() => setEditorOpen(false)}
+              className="bg-ink px-4 py-2 text-sm text-white hover:bg-sky-700">
+              Готово
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-auto">
+            <PlanEditor value={planDraft} onChange={setPlanDraft} height={Math.max(420, (typeof window !== 'undefined' ? window.innerHeight : 900) - 260)} />
+          </div>
+        </div>
+      )}
       {/* ——————————————————————— форма */}
       <div className="space-y-4 print:hidden lg:h-[calc(100vh-3rem)] lg:overflow-y-auto lg:pr-2">
         <header className="sticky top-0 z-20 -mx-1 bg-cloud-50/95 px-1 pb-3 pt-1 backdrop-blur">
@@ -345,9 +377,47 @@ export default function KpGenerator() {
 
         {productKey.startsWith('pallet') && (
           <Panel title="2 · Помещение — раскладка считается сама">
+            <div className="flex gap-2">
+              {[
+                ['rect', 'Прямоугольник'],
+                ['draft', 'Обвести по драфту'],
+              ].map(([id, label]) => (
+                <button key={id} onClick={() => setRoomMode(id)}
+                  className={`flex-1 border px-3 py-1.5 text-[12px] ${
+                    roomMode === id ? 'border-ink bg-ink text-white' : 'border-cloud-300 bg-white hover:border-ink'
+                  }`}>
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {roomMode === 'draft' && (
+              <>
+                <button onClick={() => setEditorOpen(true)}
+                  className="w-full bg-sky-700 px-4 py-2 text-sm text-white hover:bg-sky-800">
+                  {planDraft?.geometry ? 'Открыть обводку' : 'Обвести склад по фото'}
+                </button>
+                {planDraft?.geometry ? (
+                  <p className="border border-cloud-300 bg-white px-3 py-2 text-[11px]">
+                    Контур: <b>{planDraft.geometry.polygon.length}</b> углов ·{' '}
+                    <b>{(planDraft.geometry.width / 1000).toFixed(1)} × {(planDraft.geometry.depth / 1000).toFixed(1)} м</b> ·
+                    колонн <b>{planDraft.geometry.columns.length}</b> · ворот <b>{planDraft.geometry.docks.length}</b>
+                  </p>
+                ) : (
+                  <p className="border-l-2 border-amber-500 pl-2 text-[11px] text-amber-800">
+                    Пока контур не обведён, раскладка считается по прямоугольнику ниже.
+                  </p>
+                )}
+              </>
+            )}
+
             <Row>
-              <NumField label="Ширина, мм" value={room.width} onChange={(v) => setRoom({ ...room, width: v })} />
-              <NumField label="Глубина, мм" value={room.depth} onChange={(v) => setRoom({ ...room, depth: v })} />
+              {roomMode === 'rect' && (
+                <NumField label="Ширина, мм" value={room.width} onChange={(v) => setRoom({ ...room, width: v })} />
+              )}
+              {roomMode === 'rect' && (
+                <NumField label="Глубина, мм" value={room.depth} onChange={(v) => setRoom({ ...room, depth: v })} />
+              )}
               <NumField label="Потолок, мм" value={room.ceiling} onChange={(v) => setRoom({ ...room, ceiling: v })} />
             </Row>
             <Row>
@@ -370,11 +440,13 @@ export default function KpGenerator() {
               <NumField label="Вес паллеты, кг" value={room.palletLoad} onChange={(v) => setRoom({ ...room, palletLoad: v })} />
               <NumField label="Глубина ряда, мм" value={room.rackDepth} onChange={(v) => setRoom({ ...room, rackDepth: v })} />
             </Row>
-            <Row>
-              <NumField label="Шаг колонн X, мм" value={room.colStepX} onChange={(v) => setRoom({ ...room, colStepX: v })} />
-              <NumField label="Шаг колонн Y, мм" value={room.colStepY} onChange={(v) => setRoom({ ...room, colStepY: v })} />
-              <NumField label="Колонна, мм" value={room.colSize} onChange={(v) => setRoom({ ...room, colSize: v })} />
-            </Row>
+            {roomMode === 'rect' && (
+              <Row>
+                <NumField label="Шаг колонн X, мм" value={room.colStepX} onChange={(v) => setRoom({ ...room, colStepX: v })} />
+                <NumField label="Шаг колонн Y, мм" value={room.colStepY} onChange={(v) => setRoom({ ...room, colStepY: v })} />
+                <NumField label="Колонна, мм" value={room.colSize} onChange={(v) => setRoom({ ...room, colSize: v })} />
+              </Row>
+            )}
             <button onClick={calcLayout} className="w-full bg-sky-700 px-4 py-2 text-sm text-white hover:bg-sky-800">
               Рассчитать раскладку
             </button>
