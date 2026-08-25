@@ -12,13 +12,14 @@ import { useEffect, useRef, useState } from 'react';
 
 const MM = 0.001;
 
-export default function RackScene({ room, layout, height = 460 }) {
+export default function RackScene({ room, layout, height = 460, onCapture }) {
   const canvasRef = useRef(null);
   const stateRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
   const [shell, setShell] = useState(false);
   const [pallets, setPallets] = useState(true);
+  const [shotDone, setShotDone] = useState(false);
 
   useEffect(() => {
     if (!room || !layout) return;
@@ -57,7 +58,9 @@ export default function RackScene({ room, layout, height = 460 }) {
       // Туман только прячет дальнюю стену, а не съедает саму расстановку.
       scene.fog = new THREE.Fog(0x121821, fitDist * 1.15, fitDist * 3.2);
 
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      // preserveDrawingBuffer нужен, чтобы кадр можно было забрать в картинку:
+      // без него canvas очищается сразу после отрисовки и снимок выходит пустым.
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.15;
@@ -281,7 +284,14 @@ export default function RackScene({ room, layout, height = 460 }) {
       loop();
       setReady(true);
 
-      stateRef.current = { shellGroup, palletGroup: [palMesh, boxMesh] };
+      // Снимок делается из текущего ракурса: менеджер сначала ставит вид,
+      // который хочет видеть в КП, и только потом снимает.
+      const shoot = () => {
+        renderer.render(scene, cam);
+        return canvas.toDataURL('image/png');
+      };
+      stateRef.current = { shellGroup, palletGroup: [palMesh, boxMesh], shoot };
+
 
       cleanup = () => {
         cancelAnimationFrame(raf);
@@ -327,6 +337,17 @@ export default function RackScene({ room, layout, height = 460 }) {
       <div className="absolute left-3 top-3 flex gap-2 text-[11px]">
         <Toggle on={shell} onClick={() => setShell((v) => !v)}>Здание</Toggle>
         <Toggle on={pallets} onClick={() => setPallets((v) => !v)}>Груз</Toggle>
+        {onCapture && (
+          <button
+            onClick={() => {
+              const png = stateRef.current?.shoot?.();
+              if (png) { onCapture(png); setShotDone(true); setTimeout(() => setShotDone(false), 2500); }
+            }}
+            className="border border-white/60 bg-white/15 px-2 py-1 text-white backdrop-blur transition hover:bg-white/25"
+          >
+            {shotDone ? 'Кадр в КП ✓' : 'Снять кадр в КП'}
+          </button>
+        )}
       </div>
       <p className="absolute bottom-3 right-3 text-[10px] text-white/45">
         тянуть — поворот · колесо — приближение

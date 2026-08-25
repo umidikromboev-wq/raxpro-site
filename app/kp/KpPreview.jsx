@@ -15,7 +15,7 @@ import RackScene from './RackScene';
 // В фактических КП RaxPro сумма и объём лежали на девятой странице,
 // а первые восемь были про поставщика.
 
-export default function KpPreview({ kp, planImage, renderImage, layout }) {
+export default function KpPreview({ kp, planImage, renderImage, layout, onCaptureRender }) {
   const { meta, product, spec, price, positions } = kp;
   const byList = price.mode === 'sectionList';
   const lang = meta.lang;
@@ -127,8 +127,11 @@ export default function KpPreview({ kp, planImage, renderImage, layout }) {
           {/* Модель живёт только на экране: в печати её место занимает план. */}
           <div className="mt-5 print:hidden">
             <SheetTitle>{t('Интерактивная модель', 'Interaktiv model')}</SheetTitle>
-            <RackScene room={layout.room} layout={layout} height={420} />
+            <RackScene room={layout.room} layout={layout} height={420} onCapture={onCaptureRender} />
             <p className="mt-2 text-[11px] text-slate-500">
+              {onCaptureRender
+                ? 'Поставьте нужный ракурс и нажмите «Снять кадр в КП» — он встанет на лист «Решение». '
+                : ''}
               {t(
                 `В модели ровно ${layout.sections} секций и ${layout.levels} яруса — те же, что в спецификации.`,
                 `Modelda aynan ${layout.sections} seksiya va ${layout.levels} yarus — spetsifikatsiyadagidek.`

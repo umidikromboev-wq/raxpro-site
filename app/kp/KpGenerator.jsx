@@ -288,7 +288,8 @@ export default function KpGenerator() {
   if (printMode) {
     return (
       <div className="mx-auto max-w-[210mm] print:max-w-none">
-        <KpPreview kp={kp} planImage={planImage} renderImage={renderImage} layout={layout} />
+        <KpPreview kp={kp} planImage={planImage} renderImage={renderImage} layout={layout}
+        onCaptureRender={printMode ? undefined : setRenderImage} />
       </div>
     );
   }
@@ -671,7 +672,8 @@ export default function KpGenerator() {
       </div>
 
       {/* ——————————————————————— документ */}
-      <KpPreview kp={kp} planImage={planImage} renderImage={renderImage} layout={layout} />
+      <KpPreview kp={kp} planImage={planImage} renderImage={renderImage} layout={layout}
+        onCaptureRender={printMode ? undefined : setRenderImage} />
     </div>
   );
 }
