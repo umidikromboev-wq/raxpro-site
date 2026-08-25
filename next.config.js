@@ -3,6 +3,12 @@ module.exports = {
   // chromium для выпуска PDF не должен попадать в бандл: это бинарник,
   // Next обязан подключить его как внешний пакет на сервере.
   serverExternalPackages: ['@sparticuz/chromium', 'puppeteer-core'],
+  // Трассировка не видит бинарник chromium: он лежит архивом в bin/ и
+  // подключается по строке пути, а не импортом. Без явного include функция
+  // уезжает на Vercel без браузера.
+  outputFileTracingIncludes: {
+    '/api/kp/pdf': ['./node_modules/@sparticuz/chromium/bin/**'],
+  },
   images: {
     remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com' }],
     formats: ['image/avif', 'image/webp'],
