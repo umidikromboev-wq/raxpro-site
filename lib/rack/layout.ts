@@ -182,6 +182,22 @@ export function design(room: Room): Layout {
   };
 }
 
+/** Помещение с развёрнутой сеткой колонн.
+ *  Единственный способ получить Room для design(): и у менеджера, и на
+ *  странице клиента раскладка обязана строиться из одного и того же входа.
+ *  Пока колонны разворачивались только в форме, ссылка на КП давала
+ *  60 секций вместо 58 — расчёт обходил колонны у одного и не обходил у другого. */
+export function roomWithColumns(form: Room & {
+  colStepX?: number; colStepY?: number; colSize?: number;
+}): Room {
+  const { colStepX, colStepY, colSize } = form;
+  const columns =
+    colStepX && colStepY
+      ? columnGrid(form.width, form.depth, colStepX, colStepY, colSize ?? 400)
+      : [];
+  return { ...form, columns };
+}
+
 /** Сетка колонн здания — самый частый случай в узбекских складах. */
 export function columnGrid(width: number, depth: number, stepX: number, stepY: number, size = 400) {
   const cols: Array<{ x: number; y: number; size: number }> = [];

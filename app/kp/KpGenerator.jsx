@@ -4,9 +4,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { PRODUCTS, getProduct } from '@/lib/rack/catalog';
 import { buildKp, fmtSum } from '@/lib/rack/kp';
 import { palletPositions } from '@/lib/rack/spec';
-import { design, columnGrid, DesignError, TRUCKS } from '@/lib/rack/layout';
+import { design, roomWithColumns, DesignError, TRUCKS } from '@/lib/rack/layout';
 import LayoutPlan from './LayoutPlan';
 import RackScene from './RackScene';
+import { encodeShare } from '@/lib/rack/share';
 import { UNIT_PRICE_DEFAULTS, PRESETS, EMPTY_GEOMETRY } from './defaults';
 import KpPreview from './KpPreview';
 import { Field, NumField, Row, Panel, Verdict } from './ui';
@@ -35,6 +36,8 @@ export default function KpGenerator() {
   const [printMode, setPrintMode] = useState(false);
   const [pdfBusy, setPdfBusy] = useState(false);
   const [pdfError, setPdfError] = useState('');
+  const [shareUrl, setShareUrl] = useState('');
+  const [shareCopied, setShareCopied] = useState(false);
   const [sizeCode, setSizeCode] = useState('');
   const [framePrice, setFramePrice] = useState(0);
   const [benchmark, setBenchmark] = useState(null);
@@ -110,6 +113,31 @@ export default function KpGenerator() {
       setPdfError(e.message || String(e));
     } finally {
       setPdfBusy(false);
+    }
+  }
+
+  // Ссылка для клиента: документ едет во фрагменте адреса, хранилище не нужно.
+  async function makeShareLink() {
+    try {
+      const hash = await encodeShare({
+        client, productKey, lang, geometry, unitPrices,
+        discountPercent: Number(discountPercent) || 0,
+        discountReason, discountNote, paymentKey,
+        deliveryHours: Number(deliveryHours) || 0,
+        extraNote, sizeCode, framePrice,
+        room, hasLayout: Boolean(layout),
+        date: kp.meta.date.toISOString(),
+      });
+      const url = `${location.origin}/tp#${hash}`;
+      setShareUrl(url);
+      setShareCopied(false);
+      try {
+        await navigator.clipboard.writeText(url);
+        setShareCopied(true);
+      } catch {}
+    } catch (e) {
+      setShareUrl('');
+      setPdfError(`Не удалось собрать ссылку: ${e.message}`);
     }
   }
 
@@ -217,10 +245,7 @@ export default function KpGenerator() {
   function calcLayout() {
     setLayoutError('');
     try {
-      const columns = room.colStepX > 0 && room.colStepY > 0
-        ? columnGrid(room.width, room.depth, room.colStepX, room.colStepY, room.colSize)
-        : [];
-      const r = { ...room, columns };
+      const r = roomWithColumns(room);
       const l = design(r);
       setLayout({ ...l, room: r });
       setGeometry((g) => ({
@@ -520,6 +545,26 @@ export default function KpGenerator() {
               JSON в реестр
             </button>
           </span>
+        </div>
+
+        <div className="border border-cloud-300 bg-white p-3">
+          <button
+            onClick={makeShareLink}
+            disabled={blockers.length > 0}
+            className="w-full border border-ink px-3 py-2 text-[12px] text-ink transition hover:bg-cloud-100 disabled:opacity-40"
+          >
+            Ссылка для клиента
+          </button>
+          {shareUrl && (
+            <>
+              <p className="mt-2 break-all font-mono text-[10px] leading-snug text-slate-500">{shareUrl}</p>
+              <p className="mt-1 text-[11px] text-slate-600">
+                {shareCopied ? 'Скопирована в буфер. ' : ''}
+                Открывается без пароля, живёт вечно и не зависит ни от какой базы:
+                предложение целиком лежит в самой ссылке.
+              </p>
+            </>
+          )}
         </div>
 
         <details className="border border-cloud-300 bg-white" open>
