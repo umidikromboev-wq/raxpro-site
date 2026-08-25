@@ -508,15 +508,30 @@ export default function KpGenerator() {
           </Field>
         </Panel>
 
-        <Panel title="7 · План и рендер">
-          <Field label="План объекта">
-            <input type="file" accept="image/*" className="text-xs"
+        <Panel title="7 · Свои картинки — по желанию">
+          <p className="text-[11px] leading-snug text-slate-600">
+            Оба поля необязательные. План генератор рисует сам, как только нажат
+            «Рассчитать раскладку». Загружайте сюда, только если есть свой чертёж
+            или готовый рендер. Формат — JPG или PNG, годится обычный экспорт
+            из 3ds Max или скриншот.
+          </p>
+          <Field label="Свой план склада (вид сверху)">
+            <input type="file" accept="image/png,image/jpeg" className="text-xs"
               onChange={(e) => readFile(e.target.files?.[0], setPlanImage)} />
           </Field>
-          <Field label="Рендер расстановки">
-            <input type="file" accept="image/*" className="text-xs"
+          {planImage && <p className="text-[11px] text-emerald-700">Загружен — заменит нарисованный план.</p>}
+          <Field label="Рендер: как это будет выглядеть">
+            <input type="file" accept="image/png,image/jpeg" className="text-xs"
               onChange={(e) => readFile(e.target.files?.[0], setRenderImage)} />
           </Field>
+          {renderImage && <p className="text-[11px] text-emerald-700">Загружен — встанет на лист «Решение».</p>}
+          {layout && (
+            <p className="text-[11px] leading-snug text-slate-500">
+              Фотореалистичный рендер собирает Blender: нажмите «сцена для Blender»
+              ниже и прогоните <span className="font-mono">render_kp.sh</span> —
+              получите три кадра, любой из них сюда.
+            </p>
+          )}
         </Panel>
 
         {benchmark && (
