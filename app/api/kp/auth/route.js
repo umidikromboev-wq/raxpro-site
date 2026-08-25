@@ -17,7 +17,7 @@ export async function POST(req) {
   const res = Response.json({ ok: true });
   res.headers.append(
     'Set-Cookie',
-    `kp_auth=${encodeURIComponent(expected.slice(0, 8))}; Path=/kp; HttpOnly; SameSite=Lax; Max-Age=43200${
+    `kp_auth=${encodeURIComponent(expected.slice(0, 8))}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200${
       process.env.NODE_ENV === 'production' ? '; Secure' : ''
     }`
   );
@@ -26,6 +26,6 @@ export async function POST(req) {
 
 export async function DELETE() {
   const res = Response.json({ ok: true });
-  res.headers.append('Set-Cookie', 'kp_auth=; Path=/kp; HttpOnly; Max-Age=0');
+  res.headers.append('Set-Cookie', 'kp_auth=; Path=/; HttpOnly; Max-Age=0');
   return res;
 }

@@ -5,6 +5,7 @@ import { specLabel, specUnit } from '@/lib/rack/spec';
 import { COMPANY, SCOPE } from '@/lib/rack/company';
 import { fmtDate } from '@/lib/rack/kp';
 import LayoutPlan from './LayoutPlan';
+import RackScene from './RackScene';
 
 // Документ, который увидит клиент.
 //
@@ -122,6 +123,19 @@ export default function KpPreview({ kp, planImage, renderImage, layout }) {
         <Sheet>
           <SheetTitle>{t('План расстановки', 'Joylashuv rejasi')}</SheetTitle>
           <LayoutPlan room={layout.room} layout={layout} lang={lang} />
+
+          {/* Модель живёт только на экране: в печати её место занимает план. */}
+          <div className="mt-5 print:hidden">
+            <SheetTitle>{t('Интерактивная модель', 'Interaktiv model')}</SheetTitle>
+            <RackScene room={layout.room} layout={layout} height={420} />
+            <p className="mt-2 text-[11px] text-slate-500">
+              {t(
+                `В модели ровно ${layout.sections} секций и ${layout.levels} яруса — те же, что в спецификации.`,
+                `Modelda aynan ${layout.sections} seksiya va ${layout.levels} yarus — spetsifikatsiyadagidek.`
+              )}
+            </p>
+          </div>
+
           <p className="mt-3 text-[11px] leading-snug text-slate-500">
             {t(
               'Расстановка рассчитана под габариты вашего помещения, колонны и ширину прохода под выбранную технику. Точные отметки уточняются после замера.',

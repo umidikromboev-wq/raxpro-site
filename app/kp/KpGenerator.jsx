@@ -6,6 +6,7 @@ import { buildKp, fmtSum } from '@/lib/rack/kp';
 import { palletPositions } from '@/lib/rack/spec';
 import { design, columnGrid, DesignError, TRUCKS } from '@/lib/rack/layout';
 import LayoutPlan from './LayoutPlan';
+import RackScene from './RackScene';
 import { UNIT_PRICE_DEFAULTS, PRESETS, EMPTY_GEOMETRY } from './defaults';
 import KpPreview from './KpPreview';
 import { Field, NumField, Row, Panel, Verdict } from './ui';
@@ -30,6 +31,10 @@ export default function KpGenerator() {
   });
   const [layout, setLayout] = useState(null);
   const [layoutError, setLayoutError] = useState('');
+  // Режим печати: страницу открывает сервер, форма не нужна — только документ.
+  const [printMode, setPrintMode] = useState(false);
+  const [pdfBusy, setPdfBusy] = useState(false);
+  const [pdfError, setPdfError] = useState('');
   const [sizeCode, setSizeCode] = useState('');
   const [framePrice, setFramePrice] = useState(0);
   const [benchmark, setBenchmark] = useState(null);
@@ -44,8 +49,11 @@ export default function KpGenerator() {
                   discountReason, discountNote, paymentKey, deliveryHours, extraNote };
 
   useEffect(() => {
+    const isPrint = new URLSearchParams(location.search).get('print') === '1';
     try {
-      const raw = localStorage.getItem('raxpro-kp-draft');
+      const raw = isPrint
+        ? localStorage.getItem('raxpro-kp-print')
+        : localStorage.getItem('raxpro-kp-draft');
       if (!raw) return;
       const d = JSON.parse(raw);
       if (d.client != null) setClient(d.client);
@@ -59,13 +67,51 @@ export default function KpGenerator() {
       if (d.paymentKey) setPaymentKey(d.paymentKey);
       if (d.deliveryHours != null) setDeliveryHours(d.deliveryHours);
       if (d.extraNote != null) setExtraNote(d.extraNote);
+      if (d.sizeCode) setSizeCode(d.sizeCode);
+      if (d.framePrice != null) setFramePrice(d.framePrice);
+      if (d.room) setRoom(d.room);
+      if (d.layout) setLayout(d.layout);
+      if (d.planImage) setPlanImage(d.planImage);
+      if (d.renderImage) setRenderImage(d.renderImage);
+      if (isPrint) setPrintMode(true);
     } catch {}
   }, []);
 
   useEffect(() => {
+    if (printMode) return;
     try { localStorage.setItem('raxpro-kp-draft', JSON.stringify(draft)); } catch {}
   }, [client, productKey, lang, geometry, unitPrices, discountPercent, discountReason,
       discountNote, paymentKey, deliveryHours, extraNote]);
+
+  async function downloadPdf() {
+    setPdfBusy(true);
+    setPdfError('');
+    try {
+      const res = await fetch('/api/kp/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...draft, sizeCode, framePrice, room, layout,
+          planImage, renderImage, number: kp.meta.number,
+        }),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error(j.error || `Сервер ответил ${res.status}`);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${kp.meta.number}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setPdfError(e.message || String(e));
+    } finally {
+      setPdfBusy(false);
+    }
+  }
 
   function exportJson() {
     const payload = { number: kp.meta.number, issuedAt: new Date().toISOString(), draft,
@@ -173,6 +219,14 @@ export default function KpGenerator() {
     fr.readAsDataURL(file);
   }
 
+  if (printMode) {
+    return (
+      <div className="mx-auto max-w-[210mm] print:max-w-none">
+        <KpPreview kp={kp} planImage={planImage} renderImage={renderImage} layout={layout} />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto grid max-w-[1600px] gap-6 p-6 lg:grid-cols-[400px_1fr] print:block print:p-0">
       {/* ——————————————————————— форма */}
@@ -187,7 +241,16 @@ export default function KpGenerator() {
               onClick={() => fetch('/api/kp/auth', { method: 'DELETE' }).then(() => location.reload())}
               className="text-[11px] text-slate-400 underline-offset-2 hover:underline">выйти</button>
           </div>
-          <Verdict blockers={blockers} warnings={warnings} onPrint={() => window.print()} />
+          <Verdict
+            blockers={blockers}
+            warnings={warnings}
+            onPrint={() => window.print()}
+            onPdf={downloadPdf}
+            pdfBusy={pdfBusy}
+          />
+          {pdfError && (
+            <p className="mt-2 border-l-2 border-red-500 pl-2 text-[11px] text-red-700">{pdfError}</p>
+          )}
         </header>
 
         <Panel title="Пресеты из реальных КП">

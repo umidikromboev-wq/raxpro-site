@@ -49,7 +49,7 @@ export function Row({ children }) {
 
 /** Вердикт приёмки. Всегда на виду: в старом процессе ошибку замечали
  *  уже после отправки клиенту, а не до печати. */
-export function Verdict({ blockers, warnings, onPrint }) {
+export function Verdict({ blockers, warnings, onPrint, onPdf, pdfBusy }) {
   const blocked = blockers.length > 0;
   return (
     <div
@@ -75,13 +75,23 @@ export function Verdict({ blockers, warnings, onPrint }) {
           <span className="text-emerald-800">Готово к выпуску, замечаний нет</span>
         )}
       </p>
-      <button
-        disabled={blocked}
-        onClick={onPrint}
-        className="shrink-0 bg-ink px-3 py-1.5 text-[11px] text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        Печать / PDF
-      </button>
+      <div className="flex shrink-0 gap-1.5">
+        <button
+          disabled={blocked || pdfBusy}
+          onClick={onPdf}
+          className="bg-ink px-3 py-1.5 text-[11px] text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {pdfBusy ? 'Собираю…' : 'Скачать PDF'}
+        </button>
+        <button
+          disabled={blocked}
+          onClick={onPrint}
+          title="Открыть диалог печати"
+          className="border border-ink px-2 py-1.5 text-[11px] text-ink transition hover:bg-cloud-100 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Печать
+        </button>
+      </div>
     </div>
   );
 }

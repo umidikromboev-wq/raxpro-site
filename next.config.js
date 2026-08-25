@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  // chromium для выпуска PDF не должен попадать в бандл: это бинарник,
+  // Next обязан подключить его как внешний пакет на сервере.
+  serverExternalPackages: ['@sparticuz/chromium', 'puppeteer-core'],
   images: {
     remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com' }],
     formats: ['image/avif', 'image/webp'],
