@@ -113,6 +113,32 @@ export default function KpGenerator() {
     }
   }
 
+  // Сцена для Blender: те же числа, что план, модель и смета.
+  // Раньше числа для рендера были зашиты в скрипт отдельно, и картинка
+  // показывала один склад, пока смета считала другой.
+  function exportScene() {
+    if (!layout) return;
+    const payload = {
+      number: kp.meta.number,
+      client: client || '—',
+      room: layout.room,
+      layout: {
+        levels: layout.levels,
+        frameHeight: layout.frameHeight,
+        positions: layout.positions,
+        rows: layout.rows,
+        sections: layout.sections,
+        bays: layout.bays,
+      },
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${kp.meta.number}.scene.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   function exportJson() {
     const payload = { number: kp.meta.number, issuedAt: new Date().toISOString(), draft,
                       spec: kp.spec, price: kp.price, positions: kp.positions };
@@ -484,9 +510,16 @@ export default function KpGenerator() {
 
         <div className="flex items-center justify-between text-[11px] text-slate-500">
           <span className="font-mono text-sky-700">{kp.meta.number}</span>
-          <button onClick={exportJson} className="underline-offset-2 hover:underline">
-            выгрузить JSON в реестр
-          </button>
+          <span className="flex gap-3">
+            {layout && (
+              <button onClick={exportScene} className="underline-offset-2 hover:underline">
+                сцена для Blender
+              </button>
+            )}
+            <button onClick={exportJson} className="underline-offset-2 hover:underline">
+              JSON в реестр
+            </button>
+          </span>
         </div>
 
         <details className="border border-cloud-300 bg-white" open>
