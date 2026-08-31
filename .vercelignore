@@ -1,6 +1,9 @@
-node_modules
-.next
-.git
-research
-docs
+# Пути якорятся от корня: без ведущего слэша Vercel вырезает КАЖДЫЙ каталог
+# с таким именем. Строка «docs» унесла с собой app/api/kp/docs — реестр КП
+# отвечал 404 на боевом, хотя в локальной сборке был.
+/node_modules
+/.next
+/.git
+/research
+/docs
 *.bak

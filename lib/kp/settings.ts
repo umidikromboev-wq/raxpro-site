@@ -93,6 +93,14 @@ export async function saveKey(
   const key = String(rawKey || "").trim();
   if (!key) throw new Error("Пустой ключ");
   if (key.length > 400) throw new Error("Это не похоже на ключ доступа");
+  // Ключ уходит в заголовок HTTP. Любой символ вне ASCII роняет сам fetch,
+  // и менеджер видел «не удалось связаться с провайдером» вместо правды:
+  // он скопировал ключ вместе с кириллицей или переносом строки.
+  if (!/^[\x21-\x7e]+$/.test(key)) {
+    throw new Error(
+      "В ключе есть посторонние символы — пробел, перенос строки или кириллица. Скопируйте ключ целиком из консоли провайдера."
+    );
+  }
 
   const model = await getModel(provider);
   const check = await checkKey(provider, key, model);
