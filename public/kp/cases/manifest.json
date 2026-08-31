@@ -1,0 +1,12 @@
+[
+  {"file":"hero-01.jpg","w":1300,"h":975,"product":"pallet-frontal","captionRu":"Паллетные стеллажи, монтаж на складе, Ташкент","captionUz":"Palet stellajlari, ombordagi montaj, Toshkent"},
+  {"file":"pallet-01.jpg","w":960,"h":1280,"product":"pallet-frontal","captionRu":"Паллетные стеллажи с грузом, холодный склад дистрибуции","captionUz":"Yuk bilan palet stellajlari, sovutgichli distributsiya ombori"},
+  {"file":"pallet-02.jpg","w":1400,"h":1050,"product":"pallet-frontal","captionRu":"Паллетные стеллажи с продукцией на паллетах, производственный склад","captionUz":"Palletlardagi mahsulot bilan palet stellajlari, ishlab chiqarish ombori"},
+  {"file":"driveIn-01.jpg","w":853,"h":1280,"product":"pallet-driveIn","captionRu":"Набивные (drive-in) паллетные стеллажи высотного хранения","captionUz":"Balandlikda saqlash uchun набивной (drive-in) palet stellajlari"},
+  {"file":"medium-01.jpg","w":1200,"h":1600,"product":"medium-duty","captionRu":"Среднегрузовые стеллажи в холодильной камере","captionUz":"Sovutgich xonasidagi o'rta yuklama stellajlari"},
+  {"file":"medium-02.jpg","w":1280,"h":960,"product":"medium-duty","captionRu":"Среднегрузовые стеллажи на антресольном этаже склада","captionUz":"Ombor mezanin qavatidagi o'rta yuklama stellajlari"},
+  {"file":"retail-01.jpg","w":960,"h":1280,"product":"retail","captionRu":"Торговые стеллажи в магазине","captionUz":"Do'kondagi targoviy stellajlar"},
+  {"file":"retail-02.jpg","w":1280,"h":960,"product":"retail","captionRu":"Торговые стеллажи, зал магазина, общий вид","captionUz":"Targoviy stellajlar, do'kon zali, umumiy ko'rinish"},
+  {"file":"archive-01.jpg","w":1280,"h":960,"product":"archive","captionRu":"Архивные стеллажи в офисном помещении","captionUz":"Ofis xonasidagi arxiv stellajlari"},
+  {"file":"mezzanine-01.jpg","w":1018,"h":664,"product":"mezzanine","captionRu":"Мезонинная система со стеллажами и лестницей, склад","captionUz":"Zinapoyali va stellajli mezanin tizimi, ombor"}
+]

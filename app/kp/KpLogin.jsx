@@ -1,7 +1,10 @@
 'use client';
-import { useState } from 'react';
 
-export default function KpLogin({ configured }) {
+import { useState } from 'react';
+import { Msg, api } from './ui';
+
+export default function KpLogin({ ready, hasUsers }) {
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -10,45 +13,73 @@ export default function KpLogin({ configured }) {
     e.preventDefault();
     setBusy(true);
     setError('');
-    const res = await fetch('/api/kp/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (data.ok) location.reload();
-    else setError(data.error || 'Не удалось войти');
-    setBusy(false);
+    try {
+      await api('/api/kp/auth', {
+        method: 'POST',
+        body: JSON.stringify({ login, password }),
+      });
+      location.reload();
+    } catch (err) {
+      setError(err.message);
+      setBusy(false);
+    }
   }
 
   return (
-    <main className="min-h-screen grid place-items-center px-6">
-      <form onSubmit={submit} className="w-full max-w-sm border border-neutral-300 bg-white p-8">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">RAX PRO</p>
-        <h1 className="mt-2 text-xl font-semibold">Генератор коммерческих предложений</h1>
-        <p className="mt-2 text-sm text-neutral-600">
-          Внутренний инструмент. Содержит цены и скидки — доступ по паролю.
+    <main className="kp-app kp-login">
+      <form onSubmit={submit}>
+        <p className="kp-brand">
+          RAX PRO
+          <small>Кабинет коммерческих предложений</small>
         </p>
 
-        {!configured && (
-          <p className="mt-4 border border-amber-400 bg-amber-50 p-3 text-sm text-amber-900">
-            На сервере не задан <code>KP_PASSWORD</code>. Добавьте переменную в Vercel и передеплойте.
-          </p>
+        <h1 style={{ marginTop: 22, fontSize: 22, lineHeight: 1.15, letterSpacing: '-0.02em' }}>
+          {hasUsers ? 'Вход для сотрудников' : 'Первый вход'}
+        </h1>
+        <p style={{ marginTop: 8, fontSize: 12.5, color: 'var(--muted)', lineHeight: 1.5 }}>
+          {hasUsers
+            ? 'Инструмент содержит закупочные цены и скидки. Логин выдаёт владелец кабинета.'
+            : 'Введите пароль, заданный на сервере в KP_PASSWORD, — он заведёт владельца кабинета с логином admin. После этого сотрудников заводите в разделе «Сотрудники».'}
+        </p>
+
+        {!ready && (
+          <Msg tone="warn" style={{ marginTop: 16 }}>
+            Кабинет не настроен: на сервере нет переменных <code>KP_SECRET</code> или{' '}
+            <code>BLOB_READ_WRITE_TOKEN</code>. Добавьте их в Vercel и передеплойте.
+          </Msg>
         )}
 
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Пароль"
-          autoFocus
-          className="mt-6 w-full border border-neutral-300 px-3 py-2 outline-none focus:border-neutral-900"
-        />
-        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-        <button
-          disabled={busy || !configured}
-          className="mt-4 w-full bg-neutral-900 px-4 py-2 text-white disabled:opacity-40"
-        >
+        {hasUsers && (
+          <div style={{ marginTop: 18 }}>
+            <label className="kp-label" htmlFor="kp-login">Логин</label>
+            <input
+              id="kp-login"
+              className="inp"
+              value={login}
+              autoComplete="username"
+              onChange={(e) => setLogin(e.target.value)}
+              placeholder="admin"
+            />
+          </div>
+        )}
+
+        <div style={{ marginTop: 12 }}>
+          <label className="kp-label" htmlFor="kp-password">Пароль</label>
+          <input
+            id="kp-password"
+            className="inp"
+            type="password"
+            value={password}
+            autoFocus
+            autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        {error && <Msg tone="bad" style={{ marginTop: 12 }}>{error}</Msg>}
+
+        <button className="kp-btn kp-btn--block" style={{ marginTop: 18 }} disabled={busy || !ready}>
+          {busy && <span className="kp-spin" aria-hidden="true" />}
           {busy ? 'Проверяю…' : 'Войти'}
         </button>
       </form>

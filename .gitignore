@@ -11,3 +11,6 @@ tsconfig.tsbuildinfo
 # живёт локально в ~/Downloads/Проекты/raxpro-site/research/.
 research/tg-group/
 research/rack-calc/__pycache__/
+
+# резервные копии заменённых файлов
+*.bak

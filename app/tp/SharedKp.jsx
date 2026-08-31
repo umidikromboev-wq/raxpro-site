@@ -1,11 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { buildKp } from '@/lib/rack/kp';
-import { design, roomWithColumns } from '@/lib/rack/layout';
-import { getProduct } from '@/lib/rack/catalog';
 import { decodeShare } from '@/lib/rack/share';
-import KpPreview from '../kp/KpPreview';
+import KpDocument from '../kp/doc/KpDocument';
+import { kpFromState, layoutFromState } from '../kp/buildFromState';
 
 // КП по ссылке. Всё, что нужно для документа, приезжает во фрагменте адреса,
 // раскладка пересчитывается тем же ядром — поэтому клиент видит ровно то же,
@@ -22,21 +20,19 @@ export default function SharedKp() {
       return;
     }
     decodeShare(hash)
-      .then(setState)
-      .catch((e) => setError(`Не удалось прочитать предложение: ${e.message}`));
+      .then((s) => setState({ ...s, hasLayout: Boolean(s.room) }))
+      .catch(() => setError('Не удалось прочитать предложение по этой ссылке.'));
   }, []);
 
   if (error) {
     return (
-      <main className="grid min-h-screen place-items-center px-6">
-        <div className="max-w-md text-center">
-          <p className="font-display text-lg">RAX PRO</p>
-          <p className="mt-3 text-sm text-slate-600">{error}</p>
-          <p className="mt-4 text-sm">
+      <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 24 }}>
+        <div style={{ maxWidth: 420, textAlign: 'center' }}>
+          <p style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.02em' }}>RAX PRO</p>
+          <p style={{ marginTop: 12, fontSize: 14, color: '#69727e', lineHeight: 1.6 }}>{error}</p>
+          <p style={{ marginTop: 16, fontSize: 14 }}>
             Напишите нам, и мы пришлём предложение заново:{' '}
-            <a className="text-sky-700 underline-offset-2 hover:underline" href="tel:+998785551555">
-              +998 78 555 1 555
-            </a>
+            <a style={{ color: '#cf5a1b' }} href="tel:+998785551555">+998 78 555 1 555</a>
           </p>
         </div>
       </main>
@@ -45,58 +41,27 @@ export default function SharedKp() {
 
   if (!state) {
     return (
-      <main className="grid min-h-screen place-items-center">
-        <p className="text-sm text-slate-500">Открываем предложение…</p>
+      <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}>
+        <p style={{ fontSize: 13, color: '#69727e' }}>Открываем предложение…</p>
       </main>
     );
   }
 
-  let layout = null;
-  if (state.room) {
-    try {
-      const r = roomWithColumns(state.room);
-      layout = { ...design(r), room: r };
-    } catch {
-      layout = null; // без плана документ всё равно читается
-    }
-  }
-
-  const product = getProduct(state.productKey);
-  const kp = buildKp({
-    client: state.client || '—',
-    productKey: state.productKey,
-    lang: state.lang,
-    geometry: state.geometry,
-    price: {
-      unitPrices: state.unitPrices || {},
-      discountPercent: state.discountPercent,
-      discountReason: state.discountReason || undefined,
-      discountNote: state.discountNote,
-      ...(product.pricingModel === 'sectionList'
-        ? {
-            sectionPrice: product.sizes.find((x) => x.code === state.sizeCode)?.price ?? 0,
-            framePrice: state.framePrice,
-            sizeCode: state.sizeCode,
-          }
-        : {}),
-    },
-    paymentKey: state.paymentKey,
-    deliveryHours: state.deliveryHours,
-    extraNote: state.extraNote,
-    hasComputedPlan: Boolean(layout),
-    date: state.date ? new Date(state.date) : undefined,
-  });
+  const layout = layoutFromState(state);
+  const kp = kpFromState(state, layout);
 
   return (
-    <main className="mx-auto max-w-[210mm] px-4 py-8 print:max-w-none print:p-0">
-      <KpPreview kp={kp} layout={layout} planImage={null} renderImage={null} />
-      <div className="mt-6 flex justify-center gap-3 print:hidden">
-        <button onClick={() => window.print()} className="bg-ink px-4 py-2 text-sm text-white hover:bg-sky-700">
-          Распечатать или сохранить в PDF
+    <main style={{ padding: 'clamp(10px, 3vw, 34px) clamp(8px, 3vw, 24px)' }}>
+      <KpDocument kp={kp} layout={layout} planImage={null} renderImage={null} />
+
+      <div
+        className="kp-screen-only"
+        style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 26, flexWrap: 'wrap' }}
+      >
+        <button onClick={() => window.print()} className="tp-btn tp-btn--solid">
+          Сохранить в PDF
         </button>
-        <a href="tel:+998785551555" className="border border-ink px-4 py-2 text-sm hover:bg-cloud-100">
-          Позвонить
-        </a>
+        <a href="tel:+998785551555" className="tp-btn">Позвонить: +998 78 555 1 555</a>
       </div>
     </main>
   );

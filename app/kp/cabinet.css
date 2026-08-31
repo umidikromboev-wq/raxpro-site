@@ -1,0 +1,350 @@
+/* Кабинет RAX PRO — рабочая поверхность менеджера.
+ *
+ * То же направление, что у документа: индустриальный монохром, тёплая бумага,
+ * волосяные линии, один акцент. Кабинет не должен спорить с КП: менеджер
+ * смотрит на них рядом весь день.
+ */
+
+.kp-app {
+  --paper: #edeae4;
+  --panel: #fffefc;
+  --panel-2: #f7f4ef;
+  --ink: #14181d;
+  --ink-2: #39414b;
+  --muted: #69727e;
+  --dim: #9aa2ad;
+  --line: #ddd7cd;
+  --line-2: #ebe6dd;
+  --accent: #cf5a1b;
+  --accent-soft: #f7ece3;
+  --ok: #2f7a52;
+  --warn: #9a6413;
+  --bad: #b3372c;
+
+  --grotesk: var(--font-grotesk), system-ui, -apple-system, sans-serif;
+  --serif: var(--font-serif), Georgia, serif;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fast: 150ms;
+  --mid: 320ms;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--grotesk);
+  min-height: 100vh;
+}
+
+/* ——————————————————————————————————————— каркас */
+
+.kp-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px clamp(12px, 3vw, 26px);
+  background: rgba(237, 234, 228, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.kp-brand {
+  font-family: var(--grotesk);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.kp-brand small {
+  display: block;
+  font-family: var(--grotesk);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 4px;
+}
+
+.kp-tabs { display: flex; gap: 2px; }
+.kp-tab {
+  position: relative;
+  padding: 7px 13px;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+.kp-tab:hover { color: var(--ink); background: rgba(20, 24, 29, 0.05); }
+.kp-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.kp-tab[aria-selected='true'] { color: var(--ink); background: var(--panel); border-color: var(--line); }
+.kp-tab[aria-selected='true']::after {
+  content: '';
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(1);
+  transform-origin: left;
+  animation: kp-underline var(--mid) var(--ease);
+}
+@keyframes kp-underline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.kp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: var(--panel);
+}
+.kp-badge--ok { color: var(--ok); border-color: rgba(47, 122, 82, 0.35); }
+.kp-badge--warn { color: var(--warn); border-color: rgba(154, 100, 19, 0.35); }
+.kp-badge--bad { color: var(--bad); border-color: rgba(179, 55, 44, 0.35); }
+
+/* ——————————————————————————————————————— панели и поля */
+
+.kp-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.kp-panel > h2,
+.kp-panel__head {
+  margin: 0;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line-2);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.kp-panel__body { padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+
+.inp {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  padding: 7px 9px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+}
+.inp:hover { border-color: var(--dim); }
+.inp:focus,
+.inp:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(207, 90, 27, 0.14);
+}
+.inp::placeholder { color: var(--dim); }
+
+.kp-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 9.5px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* ——————————————————————————————————————— кнопки */
+
+.kp-btn {
+  --btn-bg: var(--ink);
+  --btn-fg: #fffefc;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-family: inherit;
+  line-height: 1.2;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-bg);
+  cursor: pointer;
+  transition: transform var(--fast) var(--ease), background var(--fast) var(--ease),
+    color var(--fast) var(--ease), border-color var(--fast) var(--ease), opacity var(--fast) var(--ease);
+}
+.kp-btn:hover:not(:disabled) { --btn-bg: var(--accent); transform: translateY(-1px); }
+.kp-btn:active:not(:disabled) { transform: translateY(0); }
+.kp-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.kp-btn:disabled { opacity: 0.42; cursor: not-allowed; }
+
+.kp-btn--ghost { --btn-bg: transparent; --btn-fg: var(--ink); border-color: var(--line); }
+.kp-btn--ghost:hover:not(:disabled) { --btn-bg: transparent; --btn-fg: var(--accent); border-color: var(--accent); }
+.kp-btn--accent { --btn-bg: var(--accent); }
+.kp-btn--accent:hover:not(:disabled) { --btn-bg: #b74a12; }
+.kp-btn--sm { padding: 5px 10px; font-size: 11px; }
+.kp-btn--block { width: 100%; }
+.kp-btn--danger { --btn-bg: transparent; --btn-fg: var(--bad); border-color: rgba(179, 55, 44, 0.4); }
+.kp-btn--danger:hover:not(:disabled) { --btn-bg: var(--bad); --btn-fg: #fff; border-color: var(--bad); }
+
+.kp-spin {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border: 1.5px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: kp-spin 700ms linear infinite;
+}
+@keyframes kp-spin { to { transform: rotate(360deg); } }
+
+/* ——————————————————————————————————————— сообщения */
+
+.kp-msg {
+  font-size: 11.5px;
+  line-height: 1.45;
+  padding: 7px 10px;
+  border-left: 2px solid var(--line);
+  background: var(--panel-2);
+  animation: kp-msg-in var(--mid) var(--ease);
+}
+.kp-msg--ok { border-color: var(--ok); color: var(--ok); }
+.kp-msg--bad { border-color: var(--bad); color: var(--bad); }
+.kp-msg--warn { border-color: var(--warn); color: var(--warn); }
+@keyframes kp-msg-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ——————————————————————————————————————— реестр */
+
+.kp-rows { display: flex; flex-direction: column; }
+.kp-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--line-2);
+  background: var(--panel);
+  transition: background var(--fast) var(--ease), transform var(--fast) var(--ease);
+  animation: kp-row-in 420ms var(--ease) both;
+  animation-delay: var(--row-delay, 0ms);
+}
+.kp-row:hover { background: var(--panel-2); }
+@keyframes kp-row-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@media (max-width: 720px) {
+  .kp-row { grid-template-columns: 1fr; gap: 6px; }
+}
+
+.kp-dot { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--dim); }
+.kp-dot--issued { background: var(--accent); }
+.kp-dot--won { background: var(--ok); }
+.kp-dot--lost { background: var(--bad); }
+
+/* ——————————————————————————————————————— редактор: форма и документ рядом */
+
+.kp-editor__grid { display: grid; gap: 20px; }
+@media (min-width: 1120px) {
+  .kp-editor__grid {
+    grid-template-columns: 400px minmax(0, 1fr);
+    align-items: start;
+  }
+  .kp-app__side {
+    position: sticky;
+    top: 52px;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    padding-right: 6px;
+    scrollbar-width: thin;
+  }
+}
+
+/* ——————————————————————————————————————— вход */
+
+.kp-login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--paper);
+}
+.kp-login form {
+  width: 100%;
+  max-width: 380px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 30px 28px;
+  animation: kp-card-in 520ms var(--ease) both;
+}
+@keyframes kp-card-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ——————————————————————————————————————— набросок */
+
+.kp-drop {
+  position: relative;
+  display: block;
+  border: 1px dashed var(--line);
+  background: var(--panel-2);
+  padding: 18px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+.kp-drop:hover { border-color: var(--accent); background: var(--accent-soft); }
+.kp-drop[data-over='1'] { border-color: var(--accent); background: var(--accent-soft); transform: scale(1.01); }
+.kp-drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+.kp-sketch-preview {
+  width: 100%;
+  border: 1px solid var(--line);
+  display: block;
+  animation: kp-msg-in var(--mid) var(--ease);
+}
+
+.kp-progress {
+  height: 2px;
+  background: var(--line-2);
+  overflow: hidden;
+}
+.kp-progress span {
+  display: block;
+  height: 100%;
+  width: 38%;
+  background: var(--accent);
+  animation: kp-slide 1200ms var(--ease) infinite;
+}
+@keyframes kp-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kp-app *,
+  .kp-app *::before,
+  .kp-app *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .kp-btn:hover:not(:disabled) { transform: none; }
+}
+
+@media print {
+  .kp-topbar,
+  .kp-app__side,
+  .kp-app__chrome { display: none !important; }
+  .kp-app { background: #fff; }
+}

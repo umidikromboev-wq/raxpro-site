@@ -1,0 +1,347 @@
+/* Коммерческое предложение RAX PRO — типографский контракт документа.
+ *
+ * Направление: индустриальный монохром. Тёплая бумага, графитовый текст,
+ * волосяные линии, один акцент — сигнальная охра, снятая с балок на их
+ * собственных объектах. Никаких вторых акцентов: цвет в этом документе
+ * означает «сюда смотреть», а не «здесь красиво».
+ *
+ * Пара шрифтов, а не один. Гротеск Golos Text держит всё считаемое —
+ * обложку, цифры, спецификацию, таблицы: у него ровные табличные цифры
+ * и родная кириллица. Сериф Source Serif 4 звучит только там, где документ
+ * говорит человеческим голосом: заголовок листа, лид, цитата основателя,
+ * подписи под кадрами. Контраст двух гарнитур и делает лист редакторским,
+ * а не «сгенерированным».
+ *
+ * Один и тот же лист живёт в трёх местах: превью у менеджера, страница
+ * клиента /tp и PDF из headless-браузера. Поэтому размеры фиксированные
+ * в пикселях внутри листа 210 мм, а не текучие: иначе PDF и экран расходятся.
+ * Под узкий экран лист не переверстывается, а масштабируется целиком
+ * (--kp-fit) — клиент на телефоне обязан видеть ровно тот документ,
+ * который распечатает менеджер.
+ */
+
+.kp-doc {
+  /* — бумага и чернила */
+  --paper: #f2efe9;
+  --sheet: #fffefc;
+  --ink: #14181d;
+  --ink-2: #39414b;
+  --muted: #69727e;
+  --dim: #9aa2ad;
+  --line: #ddd7cd;
+  --line-2: #ebe6dd;
+  --deep: #101a28;
+  --deep-2: #1b2739;
+
+  /* — ровно один акцент */
+  --accent: #cf5a1b;
+  --accent-soft: #f6ece3;
+
+  /* — гарнитуры */
+  --grotesk: var(--font-grotesk), system-ui, -apple-system, sans-serif;
+  --serif: var(--font-serif), Georgia, "Times New Roman", serif;
+
+  /* — шкала листа A4 */
+  --pad: 16mm;
+  --t-xs: 8.5px;
+  --t-sm: 10px;
+  --t-base: 12.5px;
+  --t-lg: 15.5px;
+  --t-h3: 19px;
+  --t-h2: 31px;
+  --t-h1: 46px;
+  --t-mega: 74px;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fast: 160ms;
+  --slow: 720ms;
+
+  color: var(--ink);
+  font-family: var(--grotesk);
+  font-size: var(--t-base);
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+
+  /* Масштаб листа под ширину контейнера. Считается в DocRoot; в печати
+   * и при недоступном контейнере всегда 1. zoom, а не transform: он
+   * пересчитывает поток, поэтому под сжатым листом не остаётся пустоты. */
+  zoom: var(--kp-fit, 1);
+}
+
+/* ——————————————————————————————————————————— лист */
+
+.kp-page {
+  position: relative;
+  width: 100%;
+  max-width: 210mm;
+  min-height: 297mm;
+  margin-inline: auto;
+  background: var(--sheet);
+  padding: var(--pad);
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 1px 2px rgba(20, 24, 29, 0.05),
+    0 24px 60px -32px rgba(20, 24, 29, 0.35);
+}
+
+.kp-page--flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.kp-page--dark {
+  background: var(--deep);
+  color: #f3f1ee;
+}
+
+/* ——————————————————————————————————————————— типографика */
+
+.kp-h1,
+.kp-h3,
+.kp-mega {
+  font-family: var(--grotesk);
+  letter-spacing: -0.028em;
+  line-height: 1.03;
+  font-weight: 600;
+  text-wrap: balance;
+  margin: 0;
+}
+.kp-mega { font-size: var(--t-mega); letter-spacing: -0.042em; font-weight: 700; }
+.kp-h1 { font-size: var(--t-h1); letter-spacing: -0.034em; }
+.kp-h3 { font-size: var(--t-h3); letter-spacing: -0.018em; line-height: 1.15; }
+
+/* Заголовок листа — сериф. Он единственный на странице, поэтому переключение
+ * гарнитуры читается как смена интонации, а не как разнобой. */
+.kp-h2 {
+  font-family: var(--serif);
+  font-size: var(--t-h2);
+  font-weight: 400;
+  letter-spacing: -0.014em;
+  line-height: 1.08;
+  text-wrap: balance;
+  margin: 0;
+}
+
+/* Кикер — фирменный приём: крошечный капс с квадратом акцента. */
+.kp-kicker {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: var(--t-xs);
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 0 0 11px;
+  font-weight: 500;
+}
+.kp-kicker::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--accent);
+}
+.kp-page--dark .kp-kicker { color: rgba(243, 241, 238, 0.6); }
+
+/* Лид — сериф. Это единственный абзац на листе, который клиент читает
+ * целиком, и он должен звучать как текст, а не как подпись к таблице. */
+.kp-lede {
+  font-family: var(--serif);
+  font-size: var(--t-lg);
+  line-height: 1.52;
+  color: var(--ink-2);
+  max-width: 60ch;
+  text-wrap: pretty;
+}
+.kp-body { color: var(--ink-2); max-width: 68ch; text-wrap: pretty; }
+.kp-note { font-size: var(--t-sm); color: var(--muted); line-height: 1.45; }
+.kp-mono {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: var(--t-sm);
+  letter-spacing: 0.04em;
+}
+
+.kp-rule { height: 1px; background: var(--line); border: 0; margin: 0; }
+.kp-rule--ink { background: var(--ink); height: 1.5px; }
+
+/* ——————————————————————————————————————————— цифры */
+
+.kp-stat__label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 500;
+}
+.kp-stat__value {
+  font-family: var(--grotesk);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.038em;
+  font-variant-numeric: tabular-nums;
+  margin-top: 6px;
+}
+.kp-stat__value--accent { color: var(--accent); }
+.kp-stat__suffix {
+  font-family: var(--grotesk);
+  font-size: var(--t-sm);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+/* ——————————————————————————————————————————— таблицы */
+
+.kp-table { width: 100%; border-collapse: collapse; font-size: var(--t-base); }
+.kp-table th {
+  font-size: var(--t-xs);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  text-align: left;
+  padding: 0 0 7px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.kp-table td { padding: 8px 0; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+.kp-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kp-table tbody tr:last-child td { border-bottom: 0; }
+
+/* ——————————————————————————————————————————— картинки */
+
+.kp-figure { margin: 0; }
+.kp-figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--line-2);
+}
+.kp-figure figcaption {
+  margin-top: 8px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 10.5px;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.kp-cover__media { position: absolute; inset: 0; }
+.kp-cover__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.05);
+  transition: transform 1400ms var(--ease);
+}
+.kp-doc[data-ready="1"] .kp-cover__media img { transform: scale(1); }
+.kp-cover__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(16, 26, 40, 0.9) 0%, rgba(16, 26, 40, 0.55) 38%, rgba(16, 26, 40, 0.94) 100%);
+}
+.kp-cover__body { position: relative; z-index: 1; display: flex; flex-direction: column; min-height: 297mm; padding: var(--pad); }
+
+/* ——————————————————————————————————————————— клиенты набором */
+
+.kp-clients {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+.kp-clients span {
+  padding: 11px 4px 11px 0;
+  border-bottom: 1px solid var(--line-2);
+  font-size: var(--t-base);
+  letter-spacing: -0.012em;
+  color: var(--ink);
+}
+
+/* ——————————————————————————————————————————— появление на экране */
+
+.kp-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  clip-path: inset(0 0 4% 0);
+  transition:
+    opacity var(--slow) var(--ease),
+    transform var(--slow) var(--ease),
+    clip-path var(--slow) var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+.kp-reveal[data-shown="1"] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+}
+
+/* ——————————————————————————————————————————— экранная обвязка */
+
+.kp-screen-only { display: block; }
+
+/* Кнопки на странице клиента: живут вне листа, в печать не идут. */
+.tp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #14181d;
+  background: transparent;
+  border: 1px solid #ddd7cd;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tp-btn:hover { border-color: #cf5a1b; color: #cf5a1b; transform: translateY(-1px); }
+.tp-btn:focus-visible { outline: 2px solid #cf5a1b; outline-offset: 2px; }
+.tp-btn--solid { background: #14181d; border-color: #14181d; color: #fffefc; }
+.tp-btn--solid:hover { background: #cf5a1b; border-color: #cf5a1b; color: #fffefc; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-btn:hover { transform: none; }
+}
+
+@media print {
+  .kp-doc { background: #fff; zoom: 1 !important; }
+  /* Высота листа не фиксируется: длинная спецификация должна перетечь
+   * на следующую страницу, а не обрезаться по нижнему краю. */
+  .kp-page {
+    max-width: none;
+    width: 210mm;
+    min-height: 296mm;
+    height: auto;
+    box-shadow: none;
+    margin: 0;
+    break-after: page;
+    page-break-after: always;
+  }
+  .kp-page:last-child { break-after: auto; page-break-after: auto; }
+  .kp-screen-only { display: none !important; }
+  .kp-reveal { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
+  .kp-cover__media img { transform: none !important; transition: none !important; }
+}
+
+@page { size: A4; margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kp-reveal,
+  .kp-cover__media img {
+    transition: none !important;
+    transform: none !important;
+    clip-path: none !important;
+    opacity: 1 !important;
+  }
+}
