@@ -97,7 +97,6 @@
 
 /* ——————————————————————————————————————————— типографика */
 
-.kp-h1,
 .kp-h3,
 .kp-mega {
   font-family: var(--grotesk);
@@ -108,20 +107,23 @@
   margin: 0;
 }
 .kp-mega { font-size: var(--t-mega); letter-spacing: -0.042em; font-weight: 700; }
-.kp-h1 { font-size: var(--t-h1); letter-spacing: -0.034em; }
 .kp-h3 { font-size: var(--t-h3); letter-spacing: -0.018em; line-height: 1.15; }
 
-/* Заголовок листа — сериф. Он единственный на странице, поэтому переключение
- * гарнитуры читается как смена интонации, а не как разнобой. */
+/* Заголовки листов — сериф. Правило простое и держится по всему документу:
+ * серифом набрано то, что документ говорит, гротеском — то, что он считает.
+ * Поэтому обложка (название продукта) и все цифры остаются гротеском,
+ * а заголовок каждого листа, лид, цитата и подписи под кадрами — серифом. */
+.kp-h1,
 .kp-h2 {
   font-family: var(--serif);
-  font-size: var(--t-h2);
   font-weight: 400;
   letter-spacing: -0.014em;
-  line-height: 1.08;
+  line-height: 1.06;
   text-wrap: balance;
   margin: 0;
 }
+.kp-h1 { font-size: var(--t-h1); letter-spacing: -0.02em; }
+.kp-h2 { font-size: var(--t-h2); }
 
 /* Кикер — фирменный приём: крошечный капс с квадратом акцента. */
 .kp-kicker {
