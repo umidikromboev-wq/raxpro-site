@@ -347,3 +347,60 @@
     opacity: 1 !important;
   }
 }
+
+/* ——————————————————————————————————————————— доля позиций в сумме */
+
+.kp-costbar {
+  display: flex;
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.kp-costbar span { display: block; height: 100%; }
+.kp-costbar span + span { border-left: 1px solid var(--sheet); }
+
+.kp-costbar__legend {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 26px;
+}
+.kp-costbar__legend li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--line-2);
+  font-size: var(--t-sm);
+}
+.kp-costbar__dot { width: 7px; height: 7px; flex: none; transform: translateY(-1px); }
+.kp-costbar__name { flex: 1; color: var(--ink-2); }
+.kp-costbar__legend b { font-variant-numeric: tabular-nums; }
+
+/* ——————————————————————————————————————————— сертификаты */
+
+.kp-certs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.kp-certs div { background: var(--sheet); padding: 13px 14px 15px; }
+.kp-certs p:first-child {
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 0;
+}
+.kp-certs p:last-child {
+  margin: 6px 0 0;
+  font-size: var(--t-base);
+  color: var(--ink-2);
+  line-height: 1.35;
+}
+.kp-certs b { display: block; font-size: 15px; letter-spacing: -0.02em; color: var(--ink); }

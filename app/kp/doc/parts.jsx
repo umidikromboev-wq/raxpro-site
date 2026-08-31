@@ -28,14 +28,70 @@ export function Rule({ ink = false, className = '' }) {
   return <hr className={`kp-rule ${ink ? 'kp-rule--ink' : ''} ${className}`} />;
 }
 
-export function Stat({ label, value, suffix, accent = false }) {
+/** Кегль цифры зависит от её длины.
+ *
+ *  У RaxPro суммы бывают и 28 000 000, и 1 264 488 960. На фиксированном
+ *  кегле миллиард переносился на вторую строку и разваливал ячейку —
+ *  ровно на той цифре, ради которой клиент открыл документ. */
+export function statSize(value) {
+  const len = String(value ?? '').length;
+  if (len >= 15) return 22;
+  if (len >= 13) return 25;
+  if (len >= 11) return 28;
+  if (len >= 9) return 31;
+  return 34;
+}
+
+export function Stat({ label, value, suffix, accent = false, size }) {
   return (
     <div>
       <p className="kp-stat__label">{label}</p>
-      <p className={`kp-stat__value ${accent ? 'kp-stat__value--accent' : ''}`}>
+      <p
+        className={`kp-stat__value ${accent ? 'kp-stat__value--accent' : ''}`}
+        style={{ fontSize: size ?? statSize(value) }}
+      >
         {value}
         {suffix ? <span className="kp-stat__suffix">{suffix}</span> : null}
       </p>
+    </div>
+  );
+}
+
+/** Доля каждой позиции в сумме — одной полосой.
+ *
+ *  Таблица отвечает «сколько стоит каждая позиция», полоса — «за что вы
+ *  на самом деле платите». В фактических КП RaxPro этого не было, и клиент
+ *  торговался по общей сумме, потому что структуру не видел. Цвет один:
+ *  крупнейшая доля — акцентом, остальные — градацией графита. */
+export function CostBar({ items, lang = 'ru' }) {
+  const total = items.reduce((s, i) => s + i.sum, 0);
+  if (!total) return null;
+  const max = Math.max(...items.map((i) => i.sum));
+  const tint = (i) => `rgba(20, 24, 29, ${0.72 - Math.min(i, 5) * 0.11})`;
+
+  return (
+    <div>
+      <div className="kp-costbar" role="img"
+        aria-label={items.map((i) => `${i.label} ${Math.round((i.sum / total) * 100)}%`).join(', ')}>
+        {items.map((i, n) => (
+          <span
+            key={i.label}
+            style={{
+              width: `${(i.sum / total) * 100}%`,
+              background: i.sum === max ? 'var(--accent)' : tint(n),
+            }}
+          />
+        ))}
+      </div>
+      <ul className="kp-costbar__legend">
+        {items.map((i, n) => (
+          <li key={i.label}>
+            <span className="kp-costbar__dot" style={{ background: i.sum === max ? 'var(--accent)' : tint(n) }} />
+            <span className="kp-costbar__name">{i.label}</span>
+            <b>{((i.sum / total) * 100).toFixed(1).replace('.', lang === 'uz' ? '.' : ',')} %</b>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

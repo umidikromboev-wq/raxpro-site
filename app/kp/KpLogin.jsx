@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Msg, api } from './ui';
 
 export default function KpLogin({ ready, hasUsers }) {
@@ -8,9 +8,16 @@ export default function KpLogin({ ready, hasUsers }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  // Пока React не подхватил форму, «Войти» отправила бы её нативно: страница
+  // перезагружалась бы без входа, и сотрудник читал бы это как сломанную
+  // кнопку. Поля без name, так что пароль в адрес не утекал, но кнопка
+  // всё равно молчала. Ждём монтирования явно.
+  const [ready2, setReady2] = useState(false);
+  useEffect(() => setReady2(true), []);
 
   async function submit(e) {
     e.preventDefault();
+    if (!ready2) return;
     setBusy(true);
     setError('');
     try {
@@ -78,9 +85,14 @@ export default function KpLogin({ ready, hasUsers }) {
 
         {error && <Msg tone="bad" style={{ marginTop: 12 }}>{error}</Msg>}
 
-        <button className="kp-btn kp-btn--block" style={{ marginTop: 18 }} disabled={busy || !ready}>
+        <button
+          className="kp-btn kp-btn--block"
+          style={{ marginTop: 18 }}
+          disabled={busy || !ready || !ready2}
+          aria-busy={busy}
+        >
           {busy && <span className="kp-spin" aria-hidden="true" />}
-          {busy ? 'Проверяю…' : 'Войти'}
+          {busy ? 'Проверяю…' : ready2 ? 'Войти' : 'Загружаю…'}
         </button>
       </form>
     </main>

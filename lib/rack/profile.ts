@@ -82,6 +82,22 @@ export const FOUNDER = {
   },
 };
 
+/** Сертификаты завода — не строкой в подвале, а блоком.
+ *  В фактических КП они были опечаткой «ISO g001» во всех семи документах;
+ *  здесь у каждого есть предмет, а не только номер. */
+export function certificates(lang: Lang) {
+  const uz = lang === "uz";
+  const subjects: Record<string, { ru: string; uz: string }> = {
+    "ISO 9001:2015": { ru: "Система менеджмента качества", uz: "Sifat menejmenti tizimi" },
+    "ISO 14001:2015": { ru: "Экологический менеджмент", uz: "Ekologik menejment" },
+    "ISO 45001:2018": { ru: "Охрана труда и безопасность", uz: "Mehnat muhofazasi va xavfsizlik" },
+  };
+  return COMPANY.certificates.map((code) => ({
+    code,
+    subject: uz ? subjects[code]?.uz ?? "" : subjects[code]?.ru ?? "",
+  }));
+}
+
 export interface Fact { k: string; v: string; note?: string }
 
 export function facts(lang: Lang, now: Date = new Date()): Fact[] {

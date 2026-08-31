@@ -3,11 +3,11 @@
 import { fmtSum } from '@/lib/rack/pricing';
 import { specLabel, specUnit } from '@/lib/rack/spec';
 import { COMPANY, SCOPE } from '@/lib/rack/company';
-import { CLIENTS, FOUNDER, coverFor, facts, galleryFor, pillars } from '@/lib/rack/profile';
+import { CLIENTS, FOUNDER, certificates, coverFor, facts, galleryFor, pillars } from '@/lib/rack/profile';
 import { fmtDate } from '@/lib/rack/kp';
 import LayoutPlan from '../LayoutPlan';
 import RackScene from '../RackScene';
-import { DocRoot, Figure, Kicker, Reveal, Rule, Sheet, Stat } from './parts';
+import { CostBar, DocRoot, Figure, Kicker, Reveal, Sheet, Stat, statSize } from './parts';
 
 // Документ, который увидит клиент.
 //
@@ -115,7 +115,9 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
             style={{
               marginTop: 26,
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, minmax(0,1fr))',
+              // Средняя ячейка шире: в ней живёт сумма, а она у RaxPro
+              // доходит до миллиарда и в равной колонке ломается на две строки.
+              gridTemplateColumns: '0.8fr 1.4fr 0.8fr',
               gap: 1,
               background: 'var(--line)',
               border: '1px solid var(--line)',
@@ -344,6 +346,25 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
             <Total k={t('Итого с НДС', 'Jami QQS bilan')} v={fmtSum(price.totalWithVat, lang)} strong />
           </dl>
         </Reveal>
+
+        {!byList && price.rows?.length > 1 && (
+          <Reveal delay={200} style={{ marginTop: 'auto', paddingTop: 30 }}>
+            <Kicker>{t('За что вы платите', 'Nima uchun toʻlaysiz')}</Kicker>
+            <CostBar
+              lang={lang}
+              items={spec.map((line, i) => ({
+                label: specLabel(line, lang),
+                sum: price.rows[i]?.sum ?? 0,
+              })).filter((x) => x.sum > 0)}
+            />
+            <p className="kp-note" style={{ marginTop: 12 }}>
+              {t(
+                'Структура суммы, а не только итог: видно, что вы покупаете металл конструкции, а не сопутствующие мелочи. Ни одной строки «прочее» в этом расчёте нет.',
+                'Summaning tarkibi, faqat yakuni emas: siz konstruksiya metallini sotib olayotganingiz koʻrinadi. Bu hisobda birorta «boshqa xarajatlar» qatori yoʻq.'
+              )}
+            </p>
+          </Reveal>
+        )}
       </Sheet>
 
       {/* ————————————————————————————— 6 · компания */}
@@ -379,13 +400,28 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
           </div>
         </Reveal>
 
-        <Reveal delay={200} style={{ marginTop: 22 }}>
+        <Reveal delay={200} style={{ marginTop: 24 }}>
           <p className="kp-body">
             {t(
-              `Производство — завод ${COMPANY.factory.name}, ${COMPANY.factory.country.ru}. Сертификаты: ${COMPANY.certificates.join(', ')}.`,
-              `Ishlab chiqarish — ${COMPANY.factory.name} zavodi, ${COMPANY.factory.country.uz}. Sertifikatlar: ${COMPANY.certificates.join(', ')}.`
+              `Производство — завод ${COMPANY.factory.name}, ${COMPANY.factory.country.ru}. Технология RollForm, холоднокатаная сталь, порошковая окраска.`,
+              `Ishlab chiqarish — ${COMPANY.factory.name} zavodi, ${COMPANY.factory.country.uz}. RollForm texnologiyasi, sovuq prokat poʻlat, kukunli boʻyoq.`
             )}
           </p>
+        </Reveal>
+
+        <Reveal delay={240} style={{ marginTop: 20 }}>
+          <Kicker>{t('Сертификаты завода', 'Zavod sertifikatlari')}</Kicker>
+          <div className="kp-certs">
+            {certificates(lang).map((c) => (
+              <div key={c.code}>
+                <p>{t('Действует до 2028', '2028-yilgacha amal qiladi')}</p>
+                <p>
+                  <b>{c.code}</b>
+                  {c.subject}
+                </p>
+              </div>
+            ))}
+          </div>
         </Reveal>
 
         <Reveal delay={250} style={{ marginTop: 'auto', paddingTop: 26 }}>
@@ -535,7 +571,7 @@ function CoverStat({ label, value, suffix, accent }) {
       <p className="kp-stat__label" style={{ color: 'rgba(243,241,238,.55)' }}>{label}</p>
       <p
         className="kp-stat__value"
-        style={{ fontSize: 28, color: accent ? 'var(--accent)' : '#f3f1ee' }}
+        style={{ fontSize: Math.min(28, statSize(value)), color: accent ? 'var(--accent)' : '#f3f1ee' }}
       >
         {value}
         {suffix ? <span className="kp-stat__suffix" style={{ color: 'rgba(243,241,238,.55)' }}>{suffix}</span> : null}
