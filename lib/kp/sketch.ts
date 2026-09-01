@@ -191,15 +191,41 @@ async function withAnthropic(
   return normalize(block.input as Record<string, unknown>, "anthropic");
 }
 
+/** Ошибка провайдера всегда пишется в лог сервера — иначе на боевом остаётся
+ *  только короткая фраза у менеджера, и по ней нельзя отличить «не тот ключ»
+ *  от «не та модель» и от «не принята схема инструмента». */
 function translateAnthropic(e: unknown): SketchError {
   const status = (e as { status?: number })?.status;
+  const detail = anthropicDetail(e);
+  console.error("[kp/sketch/anthropic]", status ?? "нет статуса", detail);
+
   if (status === 401) return new SketchError(502, "Ключ Anthropic не принят. Проверьте его в разделе «Ключи».");
   if (status === 403) return new SketchError(502, "У ключа Anthropic нет доступа к выбранной модели. Смените модель в разделе «Ключи ИИ».");
   if (status === 404) return new SketchError(502, "Anthropic не знает выбранную модель. Смените её в разделе «Ключи ИИ».");
   if (status === 429) return new SketchError(502, "Лимит Anthropic исчерпан. Пополните баланс аккаунта и повторите.");
-  if (status === 400) return new SketchError(502, "Anthropic отклонил снимок. Попробуйте другой файл: JPG или PNG до 5 МБ.");
-  console.error("[kp/sketch/anthropic]", e);
+  if (status === 400) {
+    // 400 бывает двух разных природ, и лечатся они по-разному. Про снимок —
+    // дело менеджера, переснять. Про схему инструмента или про саму модель —
+    // дело разработчика, и гонять менеджера переснимать лист бессмысленно.
+    if (/schema|tool|input_schema|strict|model|parameter|request/i.test(detail)) {
+      return new SketchError(
+        502,
+        "Anthropic отклонил сам запрос, а не ваш снимок. Переснимать лист бесполезно — покажите это сообщение разработчику."
+      );
+    }
+    return new SketchError(502, "Anthropic отклонил снимок. Попробуйте другой файл: JPG или PNG до 5 МБ.");
+  }
   return new SketchError(502, "Anthropic сейчас не отвечает. Попробуйте ещё раз через минуту.");
+}
+
+/** Текст ошибки провайдера — только для лога и для выбора формулировки.
+ *  Наружу он не уходит: в нём бывают идентификаторы организации и запроса. */
+function anthropicDetail(e: unknown): string {
+  const err = e as { message?: unknown; error?: { error?: { message?: unknown } } };
+  const nested = err?.error?.error?.message;
+  if (typeof nested === "string") return nested.slice(0, 500);
+  if (typeof err?.message === "string") return err.message.slice(0, 500);
+  return "";
 }
 
 /* ————————————————————————————————— Google */
@@ -238,6 +264,12 @@ async function withGoogle(
   }
 
   if (!res.ok) {
+    // Лог пишется на любом статусе, а не только на неизвестном: 400 у Google
+    // приходит и на плохой ключ, и на непринятую схему ответа — по короткой
+    // фразе у менеджера их не различить.
+    const detail = (await res.text().catch(() => "")).slice(0, 500);
+    console.error("[kp/sketch/google]", res.status, detail);
+
     if (res.status === 400 || res.status === 401 || res.status === 403) {
       throw new SketchError(502, "Ключ Google не принят. Проверьте его в разделе «Ключи».");
     }
@@ -247,7 +279,6 @@ async function withGoogle(
     if (res.status === 429) {
       throw new SketchError(502, "Лимит Google исчерпан или кончились кредиты аккаунта. Проверьте баланс в AI Studio.");
     }
-    console.error("[kp/sketch/google]", res.status, await res.text().catch(() => ""));
     throw new SketchError(502, "Google вернул ошибку. Попробуйте ещё раз через минуту.");
   }
 
