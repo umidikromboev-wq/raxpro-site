@@ -17,6 +17,33 @@ import { getModel, getPlainKey } from "./settings";
 export interface SketchColumn { x: number; y: number; size: number }
 export interface SketchDock { x: number; y: number; width: number }
 
+/** Ряд стеллажей, как он нарисован на листе замера.
+ *  Замерщик почти никогда не рисует пустую коробку: на листе уже стоит
+ *  расстановка — прогоны с подписями «A blok 26.6 metr» и длинами секций. */
+export interface SketchRow {
+  name: string | null;
+  /** Вдоль какого габарита идёт прогон. */
+  axis: "x" | "y";
+  start: [number, number];
+  end: [number, number];
+  /** Длина прогона в миллиметрах. */
+  length: number;
+  /** Глубина ряда: ~1050 одиночный, ~2150 спаренный («215 sm» на листе). */
+  depth: number | null;
+  double: boolean;
+  /** Ширины секций подряд, мм. Пусто — на листе расписана одна общая. */
+  sections: number[];
+}
+
+/** Подписанный участок, который стеллажами не занимают: упаковка, лестница,
+ *  зона приёмки, офис. Если его не отметить, расчёт займёт участок секциями
+ *  и счёт клиенту будет завышен. */
+export interface SketchZone {
+  name: string | null;
+  kind: "packing" | "loading" | "passage" | "office" | "stairs" | "other";
+  polygon: Array<[number, number]>;
+}
+
 export interface SketchResult {
   provider: "anthropic" | "google";
   confidence: "high" | "medium" | "low";
@@ -28,6 +55,16 @@ export interface SketchResult {
   polygon: Array<[number, number]>;
   columns: SketchColumn[];
   docks: SketchDock[];
+  rows: SketchRow[];
+  zones: SketchZone[];
+  /** Шаг секции на весь план, мм. Он же длина балки. */
+  sectionWidth: number | null;
+  /** Глубина ряда на весь план, мм. */
+  rowDepth: number | null;
+  /** Рабочий проход между рядами, мм, если подписан. */
+  aisle: number | null;
+  /** Как стоят стеллажи: прогонами через зал или вдоль стен. */
+  mode: "rows" | "perimeter" | null;
   productKey: string | null;
   levels: number | null;
   beam: 2700 | 3300 | null;
@@ -39,20 +76,26 @@ export interface SketchResult {
 
 export const SYSTEM = `Ты читаешь фотографию рукописного наброска складского помещения, сделанного замерщиком компании RAX PRO (металлические стеллажи, Ташкент).
 
-Твоя работа — снять с рисунка геометрию помещения и перевести её в миллиметры.
+Твоя работа — снять с листа геометрию помещения И расстановку рядов, как её задумал замерщик, и перевести всё в миллиметры.
+
+Лист бывает двух видов, и оба нужно уметь читать: пустой контур с габаритами — и готовый план расстановки, где прогоны уже подписаны («A blok 26.6 metr», «B blok»), рядом стоит глубина ряда («215 sm»), ширина секции («240 sm»), ширина прохода и подписанные участки под упаковку и приёмку. Второй вид встречается чаще.
 
 Правила:
-1. Все размеры возвращай в МИЛЛИМЕТРАХ. На набросках пишут по-разному: «45 м», «45м», «45000», «45.5», «24 метра». 45 → 45000 мм. Число больше 1000 считай уже миллиметрами.
+1. Все размеры возвращай в МИЛЛИМЕТРАХ. На листах пишут по-разному: «45 м», «45м», «45000», «45.5», «24 метра», «215 sm», «270 sm». 45 м → 45000; 215 sm → 2150. Число больше 1000 считай уже миллиметрами.
 2. polygon — контур помещения по часовой стрелке, начиная с угла, ближайшего к левому нижнему. Первая точка [0,0]. Последнюю точку не повторяй. Для прямоугольника это ровно 4 точки. Если на рисунке есть скос, ниша, выступ или вырез — обведи их честно, это и есть ценность наброска.
 3. columns — колонны здания: центр в миллиметрах и сторона квадрата (обычно 400 мм, если не подписано). Ставь только те, что реально нарисованы. Не выдумывай регулярную сетку, если нарисованы две колонны.
 4. docks — ворота или проёмы: центр по контуру и ширина проёма (по умолчанию 3000 мм).
-5. ceiling — высота потолка в миллиметрах, если она подписана. Если нет — null. Не угадывай.
-6. productKey — тип стеллажа, если он подписан или очевиден: pallet-frontal (паллетный фронтальный), pallet-driveIn (набивной, drive-in), medium-duty (среднегрузовой), archive (архивный), retail (торговый), mezzanine (мезонин). Если не написано — null.
-7. levels — число ярусов балок, если подписано. beam — длина балки: 2700 или 3300, если подписана. truck — техника: reachtruck, counterbalance, stacker, если подписана.
-8. client — название компании клиента, если оно написано на листе. Иначе null.
-9. readings — список того, что ты реально прочитал на листе, дословно: каждая надпись, каждое число с его подписью. Это то, по чему менеджер проверит распознавание. Пиши по-русски.
-10. warnings — что вызвало сомнение: неразборчивая цифра, отсутствующий размер, противоречие. Пиши по-русски, коротко, по делу.
-11. confidence — high, если контур и оба габарита читаются уверенно; medium, если часть чисел пришлось выводить; low, если это скорее догадка.
+5. rows — ряды стеллажей, если они нарисованы. Для каждого: name — подпись с листа как есть («A blok», «1-qator»), иначе null; start и end — концы оси прогона в тех же координатах, что и polygon; depth — глубина ряда, если подписана («215 sm» → 2150); sections — ширины секций подряд, если они расписаны поштучно вдоль прогона («270 sm, 270 sm, 150 sm»), иначе пустой список. Не выдумывай ряды, которых на листе нет: пустой список честнее придуманной расстановки.
+6. zones — подписанные участки, которые стеллажами НЕ занимают: «Qadoqlash zonasi» (упаковка), «yuk kirish joyi» (приёмка), «Zina» (лестница), офис, проезд. polygon зоны — в тех же координатах. kind — packing, loading, passage, office, stairs или other. Эти участки решают, сколько секций встанет: не отметишь — расчёт займёт их стеллажами и счёт клиенту будет завышен.
+7. sectionWidth — шаг секции, если он подписан один на весь план (обычно 2400, 2700 или 3300). rowDepth — глубина ряда, если она подписана одна на весь план. aisle — ширина рабочего прохода между рядами, если подписана. Чего нет на листе — null.
+8. mode — "rows", если прогоны идут через зал параллельно друг другу; "perimeter", если стеллажи стоят вдоль стен, а середина оставлена под проезд. Не понял — null.
+9. ceiling — высота потолка в миллиметрах, если она подписана. Если нет — null. Не угадывай.
+10. productKey — тип стеллажа, если он подписан или очевиден: pallet-frontal (паллетный фронтальный), pallet-driveIn (набивной, drive-in), medium-duty (среднегрузовой), archive (архивный), retail (торговый), mezzanine (мезонин). Если не написано — null.
+11. levels — число ярусов балок, если подписано. beam — длина балки: 2700 или 3300, если подписана. truck — техника: reachtruck, counterbalance, stacker, если подписана.
+12. client — название компании клиента, если оно написано на листе. Иначе null.
+13. readings — список того, что ты реально прочитал на листе, дословно: каждая надпись, каждое число с его подписью. Это то, по чему менеджер проверит распознавание. Пиши по-русски.
+14. warnings — что вызвало сомнение: неразборчивая цифра, отсутствующий размер, противоречие. Пиши по-русски, коротко, по делу.
+15. confidence — high, если контур и оба габарита читаются уверенно; medium, если часть чисел пришлось выводить; low, если это скорее догадка.
 
 Ничего не придумывай. Пустое поле лучше выдуманного числа: по этому наброску компания выставит клиенту счёт на сотни миллионов сум.`;
 
@@ -86,6 +129,43 @@ export const SCHEMA = {
         additionalProperties: false,
       },
     },
+    rows: {
+      type: "array",
+      description: "Ряды стеллажей, нарисованные на листе",
+      items: {
+        type: "object",
+        properties: {
+          name: { type: ["string", "null"], description: "Подпись ряда с листа" },
+          start: { type: "array", items: { type: "number" }, minItems: 2, maxItems: 2 },
+          end: { type: "array", items: { type: "number" }, minItems: 2, maxItems: 2 },
+          depth: { type: ["number", "null"], description: "Глубина ряда, мм" },
+          sections: { type: "array", items: { type: "number" }, description: "Ширины секций подряд, мм" },
+        },
+        required: ["name", "start", "end", "depth", "sections"],
+        additionalProperties: false,
+      },
+    },
+    zones: {
+      type: "array",
+      description: "Участки, которые стеллажами не занимают",
+      items: {
+        type: "object",
+        properties: {
+          name: { type: ["string", "null"] },
+          kind: { type: "string", enum: ["packing", "loading", "passage", "office", "stairs", "other"] },
+          polygon: {
+            type: "array",
+            items: { type: "array", items: { type: "number" }, minItems: 2, maxItems: 2 },
+          },
+        },
+        required: ["name", "kind", "polygon"],
+        additionalProperties: false,
+      },
+    },
+    sectionWidth: { type: ["number", "null"], description: "Шаг секции на весь план, мм" },
+    rowDepth: { type: ["number", "null"], description: "Глубина ряда на весь план, мм" },
+    aisle: { type: ["number", "null"], description: "Рабочий проход между рядами, мм" },
+    mode: { type: ["string", "null"], description: "rows или perimeter" },
     productKey: { type: ["string", "null"] },
     levels: { type: ["number", "null"] },
     beam: { type: ["number", "null"] },
@@ -96,6 +176,7 @@ export const SCHEMA = {
   },
   required: [
     "confidence", "width", "depth", "ceiling", "polygon", "columns", "docks",
+    "rows", "zones", "sectionWidth", "rowDepth", "aisle", "mode",
     "productKey", "levels", "beam", "truck", "client", "readings", "warnings",
   ],
   additionalProperties: false,
@@ -317,7 +398,17 @@ async function withGoogle(
 const PRODUCTS = new Set([
   "pallet-frontal", "pallet-driveIn", "medium-duty", "archive", "retail", "mezzanine",
 ]);
-const TRUCKS = new Set(["reachtruck", "counterbalance", "stacker", "vna"]);
+/** Слова с листа → ключи техники в ядре раскладки. Ядро знает
+ *  reachtruck / stacker / counterbal; «counterbalance» и «vna» до сих пор
+ *  проходили проверку и приезжали в design() как несуществующая техника. */
+const TRUCKS: Record<string, string> = {
+  reachtruck: "reachtruck",
+  richtrak: "reachtruck",
+  stacker: "stacker",
+  counterbal: "counterbal",
+  counterbalance: "counterbal",
+  forklift: "counterbal",
+};
 
 /** Ответ модели — внешние данные, значит проверяется целиком: числа
  *  приводятся к миллиметрам, всё за пределами рабочих диапазонов
@@ -326,7 +417,13 @@ export function normalize(raw: Record<string, unknown>, provider: "anthropic" | 
   const warnings: string[] = arrOfStrings(raw.warnings);
   const readings = arrOfStrings(raw.readings);
 
-  let polygon = toPolygon(raw.polygon);
+  const read = readPolygon(raw.polygon);
+  let polygon = read.points;
+  // Контур приводится к началу координат, поэтому на ту же величину
+  // сдвигается всё остальное с листа — иначе колонны, ряды и зоны
+  // уедут относительно стен.
+  const dx = read.dx;
+  const dy = read.dy;
   let width = mm(raw.width);
   let depth = mm(raw.depth);
 
@@ -360,8 +457,8 @@ export function normalize(raw: Record<string, unknown>, provider: "anthropic" | 
   const ceiling = mm(raw.ceiling);
   const columns = arrOf(raw.columns)
     .map((c) => ({
-      x: mm((c as Record<string, unknown>)?.x) ?? -1,
-      y: mm((c as Record<string, unknown>)?.y) ?? -1,
+      x: shift(mm((c as Record<string, unknown>)?.x), dx),
+      y: shift(mm((c as Record<string, unknown>)?.y), dy),
       size: clamp(smallMm((c as Record<string, unknown>)?.size) ?? 400, 150, 1500),
     }))
     .filter((c) => c.x >= 0 && c.y >= 0 && c.x <= width && c.y <= depth)
@@ -369,20 +466,56 @@ export function normalize(raw: Record<string, unknown>, provider: "anthropic" | 
 
   const docks = arrOf(raw.docks)
     .map((d) => ({
-      x: mm((d as Record<string, unknown>)?.x) ?? -1,
-      y: mm((d as Record<string, unknown>)?.y) ?? -1,
+      x: shift(mm((d as Record<string, unknown>)?.x), dx),
+      y: shift(mm((d as Record<string, unknown>)?.y), dy),
       width: clamp(mm((d as Record<string, unknown>)?.width) ?? 3000, 1000, 12000),
     }))
     .filter((d) => d.x >= 0 && d.y >= 0)
     .slice(0, 20);
 
+  const rows: SketchRow[] = [];
+  for (const r of arrOf(raw.rows).slice(0, 40)) {
+    const row = toRow(r as Record<string, unknown>, dx, dy, warnings);
+    if (row) rows.push(row);
+  }
+
+  const zones: SketchZone[] = [];
+  for (const z of arrOf(raw.zones).slice(0, 12)) {
+    const zone = toZone(z as Record<string, unknown>, dx, dy, width, depth);
+    if (zone) zones.push(zone);
+    else warnings.push("Одна из отмеченных зон не читается — проверьте расстановку вручную.");
+  }
+
+  // Шаг секции: подпись на весь план сильнее всего. Если её нет — берём
+  // размер, только когда секции сходятся между собой. Лист sketch-02
+  // показал, зачем: там 2700, 2000 и 1500 вдоль разных стен, медиана дала
+  // бы 2000 — число, которого на плане нет ни как шаг, ни как балка.
+  const allSections = rows.flatMap((r) => r.sections);
+  let sectionWidth = inRange(mm(raw.sectionWidth), 1000, 4500);
+  if (!sectionWidth && allSections.length) {
+    const top = dominant(allSections);
+    if (top) sectionWidth = inRange(top, 1000, 4500);
+    else warnings.push("Шаг секции на разных прогонах разный — общий не выведен, задайте его вручную.");
+  }
+  const rowDepth =
+    inRange(mm(raw.rowDepth), 600, 4000) ??
+    inRange(dominant(rows.map((r) => r.depth).filter((d): d is number => d != null)), 600, 4000);
+  const aisle = inRange(mm(raw.aisle), 1200, 8000);
+  const mode = raw.mode === "rows" || raw.mode === "perimeter" ? raw.mode : null;
+
   const levelsRaw = num(raw.levels);
   const levels = levelsRaw && levelsRaw >= 1 && levelsRaw <= 6 ? Math.round(levelsRaw) : null;
   const beamRaw = num(raw.beam);
-  const beam = beamRaw === 3300 || beamRaw === 3.3 ? 3300 : beamRaw === 2700 || beamRaw === 2.7 ? 2700 : null;
+  let beam = beamRaw === 3300 || beamRaw === 3.3 ? 3300 : beamRaw === 2700 || beamRaw === 2.7 ? 2700 : null;
+  // Шаг секции с листа — это и есть длина балки. Но в прайсе живут только
+  // 2700 и 3300: «240 sm» с наброска балкой не станет, о чём и предупреждаем.
+  if (!beam && sectionWidth) {
+    if (sectionWidth === 2700 || sectionWidth === 3300) beam = sectionWidth;
+    else warnings.push(`Шаг секции с наброска ${(sectionWidth / 1000).toFixed(2)} м — такой балки в прайсе нет, взята ближайшая.`);
+  }
 
   const productKey = typeof raw.productKey === "string" && PRODUCTS.has(raw.productKey) ? raw.productKey : null;
-  const truck = typeof raw.truck === "string" && TRUCKS.has(raw.truck) ? raw.truck : null;
+  const truck = typeof raw.truck === "string" ? TRUCKS[raw.truck.trim().toLowerCase()] ?? null : null;
   const client = typeof raw.client === "string" ? raw.client.trim().slice(0, 120) || null : null;
 
   const ceilingOk = ceiling && ceiling >= 2500 && ceiling <= 30_000 ? ceiling : null;
@@ -401,6 +534,12 @@ export function normalize(raw: Record<string, unknown>, provider: "anthropic" | 
     polygon,
     columns,
     docks,
+    rows,
+    zones,
+    sectionWidth,
+    rowDepth,
+    aisle,
+    mode,
     productKey,
     levels,
     beam: beam as 2700 | 3300 | null,
@@ -411,7 +550,10 @@ export function normalize(raw: Record<string, unknown>, provider: "anthropic" | 
   };
 }
 
-function toPolygon(v: unknown): Array<[number, number]> {
+/** Контур + сдвиг, которым он приведён к началу координат.
+ *  Сдвиг возвращается наружу: колонны, ворота, ряды и зоны читаются
+ *  в тех же координатах и должны переехать вместе с контуром. */
+function readPolygon(v: unknown): { points: Array<[number, number]>; dx: number; dy: number } {
   const pts = arrOf(v)
     .map((p) => {
       const pair = arrOf(p);
@@ -420,10 +562,99 @@ function toPolygon(v: unknown): Array<[number, number]> {
       return x != null && y != null ? ([x, y] as [number, number]) : null;
     })
     .filter((p): p is [number, number] => p != null);
-  if (pts.length < 3) return [];
-  const minX = Math.min(...pts.map((p) => p[0]));
-  const minY = Math.min(...pts.map((p) => p[1]));
-  return pts.slice(0, 40).map(([x, y]) => [Math.round(x - minX), Math.round(y - minY)]);
+  if (pts.length < 3) return { points: [], dx: 0, dy: 0 };
+  const dx = Math.min(...pts.map((p) => p[0]));
+  const dy = Math.min(...pts.map((p) => p[1]));
+  return {
+    points: pts.slice(0, 40).map(([x, y]) => [Math.round(x - dx), Math.round(y - dy)]),
+    dx,
+    dy,
+  };
+}
+
+function shift(v: number | null, d: number): number {
+  return v == null ? -1 : Math.round(v - d);
+}
+
+function toPoint(v: unknown, dx: number, dy: number): [number, number] | null {
+  const pair = arrOf(v);
+  const x = mm(pair[0]);
+  const y = mm(pair[1]);
+  if (x == null || y == null) return null;
+  return [Math.round(x - dx), Math.round(y - dy)];
+}
+
+/** Прогон стеллажей с листа замера. Ось берём по большей проекции:
+ *  замерщик рисует прогоны вдоль стен, косые ряды на складе не ставят. */
+function toRow(o: Record<string, unknown>, dx: number, dy: number, warnings: string[]): SketchRow | null {
+  const start = toPoint(o?.start, dx, dy);
+  const end = toPoint(o?.end, dx, dy);
+  if (!start || !end) return null;
+
+  const lx = Math.abs(end[0] - start[0]);
+  const ly = Math.abs(end[1] - start[1]);
+  const length = Math.round(Math.max(lx, ly));
+  if (length < 1200 || length > 400_000) return null;
+
+  const sections = arrOf(o?.sections)
+    .map((s) => mm(s))
+    .filter((s): s is number => s != null && s >= 1000 && s <= 4500)
+    .slice(0, 80);
+
+  const sum = sections.reduce((a, b) => a + b, 0);
+  if (sum > 0 && Math.abs(sum - length) / length > 0.2) {
+    warnings.push(
+      `Секции ряда${o?.name ? ` «${String(o.name).slice(0, 40)}»` : ""} в сумме дают ${(sum / 1000).toFixed(1)} м при длине прогона ${(length / 1000).toFixed(1)} м — сверьте с листом.`
+    );
+  }
+
+  const depth = inRange(mm(o?.depth), 600, 4000);
+  return {
+    name: typeof o?.name === "string" ? o.name.trim().slice(0, 60) || null : null,
+    axis: lx >= ly ? "x" : "y",
+    start,
+    end,
+    length,
+    depth,
+    double: depth != null && depth > 1600,
+    sections,
+  };
+}
+
+const ZONE_KINDS = new Set(["packing", "loading", "passage", "office", "stairs", "other"]);
+
+function toZone(o: Record<string, unknown>, dx: number, dy: number, width: number, depth: number): SketchZone | null {
+  const polygon = arrOf(o?.polygon)
+    .map((p) => toPoint(p, dx, dy))
+    .filter((p): p is [number, number] => p != null)
+    .slice(0, 20);
+  if (polygon.length < 3) return null;
+  // Зона за пределами помещения — признак того, что модель читала
+  // другую систему координат: занимать ею место в раскладке нельзя.
+  const outside = polygon.some(([x, y]) => x < -500 || y < -500 || x > width + 500 || y > depth + 500);
+  if (outside) return null;
+  const kind = typeof o?.kind === "string" && ZONE_KINDS.has(o.kind) ? (o.kind as SketchZone["kind"]) : "other";
+  return {
+    name: typeof o?.name === "string" ? o.name.trim().slice(0, 60) || null : null,
+    kind,
+    polygon,
+  };
+}
+
+function inRange(v: number | null, lo: number, hi: number): number | null {
+  return v != null && v >= lo && v <= hi ? Math.round(v) : null;
+}
+
+/** Преобладающее значение — но только если оно и правда преобладает.
+ *  Меньше двух третей — считаем, что единого размера на плане нет. */
+function dominant(xs: number[]): number | null {
+  if (!xs.length) return null;
+  const count = new Map<number, number>();
+  for (const x of xs) count.set(x, (count.get(x) ?? 0) + 1);
+  let best = 0;
+  let bestN = 0;
+  for (const [v, n] of count) if (n > bestN) { best = v; bestN = n; }
+  return bestN / xs.length >= 2 / 3 ? best : null;
 }
 
 /** То же, но для мелких величин — стороны колонны.

@@ -10,6 +10,15 @@ import { ActionButton, Msg, api } from './ui';
 // читает модель со зрением, а менеджер только сверяет прочитанное со снимком —
 // снимок и распознанное лежат рядом именно для этого.
 
+const ZONE_RU = {
+  packing: 'упаковка',
+  loading: 'приёмка',
+  passage: 'проезд',
+  office: 'офис',
+  stairs: 'лестница',
+  other: 'занятый участок',
+};
+
 const CONFIDENCE = {
   high: { tone: 'ok', text: 'Прочитано уверенно' },
   medium: { tone: 'warn', text: 'Часть чисел выведена — сверьте' },
@@ -167,6 +176,26 @@ export default function SketchPanel({ keys, onApply, onNeedKeys }) {
               {' · '}колонн {result.columns.length}
               {' · '}ворот {result.docks.length}
             </p>
+
+            {(result.rows?.length > 0 || result.zones?.length > 0) && (
+              <p style={{ margin: 0, fontSize: 12 }}>
+                {result.rows?.length > 0 ? (
+                  <>рядов на листе: <b>{result.rows.length}</b>
+                    {result.rows.some((r) => r.sections.length) ? <> (секции расписаны у {result.rows.filter((r) => r.sections.length).length})</> : null}
+                    {result.mode === 'perimeter' ? ' · вдоль стен' : result.mode === 'rows' ? ' · прогонами' : ''}
+                    {result.sectionWidth ? <> · шаг {(result.sectionWidth / 1000).toFixed(2)} м</> : null}
+                    {result.rowDepth ? <> · глубина ряда {(result.rowDepth / 1000).toFixed(2)} м</> : null}
+                    {result.aisle ? <> · проход {(result.aisle / 1000).toFixed(1)} м</> : null}
+                  </>
+                ) : null}
+                {result.zones?.length > 0 ? (
+                  <>
+                    {result.rows?.length > 0 ? <br /> : null}
+                    свободные зоны: {result.zones.map((z) => z.name || ZONE_RU[z.kind]).join(', ')} — стеллажами не занимаются
+                  </>
+                ) : null}
+              </p>
+            )}
 
             {(result.productKey || result.levels || result.beam || result.client) && (
               <p style={{ margin: 0, fontSize: 11.5, color: 'var(--muted)' }}>

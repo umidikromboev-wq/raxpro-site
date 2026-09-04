@@ -48,6 +48,10 @@ export interface Room {
   columns?: Array<{ x: number; y: number; size: number }>;
   /** Ворота и зоны погрузки: перед ними держится свободное место. */
   docks?: Array<{ x: number; y: number; w: number; h: number }>;
+  /** Участки, отмеченные на листе замера как занятые: упаковка, лестница,
+   *  приёмка, офис. Границу нарисовал замерщик, поэтому запаса вокруг
+   *  не добавляем — блокируется ровно то, что отмечено. */
+  keepouts?: Array<{ x: number; y: number; w: number; h: number; name?: string }>;
   palletHeight: number;
   palletLoad: number;
   truck: TruckKey;
@@ -178,7 +182,13 @@ function obstaclesOf(room: Room, swap: boolean): Rect[] {
       w: dw + 2 * DOCK_BUFFER, h: dh + 2 * DOCK_BUFFER,
     };
   });
-  return [...cols, ...docks];
+  const keepouts = (room.keepouts ?? []).map((k) => ({
+    x: swap ? k.y : k.x,
+    y: swap ? k.x : k.y,
+    w: swap ? k.h : k.w,
+    h: swap ? k.w : k.h,
+  }));
+  return [...cols, ...docks, ...keepouts];
 }
 
 /** Одна конфигурация рядов. Ориентация задана поворотом контура, offset — сдвиг сетки. */

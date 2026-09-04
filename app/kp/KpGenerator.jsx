@@ -8,6 +8,7 @@ import { design, roomWithColumns, DesignError, TRUCKS } from '@/lib/rack/layout'
 import LayoutPlan from './LayoutPlan';
 import PlanEditor from './PlanEditor';
 import { encodeShare } from '@/lib/rack/share';
+import { sketchShape } from '@/lib/kp/sketch.room.mjs';
 import { UNIT_PRICE_DEFAULTS, PRESETS, EMPTY_GEOMETRY } from './defaults';
 import KpDocument from './doc/KpDocument';
 import SketchPanel from './SketchPanel';
@@ -314,9 +315,9 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
           roomMode === 'sketch' && sketchRoom ? sketchRoom
           : roomMode === 'draft' && planDraft?.geometry ? planDraft.geometry
           : null;
-        const r = shape
-          ? { ...base, width: shape.width, depth: shape.depth, polygon: shape.polygon, columns: shape.columns, docks: shape.docks }
-          : roomWithColumns(base);
+        // Форма подмешивается целиком: перечисление полей уже теряло
+        // rackDepth, а теперь потеряло бы ещё зоны и режим раскладки.
+        const r = shape ? { ...base, ...shape } : roomWithColumns(base);
         const l = design(r);
         setLayout({ ...l, room: r });
         setGeometry((g) => ({
@@ -339,13 +340,7 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
   /** Распознанный набросок переносится в форму целиком — вплоть до имени
    *  клиента, если оно написано на листе, — и сразу считается раскладка. */
   function applySketch(s) {
-    const docks = (s.docks || []).map((d) => ({
-      x: Math.max(0, d.x - d.width / 2),
-      y: Math.max(0, d.y - 500),
-      w: d.width,
-      h: 1000,
-    }));
-    const shape = { width: s.width, depth: s.depth, polygon: s.polygon, columns: s.columns || [], docks };
+    const shape = sketchShape({ ...s, columns: s.columns || [] });
     setSketchRoom(shape);
     setRoomMode('sketch');
     if (s.client && !client.trim()) setClient(s.client);
@@ -362,7 +357,7 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
     setRoom(nextRoom);
 
     try {
-      const r = { ...nextRoom, width: shape.width, depth: shape.depth, polygon: shape.polygon, columns: shape.columns, docks: shape.docks };
+      const r = { ...nextRoom, ...shape };
       const l = design(r);
       setLayout({ ...l, room: r });
       setGeometry((g) => ({
@@ -539,6 +534,9 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
                   С наброска: {sketchRoom.polygon.length} углов ·{' '}
                   {(sketchRoom.width / 1000).toFixed(1)} × {(sketchRoom.depth / 1000).toFixed(1)} м ·
                   колонн {sketchRoom.columns.length} · ворот {sketchRoom.docks.length}
+                  {sketchRoom.keepouts?.length ? ` · занятых зон ${sketchRoom.keepouts.length}` : ''}
+                  {sketchRoom.mode === 'perimeter' ? ' · стеллажи вдоль стен' : ''}
+                  {sketchRoom.rackDepth && sketchRoom.rackDepth !== 1050 ? ` · глубина ряда ${sketchRoom.rackDepth} мм` : ''}
                 </Msg>
               )}
 
