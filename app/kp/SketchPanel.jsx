@@ -25,7 +25,11 @@ export default function SketchPanel({ keys, onApply, onNeedKeys }) {
   const [over, setOver] = useState(false);
   const inputRef = useRef(null);
 
-  const hasKey = keys?.anthropic?.connected || keys?.google?.connected;
+  // Мост на подписку владельца — такой же источник, как ключ компании:
+  // пока RaxPro не подключил свой, набросок читает машина владельца.
+  const bridge = keys?.bridge?.alive ? keys.bridge : null;
+  const hasKey = keys?.anthropic?.connected || keys?.google?.connected || Boolean(bridge);
+  const onlyBridge = Boolean(bridge) && !keys?.anthropic?.connected && !keys?.google?.connected;
 
   function take(f) {
     setError('');
@@ -84,6 +88,13 @@ export default function SketchPanel({ keys, onApply, onNeedKeys }) {
         Сфотографируйте лист замерщика: контур помещения, подписанные метры,
         колонны и ворота. Генератор снимет с него геометрию и посчитает раскладку.
       </p>
+
+      {onlyBridge && (
+        <Msg tone="warn">
+          Ключей компании ещё нет — набросок читает Claude на подписке владельца.
+          Работает, пока его компьютер включён.
+        </Msg>
+      )}
 
       {!hasKey && (
         <Msg tone="warn">

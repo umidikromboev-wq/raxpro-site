@@ -12,6 +12,7 @@ import {
   type ProviderKey,
 } from "@/lib/kp/settings";
 import { modelsFor } from "@/lib/kp/models";
+import { bridgeAlive, bridgeEnabled } from "@/lib/kp/bridge";
 import { secretConfigured } from "@/lib/kp/secret";
 import { storeConfigured } from "@/lib/kp/store";
 
@@ -29,6 +30,7 @@ export async function GET(req: Request) {
         anthropic: { connected: false },
         google: { connected: false },
         choices: { anthropic: modelsFor("anthropic"), google: modelsFor("google") },
+        bridge: { enabled: false, alive: false },
         ready: false,
       });
     }
@@ -39,6 +41,9 @@ export async function GET(req: Request) {
       // Список моделей отдаётся сервером, а не зашит в браузере: сменится
       // поколение — правится один файл, а не собранный бандл у клиента.
       choices: { anthropic: modelsFor("anthropic"), google: modelsFor("google") },
+      // Пока своих ключей нет, распознавание и кадр делает машина владельца.
+      // Кабинет должен показывать это состояние, а не молча пустые кнопки.
+      bridge: { enabled: bridgeEnabled(), alive: await bridgeAlive() },
       ready: true,
     });
   } catch (e) {

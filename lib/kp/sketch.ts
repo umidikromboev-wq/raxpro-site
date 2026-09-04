@@ -11,6 +11,7 @@
 // зашитых ключей в коде нет.
 
 import Anthropic from "@anthropic-ai/sdk";
+import { bridgeCall, bridgeEnabled, BridgeError } from "./bridge";
 import { getModel, getPlainKey } from "./settings";
 
 export interface SketchColumn { x: number; y: number; size: number }
@@ -115,10 +116,26 @@ export async function readSketch(image: { data: string; mediaType: string }): Pr
   const googleKey = await getPlainKey("google");
   if (googleKey) return withGoogle(googleKey, await getModel("google"), image);
 
+  // Ключей компании ещё нет — работу делает машина владельца на его подписке.
+  // Промпт и схема те же, поэтому путь честный: меняется только исполнитель.
+  if (bridgeEnabled()) return withBridge(image);
+
   throw new SketchError(
     412,
     "Не подключён ключ ИИ. Откройте «Ключи» и добавьте ключ Anthropic или Google."
   );
+}
+
+/* ————————————————————————————————— Мост на подписку владельца */
+
+async function withBridge(image: { data: string; mediaType: string }): Promise<SketchResult> {
+  try {
+    const raw = await bridgeCall<Record<string, unknown>>("sketch", image);
+    return normalize(raw, "anthropic");
+  } catch (e) {
+    if (e instanceof BridgeError) throw new SketchError(e.status, e.message);
+    throw e;
+  }
 }
 
 /* ————————————————————————————————— Anthropic */

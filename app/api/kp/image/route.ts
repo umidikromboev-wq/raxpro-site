@@ -8,6 +8,7 @@ export const maxDuration = 120;
 // склад, которого нет в смете, — так уже было в их старых КП.
 
 import { fail, requireSession } from "@/lib/kp/guard";
+import { bridgeCall, bridgeEnabled, BridgeError } from "@/lib/kp/bridge";
 import { getPlainKey } from "@/lib/kp/settings";
 import { GOOGLE_IMAGE_MODELS } from "@/lib/kp/models";
 
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
     requireSession(req);
 
     const key = await getPlainKey("google");
-    if (!key) {
+    if (!key && !bridgeEnabled()) {
       return Response.json(
         { error: "Не подключён ключ Google. Откройте «Ключи» и добавьте его." },
         { status: 412 }
@@ -39,6 +40,18 @@ export async function POST(req: Request) {
       truck: typeof body.truck === "string" ? body.truck.slice(0, 40) : "reachtruck",
       product: typeof body.product === "string" ? body.product.slice(0, 80) : "паллетные стеллажи",
     });
+
+    // Ключа компании нет — кадр рисует Higgsfield на аккаунте владельца.
+    // Тот же промпт, тот же ответ формата data:URL: кабинет разницы не видит.
+    if (!key) {
+      try {
+        const image = await bridgeCall<string>("image", { prompt });
+        return Response.json({ ok: true, image });
+      } catch (e) {
+        if (e instanceof BridgeError) return Response.json({ error: e.message }, { status: e.status });
+        throw e;
+      }
+    }
 
     // Картиночные модели Google уезжают из каталога вместе с поколением,
     // и тогда рабочая кнопка внезапно отвечает 404. Поэтому список, а не

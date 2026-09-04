@@ -53,6 +53,25 @@ export default function Keys({ user, keys, choices, onChanged }) {
       )}
       {error && <Msg tone="bad" style={{ marginTop: 16 }}>{error}</Msg>}
 
+      {keys?.bridge?.enabled && (
+        <div className="kp-panel" style={{ marginTop: 18 }}>
+          <div className="kp-panel__head">
+            Временный режим — подписка владельца{' '}
+            <span style={{ color: keys.bridge.alive ? 'var(--ok, #2f9e5f)' : 'var(--muted)' }}>
+              · {keys.bridge.alive ? 'на связи' : 'не на связи'}
+            </span>
+          </div>
+          <div className="kp-panel__body" style={{ gap: 8 }}>
+            <p style={{ margin: 0, fontSize: 12.5, color: 'var(--ink-2)', lineHeight: 1.55 }}>
+              Пока своих ключей у компании нет, набросок читает и картинку собирает
+              компьютер владельца на его личной подписке. Это режим показа: работает,
+              пока его машина включена, и не рассчитан на нескольких менеджеров сразу.
+              Как только вы подключите ключи ниже, кабинет перестанет от него зависеть.
+            </p>
+          </div>
+        </div>
+      )}
+
       <div style={{ display: 'grid', gap: 14, marginTop: 20 }}>
         {PROVIDERS.map((p) => (
           <ProviderCard

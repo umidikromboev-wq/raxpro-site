@@ -21,13 +21,13 @@ export default function KpApp({ user }) {
   const [tab, setTab] = useState('doc');
   const [openDoc, setOpenDoc] = useState(null);
   const [openNonce, setOpenNonce] = useState(0);
-  const [keys, setKeys] = useState({ anthropic: { connected: false }, google: { connected: false } });
+  const [keys, setKeys] = useState({ anthropic: { connected: false }, google: { connected: false }, bridge: { enabled: false, alive: false } });
   const [choices, setChoices] = useState({ anthropic: [], google: [] });
 
   const loadKeys = useCallback(async () => {
     try {
       const data = await api('/api/kp/settings');
-      setKeys({ anthropic: data.anthropic, google: data.google });
+      setKeys({ anthropic: data.anthropic, google: data.google, bridge: data.bridge ?? { enabled: false, alive: false } });
       if (data.choices) setChoices(data.choices);
     } catch {
       // Отсутствие настроек не должно ломать вход: кабинет работает и без ИИ.

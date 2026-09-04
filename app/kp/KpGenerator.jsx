@@ -708,11 +708,11 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
             <ActionButton
               variant="ghost"
               onClick={generateImage}
-              disabled={!layout || !keys?.google?.connected}
+              disabled={!layout || !(keys?.google?.connected || keys?.bridge?.alive)}
               busyLabel="Собираю кадр…"
               doneLabel="Кадр в документе"
               onError={setError}
-              title={!keys?.google?.connected ? 'Нужен ключ Google в разделе «Ключи ИИ»' : undefined}
+              title={keys?.google?.connected || keys?.bridge?.alive ? undefined : 'Нужен ключ Google в разделе «Ключи ИИ»'}
             >
               Собрать изображение по раскладке
             </ActionButton>
