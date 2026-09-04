@@ -84,6 +84,22 @@ export async function POST(req: Request) {
     await page.waitForSelector(".kp-page", { timeout: 25000 });
     // шрифты Google подгружаются отдельно — без ожидания в PDF уезжает вёрстка
     await page.evaluate(() => document.fonts.ready);
+    // и картинки: networkidle0 срабатывает раньше, чем догрузятся снимки
+    // объектов, и на их месте в файл уходил серый прямоугольник.
+    await page.evaluate(() =>
+      Promise.all(
+        Array.from(document.images)
+          .filter((img) => !img.complete)
+          .map(
+            (img) =>
+              new Promise((done) => {
+                img.addEventListener("load", done, { once: true });
+                img.addEventListener("error", done, { once: true });
+                setTimeout(done, 8000);
+              })
+          )
+      )
+    );
 
     const pdf = await page.pdf({
       format: "A4",

@@ -251,15 +251,21 @@
 
 /* ——————————————————————————————————————————— клиенты набором */
 
+/* Линия идёт поверх каждой строки, а низ закрывает рамка контейнера:
+   иначе неполный последний ряд обрывал подчёркивание на середине листа. */
 .kp-clients {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
+/* Неполный последний ряд тянется на всю ширину — короткая линия под ним
+   читалась бы как обрыв таблицы. */
+.kp-clients span:last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+.kp-clients span:last-child:nth-child(3n + 2) { grid-column: span 2; }
 .kp-clients span {
-  padding: 11px 4px 11px 0;
-  border-bottom: 1px solid var(--line-2);
+  padding: 17px 4px 17px 0;
+  border-top: 1px solid var(--line-2);
   font-size: var(--t-base);
   letter-spacing: -0.012em;
   color: var(--ink);

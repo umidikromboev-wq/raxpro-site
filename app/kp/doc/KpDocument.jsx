@@ -3,7 +3,10 @@
 import { fmtSum } from '@/lib/rack/pricing';
 import { specLabel, specUnit } from '@/lib/rack/spec';
 import { COMPANY, SCOPE } from '@/lib/rack/company';
-import { CLIENTS, FOUNDER, certificates, coverFor, facts, galleryFor, pillars } from '@/lib/rack/profile';
+import {
+  CLIENTS, FOUNDER, capacityLabel, certificates, coverFor, facts, galleryFor,
+  pillars, production, projectLabel, projectsFor,
+} from '@/lib/rack/profile';
 import { fmtDate } from '@/lib/rack/kp';
 import LayoutPlan from '../LayoutPlan';
 import RackScene from '../RackScene';
@@ -17,7 +20,7 @@ import { CostBar, DocRoot, Figure, Kicker, Reveal, Sheet, Stat, statSize } from 
 // В фактических КП RaxPro сумма и объём лежали на девятой странице,
 // а первые восемь были про поставщика.
 
-export default function KpDocument({ kp, planImage, renderImage, layout, onCaptureRender }) {
+export default function KpDocument({ kp, planImage, renderImage, layout, print = false, onCaptureRender }) {
   const { meta, product, spec, price, positions } = kp;
   const lang = meta.lang;
   const L = lang === 'uz';
@@ -26,12 +29,15 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
   const byList = price.mode === 'sectionList';
 
   const cover = coverFor(product.key);
-  const gallery = galleryFor(product.key, 4);
+  // Крупный кадр на лист объектов и три мелких под ним.
+  const shots = galleryFor(product.key, 4);
+  const lead = shots[0] ?? null;
+  const gallery = shots.slice(1, 4);
   const productName = L ? product.uz.name : product.ru.name;
   const hero = renderImage || null;
 
   return (
-    <DocRoot>
+    <DocRoot print={print}>
       {/* ————————————————————————————— 1 · обложка */}
       <Sheet tone="dark" flush>
         <div className="kp-cover__media">
@@ -375,13 +381,13 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
           <h2 className="kp-h2">{t('Кто выполнит работу', 'Ishni kim bajaradi')}</h2>
         </Reveal>
 
-        <Reveal delay={80} style={{ marginTop: 20, display: 'grid', gridTemplateColumns: '150px 1fr', gap: 22, alignItems: 'start' }}>
+        <Reveal delay={80} style={{ marginTop: 18, display: 'grid', gridTemplateColumns: '132px 1fr', gap: 20, alignItems: 'start' }}>
           <Figure src={FOUNDER.photo} width={640} height={640} ratio="1 / 1" alt="" />
           <div>
-            <p className="kp-lede" style={{ fontSize: 16, color: 'var(--ink)' }}>
+            <p className="kp-lede" style={{ fontSize: 15.5, color: 'var(--ink)' }}>
               «{FOUNDER.quote[lang]}»
             </p>
-            <p className="kp-note" style={{ marginTop: 12 }}>
+            <p className="kp-note" style={{ marginTop: 10 }}>
               <b style={{ color: 'var(--ink)' }}>{FOUNDER.name[lang]}</b>
               <br />
               {FOUNDER.role[lang]}
@@ -389,8 +395,8 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
           </div>
         </Reveal>
 
-        <Reveal delay={150} style={{ marginTop: 26 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0,1fr))', gap: 16, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', padding: '16px 0' }}>
+        <Reveal delay={140} style={{ marginTop: 30 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0,1fr))', gap: 16, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', padding: '18px 0' }}>
             {facts(lang, meta.date).map((f) => (
               <div key={f.k}>
                 <p className="kp-stat__label">{f.k}</p>
@@ -400,17 +406,23 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
           </div>
         </Reveal>
 
-        <Reveal delay={200} style={{ marginTop: 24 }}>
-          <p className="kp-body">
-            {t(
-              `Производство — завод ${COMPANY.factory.name}, ${COMPANY.factory.country.ru}. Технология RollForm, холоднокатаная сталь, порошковая окраска.`,
-              `Ishlab chiqarish — ${COMPANY.factory.name} zavodi, ${COMPANY.factory.country.uz}. RollForm texnologiyasi, sovuq prokat poʻlat, kukunli boʻyoq.`
-            )}
-          </p>
+        {/* Производственная цепочка вместо одного абзаца про завод.
+         *  Имя завода в клиентском документе не печатается — просьба RaxPro
+         *  до эксклюзивного соглашения; факты о металле и технологии остаются. */}
+        <Reveal delay={190} style={{ marginTop: 34 }}>
+          <Kicker>{t('Как это делается', 'Bu qanday tayyorlanadi')}</Kicker>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 18, marginTop: 10 }}>
+            {production(lang).map((p) => (
+              <div key={p.title} style={{ borderTop: '2px solid var(--ink)', paddingTop: 9 }}>
+                <p className="kp-h3" style={{ fontSize: 14 }}>{p.title}</p>
+                <p className="kp-note" style={{ marginTop: 5 }}>{p.body}</p>
+              </div>
+            ))}
+          </div>
         </Reveal>
 
-        <Reveal delay={240} style={{ marginTop: 20 }}>
-          <Kicker>{t('Сертификаты завода', 'Zavod sertifikatlari')}</Kicker>
+        <Reveal delay={230} style={{ marginTop: 34 }}>
+          <Kicker>{t('Сертификаты производства', 'Ishlab chiqarish sertifikatlari')}</Kicker>
           <div className="kp-certs">
             {certificates(lang).map((c) => (
               <div key={c.code}>
@@ -424,7 +436,7 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
           </div>
         </Reveal>
 
-        <Reveal delay={250} style={{ marginTop: 'auto', paddingTop: 26 }}>
+        <Reveal delay={260} style={{ marginTop: 'auto', paddingTop: 22 }}>
           <Kicker>{t('Нам доверили склады', 'Omborlarini bizga ishonganlar')}</Kicker>
           <div className="kp-clients">
             {CLIENTS.map((c) => <span key={c}>{c}</span>)}
@@ -432,7 +444,7 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
         </Reveal>
       </Sheet>
 
-      {/* ————————————————————————————— 7 · работы */}
+      {/* ————————————————————————————— 7 · объекты */}
       <Sheet>
         <PageHead meta={meta} t={t} L={L} />
         <Reveal>
@@ -442,8 +454,61 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
           </h2>
         </Reveal>
 
-        <Reveal delay={90} style={{ marginTop: 20, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-          {gallery.map((g, i) => (
+        {lead && (
+          <Reveal delay={80} style={{ marginTop: 16 }}>
+            <Figure
+              src={lead.file}
+              width={lead.w}
+              height={lead.h}
+              ratio="21 / 9"
+              caption={L ? lead.uz : lead.ru}
+              eager
+            />
+          </Reveal>
+        )}
+
+        {/* Объём объекта, а не только фотография: клиент сравнивает свой
+         *  склад с уже собранными и понимает, что его задача — рядовая.
+         *  Числа взяты из наших же спецификаций и сходятся с формулами ядра. */}
+        <Reveal delay={140} style={{ marginTop: 22 }}>
+          <Kicker>{t('Объекты в цифрах', 'Obyektlar raqamlarda')}</Kicker>
+          <table className="kp-table" style={{ marginTop: 8 }}>
+            <thead>
+              <tr>
+                <th>{t('Система', 'Tizim')}</th>
+                <th className="num">{t('Секций', 'Seksiya')}</th>
+                <th className="num">{t('Ярусов', 'Yarus')}</th>
+                <th className="num">{t('Рам · балок', 'Rama · boʻlka')}</th>
+                <th className="num">{t('Ёмкость', 'Sigʻim')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {projectsFor(product.key).map((r, i) => (
+                <tr key={i} data-own={r.product === product.key ? '1' : '0'}>
+                  <td style={r.product === product.key ? { color: 'var(--ink)', fontWeight: 500 } : undefined}>
+                    {projectLabel(r, lang)}
+                  </td>
+                  <td className="num">{r.sections}</td>
+                  <td className="num">{r.tiers}</td>
+                  <td className="num">{r.frames} · {r.beams}</td>
+                  <td className="num">
+                    {r.capacity}{' '}
+                    <span style={{ color: 'var(--muted)' }}>{capacityLabel(r, lang)}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="kp-note" style={{ marginTop: 9 }}>
+            {t(
+              'Данные из наших рабочих спецификаций. Ёмкость посчитана по той же формуле, по которой собран ваш расчёт на стр. 5.',
+              'Maʼlumotlar ishchi spetsifikatsiyalarimizdan. Sigʻim 5-betdagi hisobingiz bilan bir xil formula boʻyicha hisoblangan.'
+            )}
+          </p>
+        </Reveal>
+
+        <Reveal delay={200} style={{ marginTop: 24, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+          {gallery.map((g) => (
             <Figure
               key={g.file}
               src={g.file}
@@ -451,13 +516,12 @@ export default function KpDocument({ kp, planImage, renderImage, layout, onCaptu
               height={g.h}
               ratio="4 / 3"
               caption={L ? g.uz : g.ru}
-              eager={i === 0}
             />
           ))}
         </Reveal>
 
-        <Reveal delay={160} style={{ marginTop: 'auto', paddingTop: 24 }}>
-          <p className="kp-note" style={{ borderTop: '1px solid var(--line)', paddingTop: 14 }}>
+        <Reveal delay={240} style={{ marginTop: 'auto', paddingTop: 16 }}>
+          <p className="kp-note" style={{ borderTop: '1px solid var(--line)', paddingTop: 12 }}>
             {t(
               'Все снимки — объекты, смонтированные бригадами RAX PRO. Приедем на любой из них вместе с вами, если нужно посмотреть конструкцию вживую.',
               'Barcha suratlar — RAX PRO brigadalari montaj qilgan obyektlar. Konstruksiyani jonli koʻrish uchun ularning istalganiga siz bilan birga boramiz.'

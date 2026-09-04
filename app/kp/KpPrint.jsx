@@ -39,6 +39,7 @@ export default function KpPrint() {
       layout={layout}
       planImage={state.planImage || null}
       renderImage={state.renderImage || null}
+      print
     />
   );
 }

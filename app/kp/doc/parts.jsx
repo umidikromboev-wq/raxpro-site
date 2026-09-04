@@ -1,9 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 /* Кирпичи документа. Всё оформление живёт в document.css — здесь только
  * структура и семантика, чтобы лист одинаково собирался на экране и в PDF. */
+
+/** Режим печати. В headless-браузере нет прокрутки: картинка с loading="lazy"
+ *  ниже первого экрана не начинает грузиться вовсе, и в PDF на её месте
+ *  оставался серый прямоугольник — ровно на листе с нашими объектами.
+ *  Флаг ставит DocRoot, читает Figure. */
+const PrintContext = createContext(false);
 
 export function Sheet({ children, tone = 'light', flush = false, className = '' }) {
   return (
@@ -97,6 +103,7 @@ export function CostBar({ items, lang = 'ru' }) {
 }
 
 export function Figure({ src, alt = '', caption, width, height, ratio, eager = false, className = '' }) {
+  const forced = useContext(PrintContext) || eager;
   return (
     <figure className={`kp-figure ${className}`}>
       <div style={ratio ? { aspectRatio: ratio } : undefined}>
@@ -105,9 +112,9 @@ export function Figure({ src, alt = '', caption, width, height, ratio, eager = f
           alt={alt}
           width={width}
           height={height}
-          loading={eager ? 'eager' : 'lazy'}
+          loading={forced ? 'eager' : 'lazy'}
           fetchPriority={eager ? 'high' : undefined}
-          decoding={eager ? 'sync' : 'async'}
+          decoding={forced ? 'sync' : 'async'}
         />
       </div>
       {caption ? <figcaption>{caption}</figcaption> : null}
@@ -174,7 +181,7 @@ const SHEET_PX = 794;
  *  Поэтому лист не ломается по колонкам, а масштабируется целиком.
  *  Меряется родитель, а не сам корень: собственную ширину корня уже искажает
  *  применённый к нему zoom, и замер зациклился бы. */
-export function DocRoot({ children, className = '' }) {
+export function DocRoot({ children, print = false, className = '' }) {
   const ref = useRef(null);
   const [ready, setReady] = useState(false);
   const [fit, setFit] = useState(1);
@@ -219,9 +226,10 @@ export function DocRoot({ children, className = '' }) {
       ref={ref}
       className={`kp-doc ${className}`}
       data-ready={ready ? '1' : '0'}
+      data-print={print ? '1' : '0'}
       style={{ '--kp-fit': fit }}
     >
-      {children}
+      <PrintContext.Provider value={print}>{children}</PrintContext.Provider>
     </div>
   );
 }
