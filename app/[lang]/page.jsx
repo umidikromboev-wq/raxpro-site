@@ -418,6 +418,8 @@ export default async function Home({ params }) {
                 <img loading="lazy" decoding="async"
                   src={d.img}
                   alt={d.t}
+                  width={1280}
+                  height={960}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-900/95 via-navy-900/55 to-navy-900/20" />
@@ -597,6 +599,8 @@ export default async function Home({ params }) {
               <img loading="lazy" decoding="async"
                 src="/brand/founder.jpg"
                 alt={t.founderName}
+                width={640}
+                height={640}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -723,6 +727,8 @@ export default async function Home({ params }) {
                   <img loading="lazy" decoding="async"
                     src={cert.img}
                     alt={cert.title}
+                    width={1336}
+                    height={1670}
                     className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.02]"
                   />
                 </div>
@@ -761,6 +767,8 @@ export default async function Home({ params }) {
                   <img loading="lazy" decoding="async"
                     src={a.cover}
                     alt={a.title}
+                    width={1280}
+                    height={853}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
                 </div>

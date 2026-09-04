@@ -58,7 +58,7 @@ export default function Footer({ lang = 'ru' }) {
       <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14 grid gap-10 md:grid-cols-3 xl:grid-cols-5">
         <div className="md:col-span-1">
           <div className="bg-white inline-block rounded-lg px-3 py-2">
-            <img loading="lazy" decoding="async" src="/brand/raxpro-logo.png" alt="RAXPRO" className="h-9 w-auto" />
+            <img loading="lazy" decoding="async" src="/brand/raxpro-logo.png" alt="RAXPRO" width={790} height={363} className="h-9 w-auto" />
           </div>
           <p className="mt-4 text-sm text-cloud-200/70 leading-relaxed">{t.tagline}</p>
           <div className="flex gap-2.5 mt-5">
