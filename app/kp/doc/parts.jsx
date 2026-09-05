@@ -122,8 +122,41 @@ export function Figure({ src, alt = '', caption, width, height, ratio, eager = f
   );
 }
 
-/** Блок, который проявляется при прокрутке. В печати и при выключенных
- *  анимациях гасится целиком — правило в document.css, здесь только флаг. */
+/** Реестр блоков, ждущих проявки. IntersectionObserver один пропускает блок,
+ *  который пролистали быстрее одного кадра, — тогда кадр не появлялся никогда.
+ *  Поэтому геометрия проверяется ещё и по прокрутке любого контейнера
+ *  (capture ловит и окно, и превью кабинета) в общем rAF-цикле. */
+const pending = new Set();
+let sweepQueued = false;
+let listening = false;
+/** Ниже этой доли экрана блок считается ещё не показанным. */
+const VIEW_SHARE = 0.96;
+/** Страховка: что бы ни случилось с наблюдателем, документ читаем целиком. */
+const SAFETY_MS = 4000;
+
+function sweep() {
+  sweepQueued = false;
+  const vh = window.innerHeight;
+  for (const entry of pending) {
+    const r = entry.el.getBoundingClientRect();
+    if (r.top < vh * VIEW_SHARE || r.bottom < 0) entry.show();
+  }
+}
+function scheduleSweep() {
+  if (sweepQueued) return;
+  sweepQueued = true;
+  requestAnimationFrame(sweep);
+}
+function listenScroll() {
+  if (listening || typeof window === 'undefined') return;
+  listening = true;
+  window.addEventListener('scroll', scheduleSweep, { passive: true, capture: true });
+  window.addEventListener('resize', scheduleSweep, { passive: true });
+}
+
+/** Блок, который проявляется при прокрутке. То, что на экране при загрузке,
+ *  видно сразу; в печати и при выключенных анимациях гасится целиком —
+ *  правило в document.css, здесь только флаг. */
 export function Reveal({ children, delay = 0, as: Tag = 'div', className = '', style, ...rest }) {
   const ref = useRef(null);
   const [shown, setShown] = useState(false);
@@ -131,26 +164,47 @@ export function Reveal({ children, delay = 0, as: Tag = 'div', className = '', s
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const reduced =
-      typeof window !== 'undefined' &&
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (reduced || typeof IntersectionObserver === 'undefined') {
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
       setShown(true);
       return;
     }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setShown(true);
-            io.disconnect();
-          }
-        }
+
+    let io = null;
+    let timer = 0;
+    const entry = {
+      el,
+      show() {
+        setShown(true);
+        pending.delete(entry);
+        io?.disconnect();
+        clearTimeout(timer);
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.05 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    };
+
+    if (el.getBoundingClientRect().top < window.innerHeight * VIEW_SHARE) {
+      entry.show();
+      return;
+    }
+
+    pending.add(entry);
+    listenScroll();
+    if (typeof IntersectionObserver !== 'undefined') {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) entry.show();
+        },
+        { rootMargin: '0px 0px -4% 0px', threshold: 0.01 }
+      );
+      io.observe(el);
+    }
+    timer = setTimeout(entry.show, SAFETY_MS);
+
+    return () => {
+      pending.delete(entry);
+      io?.disconnect();
+      clearTimeout(timer);
+    };
   }, []);
 
   return (

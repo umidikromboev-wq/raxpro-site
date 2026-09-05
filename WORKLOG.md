@@ -1,5 +1,27 @@
 # WORKLOG — raxpro-site
 
+## 2026-09-05 — генератор КП: обложка в один лист, картинки в PDF, блоки видны сразу
+
+**Сделано**
+- `document.css` (print): `.kp-cover__body` 296 мм вместо 297 (замер: 297,1 мм при листе 297 →
+  Chrome рвал полосу показателей и фон на 2-ю страницу); фон и затемнение вытянуты на −1,5 мм;
+  `:last-of-type` вместо `:last-child` — после последнего листа шёл `break-after: page` → пустая 10-я.
+- `parts.jsx` Reveal: блок в экране при монтировании показывается сразу; общий сторож по
+  прокрутке любого контейнера (capture) в rAF — IO пропускал блоки при быстром листании;
+  страховка 4 с. `_kpmeasure.mjs`: до правки в покое скрыто 33 из 35 блоков.
+- `api/kp/pdf/route.ts`: все `<img>` → eager, прокрутка по листам, ожидание `complete` до 45 с
+  и `decode()`; заголовки `X-KP-Images`, `X-KP-Images-Missing`, `X-KP-Images-Wait-Ms` для приёмки.
+- Приёмка: `~/.claude/tools/site-qa/_kpmeasure.mjs` (высоты листов при media=print, reveal в покое,
+  PDF через маршрут), `_kppdfpages.py --strict` (pymupdf: пустые листы, заглушки).
+
+**Грабли**
+- Preview на *.vercel.app не проверить: `redirects()` шлёт любой vercel-хост на raxpro.uz.
+- Локальный вход не поднять: `vercel env pull` для development отдаёт пустые KP_SECRET/KP_PASSWORD.
+
+**Осталось**
+- [ ] Обновить `_kptests.mjs` / `_kpmatch.mjs` под интерфейс 01.09
+- [ ] Цены RaxPro (пресет Fathulla расходится на 29 %)
+
 ## 2026-09-05 — диагностика генератора КП на бою перед доработкой
 
 **Найдено** (шесть тестовых КП на raxpro.uz, PDF разобран по листам через pymupdf)

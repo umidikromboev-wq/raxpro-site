@@ -336,7 +336,13 @@
     break-after: page;
     page-break-after: always;
   }
-  .kp-page:last-child { break-after: auto; page-break-after: auto; }
+  .kp-page:last-of-type { break-after: auto; page-break-after: auto; }
+  /* Обложка: тело листа было 297 мм при листе 297 — доли миллиметра хватало,
+   * чтобы Chrome перенёс полосу показателей и фон на вторую страницу.
+   * Высота фиксируется с запасом, фон и затемнение вытянуты до края бумаги. */
+  .kp-page--flush { height: 296mm; overflow: visible; }
+  .kp-cover__media, .kp-cover__scrim { bottom: -1.5mm; }
+  .kp-cover__body { min-height: 0; height: 296mm; overflow: hidden; }
   .kp-screen-only { display: none !important; }
   .kp-reveal { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
   .kp-cover__media img { transform: none !important; transition: none !important; }

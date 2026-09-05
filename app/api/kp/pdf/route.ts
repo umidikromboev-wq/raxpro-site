@@ -18,7 +18,7 @@ type Page = {
   evaluateOnNewDocument: (fn: (k: string, d: string) => void, k: string, d: string) => Promise<void>;
   goto: (url: string, opts: Record<string, unknown>) => Promise<unknown>;
   waitForSelector: (sel: string, opts: Record<string, unknown>) => Promise<unknown>;
-  evaluate: (fn: () => unknown) => Promise<unknown>;
+  evaluate: <T>(fn: () => T | Promise<T>) => Promise<T>;
   pdf: (opts: Record<string, unknown>) => Promise<Buffer>;
 };
 
@@ -44,6 +44,50 @@ async function launch(): Promise<Browser> {
   const executablePath = local.find((p) => fs.existsSync(p));
   if (!executablePath) throw new Error("Локальный Chrome не найден — задайте CHROME_PATH");
   return puppeteer.launch({ executablePath, headless: true }) as unknown as Promise<Browser>;
+}
+
+type ImageReport = { total: number; loaded: number; missing: string[]; waitedMs: number };
+
+/** Выполняется внутри страницы: все картинки переводятся в eager, документ
+ *  прокручивается лист за листом (ленивые снимки иначе не стартуют без
+ *  прокрутки), затем ждём загрузку и декодирование каждой. */
+function waitForImages(): Promise<ImageReport> {
+  const CAP_MS = 45000;
+  const STEP_MS = 120;
+  const started = Date.now();
+  const imgs = Array.from(document.images);
+  imgs.forEach((img) => {
+    img.loading = "eager";
+  });
+  const pages = Array.from(document.querySelectorAll(".kp-page"));
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const allDone = () => imgs.every((img) => img.complete);
+  const finish = async (): Promise<ImageReport> => {
+    await Promise.all(imgs.map((img) => img.decode().catch(() => undefined)));
+    const missing = imgs
+      .filter((img) => !img.complete || img.naturalWidth === 0)
+      .map((img) => (img.getAttribute("src") || "").slice(0, 80));
+    return { total: imgs.length, loaded: imgs.length - missing.length, missing, waitedMs: Date.now() - started };
+  };
+  return (async () => {
+    for (const p of pages) {
+      p.scrollIntoView();
+      await sleep(STEP_MS);
+    }
+    window.scrollTo(0, 0);
+    while (!allDone() && Date.now() - started < CAP_MS) await sleep(STEP_MS);
+    return finish();
+  })();
+}
+
+function parseImageReport(raw: unknown): ImageReport {
+  const r = (raw ?? {}) as Partial<ImageReport>;
+  return {
+    total: Number(r.total) || 0,
+    loaded: Number(r.loaded) || 0,
+    missing: Array.isArray(r.missing) ? r.missing.map(String) : [],
+    waitedMs: Number(r.waitedMs) || 0,
+  };
 }
 
 export async function POST(req: Request) {
@@ -81,25 +125,12 @@ export async function POST(req: Request) {
     );
 
     await page.goto(`${origin}/kp?print=1`, { waitUntil: "networkidle0", timeout: 60000 });
-    await page.waitForSelector(".kp-page", { timeout: 25000 });
+    await page.waitForSelector(".kp-doc[data-ready='1'] .kp-page", { timeout: 25000 });
     // шрифты Google подгружаются отдельно — без ожидания в PDF уезжает вёрстка
     await page.evaluate(() => document.fonts.ready);
-    // и картинки: networkidle0 срабатывает раньше, чем догрузятся снимки
-    // объектов, и на их месте в файл уходил серый прямоугольник.
-    await page.evaluate(() =>
-      Promise.all(
-        Array.from(document.images)
-          .filter((img) => !img.complete)
-          .map(
-            (img) =>
-              new Promise((done) => {
-                img.addEventListener("load", done, { once: true });
-                img.addEventListener("error", done, { once: true });
-                setTimeout(done, 8000);
-              })
-          )
-      )
-    );
+    // и картинки: networkidle0 срабатывает раньше, чем начнут грузиться снимки
+    // объектов и портрет, и на их месте в файл уходил серый прямоугольник.
+    const images = parseImageReport(await page.evaluate(waitForImages));
 
     const pdf = await page.pdf({
       format: "A4",
@@ -113,6 +144,10 @@ export async function POST(req: Request) {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${fileName}"`,
         "Cache-Control": "no-store",
+        // Отчёт для приёмки: сколько картинок дождались и какие не пришли.
+        "X-KP-Images": `${images.loaded}/${images.total}`,
+        "X-KP-Images-Missing": images.missing.join(",") || "-",
+        "X-KP-Images-Wait-Ms": String(images.waitedMs),
       },
     });
   } catch (e) {
