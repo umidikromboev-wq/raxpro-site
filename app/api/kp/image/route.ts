@@ -8,7 +8,7 @@ export const maxDuration = 120;
 // склад, которого нет в смете, — так уже было в их старых КП.
 
 import { fail, requireSession } from "@/lib/kp/guard";
-import { bridgeCall, bridgeEnabled, BridgeError } from "@/lib/kp/bridge";
+import { bridgeAlive, bridgeCall, bridgeEnabled, BridgeError } from "@/lib/kp/bridge";
 import { getPlainKey } from "@/lib/kp/settings";
 import { GOOGLE_IMAGE_MODELS } from "@/lib/kp/models";
 
@@ -43,81 +43,94 @@ export async function POST(req: Request) {
 
     // Ключа компании нет — кадр рисует Higgsfield на аккаунте владельца.
     // Тот же промпт, тот же ответ формата data:URL: кабинет разницы не видит.
-    if (!key) {
-      try {
-        const image = await bridgeCall<string>("image", { prompt });
-        return Response.json({ ok: true, image });
-      } catch (e) {
-        if (e instanceof BridgeError) return Response.json({ error: e.message }, { status: e.status });
-        throw e;
-      }
-    }
+    if (!key) return viaBridge(prompt);
 
-    // Картиночные модели Google уезжают из каталога вместе с поколением,
-    // и тогда рабочая кнопка внезапно отвечает 404. Поэтому список, а не
-    // одна модель: на 404 берётся следующая, остальные ошибки — настоящие.
-    let res: Response | null = null;
-    for (const model of GOOGLE_IMAGE_MODELS) {
-      try {
-        res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            signal: AbortSignal.timeout(110_000),
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: {
-                responseModalities: ["IMAGE"],
-                imageConfig: { aspectRatio: "16:9", imageSize: "2K" },
-              },
-            }),
-          }
-        );
-      } catch {
-        return Response.json({ error: "Google не ответил за две минуты. Повторите." }, { status: 504 });
+    try {
+      return Response.json({ ok: true, image: await viaGoogle(key, prompt) });
+    } catch (e) {
+      if (!(e instanceof ImageError)) throw e;
+      // Ключ компании отказал по своей вине — лимит, баланс, доступ, модель.
+      // Если мак владельца на связи, кадр рисует мост: менеджеру нужен кадр в КП,
+      // а не совет пополнить чужой баланс в AI Studio.
+      if (bridgeEnabled() && (await bridgeAlive())) {
+        console.warn("[kp/image] ключ Google отказал, кадр рисует мост:", e.message);
+        return viaBridge(prompt);
       }
-      if (res.status !== 404) break;
+      return Response.json({ error: e.message }, { status: e.status });
     }
-    if (!res) {
-      return Response.json({ error: "Google не ответил. Повторите через минуту." }, { status: 502 });
-    }
-
-    if (!res.ok) {
-      if (res.status === 400 || res.status === 401 || res.status === 403) {
-        return Response.json({ error: "Ключ Google не принят. Проверьте его в разделе «Ключи»." }, { status: 502 });
-      }
-      if (res.status === 429) {
-        return Response.json(
-          { error: "Лимит Google исчерпан или кончились кредиты аккаунта. Проверьте баланс в AI Studio." },
-          { status: 502 }
-        );
-      }
-      if (res.status === 404) {
-        return Response.json(
-          { error: "Google не даёт этому ключу картиночные модели. Включите их в проекте AI Studio." },
-          { status: 502 }
-        );
-      }
-      console.error("[kp/image]", res.status, await res.text().catch(() => ""));
-      return Response.json({ error: "Google вернул ошибку. Повторите через минуту." }, { status: 502 });
-    }
-
-    const data = (await res.json()) as {
-      candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { data?: string; mimeType?: string } }> } }>;
-    };
-    const part = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data);
-    if (!part?.inlineData?.data) {
-      return Response.json({ error: "Модель не вернула изображение. Повторите." }, { status: 502 });
-    }
-
-    return Response.json({
-      ok: true,
-      image: `data:${part.inlineData.mimeType || "image/png"};base64,${part.inlineData.data}`,
-    });
   } catch (e) {
     return fail(e, "Не удалось собрать изображение");
   }
+}
+
+class ImageError extends Error {
+  status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+  }
+}
+
+async function viaBridge(prompt: string): Promise<Response> {
+  try {
+    const image = await bridgeCall<string>("image", { prompt });
+    return Response.json({ ok: true, image });
+  } catch (e) {
+    if (e instanceof BridgeError) return Response.json({ error: e.message }, { status: e.status });
+    throw e;
+  }
+}
+
+async function viaGoogle(key: string, prompt: string): Promise<string> {
+  // Картиночные модели Google уезжают из каталога вместе с поколением,
+  // и тогда рабочая кнопка внезапно отвечает 404. Поэтому список, а не
+  // одна модель: на 404 берётся следующая, остальные ошибки — настоящие.
+  let res: Response | null = null;
+  for (const model of GOOGLE_IMAGE_MODELS) {
+    try {
+      res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: AbortSignal.timeout(110_000),
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              responseModalities: ["IMAGE"],
+              imageConfig: { aspectRatio: "16:9", imageSize: "2K" },
+            },
+          }),
+        }
+      );
+    } catch {
+      throw new ImageError(504, "Google не ответил за две минуты. Повторите.");
+    }
+    if (res.status !== 404) break;
+  }
+  if (!res) throw new ImageError(502, "Google не ответил. Повторите через минуту.");
+
+  if (!res.ok) {
+    if (res.status === 400 || res.status === 401 || res.status === 403) {
+      throw new ImageError(502, "Ключ Google не принят. Проверьте его в разделе «Ключи».");
+    }
+    if (res.status === 429) {
+      throw new ImageError(502, "Лимит Google исчерпан или кончились кредиты аккаунта. Проверьте баланс в AI Studio.");
+    }
+    if (res.status === 404) {
+      throw new ImageError(502, "Google не даёт этому ключу картиночные модели. Включите их в проекте AI Studio.");
+    }
+    console.error("[kp/image]", res.status, await res.text().catch(() => ""));
+    throw new ImageError(502, "Google вернул ошибку. Повторите через минуту.");
+  }
+
+  const data = (await res.json()) as {
+    candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { data?: string; mimeType?: string } }> } }>;
+  };
+  const part = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data);
+  if (!part?.inlineData?.data) throw new ImageError(502, "Модель не вернула изображение. Повторите.");
+
+  return `data:${part.inlineData.mimeType || "image/png"};base64,${part.inlineData.data}`;
 }
 
 const TRUCK_RU: Record<string, string> = {

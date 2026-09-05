@@ -11,7 +11,7 @@
 // зашитых ключей в коде нет.
 
 import Anthropic from "@anthropic-ai/sdk";
-import { bridgeCall, bridgeEnabled, BridgeError } from "./bridge";
+import { bridgeAlive, bridgeCall, bridgeEnabled, BridgeError } from "./bridge";
 import { getModel, getPlainKey } from "./settings";
 
 export interface SketchColumn { x: number; y: number; size: number }
@@ -192,19 +192,37 @@ export class SketchError extends Error {
 
 export async function readSketch(image: { data: string; mediaType: string }): Promise<SketchResult> {
   const anthropicKey = await getPlainKey("anthropic");
-  if (anthropicKey) return withAnthropic(anthropicKey, await getModel("anthropic"), image);
-
   const googleKey = await getPlainKey("google");
-  if (googleKey) return withGoogle(googleKey, await getModel("google"), image);
+
+  const viaKey = anthropicKey
+    ? async () => withAnthropic(anthropicKey, await getModel("anthropic"), image)
+    : googleKey
+      ? async () => withGoogle(googleKey, await getModel("google"), image)
+      : null;
 
   // Ключей компании ещё нет — работу делает машина владельца на его подписке.
   // Промпт и схема те же, поэтому путь честный: меняется только исполнитель.
-  if (bridgeEnabled()) return withBridge(image);
+  if (!viaKey) {
+    if (bridgeEnabled()) return withBridge(image);
+    throw new SketchError(
+      412,
+      "Не подключён ключ ИИ. Откройте «Ключи» и добавьте ключ Anthropic или Google."
+    );
+  }
 
-  throw new SketchError(
-    412,
-    "Не подключён ключ ИИ. Откройте «Ключи» и добавьте ключ Anthropic или Google."
-  );
+  try {
+    return await viaKey();
+  } catch (e) {
+    // Ключ компании отказал по своей вине — лимит, баланс, доступ, модель (502).
+    // Если мак владельца на связи, работу берёт мост: менеджеру нужен результат,
+    // а не совет пополнить чужой баланс. Отказ про сам снимок (422) не перекладываем —
+    // другая модель тот же смазанный лист прочитает не лучше.
+    if (e instanceof SketchError && e.status === 502 && bridgeEnabled() && (await bridgeAlive())) {
+      console.warn("[kp/sketch] ключ компании отказал, работу берёт мост:", e.message);
+      return withBridge(image);
+    }
+    throw e;
+  }
 }
 
 /* ————————————————————————————————— Мост на подписку владельца */
