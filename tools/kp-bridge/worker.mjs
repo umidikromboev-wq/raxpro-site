@@ -9,7 +9,7 @@
 //   node --import ./lib/rack/ts-hook-register.mjs tools/kp-bridge/worker.mjs
 // Токен хранилища берётся из .env.local (BLOB_READ_WRITE_TOKEN).
 
-import { spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -74,7 +74,7 @@ async function doSketch(payload) {
   const file = path.join(os.tmpdir(), `kp-sketch-${Date.now()}.${ext}`);
   writeFileSync(file, Buffer.from(data, 'base64'));
   try {
-    const text = claude(
+    const text = await claude(
       `${SYSTEM}\n\nПрочитай изображение по пути ${file} инструментом Read и верни результат.\n\n` +
         `Ответ — ТОЛЬКО JSON-объект, без пояснений и без markdown-ограды, строго по этой схеме:\n` +
         JSON.stringify(SCHEMA, null, 1),
@@ -91,7 +91,7 @@ async function doSketch(payload) {
 async function doImage(payload) {
   const prompt = String(payload?.prompt || '').slice(0, 4000);
   if (!prompt) throw new Error('В задании нет промпта');
-  const text = claude(
+  const text = await claude(
     `Сгенерируй ОДНО изображение через Higgsfield по этому описанию. Соотношение сторон 16:9.\n\n` +
       `Описание: ${prompt}\n\n` +
       `Дождись готовности и верни ТОЛЬКО прямой URL картинки одной строкой, без пояснений и разметки.`,
@@ -115,18 +115,29 @@ async function doImage(payload) {
 
 /* ————————————————————————————— служебное */
 
+// Асинхронно, не spawnSync: чтение наброска идёт ~3 минуты, и синхронный
+// вызов замораживал heartbeat — через минуту кабинет считал мост мёртвым
+// и отдавал клиенту ошибку ключа, хотя мак в этот момент работал.
 function claude(prompt, extra) {
-  const run = spawnSync(CLAUDE, ['-p', prompt, '--output-format', 'json', ...extra], {
-    encoding: 'utf8',
-    maxBuffer: 64 * 1024 * 1024,
-    cwd: os.tmpdir(),
-    env: { ...process.env, TELEGRAM_BOT_TOKEN: '' },
+  return new Promise((resolve, reject) => {
+    const child = spawn(CLAUDE, ['-p', prompt, '--output-format', 'json', ...extra], {
+      cwd: os.tmpdir(),
+      env: { ...process.env, TELEGRAM_BOT_TOKEN: '' },
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    let stdout = '';
+    let stderr = '';
+    child.stdout.setEncoding('utf8').on('data', (d) => { stdout += d; });
+    child.stderr.setEncoding('utf8').on('data', (d) => { stderr += d; });
+    child.on('error', (e) => reject(new Error(`claude не запустился: ${e.message}`)));
+    child.on('close', (status) => {
+      if (status !== 0) return reject(new Error(cut(stderr || stdout) || 'claude вернул ошибку'));
+      let out;
+      try { out = JSON.parse(stdout); } catch { return reject(new Error('не разобрал ответ claude')); }
+      if (out.is_error) return reject(new Error(cut(out.result) || 'claude ответил ошибкой'));
+      resolve(String(out.result || ''));
+    });
   });
-  if (run.status !== 0) throw new Error(cut(run.stderr || run.stdout) || 'claude вернул ошибку');
-  let out;
-  try { out = JSON.parse(run.stdout); } catch { throw new Error('не разобрал ответ claude'); }
-  if (out.is_error) throw new Error(cut(out.result) || 'claude ответил ошибкой');
-  return String(out.result || '');
 }
 
 function firstJson(text) {
