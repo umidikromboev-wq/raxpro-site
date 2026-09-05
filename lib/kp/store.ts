@@ -42,6 +42,32 @@ export async function writeJson(pathname: string, data: unknown): Promise<void> 
   });
 }
 
+/** Двоичный файл в приватном хранилище: снимок 3D-модели, который мост
+ *  отдаёт генератору кадра. Наружу его показывает маршрут `/api/kp/ref/<id>`,
+ *  сам файл остаётся закрытым, как и всё остальное в кабинете. */
+export async function putBinary(pathname: string, data: Buffer, contentType: string): Promise<void> {
+  assertStore();
+  await put(pathname, data, {
+    access: "private",
+    contentType,
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    cacheControlMaxAge: 0,
+  });
+}
+
+export async function readBinary(pathname: string): Promise<{ body: ReadableStream<Uint8Array>; contentType: string } | null> {
+  assertStore();
+  try {
+    const res = await get(pathname, { access: "private", useCache: false });
+    if (!res || res.statusCode !== 200) return null;
+    return { body: res.stream, contentType: res.blob.contentType || "application/octet-stream" };
+  } catch (e: unknown) {
+    if (isNotFound(e)) return null;
+    throw e;
+  }
+}
+
 export async function removeBlob(pathname: string): Promise<void> {
   assertStore();
   try {

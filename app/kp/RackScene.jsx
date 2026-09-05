@@ -12,7 +12,13 @@ import { useEffect, useRef, useState } from 'react';
 
 const MM = 0.001;
 
-export default function RackScene({ room, layout, height = 460, onCapture }) {
+// Кадр для генератора рендера снимается всегда одинаково, а не из того ракурса,
+// который менеджер случайно оставил: модель дорисовывает фотореализм поверх
+// геометрии, и «вид в потолок» она послушно превратит в фотографию потолка.
+const SHOT_W = 1280;
+const SHOT_H = 720;
+
+export default function RackScene({ room, layout, height = 460, onCapture, apiRef }) {
   const canvasRef = useRef(null);
   const stateRef = useRef(null);
   const [ready, setReady] = useState(false);
@@ -290,10 +296,37 @@ export default function RackScene({ room, layout, height = 460, onCapture }) {
         renderer.render(scene, cam);
         return canvas.toDataURL('image/png');
       };
-      stateRef.current = { shellGroup, palletGroup: [palMesh, boxMesh], shoot };
+
+      // Снимок-референс: низкая камера вдоль прохода, стены включены (иначе
+      // генератор видит стеллажи в пустоте и дорисовывает улицу), кадр 16:9.
+      // Ракурс и размер возвращаются на место, менеджер ничего не замечает.
+      const shootStandard = () => {
+        const wasShell = shellGroup.visible;
+        const [wasAz, wasEl, wasDist] = [az, el, dist];
+        shellGroup.visible = true;
+        az = -0.72;
+        el = 0.2;
+        dist = fitDist * 0.72;
+        applyCam();
+        renderer.setSize(SHOT_W, SHOT_H, false);
+        cam.aspect = SHOT_W / SHOT_H;
+        cam.updateProjectionMatrix();
+        renderer.render(scene, cam);
+        const png = canvas.toDataURL('image/png');
+        shellGroup.visible = wasShell;
+        az = wasAz; el = wasEl; dist = wasDist;
+        applyCam();
+        resize();
+        renderer.render(scene, cam);
+        return png;
+      };
+
+      stateRef.current = { shellGroup, palletGroup: [palMesh, boxMesh], shoot, shootStandard };
+      if (apiRef) apiRef.current = { shoot, shootStandard };
 
 
       cleanup = () => {
+        if (apiRef?.current && apiRef.current.shoot === shoot) apiRef.current = null;
         cancelAnimationFrame(raf);
         canvas.removeEventListener('pointerdown', onDown);
         window.removeEventListener('pointermove', onMove);
@@ -310,7 +343,7 @@ export default function RackScene({ room, layout, height = 460, onCapture }) {
     })();
 
     return () => { disposed = true; cleanup(); };
-  }, [room, layout, height]);
+  }, [room, layout, height, apiRef]);
 
   useEffect(() => {
     const s = stateRef.current;

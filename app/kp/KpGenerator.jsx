@@ -52,6 +52,7 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
   const [renderImage, setRenderImage] = useState(null);
   const [savedAt, setSavedAt] = useState(null);
   const hydrated = useRef(false);
+  const sceneRef = useRef(null);
 
   const product = getProduct(productKey);
 
@@ -221,9 +222,13 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
 
   async function generateImage() {
     if (!layout) throw new Error('Сначала посчитайте раскладку — кадр строится по ней');
+    // Референс снимается с 3D-модели молча: менеджеру не нужно крутить сцену
+    // и ловить ракурс — генератор рисует фотореализм поверх точной геометрии.
+    const reference = sceneRef.current?.shootStandard?.() || null;
     const data = await api('/api/kp/image', {
       method: 'POST',
       body: JSON.stringify({
+        reference,
         rows: layout.rows,
         sections: layout.sections,
         levels: layout.levels,
@@ -700,19 +705,20 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
 
           <Panel title="7 · Картинки в документе">
             <p style={{ margin: 0, fontSize: 11.5, color: 'var(--muted)', lineHeight: 1.5 }}>
-              План генератор рисует сам после расчёта раскладки. Обложку и страницу работ
-              он берёт из архива объектов. Сюда — только свой чертёж или свой рендер.
+              План генератор рисует сам после расчёта раскладки. Рендер он снимает с 3D-модели
+              и дорисовывает до фотографии — ряды, проходы и ярусы остаются вашими.
+              Обложку и страницу работ берёт из архива объектов.
             </p>
             <ActionButton
               variant="ghost"
               onClick={generateImage}
               disabled={!layout || !(keys?.google?.connected || keys?.bridge?.alive)}
-              busyLabel="Собираю кадр…"
-              doneLabel="Кадр в документе"
+              busyLabel="Рисую по вашей раскладке… до 2 минут"
+              doneLabel="Рендер в документе"
               onError={setError}
               title={keys?.google?.connected || keys?.bridge?.alive ? undefined : 'Нужен ключ Google в разделе «Ключи ИИ»'}
             >
-              Собрать изображение по раскладке
+              Собрать рендер по раскладке
             </ActionButton>
             <Field label="Свой план склада (вид сверху)">
               <input type="file" accept="image/png,image/jpeg" className="inp" onChange={(e) => readFile(e.target.files?.[0], setPlanImage)} />
@@ -809,6 +815,7 @@ export default function KpGenerator({ user, keys, openDoc, openNonce, onNeedKeys
             planImage={planImage}
             renderImage={renderImage}
             layout={layout}
+            sceneRef={sceneRef}
             onCaptureRender={setRenderImage}
           />
         </div>

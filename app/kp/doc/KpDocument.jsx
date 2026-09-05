@@ -20,7 +20,7 @@ import { CostBar, DocRoot, Figure, Kicker, Reveal, Sheet, Stat, statSize } from 
 // В фактических КП RaxPro сумма и объём лежали на девятой странице,
 // а первые восемь были про поставщика.
 
-export default function KpDocument({ kp, planImage, renderImage, layout, print = false, onCaptureRender }) {
+export default function KpDocument({ kp, planImage, renderImage, layout, print = false, onCaptureRender, sceneRef }) {
   const { meta, product, spec, price, positions } = kp;
   const lang = meta.lang;
   const L = lang === 'uz';
@@ -259,7 +259,7 @@ export default function KpDocument({ kp, planImage, renderImage, layout, print =
           {layout && !planImage && (
             <div className="kp-screen-only" style={{ marginTop: 20 }}>
               <Kicker>{t('Интерактивная модель', 'Interaktiv model')}</Kicker>
-              <RackScene room={layout.room} layout={layout} height={400} onCapture={onCaptureRender} />
+              <RackScene room={layout.room} layout={layout} height={400} onCapture={onCaptureRender} apiRef={sceneRef} />
               <p className="kp-note" style={{ marginTop: 8 }}>
                 {onCaptureRender
                   ? 'Поставьте нужный ракурс и нажмите «Снять кадр в КП» — он встанет на лист «Решение». '
@@ -270,6 +270,19 @@ export default function KpDocument({ kp, planImage, renderImage, layout, print =
                 )}
               </p>
             </div>
+          )}
+
+          {hero && (
+            <Reveal delay={120} style={{ marginTop: 20 }}>
+              <Figure
+                src={hero}
+                ratio="16 / 9"
+                caption={t(
+                  'Тот же расчёт в объёме: ряды, проходы и ярусы — как на плане выше.',
+                  'Ayni hisob hajmda: qatorlar, yoʻlaklar va yaruslar — yuqoridagi rejadagidek.'
+                )}
+              />
+            </Reveal>
           )}
 
           <p className="kp-note" style={{ marginTop: 14 }}>

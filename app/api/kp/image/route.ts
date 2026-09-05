@@ -6,6 +6,10 @@ export const maxDuration = 120;
 // Кадр строится не «нарисуй красивый склад», а по посчитанной раскладке: те же
 // ряды, ярусы и техника, что в спецификации. Иначе на листе «Решение» стоит
 // склад, которого нет в смете, — так уже было в их старых КП.
+//
+// Кабинет присылает ещё и снимок 3D-модели (reference): по нему генератор
+// дорисовывает фотореализм поверх настоящей геометрии, а не сочиняет склад
+// заново по словам «шесть рядов». Снимка нет — работает старый текстовый путь.
 
 import { fail, requireSession } from "@/lib/kp/guard";
 import { bridgeAlive, bridgeCall, bridgeEnabled, BridgeError } from "@/lib/kp/bridge";
@@ -27,10 +31,13 @@ export async function POST(req: Request) {
     const body = (await req.json().catch(() => ({}))) as {
       rows?: unknown; sections?: unknown; levels?: unknown;
       width?: unknown; depth?: unknown; ceiling?: unknown;
-      truck?: unknown; product?: unknown;
+      truck?: unknown; product?: unknown; reference?: unknown;
     };
 
+    const reference = readReference(body.reference);
+
     const prompt = buildPrompt({
+      hasReference: Boolean(reference),
       rows: clampInt(body.rows, 1, 60, 6),
       sections: clampInt(body.sections, 1, 400, 40),
       levels: clampInt(body.levels, 1, 6, 3),
@@ -43,10 +50,10 @@ export async function POST(req: Request) {
 
     // Ключа компании нет — кадр рисует Higgsfield на аккаунте владельца.
     // Тот же промпт, тот же ответ формата data:URL: кабинет разницы не видит.
-    if (!key) return viaBridge(prompt);
+    if (!key) return viaBridge(prompt, reference);
 
     try {
-      return Response.json({ ok: true, image: await viaGoogle(key, prompt) });
+      return Response.json({ ok: true, image: await viaGoogle(key, prompt, reference) });
     } catch (e) {
       if (!(e instanceof ImageError)) throw e;
       // Ключ компании отказал по своей вине — лимит, баланс, доступ, модель.
@@ -54,7 +61,7 @@ export async function POST(req: Request) {
       // а не совет пополнить чужой баланс в AI Studio.
       if (bridgeEnabled() && (await bridgeAlive())) {
         console.warn("[kp/image] ключ Google отказал, кадр рисует мост:", e.message);
-        return viaBridge(prompt);
+        return viaBridge(prompt, reference);
       }
       return Response.json({ error: e.message }, { status: e.status });
     }
@@ -71,9 +78,11 @@ class ImageError extends Error {
   }
 }
 
-async function viaBridge(prompt: string): Promise<Response> {
+async function viaBridge(prompt: string, reference: Reference | null): Promise<Response> {
   try {
-    const image = await bridgeCall<string>("image", { prompt });
+    // Кадр по референсу идёт дольше текстового: импорт снимка, генерация,
+    // скачивание и ужимание — на прошлых прогонах 60-90 с.
+    const image = await bridgeCall<string>("image", { prompt, reference }, 200_000);
     return Response.json({ ok: true, image });
   } catch (e) {
     if (e instanceof BridgeError) return Response.json({ error: e.message }, { status: e.status });
@@ -81,7 +90,7 @@ async function viaBridge(prompt: string): Promise<Response> {
   }
 }
 
-async function viaGoogle(key: string, prompt: string): Promise<string> {
+async function viaGoogle(key: string, prompt: string, reference: Reference | null): Promise<string> {
   // Картиночные модели Google уезжают из каталога вместе с поколением,
   // и тогда рабочая кнопка внезапно отвечает 404. Поэтому список, а не
   // одна модель: на 404 берётся следующая, остальные ошибки — настоящие.
@@ -95,7 +104,13 @@ async function viaGoogle(key: string, prompt: string): Promise<string> {
           headers: { "Content-Type": "application/json" },
           signal: AbortSignal.timeout(110_000),
           body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
+            contents: [
+              {
+                parts: reference
+                  ? [{ inlineData: { mimeType: reference.mediaType, data: reference.data } }, { text: prompt }]
+                  : [{ text: prompt }],
+              },
+            ],
             generationConfig: {
               responseModalities: ["IMAGE"],
               imageConfig: { aspectRatio: "16:9", imageSize: "2K" },
@@ -140,13 +155,28 @@ const TRUCK_RU: Record<string, string> = {
   vna: "узкопроходный штабелёр",
 };
 
+type Reference = { data: string; mediaType: string };
+
+/** Снимок 3D-модели приходит как data:URL. Больше 8 МБ — это уже не снимок
+ *  сцены, а чей-то файл: такой не берём, кадр рисуется по тексту. */
+function readReference(v: unknown): Reference | null {
+  if (typeof v !== "string") return null;
+  const m = v.match(/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=]+)$/);
+  if (!m) return null;
+  if (m[2].length > 8_000_000) return null;
+  return { mediaType: m[1], data: m[2] };
+}
+
 function buildPrompt(o: {
+  hasReference: boolean;
   rows: number; sections: number; levels: number;
   width: number; depth: number; ceiling: number;
   truck: string; product: string;
 }): string {
   return [
-    "Фотореалистичный интерьер современного складского комплекса, широкоугольный кадр от пола, высота камеры 1,7 м.",
+    o.hasReference
+      ? "Преврати эту 3D-схему склада в фотореалистичный снимок интерьера. Сохрани в точности ракурс, число рядов, ширину проходов, число ярусов и положение стеллажей — меняются только материалы, свет и детали."
+      : "Фотореалистичный интерьер современного складского комплекса, широкоугольный кадр от пола, высота камеры 1,7 м.",
     `Помещение ${(o.width / 1000).toFixed(0)} на ${(o.depth / 1000).toFixed(0)} метров, потолок ${(o.ceiling / 1000).toFixed(1)} м, светлые стены, наливной бетонный пол с разметкой проездов.`,
     `В кадре ${o.rows} параллельных ряда металлических стеллажей (${o.product}), в каждом ярусе видно ${o.levels} уровня балок с паллетами.`,
     "Рамы стеллажей — синяя порошковая окраска, балки — оранжевые, ровно как на объектах RAX PRO; груз на европаллетах в стретч-плёнке.",

@@ -15,11 +15,16 @@ import os from 'node:os';
 import path from 'node:path';
 import sharp from 'sharp';
 import { bridgeAnswer, bridgeBeat, bridgeTake } from '../../lib/kp/bridge.ts';
+import { putBinary, removeBlob } from '../../lib/kp/store.ts';
 import { SYSTEM, SCHEMA } from '../../lib/kp/sketch.ts';
 
 const CLAUDE = path.join(process.env.HOME, '.local/bin/claude');
 const POLL_MS = 1500;
 const BEAT_MS = 20_000;
+// Генератор кадра принимает референс только по HTTPS-ссылке. Ссылку отдаёт сам
+// кабинет: `/api/kp/ref/<id>` десять минут показывает снимок из закрытого
+// хранилища, потом файл удаляется вместе с заданием.
+const SITE = process.env.KP_SITE_URL || 'https://raxpro.uz';
 
 // Инструменты закрыты по тому же принципу, что и в sketch.local.mjs: воркер
 // крутится часами без присмотра, и «claude, продолжи работу» в чужой папке
@@ -27,6 +32,7 @@ const BEAT_MS = 20_000;
 const READ_ONLY = 'Bash,Write,Edit,NotebookEdit,Task,WebFetch,WebSearch';
 const HF_TOOLS = [
   'mcp__claude_ai_Higgsfield__generate_image',
+  'mcp__claude_ai_Higgsfield__media_import_url',
   'mcp__claude_ai_Higgsfield__jobs_wait',
   'mcp__claude_ai_Higgsfield__job_status',
   'mcp__claude_ai_Higgsfield__show_generation_by_ids',
@@ -91,12 +97,44 @@ async function doSketch(payload) {
 async function doImage(payload) {
   const prompt = String(payload?.prompt || '').slice(0, 4000);
   if (!prompt) throw new Error('В задании нет промпта');
-  const text = await claude(
-    `Сгенерируй ОДНО изображение через Higgsfield по этому описанию. Соотношение сторон 16:9.\n\n` +
-      `Описание: ${prompt}\n\n` +
-      `Дождись готовности и верни ТОЛЬКО прямой URL картинки одной строкой, без пояснений и разметки.`,
-    ['--allowedTools', HF_TOOLS, '--disallowedTools', READ_ONLY]
-  );
+
+  // Снимок 3D-модели кладётся во временный публичный файл: генератор берёт
+  // референс только по HTTPS-ссылке. Файл удаляется сразу после генерации.
+  const ref = payload?.reference;
+  let refPath = null;
+  let refUrl = null;
+  if (ref?.data) {
+    const jpeg = await sharp(Buffer.from(ref.data, 'base64'))
+      .resize({ width: 1280, withoutEnlargement: true })
+      .jpeg({ quality: 88 })
+      .toBuffer();
+    const refId = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
+    refPath = `bridge/ref/${refId}.jpg`;
+    await putBinary(refPath, jpeg, 'image/jpeg');
+    refUrl = `${SITE}/api/kp/ref/${refId}`;
+  }
+
+  try {
+    const text = await claude(
+      refUrl
+        ? `Сгенерируй ОДНО изображение через Higgsfield по референсу.\n\n` +
+            `1. Импортируй референс: media_import_url со ссылкой ${refUrl}\n` +
+            `2. generate_image: model "nano_banana_pro", aspect_ratio "16:9", resolution "2k", ` +
+            `medias — один элемент { value: <media_id из шага 1>, role: "image_references" }.\n` +
+            `3. Промпт для генерации: ${prompt}\n\n` +
+            `Дождись готовности и верни ТОЛЬКО прямой URL картинки одной строкой, без пояснений и разметки.`
+        : `Сгенерируй ОДНО изображение через Higgsfield по этому описанию. Соотношение сторон 16:9.\n\n` +
+            `Описание: ${prompt}\n\n` +
+            `Дождись готовности и верни ТОЛЬКО прямой URL картинки одной строкой, без пояснений и разметки.`,
+      ['--allowedTools', HF_TOOLS, '--disallowedTools', READ_ONLY]
+    );
+    return await fetchFrame(text);
+  } finally {
+    if (refPath) await removeBlob(refPath).catch(() => {});
+  }
+}
+
+async function fetchFrame(text) {
   const url = (text.match(/https?:\/\/\S+?\.(?:png|jpe?g|webp)/i) || [])[0];
   if (!url) throw new Error('Higgsfield не вернул картинку');
 
