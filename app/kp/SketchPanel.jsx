@@ -144,7 +144,7 @@ export default function SketchPanel({ keys, onApply, onNeedKeys }) {
             <ActionButton
               onClick={recognise}
               disabled={!hasKey}
-              busyLabel="Читаю набросок…"
+              busyLabel="Читаю набросок… до 3 минут"
               doneLabel="Прочитано"
               onError={setError}
             >

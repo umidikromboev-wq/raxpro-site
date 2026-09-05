@@ -229,7 +229,8 @@ export async function readSketch(image: { data: string; mediaType: string }): Pr
 
 async function withBridge(image: { data: string; mediaType: string }): Promise<SketchResult> {
   try {
-    const raw = await bridgeCall<Record<string, unknown>>("sketch", image);
+    // Лист замера на маке читается ~3 минуты (замер 05.09: 180 с) — ждём до 270 с.
+    const raw = await bridgeCall<Record<string, unknown>>("sketch", image, 270_000);
     return normalize(raw, "anthropic");
   } catch (e) {
     if (e instanceof BridgeError) throw new SketchError(e.status, e.message);
