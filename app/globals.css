@@ -348,3 +348,73 @@ html {
 @media print {
   html, body { background: #fff !important; }
 }
+
+/* ── v2 (ветка site-v2): сетка, кнопки, поля, заголовки ───────────────── */
+.v2-wrap {
+  width: 100%;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 3rem);
+}
+.v2-section {
+  padding-block: clamp(4rem, 9vw, 8rem);
+}
+.v2-h2 {
+  font-family: var(--font-unbounded), var(--font-manrope), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 4.6vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.font-num {
+  font-family: var(--font-num), var(--font-unbounded), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+.v2-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.5rem;
+  font-family: var(--font-unbounded), var(--font-manrope), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+.v2-btn--beam {
+  background: #f07c12;
+  color: #0b1118;
+}
+.v2-btn--beam:hover {
+  background: #ff9a3c;
+}
+.v2-btn--ghost {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+.v2-btn--ghost:hover {
+  border-color: #fff;
+}
+.v2-input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  outline: none;
+}
+.v2-input:focus {
+  border-color: #f07c12;
+}
+.v2-input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+.v2 .reveal {
+  transition-duration: 0.9s;
+}

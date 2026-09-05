@@ -32,6 +32,24 @@ module.exports = {
           400: "#8ea1b5",
           300: "#c2d3e2",
         },
+        // v2: цвета из самого продукта — сталь рамы, цинк полки, оранжевая балка.
+        steel: {
+          950: "#0b1118",
+          900: "#0f1720",
+          800: "#1a2531",
+          700: "#2b3948",
+        },
+        galv: {
+          50: "#f6f8f9",
+          100: "#eef1f3",
+          200: "#e0e5e9",
+          300: "#c9d1d7",
+        },
+        beam: {
+          400: "#ff9a3c",
+          500: "#f07c12",
+          600: "#d46a0a",
+        },
         cloud: {
           50: "#f2f8fd",
           100: "#e8f2fb",
@@ -47,6 +65,7 @@ module.exports = {
           "system-ui",
           "sans-serif",
         ],
+        num: ["var(--font-num)", "var(--font-unbounded)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         card: "0 1px 2px rgba(5,42,77,.04), 0 10px 30px -14px rgba(10,102,184,.20)",

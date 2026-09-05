@@ -1,5 +1,5 @@
 import "../globals.css";
-import { Manrope, Onest } from "next/font/google";
+import { Sofia_Sans, Sofia_Sans_Condensed, Sofia_Sans_Extra_Condensed } from "next/font/google";
 import Script from "next/script";
 import FloatingContact from "../../components/FloatingContact";
 import SmoothScroll from "../../components/SmoothScroll";
@@ -14,16 +14,27 @@ import {
   SITE_ORIGIN,
 } from "../../lib/lang";
 
-const manrope = Manrope({
-  subsets: ["latin", "cyrillic"],
+// v2: одна семья Sofia Sans — текст, узкие заголовки и сверхузкие цифры.
+// Переменные оставлены прежними, чтобы все страницы сайта пересели на новый
+// шрифт без правки классов: --font-manrope = текст, --font-unbounded = заголовки.
+const manrope = Sofia_Sans({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-manrope",
   display: "swap",
 });
 
-const onest = Onest({
-  subsets: ["latin", "cyrillic"],
-  weight: ["300", "400", "500", "600"],
+const onest = Sofia_Sans_Condensed({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["500", "600", "700"],
   variable: "--font-unbounded",
+  display: "swap",
+});
+
+const num = Sofia_Sans_Extra_Condensed({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["600", "800", "900"],
+  variable: "--font-num",
   display: "swap",
 });
 
@@ -188,7 +199,7 @@ export default async function RootLayout({ children, params }) {
   };
 
   return (
-    <html lang={lang} className={`${manrope.variable} ${onest.variable}`}>
+    <html lang={lang} className={`${manrope.variable} ${onest.variable} ${num.variable}`}>
       <head>
         {/* Schema.org Structured Data */}
         <script
@@ -253,7 +264,7 @@ export default async function RootLayout({ children, params }) {
         <CartProvider>
           {children}
           <FloatingContact />
-          <MobileCta lang={lang} calcHref={href(lang, "/") + "#kalkulyator"} />
+          <MobileCta lang={lang} calcHref={href(lang, "/") + "#3d"} />
         </CartProvider>
       </body>
     </html>

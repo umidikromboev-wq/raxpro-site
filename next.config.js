@@ -18,12 +18,18 @@ module.exports = {
       // Реклама и выдача показывали сырой хост *.vercel.app вместо raxpro.uz.
       // Отправляем любой такой хост на настоящий домен, чтобы ссылки,
       // объявления и индексация жили на одном адресе.
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: '(?<vercelHost>.*\\.vercel\\.app)' }],
-        destination: 'https://raxpro.uz/:path*',
-        permanent: true,
-      },
+      // Только для боевой сборки: preview-деплои веток должны открываться
+      // по своему адресу, иначе их нельзя проверить до выката.
+      ...(process.env.VERCEL_ENV === 'production'
+        ? [
+            {
+              source: '/:path*',
+              has: [{ type: 'host', value: '(?<vercelHost>.*\\.vercel\\.app)' }],
+              destination: 'https://raxpro.uz/:path*',
+              permanent: true,
+            },
+          ]
+        : []),
       // Язык переехал в путь. Старые проиндексированные адреса без префикса
       // ведут на русскую версию — вес и позиции переходят вместе с 308.
       { source: '/', destination: '/ru', permanent: true },
