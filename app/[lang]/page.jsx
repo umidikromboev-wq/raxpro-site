@@ -22,12 +22,12 @@ import { organizationSchema, JsonLd } from "../../lib/schema";
 
 const HOME_META = {
   ru: {
-    title: "RAXPRO — стеллажи для склада, магазина и архива в Ташкенте. 3D-расчёт за минуту",
+    title: "RAXPRO — стеллажи для склада в Ташкенте. 3D-расчёт за минуту",
     description:
       "Паллетные, полочные, архивные и торговые стеллажи со склада в Ташкенте. Соберите склад в 3D, получите расчёт за 24 часа. Монтаж по Ташкенту бесплатно, гарантия 10 лет.",
   },
   uz: {
-    title: "RAXPRO — Toshkentda ombor, doʻkon va arxiv uchun stellajlar. 3D-hisob bir daqiqada",
+    title: "RAXPRO — Toshkentda ombor stellajlari. 3D-hisob bir daqiqada",
     description:
       "Toshkentdagi ombordan pallet, polkali, arxiv va savdo stellajlari. Omboringizni 3D da yigʻing, 24 soatda hisob oling. Toshkent boʻylab montaj bepul, 10 yil kafolat.",
   },
