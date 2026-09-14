@@ -289,6 +289,18 @@ html {
   }
 }
 
+.article-link {
+  background-color: #1e293b; /* navy-900 rangi */
+  color: #fff;
+  padding: 0 4px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.article-link:hover {
+  opacity: 0.85;
+}
+
 /* 11 - Tugmaning o'z rangini saqlagan holda original chaqnash (scale/rotate) animatsiyasi */
 .btn-11 {
   position: relative;
@@ -346,5 +358,8 @@ html {
  * приходил @page с полями 14 мм и ломал полностраничную обложку. */
 
 @media print {
-  html, body { background: #fff !important; }
+  html,
+  body {
+    background: #fff !important;
+  }
 }
