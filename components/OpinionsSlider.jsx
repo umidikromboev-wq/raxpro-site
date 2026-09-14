@@ -214,6 +214,8 @@ export default function OpinionsSlider({ L, translations }) {
               <img loading="lazy" decoding="async"
                 src={activeOpinion.image}
                 alt={activeOpinion.name}
+                width={1280}
+                height={853}
                 className="opinions-img"
                 style={{
                   width: "100%",

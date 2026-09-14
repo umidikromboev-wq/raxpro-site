@@ -31,7 +31,7 @@ export default function ProductSlider({ items }) {
 
         {/* Right: image — fixed, capped height so it crops top/bottom and the block fits one screen */}
         <div className="relative rounded-xl overflow-hidden bg-white/5 h-52 sm:h-60 md:h-[300px]">
-          <img loading="lazy" decoding="async" key={p.img} src={p.img} alt={p.t} className="absolute inset-0 w-full h-full object-cover animate-fadeup" />
+          <img loading="lazy" decoding="async" key={p.img} src={p.img} alt={p.t} width={1200} height={1600} className="absolute inset-0 w-full h-full object-cover animate-fadeup" />
         </div>
       </div>
 

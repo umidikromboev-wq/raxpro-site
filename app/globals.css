@@ -341,20 +341,10 @@ html {
   }
 }
 
-/* Генератор КП — внутренний кабинет /kp */
-.inp {
-  width: 100%;
-  border: 1px solid #d4d4d4;
-  background: #fff;
-  padding: 0.375rem 0.5rem;
-  font-size: 0.875rem;
-  outline: none;
-}
-.inp:focus { border-color: #171717; }
+/* Кабинет и документ КП живут в своих файлах — app/kp/cabinet.css и
+ * app/kp/doc/document.css. Здесь их правил быть не должно: раньше отсюда
+ * приходил @page с полями 14 мм и ломал полностраничную обложку. */
 
 @media print {
-  @page { size: A4; margin: 14mm; }
   html, body { background: #fff !important; }
-  .kp-page { break-after: page; }
-  .kp-page:last-child { break-after: auto; }
 }

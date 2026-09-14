@@ -31,9 +31,11 @@ export default function LayoutPlan({ room, layout, lang = 'ru', compact = false 
         role="img"
         aria-label={t('План расстановки стеллажей', 'Stellajlar joylashuvi rejasi')}
       >
-        {/* контур помещения */}
-        <rect
-          x="0" y="0" width={room.width} height={room.depth}
+        {/* Контур помещения: рисуем обведённый по драфту многоугольник,
+            прямоугольник — его частный случай. */}
+        <polygon
+          points={(layout.polygon || [[0, 0], [room.width, 0], [room.width, room.depth], [0, room.depth]])
+            .map((p) => `${p[0]},${p[1]}`).join(' ')}
           fill="none" stroke="#0B1B2B" strokeWidth={strokeMm * 2.2}
         />
 
@@ -45,6 +47,27 @@ export default function LayoutPlan({ room, layout, lang = 'ru', compact = false 
             width={c.size} height={c.size}
             fill="#C6D2DC" stroke="#8FA3B4" strokeWidth={strokeMm}
           />
+        ))}
+
+        {/* зоны, отмеченные на листе замера: под ними стеллажей нет.
+            Штриховка, а не заливка — чертёж остаётся читаемым на печати. */}
+        {(room.keepouts ?? []).map((k, i) => (
+          <g key={i}>
+            <rect
+              x={k.x} y={k.y} width={k.w} height={k.h}
+              fill="#0B1B2B" opacity="0.05"
+              stroke="#8FA3B4" strokeWidth={strokeMm} strokeDasharray={`${strokeMm * 8} ${strokeMm * 6}`}
+            />
+            {k.name && k.w > W / 12 ? (
+              <text
+                x={k.x + k.w / 2} y={k.y + k.h / 2}
+                fontSize={Math.max(W, H) / 60} fill="#6B7E92" textAnchor="middle"
+                dominantBaseline="middle" fontFamily="ui-monospace, monospace"
+              >
+                {k.name}
+              </text>
+            ) : null}
+          </g>
         ))}
 
         {/* секции */}

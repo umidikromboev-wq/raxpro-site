@@ -119,8 +119,10 @@ export function buildKp(req: KpRequest): Kp {
         "",
         t.greeting(req.client),
         lang === "uz"
-          ? `${COMPANY.brand} kompaniyasi sizga ${product.uz.name} boʻyicha taklif beradi. ${experienceLine("uz", date)}. Mahsulotlarimiz ${COMPANY.factory.country.uz}da, ${COMPANY.factory.name} zavodida ishlab chiqariladi.`
-          : `Компания ${COMPANY.brand} предлагает вам ${product.ru.name.toLowerCase()}. ${experienceLine("ru", date)}. Продукция производится в ${COMPANY.factory.country.ru}е на заводе ${COMPANY.factory.name}.`,
+          // Zavod nomi mijoz hujjatlarida atay koʻrsatilmaydi — RaxPro soʻrovi
+          // (Xurshidbek Kasimov, ishchi guruh, 29.08.2026): eksklyuziv shartnomagacha.
+          ? `${COMPANY.brand} kompaniyasi sizga ${product.uz.name} boʻyicha taklif beradi. ${experienceLine("uz", date)}. Konstruksiyalar sertifikatlangan zavod partnyorimizda RollForm texnologiyasi boʻyicha ishlab chiqariladi.`
+          : `Компания ${COMPANY.brand} предлагает вам ${product.ru.name.toLowerCase()}. ${experienceLine("ru", date)}. Конструкции изготавливаются на сертифицированном заводе-партнёре по технологии RollForm.`,
         lang === "uz"
           ? `Bizga ishonch bildirgan kompaniyalar ${COMPANY.clientsCount} dan ortiq. Sertifikatlar: ${COMPANY.certificates.join(", ")}.`
           : `Нам доверили свои проекты более ${COMPANY.clientsCount} компаний. Сертификаты: ${COMPANY.certificates.join(", ")}.`,

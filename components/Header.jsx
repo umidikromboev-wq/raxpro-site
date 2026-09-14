@@ -55,9 +55,11 @@ export default function Header({ lang = "ru" }) {
             className="flex items-center shrink-0"
             aria-label="RAXPRO"
           >
-            <img loading="lazy" decoding="async"
+            <img loading="eager" decoding="async"
               src="/brand/raxpro-logo-white.png"
               alt="RAXPRO"
+              width={790}
+              height={363}
               className="h-8 w-auto"
             />
           </a>

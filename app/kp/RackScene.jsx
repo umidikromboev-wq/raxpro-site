@@ -12,13 +12,20 @@ import { useEffect, useRef, useState } from 'react';
 
 const MM = 0.001;
 
-export default function RackScene({ room, layout, height = 460 }) {
+// Кадр для генератора рендера снимается всегда одинаково, а не из того ракурса,
+// который менеджер случайно оставил: модель дорисовывает фотореализм поверх
+// геометрии, и «вид в потолок» она послушно превратит в фотографию потолка.
+const SHOT_W = 1280;
+const SHOT_H = 720;
+
+export default function RackScene({ room, layout, height = 460, onCapture, apiRef }) {
   const canvasRef = useRef(null);
   const stateRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
   const [shell, setShell] = useState(false);
   const [pallets, setPallets] = useState(true);
+  const [shotDone, setShotDone] = useState(false);
 
   useEffect(() => {
     if (!room || !layout) return;
@@ -57,7 +64,9 @@ export default function RackScene({ room, layout, height = 460 }) {
       // Туман только прячет дальнюю стену, а не съедает саму расстановку.
       scene.fog = new THREE.Fog(0x121821, fitDist * 1.15, fitDist * 3.2);
 
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      // preserveDrawingBuffer нужен, чтобы кадр можно было забрать в картинку:
+      // без него canvas очищается сразу после отрисовки и снимок выходит пустым.
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.15;
@@ -75,13 +84,24 @@ export default function RackScene({ room, layout, height = 460 }) {
       fill.position.set(-L * 0.3, H * 1.3, W * 1.4);
       scene.add(fill);
 
-      // пол
+      // Пол повторяет контур помещения. Прямоугольник под L-образным складом
+      // выглядел так, будто стеллажи стоят в вырезе на улице.
+      const outline = layout.polygon?.length
+        ? layout.polygon
+        : [[0, 0], [room.width, 0], [room.width, room.depth], [0, room.depth]];
+      const shape = new THREE.Shape();
+      outline.forEach(([x, y], i) => {
+        const px = x * MM, py = y * MM;
+        if (i === 0) shape.moveTo(px, py); else shape.lineTo(px, py);
+      });
+      shape.closePath();
       const floor = new THREE.Mesh(
-        new THREE.PlaneGeometry(L, W),
-        new THREE.MeshStandardMaterial({ color: 0x5f666d, roughness: 0.9, metalness: 0.05 })
+        new THREE.ShapeGeometry(shape),
+        new THREE.MeshStandardMaterial({
+          color: 0x5f666d, roughness: 0.9, metalness: 0.05, side: THREE.DoubleSide,
+        })
       );
-      floor.rotation.x = -Math.PI / 2;
-      floor.position.set(L / 2, 0, W / 2);
+      floor.rotation.x = Math.PI / 2;   // фигура строится в XY, кладём её в XZ
       scene.add(floor);
 
       // оболочка здания: нормали внутрь, снаружи стены отбраковываются сами,
@@ -105,6 +125,7 @@ export default function RackScene({ room, layout, height = 460 }) {
         shellGroup.add(t);
       }
       shellGroup.visible = false;
+      if (layout.polygon && layout.polygon.length > 4) shellGroup.userData.approx = true;
       scene.add(shellGroup);
 
       // колонны здания
@@ -269,9 +290,43 @@ export default function RackScene({ room, layout, height = 460 }) {
       loop();
       setReady(true);
 
-      stateRef.current = { shellGroup, palletGroup: [palMesh, boxMesh] };
+      // Снимок делается из текущего ракурса: менеджер сначала ставит вид,
+      // который хочет видеть в КП, и только потом снимает.
+      const shoot = () => {
+        renderer.render(scene, cam);
+        return canvas.toDataURL('image/png');
+      };
+
+      // Снимок-референс: низкая камера вдоль прохода, стены включены (иначе
+      // генератор видит стеллажи в пустоте и дорисовывает улицу), кадр 16:9.
+      // Ракурс и размер возвращаются на место, менеджер ничего не замечает.
+      const shootStandard = () => {
+        const wasShell = shellGroup.visible;
+        const [wasAz, wasEl, wasDist] = [az, el, dist];
+        shellGroup.visible = true;
+        az = -0.72;
+        el = 0.2;
+        dist = fitDist * 0.72;
+        applyCam();
+        renderer.setSize(SHOT_W, SHOT_H, false);
+        cam.aspect = SHOT_W / SHOT_H;
+        cam.updateProjectionMatrix();
+        renderer.render(scene, cam);
+        const png = canvas.toDataURL('image/png');
+        shellGroup.visible = wasShell;
+        az = wasAz; el = wasEl; dist = wasDist;
+        applyCam();
+        resize();
+        renderer.render(scene, cam);
+        return png;
+      };
+
+      stateRef.current = { shellGroup, palletGroup: [palMesh, boxMesh], shoot, shootStandard };
+      if (apiRef) apiRef.current = { shoot, shootStandard };
+
 
       cleanup = () => {
+        if (apiRef?.current && apiRef.current.shoot === shoot) apiRef.current = null;
         cancelAnimationFrame(raf);
         canvas.removeEventListener('pointerdown', onDown);
         window.removeEventListener('pointermove', onMove);
@@ -288,7 +343,7 @@ export default function RackScene({ room, layout, height = 460 }) {
     })();
 
     return () => { disposed = true; cleanup(); };
-  }, [room, layout, height]);
+  }, [room, layout, height, apiRef]);
 
   useEffect(() => {
     const s = stateRef.current;
@@ -315,6 +370,17 @@ export default function RackScene({ room, layout, height = 460 }) {
       <div className="absolute left-3 top-3 flex gap-2 text-[11px]">
         <Toggle on={shell} onClick={() => setShell((v) => !v)}>Здание</Toggle>
         <Toggle on={pallets} onClick={() => setPallets((v) => !v)}>Груз</Toggle>
+        {onCapture && (
+          <button
+            onClick={() => {
+              const png = stateRef.current?.shoot?.();
+              if (png) { onCapture(png); setShotDone(true); setTimeout(() => setShotDone(false), 2500); }
+            }}
+            className="border border-white/60 bg-white/15 px-2 py-1 text-white backdrop-blur transition hover:bg-white/25"
+          >
+            {shotDone ? 'Кадр в КП ✓' : 'Снять кадр в КП'}
+          </button>
+        )}
       </div>
       <p className="absolute bottom-3 right-3 text-[10px] text-white/45">
         тянуть — поворот · колесо — приближение

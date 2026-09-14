@@ -24,7 +24,6 @@ export default function LogoMarquee({ logos }) {
               alt={i >= logos.length ? '' : c.alt}
               width={150}
               height={56}
-              loading="lazy"
               className="max-h-9 max-w-[130px] w-auto object-contain opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition"
             />
           </div>
