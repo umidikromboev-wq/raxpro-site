@@ -74,9 +74,11 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
     let intersection = null;
     (async () => {
       try {
-        const [THREE, { createRackScene }] = await Promise.all([import('three'), import('./rackScene')]);
+        const [THREE, { createRackScene }, { RoomEnvironment }] = await Promise.all([
+          import('three'), import('./rackScene'), import('three/examples/jsm/environments/RoomEnvironment.js'),
+        ]);
         if (disposed) return;
-        api = createRackScene(THREE, canvas, lang);
+        api = createRackScene(THREE, canvas, lang, { RoomEnvironment });
         start = performance.now();
         setMode('live');
         observer = new ResizeObserver(resize); observer.observe(canvas);
@@ -114,6 +116,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
         <div className="rack-viewport">
           <img className="rack-poster" src="/works/hero.jpg" alt="" width="1600" height="1200" aria-hidden="true" />
           <canvas ref={canvasRef} aria-hidden="true" />
+          <div className="rack-shade" aria-hidden="true" />
         </div>
         <div className="rack-editorial">
           <div className="rack-intro" ref={introRef}>

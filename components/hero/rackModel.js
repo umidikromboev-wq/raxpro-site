@@ -25,14 +25,14 @@ export function rackModel() {
       const y = l * 1.7;
       for (const v of [0.04, RACK_DEPTH - 0.04]) {
         const [x, z] = point(b, BAY_WIDTH / 2, v);
-        beams.push({ x, y, z, rot: b.rot, level: l });
+        beams.push({ x, y, z, rot: b.rot, level: l, front: v > RACK_DEPTH / 2 });
       }
     }
     for (let l = 0; l <= b.levels; l++) {
       for (let k = 0; k < PALLETS_PER_BAY; k++) {
         const [x, z] = point(b, (k + 0.5) * BAY_WIDTH / PALLETS_PER_BAY, RACK_DEPTH / 2);
         slots.push({ x, y: l * 1.7 + (l ? 0.09 : 0), z, rot: b.rot, level: l,
-          height: 0.66 + ((bi + k + l) % 3) * 0.09, variant: (bi + k + l) % 3 });
+          height: 0.66 + ((bi + k + l) % 3) * 0.09, variant: (bi * 2 + k + l) % 5 });
       }
     }
   }

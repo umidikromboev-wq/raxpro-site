@@ -23,6 +23,13 @@ export const BUILD_SPLIT = 0.34;
 
 export const DROP_HEIGHT = 9; // метров над своим местом, откуда падает деталь
 
+// Размеры на чертеже появляются, когда линии в основном нарисованы.
+export const DRAFT_LABELS = { from: 0.12, to: 0.2 };
+// Монтажник стоит в проходе, пока идёт сборка.
+export const INSTALLER = { in: [0.27, 0.33], out: [0.63, 0.69] };
+// Рохля с паллетой въезжает в проход под конец загрузки.
+export const JACK = { from: 0.8, to: 0.9 };
+
 export function clamp01(x) {
   return x < 0 ? 0 : x > 1 ? 1 : x;
 }
@@ -97,6 +104,9 @@ export function sceneState(p) {
     frames: span(build, 0, BUILD_SPLIT),
     beams: span(build, BUILD_SPLIT, 1),
     load: span(x, STAGES.load.from, STAGES.load.to),
+    labels: smoothstep(span(x, DRAFT_LABELS.from, DRAFT_LABELS.to)),
+    installer: smoothstep(span(x, INSTALLER.in[0], INSTALLER.in[1])) * (1 - smoothstep(span(x, INSTALLER.out[0], INSTALLER.out[1]))),
+    jack: easeOutCubic(span(x, JACK.from, JACK.to)),
     panels: {
       draft: panelOpacity(x, "draft"),
       build: panelOpacity(x, "build"),

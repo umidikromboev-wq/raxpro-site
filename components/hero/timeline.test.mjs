@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  STAGES, span, stagger, dropOffset, panelOpacity, sceneState, DROP_HEIGHT,
+  STAGES, span, stagger, dropOffset, panelOpacity, sceneState, DROP_HEIGHT, INSTALLER, JACK,
 } from "./timeline.js";
 
 test("stages cover the scroll without gaps and in order", () => {
@@ -65,3 +65,22 @@ test("beams start only after frames are down", () => {
   assert.equal(mid.beams, 0);
 });
 
+
+test("draft labels appear only after lines start and vanish with the draft", () => {
+  assert.equal(sceneState(0).labels, 0);
+  assert.equal(sceneState(0.25).labels, 1);
+  // визуальная прозрачность = labels * draftAlpha, поэтому к концу сборки чертёж гаснет
+  assert.equal(sceneState(0.7).draftAlpha, 0);
+});
+
+test("installer is present only during the build stage", () => {
+  assert.equal(sceneState(0.1).installer, 0);
+  assert.equal(sceneState((INSTALLER.in[1] + INSTALLER.out[0]) / 2).installer, 1);
+  assert.equal(sceneState(0.95).installer, 0);
+});
+
+test("pallet jack arrives at the end of loading and stays", () => {
+  assert.equal(sceneState(JACK.from - 0.01).jack, 0);
+  assert.equal(sceneState(1).jack, 1);
+  assert.ok(sceneState((JACK.from + JACK.to) / 2).jack > 0.5);
+});
