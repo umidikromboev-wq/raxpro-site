@@ -7,6 +7,7 @@ import Reveal from "../../components/Reveal";
 import Parallax from "../../components/Parallax";
 import RackHero from "../../components/hero/RackHero";
 import VideoHero from "../../components/hero/VideoHero";
+import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
 import ProductSlider from "../../components/ProductSlider";
 import { SplitHead, Eyebrow } from "../../components/Section";
 import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
@@ -162,8 +163,8 @@ const PROJECTS = {
 
 export default async function Home({ params, searchParams }) {
   const L = normalizeLang((await params).lang);
-  // Сравнение двух методов первого экрана на одном preview: ?hero=video / по умолчанию 3D.
-  const isVideoHero = (await searchParams)?.hero === "video";
+  // Сравнение методов первого экрана на одном preview: ?hero=video (кадры), ?hero=mp4 (ролик), по умолчанию 3D.
+  const heroMode = (await searchParams)?.hero;
   const t = T[L];
   const loc = siteLoc(L);
   const x = EXTRA[L];
@@ -222,9 +223,11 @@ export default async function Home({ params, searchParams }) {
       <Header lang={L} />
 
       {/* HERO — скролл-сцена: замер → проект → сборка → загрузка (components/hero) */}
-      {isVideoHero
-        ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
-        : <RackHero lang={L} chips={t.heroChips} ctaHref="#kalkulyator" cta2Href="#napravleniya" />}
+      {heroMode === "mp4"
+        ? <VideoHeroMp4 lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
+        : heroMode === "video"
+          ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
+          : <RackHero lang={L} chips={t.heroChips} ctaHref="#kalkulyator" cta2Href="#napravleniya" />}
 
       {/* CLIENTS */}
       <section className="border-b border-cloud-200 bg-cloud-50">
