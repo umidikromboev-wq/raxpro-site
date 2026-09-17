@@ -14,16 +14,23 @@ module.exports = {
     formats: ['image/avif', 'image/webp'],
   },
   async redirects() {
+    // Реклама и выдача показывали сырой хост *.vercel.app вместо raxpro.uz.
+    // На бою любой такой хост уходит на настоящий домен, чтобы ссылки,
+    // объявления и индексация жили на одном адресе. Preview-деплои веток
+    // должны открываться сами — иначе показать работу до merge невозможно.
+    const canonicalHost =
+      process.env.VERCEL_ENV === 'production'
+        ? [
+            {
+              source: '/:path*',
+              has: [{ type: 'host', value: '(?<vercelHost>.*\\.vercel\\.app)' }],
+              destination: 'https://raxpro.uz/:path*',
+              permanent: true,
+            },
+          ]
+        : [];
     return [
-      // Реклама и выдача показывали сырой хост *.vercel.app вместо raxpro.uz.
-      // Отправляем любой такой хост на настоящий домен, чтобы ссылки,
-      // объявления и индексация жили на одном адресе.
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: '(?<vercelHost>.*\\.vercel\\.app)' }],
-        destination: 'https://raxpro.uz/:path*',
-        permanent: true,
-      },
+      ...canonicalHost,
       // Язык переехал в путь. Старые проиндексированные адреса без префикса
       // ведут на русскую версию — вес и позиции переходят вместе с 308.
       { source: '/', destination: '/ru', permanent: true },
