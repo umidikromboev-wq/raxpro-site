@@ -5,7 +5,7 @@ import LeadForm from "../../components/LeadForm";
 import Calculator from "../../components/Calculator";
 import Reveal from "../../components/Reveal";
 import Parallax from "../../components/Parallax";
-import HeroVideo from "../../components/HeroVideo";
+import RackHero from "../../components/hero/RackHero";
 import ProductSlider from "../../components/ProductSlider";
 import { SplitHead, Eyebrow } from "../../components/Section";
 import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
@@ -218,60 +218,8 @@ export default async function Home({ params }) {
     <div className="bg-white text-ink">
       <Header lang={L} />
 
-      {/* HERO */}
-      <section className="relative min-h-svh flex flex-col justify-end overflow-hidden">
-        <div className="absolute inset-0 bg-navy-900">
-          <HeroVideo
-            poster={IMG.hero}
-            src="/hero.mp4"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/70 to-navy-900/45" />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-900/70 to-transparent" />
-        </div>
-
-        <Parallax
-          speed={0.09}
-          className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pb-14 sm:pb-16 pt-28"
-        >
-          <div className="animate-fadeup max-w-3xl text-white">
-            <Eyebrow light>{t.heroEyebrow}</Eyebrow>
-            <h1 className="mt-5 font-display font-medium text-4xl sm:text-5xl lg:text-[3.7rem] leading-[1.08]">
-              {t.heroTitle1}
-              <br />
-              {t.heroTitle2}{" "}
-              <span className="text-sky-400">{t.heroTitleAccent}</span>
-            </h1>
-            <p className="mt-5 text-lg text-cloud-200/85 max-w-xl leading-relaxed">
-              {t.heroText}
-            </p>
-            <div className="flex flex-wrap gap-3 mt-7">
-              <a
-                href="#kalkulyator"
-                className="btn-11 inline-flex items-center gap-2 bg-brand-grad text-white font-bold px-7 py-3.5 rounded-xl shadow-glow hover:brightness-110"
-              >
-                {t.heroCta1} <IcoArrow className="w-5 h-5" />
-              </a>
-              <a
-                href="#napravleniya"
-                className="inline-flex items-center gap-2 border border-white/30 hover:bg-white hover:text-navy-800 text-white px-7 py-3.5 rounded-xl font-semibold backdrop-blur-sm"
-              >
-                {t.heroCta2}
-              </a>
-            </div>
-            <div className="flex flex-wrap gap-x-7 gap-y-2 mt-8 text-sm text-cloud-200/80">
-              {t.heroChips.map((c) => (
-                <span key={c} className="inline-flex items-center gap-1.5">
-                  <IcoCheck className="w-4 h-4 text-sky-400" /> {c}
-                </span>
-              ))}
-            </div>
-            <div className="mt-4 inline-block text-sm font-semibold text-sky-300 border border-sky-400/30 bg-sky-500/10 rounded-lg px-3.5 py-2">
-              {t.heroPrice}
-            </div>
-          </div>
-        </Parallax>
-      </section>
+      {/* HERO — скролл-сцена: замер → проект → сборка → загрузка (components/hero) */}
+      <RackHero lang={L} chips={t.heroChips} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
 
       {/* CLIENTS */}
       <section className="border-b border-cloud-200 bg-cloud-50">

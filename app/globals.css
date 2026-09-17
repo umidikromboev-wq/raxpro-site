@@ -11,9 +11,12 @@
 html {
   scroll-behavior: auto;
 }
+/* clip, а не hidden: hidden делает body контейнером прокрутки и ломает
+   position: sticky (скролл-герой перестаёт прилипать). clip режет так же,
+   но контейнер прокрутки не создаёт. */
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -347,4 +350,66 @@ html {
 
 @media print {
   html, body { background: #fff !important; }
+}
+
+/* ——— скролл-герой со стеллажом (components/hero) */
+.rack-hero {
+  --rack-line: rgba(255, 255, 255, 0.12);
+  --rack-panel-bg: rgba(5, 42, 77, 0.55);
+}
+.rack-hero-track {
+  height: 280svh;
+}
+@media (min-width: 1024px) {
+  .rack-hero-track {
+    height: 350svh;
+  }
+}
+.rack-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(188, 231, 251, 0.75);
+}
+.rack-kicker::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: #26b8f2;
+  flex: none;
+}
+.rack-panel {
+  padding: 1.5rem 1.6rem;
+  border: 1px solid var(--rack-line);
+  background: var(--rack-panel-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.rack-hint-line {
+  position: relative;
+  width: 44px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+  overflow: hidden;
+}
+.rack-hint-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #26b8f2;
+  transform: translateX(-100%);
+  animation: rack-hint 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+@keyframes rack-hint {
+  to {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rack-hint-line::after {
+    animation: none;
+  }
 }
