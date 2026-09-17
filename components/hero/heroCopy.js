@@ -1,85 +1,37 @@
-// Тексты скролл-героя. Все факты и цифры — только те, что уже опубликованы
-// на raxpro.uz (lib/i18n.js, lib/directions.js). Новых чисел здесь не бывает;
-// единственное расчётное значение — паллето-места показанной модели,
-// его подставляет сцена и подписывает как расчёт.
-
+// Capacity is an illustration calculated from rackModel, not a promised customer saving.
 export const HERO_COPY = {
   ru: {
-    eyebrow: "Системы хранения · Ташкент",
-    title: "Правильный проект стеллажа экономит вам деньги",
-    text:
-      "Замеряем, проектируем и монтируем бесплатно по Ташкенту. Листайте — покажем, как это работает.",
-    cta1: "Бесплатный замер за 24 часа",
-    cta2: "Смотреть направления",
-    scrollHint: "Листайте",
+    eyebrow: 'Стеллажи под ваш бизнес', title: 'Больше товара.\nНа той же площади.',
+    text: 'Спроектируем систему хранения под ваше помещение, товары и нагрузку. От первого замера до готового стеллажа.',
+    cta1: 'Получить бесплатный проект', cta2: 'Смотреть стеллажи',
+    scrollHint: 'Листайте — соберём ваш склад', free: 'Замер и проектирование по Ташкенту — бесплатно',
+    navigation: 'Этапы создания стеллажа', labels: ['Замер', 'Проект', 'Сборка', 'Вместимость'],
+    modelNote: 'Иллюстрация планировки. Вместимость рассчитывается под ваш объект.',
+    loaded: 'мест заполнено', total: 'мест в этой модели',
     stages: {
-      draft: {
-        kicker: "Замер и проект · бесплатно",
-        title: "Проект до покупки — деньги остаются у вас",
-        facts: [
-          { n: "24 ч", l: "замер и проект бесплатно" },
-          { n: "1000+", l: "реализованных проектов" },
-          { n: "0 сум", l: "выезд, замер и монтаж по Ташкенту" },
-        ],
-      },
-      build: {
-        kicker: "Конструкция",
-        title: "Металл 1 сорта, который служит десятилетиями",
-        facts: [
-          { n: "до 4 т", l: "нагрузка на ярус" },
-          { n: "Zn + RAL", l: "оцинковка и порошковая краска" },
-          { n: "10 лет", l: "гарантии по документу — единственные на рынке" },
-        ],
-      },
-      load: {
-        kicker: "Вместимость",
-        title: "Каждый ярус — товар, который иначе лежал бы на полу",
-        facts: [
-          { n: "{positions}", l: "паллето-мест в этой модели (расчёт)" },
-          { n: "+60 %", l: "плотность хранения в системах Drive-in" },
-          { n: "100 кг – 4 т", l: "под любой товар" },
-        ],
-      },
+      draft: { kicker: '01 / Проектирование', title: 'Экономия начинается\nс проекта.', text: 'Учитываем колонны, высоту и проходы. Используем пространство, за которое вы уже платите.',
+        facts: [{ n: '0 сум', l: 'замер и проект по Ташкенту' }, { n: '24 ч', l: 'на подготовку бесплатного расчёта' }] },
+      build: { kicker: '02 / Производство и монтаж', title: 'Прочность\nв каждой детали.', text: 'Сталь первого сорта, защитное покрытие и конструкция под вашу нагрузку. Каждая деталь — на своём месте.',
+        facts: [{ n: 'Zn + RAL', l: 'оцинковка и порошковая краска' }, { n: '10 лет', l: 'гарантии по документу' }] },
+      load: { kicker: '03 / Готовая система', title: 'Площадь та же.\nМеста больше.', text: 'Поднимаем хранение на ярусы. Проход остаётся свободным, товар — доступным.',
+        facts: [{ n: '{floor}', l: 'мест на полу под стеллажами' }, { n: '+{upper}', l: 'мест на ярусах в этой модели' }] },
     },
   },
   uz: {
-    eyebrow: "Saqlash tizimlari · Toshkent",
-    title: "Toʻgʻri loyihalangan stellaj pulingizni tejaydi",
-    text:
-      "Toshkent boʻylab oʻlchov, loyiha va montaj bepul. Pastga suring — qanday ishlashini koʻrsatamiz.",
-    cta1: "24 soatda bepul oʻlchov",
-    cta2: "Yoʻnalishlarni koʻrish",
-    scrollHint: "Pastga suring",
+    eyebrow: 'Biznesingiz uchun stellajlar', title: 'Koʻproq tovar.\nOʻsha maydonda.',
+    text: 'Xonangiz, tovarlaringiz va yuklamangizga mos saqlash tizimini loyihalaymiz. Birinchi oʻlchovdan tayyor stellajgacha.',
+    cta1: 'Bepul loyiha olish', cta2: 'Stellajlarni koʻrish',
+    scrollHint: 'Pastga suring — omborni yigʻamiz', free: 'Toshkent boʻylab oʻlchov va loyihalash — bepul',
+    navigation: 'Stellaj yaratish bosqichlari', labels: ['Oʻlchov', 'Loyiha', 'Yigʻish', 'Sigʻim'],
+    modelNote: 'Joylashuv namunasi. Sigʻim obyektga qarab hisoblanadi.', loaded: 'joy toʻldirildi', total: 'ushbu modeldagi joylar',
     stages: {
-      draft: {
-        kicker: "Oʻlchov va loyiha · bepul",
-        title: "Xariddan oldingi loyiha — pul sizda qoladi",
-        facts: [
-          { n: "24 soat", l: "oʻlchov va loyiha bepul" },
-          { n: "1000+", l: "amalga oshirilgan loyiha" },
-          { n: "0 soʻm", l: "Toshkent boʻylab chiqish, oʻlchov va montaj" },
-        ],
-      },
-      build: {
-        kicker: "Konstruksiya",
-        title: "Oʻn yillab xizmat qiladigan 1-nav metall",
-        facts: [
-          { n: "4 t gacha", l: "har bir yarusga yuk" },
-          { n: "Zn + RAL", l: "rux qoplama va kukunli boʻyoq" },
-          { n: "10 yil", l: "hujjat asosida kafolat — bozorda yagona" },
-        ],
-      },
-      load: {
-        kicker: "Sigʻim",
-        title: "Har bir yarus — aks holda polda yotadigan tovar",
-        facts: [
-          { n: "{positions}", l: "ushbu modeldagi pallet oʻrni (hisob)" },
-          { n: "+60 %", l: "Drive-in tizimlarida saqlash zichligi" },
-          { n: "100 kg – 4 t", l: "har qanday tovar uchun" },
-        ],
-      },
+      draft: { kicker: '01 / Loyihalash', title: 'Tejash loyihadan\nboshlanadi.', text: 'Ustunlar, balandlik va yoʻlaklarni hisobga olamiz. Siz haq toʻlayotgan maydondan foydalanamiz.',
+        facts: [{ n: '0 soʻm', l: 'Toshkent boʻylab oʻlchov va loyiha' }, { n: '24 soat', l: 'bepul hisobni tayyorlash' }] },
+      build: { kicker: '02 / Ishlab chiqarish va montaj', title: 'Har bir detalda\nmustahkamlik.', text: 'Birinchi navli poʻlat, himoya qoplamasi va yuklamangizga mos konstruksiya. Har bir detal oʻz oʻrnida.',
+        facts: [{ n: 'Zn + RAL', l: 'rux qoplama va kukunli boʻyoq' }, { n: '10 yil', l: 'hujjat asosida kafolat' }] },
+      load: { kicker: '03 / Tayyor tizim', title: 'Maydon oʻsha.\nJoylar koʻproq.', text: 'Tovarlarni yaruslarga joylaymiz. Yoʻlak ochiq, tovarlar esa qulay joyda qoladi.',
+        facts: [{ n: '{floor}', l: 'stellajlar ostidagi pol joylari' }, { n: '+{upper}', l: 'ushbu modeldagi yarus joylari' }] },
     },
   },
 };
-
-export const STAGE_ORDER = ["draft", "build", "load"];
+export const STAGE_ORDER = ['draft', 'build', 'load'];

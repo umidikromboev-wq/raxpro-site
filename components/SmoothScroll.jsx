@@ -34,10 +34,18 @@ export default function SmoothScroll() {
       lenis.scrollTo(el, { offset: -72, duration: 1.2 });
     };
     document.addEventListener('click', onClick);
+    // Scene navigation must interrupt the same Lenis instance that owns wheel easing.
+    const onSceneScroll = (event) => {
+      if (!Number.isFinite(event.detail?.top)) return;
+      event.preventDefault();
+      lenis.scrollTo(event.detail.top, { immediate: true, force: true });
+    };
+    window.addEventListener('raxpro:scroll-to', onSceneScroll);
 
     return () => {
       cancelAnimationFrame(raf);
       document.removeEventListener('click', onClick);
+      window.removeEventListener('raxpro:scroll-to', onSceneScroll);
       lenis.destroy();
     };
   }, []);

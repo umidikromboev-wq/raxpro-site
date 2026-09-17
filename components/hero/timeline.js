@@ -81,34 +81,6 @@ export function activeStage(p) {
   return "load";
 }
 
-// Облёт камеры: ключевые кадры по прогрессу, между ними smoothstep.
-// az — азимут (рад), el — высота (рад), dist — расстояние до цели, ty — высота цели,
-// shift — сдвиг кадра в долях ширины экрана: плюс уводит сцену вправо от
-// заголовка на первом экране, минус освобождает правый край под панели этапов.
-const CAMERA_KEYS = [
-  { p: 0.0, az: -0.95, el: 0.6, dist: 34, ty: 1.2, shift: 0.16 },
-  { p: 0.28, az: -0.78, el: 0.44, dist: 27, ty: 1.8, shift: -0.08 },
-  { p: 0.66, az: -0.58, el: 0.3, dist: 21, ty: 2.4, shift: -0.1 },
-  { p: 0.96, az: -0.72, el: 0.28, dist: 23, ty: 2.2, shift: -0.1 },
-  { p: 1.0, az: -0.86, el: 0.34, dist: 28, ty: 2.0, shift: -0.08 },
-];
-
-export function cameraAt(p) {
-  const x = clamp01(p);
-  let a = CAMERA_KEYS[0];
-  let b = CAMERA_KEYS[CAMERA_KEYS.length - 1];
-  for (let i = 0; i < CAMERA_KEYS.length - 1; i++) {
-    if (x >= CAMERA_KEYS[i].p && x <= CAMERA_KEYS[i + 1].p) {
-      a = CAMERA_KEYS[i];
-      b = CAMERA_KEYS[i + 1];
-      break;
-    }
-  }
-  const t = smoothstep(span(x, a.p, b.p));
-  const mix = (k) => a[k] + (b[k] - a[k]) * t;
-  return { az: mix("az"), el: mix("el"), dist: mix("dist"), ty: mix("ty"), shift: mix("shift") };
-}
-
 /**
  * Полное состояние сцены в точке p. Сцена только раскладывает эти числа
  * по объектам, сама ничего не решает.
@@ -125,7 +97,6 @@ export function sceneState(p) {
     frames: span(build, 0, BUILD_SPLIT),
     beams: span(build, BUILD_SPLIT, 1),
     load: span(x, STAGES.load.from, STAGES.load.to),
-    camera: cameraAt(x),
     panels: {
       draft: panelOpacity(x, "draft"),
       build: panelOpacity(x, "build"),

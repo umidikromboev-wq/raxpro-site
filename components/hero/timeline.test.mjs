@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  STAGES, span, stagger, dropOffset, panelOpacity, sceneState, cameraAt, DROP_HEIGHT,
+  STAGES, span, stagger, dropOffset, panelOpacity, sceneState, DROP_HEIGHT,
 } from "./timeline.js";
 
 test("stages cover the scroll without gaps and in order", () => {
@@ -65,13 +65,3 @@ test("beams start only after frames are down", () => {
   assert.equal(mid.beams, 0);
 });
 
-test("camera is continuous across keyframes", () => {
-  let prev = cameraAt(0);
-  for (let p = 0.001; p <= 1; p += 0.001) {
-    const c = cameraAt(p);
-    for (const k of ["az", "el", "dist", "ty", "shift"]) {
-      assert.ok(Math.abs(c[k] - prev[k]) < 0.2, `${k} jumps at p=${p.toFixed(3)}`);
-    }
-    prev = c;
-  }
-});
