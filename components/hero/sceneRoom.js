@@ -11,8 +11,9 @@ const WINDOW_Y = 5.7;
 
 export function buildRoom(THREE, scene, part, slogan = 'Стеллажи под ваш бизнес') {
   part([ROOM.width, 0.22, ROOM.depth], 'floor', [0, -0.13, 0]);
-  // Земля вокруг цеха в цвет фона страницы: на телефоне камера перспективная и край плиты попадает в кадр.
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ color: 0x0b4f80, roughness: 1 }));
+  // Земля вокруг цеха — только приёмник теней: холст прозрачный, фон даёт градиент страницы.
+  // Освещённая синяя плоскость выходила светлее сайта и читалась как чужая подложка (замечание Умида 18.09).
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.ShadowMaterial({ opacity: 0.28 }));
   ground.rotation.x = -Math.PI / 2; ground.position.y = -0.26; ground.receiveShadow = true; scene.add(ground);
   const marks = new THREE.Mesh(
     new THREE.PlaneGeometry(ROOM.width, ROOM.depth),

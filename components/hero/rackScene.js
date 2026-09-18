@@ -206,8 +206,9 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
       return;
     }
     activeCamera = camera; scene.fog = null;
-    const span = Math.max(9.7, 12.4 / aspect) * (1 + end * 0.04);
-    const target = [0, 1.8, 0];
+    // Цель камеры выше центра сцены, чтобы верх стен не уходил под плавающее меню.
+    const span = Math.max(10.3, 12.9 / aspect) * (1 + end * 0.04);
+    const target = [0, 3.0, 0];
     camera.left = -span * aspect; camera.right = span * aspect; camera.top = span; camera.bottom = -span;
     camera.position.set(target[0] + 18, target[1] + 18, target[2] + 25); camera.lookAt(...target); camera.updateProjectionMatrix();
   }
