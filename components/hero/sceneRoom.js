@@ -2,15 +2,18 @@
 // Стены стоят по дальним сторонам (−x и −z), камера смотрит из +x +z — ничего не перекрывают.
 
 import { ROOM, COLUMN } from './rackModel.js';
-import { floorMarkingTexture, wallTexture, gateTexture } from './sceneAssets.js';
+import { floorMarkingTexture, wallTexture, gateTexture, bannerTexture } from './sceneAssets.js';
 
 const WALL = 0.25;
 /** Жёлтые линии прохода: вдоль фронта длинного ряда и вдоль короткого плеча. */
 const AISLE_LINES = [[-6.4, -1.9, 2.9, -1.9], [2.4, -2.2, 2.4, 4.9]];
 const WINDOW_Y = 5.7;
 
-export function buildRoom(THREE, scene, part) {
+export function buildRoom(THREE, scene, part, slogan = 'Стеллажи под ваш бизнес') {
   part([ROOM.width, 0.22, ROOM.depth], 'floor', [0, -0.13, 0]);
+  // Земля вокруг цеха в цвет фона страницы: на телефоне камера перспективная и край плиты попадает в кадр.
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ color: 0x0b4f80, roughness: 1 }));
+  ground.rotation.x = -Math.PI / 2; ground.position.y = -0.26; ground.receiveShadow = true; scene.add(ground);
   const marks = new THREE.Mesh(
     new THREE.PlaneGeometry(ROOM.width, ROOM.depth),
     new THREE.MeshStandardMaterial({ map: floorMarkingTexture(THREE, ROOM, AISLE_LINES), transparent: true, roughness: 0.95, polygonOffset: true, polygonOffsetFactor: -1 }),
@@ -36,6 +39,9 @@ export function buildRoom(THREE, scene, part) {
     const pane = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 0.9), glass);
     pane.position.set(x, WINDOW_Y, -ROOM.depth / 2 + 0.012); scene.add(pane);
   }
+
+  const banner = new THREE.Mesh(new THREE.PlaneGeometry(6.4, 1.6), new THREE.MeshStandardMaterial({ map: bannerTexture(THREE, slogan), roughness: 0.8 }));
+  banner.position.set(-3.4, 4.6, -ROOM.depth / 2 + 0.03); scene.add(banner);
 
   // Дверь для персонала в левой стене и огнетушитель у ворот — мелочи, по которым цех читается как рабочий.
   const door = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 2.1), new THREE.MeshStandardMaterial({ color: 0x1b3b8f, roughness: 0.6 }));

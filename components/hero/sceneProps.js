@@ -17,18 +17,30 @@ export function addRackDetails(part, framePart, model) {
   });
 }
 
-/** Паллета с грузом. variant 0..4: 1 и 4 — блок в стретч-плёнке, 2 — бочки, остальное — коробки. */
+/**
+ * Паллета с грузом. variant 0..4: 0 — четыре коробки, 1 — блок в стретч-плёнке,
+ * 2 — бочки, 3 — коробки двух размеров с маркировкой, 4 — коробки под плёнкой.
+ */
 export function addPalletLoad(part, owner, s) {
   const place = (size, name, u, y, v, shape) => part(size, name,
     [s.x + u * Math.cos(s.rot) - v * Math.sin(s.rot), s.y + y, s.z + u * Math.sin(s.rot) + v * Math.cos(s.rot)], owner, [0, -s.rot, 0], shape);
   for (const u of [-0.38, 0, 0.38]) place([0.12, 0.1, 1.16], 'wood', u, 0.05, 0);
   for (const v of [-0.48, -0.24, 0, 0.24, 0.48]) place([1.03, 0.04, 0.18], 'wood', 0, 0.12, v);
-  if (s.variant === 1 || s.variant === 4) { place([1.0, s.height, 1.1], 'wrap', 0, 0.14 + s.height / 2, 0); return; }
+  const top = 0.14, h = s.height;
+  if (s.variant === 1) { place([1.0, h, 1.1], 'wrap', 0, top + h / 2, 0); return; }
   if (s.variant === 2) {
-    for (const u of [-0.26, 0.26]) for (const v of [-0.28, 0.28]) place([0.25, s.height * 0.95], 'drum', u, 0.14 + s.height * 0.475, v, 'cyl');
+    for (const u of [-0.26, 0.26]) for (const v of [-0.28, 0.28]) place([0.25, h * 0.95], 'drum', u, top + h * 0.475, v, 'cyl');
     return;
   }
-  for (const u of [-0.245, 0.245]) for (const v of [-0.275, 0.275]) place([0.47, s.height, 0.52], 'box', u, 0.14 + s.height / 2, v);
+  if (s.variant === 3) {
+    // Один большой ящик и два ряда малых коробок сверху — товар разный, как на настоящем складе.
+    const big = h * 0.55, small = h * 0.42;
+    place([0.98, big, 1.06], 'box2', 0, top + big / 2, 0);
+    for (const u of [-0.245, 0.245]) for (const v of [-0.275, 0.275]) place([0.46, small, 0.5], 'box', u, top + big + small / 2, v);
+    return;
+  }
+  for (const u of [-0.245, 0.245]) for (const v of [-0.275, 0.275]) place([0.47, h, 0.52], s.variant === 4 ? 'box2' : 'box', u, top + h / 2, v);
+  if (s.variant === 4) place([1.02, h + 0.02, 1.12], 'film', 0, top + h / 2, 0);
 }
 
 /** Рохля с паллетой: въезжает в проход со стороны ворот (по +x), вилы смотрят на −x. */

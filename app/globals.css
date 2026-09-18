@@ -415,7 +415,7 @@ html {
   .rack-hero[data-mode='live'] { height: 380svh; }
   [data-mode='live'] .rack-sticky { min-height: 740px; }
   .rack-viewport { inset: 0; width: auto; height: auto; }
-  .rack-shade { display: block; background: linear-gradient(180deg, rgba(7, 59, 103, 0.94) 0%, rgba(7, 59, 103, 0.82) 34%, rgba(7, 59, 103, 0) 50%, rgba(7, 59, 103, 0) 68%, rgba(7, 59, 103, 0.86) 86%, rgba(7, 59, 103, 0.96) 100%); }
+  .rack-shade { display: block; background: linear-gradient(180deg, rgba(7, 59, 103, 0.92) 0%, rgba(7, 59, 103, 0.7) 30%, rgba(7, 59, 103, 0) 44%, rgba(7, 59, 103, 0) 70%, rgba(7, 59, 103, 0.8) 84%, rgba(7, 59, 103, 0.95) 100%); }
   [data-mode='live'] .rack-editorial { top: 104px; left: 6%; right: 6%; width: auto; bottom: auto; height: auto; max-width: none; z-index: 3; }
   .rack-editorial h1, .rack-editorial h2 { font-size: clamp(32px, 5vw, 47px); }
   .rack-kicker { font-size: 9px; margin-bottom: 15px; }

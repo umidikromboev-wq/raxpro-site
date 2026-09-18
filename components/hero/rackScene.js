@@ -1,6 +1,6 @@
 import { sceneState, stagger, dropOffset, easeOutCubic, smoothstep, span as spanOf, STAGES } from './timeline.js';
 import { rackModel, ROOM, BAY_WIDTH, RACK_DEPTH, floorPositions } from './rackModel.js';
-import { cartonTexture, wrapTexture, loadLabelTexture, textSprite, createWorker, WORKER } from './sceneAssets.js';
+import { cartonTexture, cartonTapeTexture, wrapTexture, loadLabelTexture, textSprite, createWorker, WORKER } from './sceneAssets.js';
 import { buildRoom } from './sceneRoom.js';
 import { addRackDetails, addPalletLoad, addPalletJack, addFloorPallets } from './sceneProps.js';
 export { countPositions } from './rackModel.js';
@@ -8,7 +8,11 @@ export { countPositions } from './rackModel.js';
 const SLIDE_DISTANCE = 7;
 const JACK_AT = [-1.6, 0.9];
 const LEFT_WALL_X = -ROOM.width / 2;
-const LABEL_TEXT = { ru: ['до 4 т / ярус', 'Ваше помещение', '17 м', '13 м', '2,3 м', '6,3 м', '1,3 м'], uz: ['4 t gacha / yarus', 'Sizning omboringiz', '17 m', '13 m', '2,3 m', '6,3 m', '1,3 m'] };
+const LABEL_TEXT = { ru: ['до 4 т / ярус', 'Ваше помещение', '17 м', '13 м', '2,3 м', '6,3 м', '1,3 м', 'Стеллажи под ваш бизнес'], uz: ['4 t gacha / yarus', 'Sizning omboringiz', '17 m', '13 m', '2,3 m', '6,3 m', '1,3 m', 'Biznesingiz uchun stellajlar'] };
+// Портретная камера: перспектива, от замерщиков вблизи до общего вида собранного стеллажа.
+const PORTRAIT_FROM = { position: [4.4, 3.6, 10.6], target: [-1.6, 1.0, 2.5], fov: 46 };
+const PORTRAIT_TO = { position: [12.5, 8.2, 12.8], target: [-1.2, 2.3, -0.4], fov: 40 };
+const FOG_COLOR = 0x0b4f80;
 
 export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } = {}) {
   const model = rackModel();
@@ -23,6 +27,9 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const camera = new THREE.OrthographicCamera(-12, 12, 12, -12, 0.1, 120);
+  const portrait = new THREE.PerspectiveCamera(44, 1, 0.1, 160);
+  const fog = new THREE.Fog(FOG_COLOR, 22, 70);
+  let activeCamera = camera;
   if (RoomEnvironment) {
     // Отражения на металле: без окружения сталь и краска выглядят как пластилин.
     const pmrem = new THREE.PMREMGenerator(renderer);
@@ -45,6 +52,8 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     foot: material(0xf2c318, 0.5, 0.2), guard: material(0xf2c318, 0.5, 0.1), hole: material(0x0d1f4a),
     dark: material(0x263746), wood: material(0xa98860), yellow: material(0xf5cf39),
     box: new THREE.MeshStandardMaterial({ map: cartonTexture(THREE), roughness: 0.95 }),
+    box2: new THREE.MeshStandardMaterial({ map: cartonTapeTexture(THREE), roughness: 0.95 }),
+    film: new THREE.MeshStandardMaterial({ color: 0xdbe7f0, transparent: true, opacity: 0.42, roughness: 0.15, metalness: 0.05, depthWrite: false }),
     wrap: new THREE.MeshStandardMaterial({ map: wrapTexture(THREE), roughness: 0.28, metalness: 0.05 }),
     drum: material(0x2b62b8, 0.35, 0.3), label: new THREE.MeshStandardMaterial({ map: loadLabelTexture(THREE, text[0]), roughness: 0.5 }),
     jackBody: material(0xf0731a, 0.45, 0.25), floor: material(0x8399a9, 0.98), column: material(0xb7bcb9, 0.98),
@@ -63,7 +72,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     const z = f.z + u * Math.sin(f.rot) + v * Math.cos(f.rot);
     part(size, name, [x, y, z], owner, [tilt, -f.rot, 0]);
   }
-  buildRoom(THREE, scene, part);
+  buildRoom(THREE, scene, part, text[7]);
 
   const draftPoints = [];
   function line(a, b) { draftPoints.push(...a, ...b); }
@@ -114,7 +123,8 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
       : new THREE.BoxGeometry(...batch.size);
     const mesh = new THREE.InstancedMesh(geometry, mats[batch.name], batch.items.length);
     mesh.frustumCulled = false;
-    mesh.castShadow = !['floor', 'hole', 'label'].includes(batch.name); mesh.receiveShadow = true;
+    mesh.castShadow = !['floor', 'hole', 'label', 'film'].includes(batch.name); mesh.receiveShadow = batch.name !== 'film';
+    if (batch.name === 'film') mesh.renderOrder = 1;
     for (const [i, item] of batch.items.entries()) {
       dummy.position.set(...item.position); dummy.quaternion.copy(item.quaternion); dummy.updateMatrix(); mesh.setMatrixAt(i, dummy.matrix);
     }
@@ -171,19 +181,33 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
   const laserDot = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0xff3b30, transparent: true, depthTest: false })); laserDot.scale.set(0.16, 0.16, 1); measure.add(laserDot);
   const toolPosition = new THREE.Vector3();
 
+  // В портрете подписи-спрайты стоят близко к перспективной камере и раздуваются — размеры чертежа уменьшаем, подписи замера прячем: «Ваше помещение» уже сказано заголовком, а «17 м / 13 м» режутся краем кадра.
+  const labelSprites = [...draftLabels, ...measureLabels];
+  for (const sprite of labelSprites) sprite.userData.baseScale = sprite.scale.clone();
+  function scaleLabels() {
+    const k = aspect < 1 ? 0.5 : 1;
+    labelSprites.forEach((sprite) => {
+      const hide = aspect < 1 && measureLabels.includes(sprite);
+      sprite.scale.copy(sprite.userData.baseScale).multiplyScalar(hide ? 0.0001 : k);
+    });
+  }
   let aspect = 1, lastProgress = -1;
   function cameraLayout(progress) {
     const end = Math.max(0, (progress - 0.94) / 0.06);
-    let span, target;
     if (aspect < 1) {
-      // Портрет: сначала близко к замерщикам, по мере сборки камера отъезжает, чтобы стеллаж занял всю ширину.
-      const grow = smoothstep(spanOf(progress, 0, STAGES.draft.to));
-      span = (5.4 + 2.5 * grow) / aspect * (1 + end * 0.03);
-      target = [-1.6 + 1.0 * grow, 4.0 + 0.6 * grow, 2.6 - 3.0 * grow];
-    } else {
-      span = Math.max(9.7, 12.4 / aspect) * (1 + end * 0.04);
-      target = [0, 1.8, 0];
+      // Портрет: перспектива. Начинаем рядом с замерщиками, за время чертежа и сборки отъезжаем до общего вида.
+      const grow = smoothstep(spanOf(progress, 0.04, STAGES.build.to));
+      const mix = (a, b) => a + (b - a) * grow;
+      activeCamera = portrait; scene.fog = fog;
+      portrait.aspect = aspect; portrait.fov = mix(PORTRAIT_FROM.fov, PORTRAIT_TO.fov) * (1 + end * 0.04);
+      portrait.position.set(...PORTRAIT_FROM.position.map((v, i) => mix(v, PORTRAIT_TO.position[i])));
+      portrait.lookAt(...PORTRAIT_FROM.target.map((v, i) => mix(v, PORTRAIT_TO.target[i])));
+      portrait.updateProjectionMatrix();
+      return;
     }
+    activeCamera = camera; scene.fog = null;
+    const span = Math.max(9.7, 12.4 / aspect) * (1 + end * 0.04);
+    const target = [0, 1.8, 0];
     camera.left = -span * aspect; camera.right = span * aspect; camera.top = span; camera.bottom = -span;
     camera.position.set(target[0] + 18, target[1] + 18, target[2] + 25); camera.lookAt(...target); camera.updateProjectionMatrix();
   }
@@ -232,6 +256,15 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     workerB.group.position.x = 0.1 - Math.min(1, intro * 2) * 0.6;
     workerA.plan.position.z = 0.4 + Math.sin(intro * Math.PI) * 0.19;
     workerA.plan.rotation.y = Math.sin(intro * Math.PI) * 0.12;
+    // Живые фигуры: дыхание торса, взгляд замерщика на точку лазера, шаг оператора за рохлей, удары монтажника.
+    for (const { worker } of people) worker.torso.position.y = 0.9 + Math.sin(time * 1.7 + worker.group.position.x) * 0.012;
+    workerA.head.rotation.y = 0.35 + Math.sin(time * 0.6) * 0.2;
+    workerB.head.rotation.y = -0.5 + Math.sin(time * 0.5 + 1) * 0.12;
+    const step = Math.sin(s.jack * 42) * (s.jack > 0 && s.jack < 1 ? 0.55 : 0);
+    operator.legs[0].rotation.x = step; operator.legs[1].rotation.x = -step;
+    const swing = s.installer > 0.5 ? Math.max(0, Math.sin(time * 5.5)) : 0;
+    installer.arms[1].rotation.x = -0.35 - swing * 1.1; installer.torso.rotation.x = swing * 0.12;
+    installer.head.rotation.x = 0.25 - swing * 0.15;
     measure.visible = s.people > 0.01;
     const reveal = s.people * Math.min(time / 1.2, 1);
     measureMat.opacity = reveal;
@@ -246,7 +279,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     return { ...s, filled, floorPositions: floorCount, introMoving: intro < 1 && s.people > 0.01 };
   }
   function resize(w, h) {
-    aspect = w / Math.max(h, 1); renderer.setSize(w, h, false);
+    aspect = w / Math.max(h, 1); renderer.setSize(w, h, false); scaleLabels();
     cameraLayout(lastProgress < 0 ? 0 : lastProgress);
   }
   function dispose() {
@@ -258,5 +291,5 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     if (scene.environment) scene.environment.dispose();
     sun.shadow.dispose(); renderer.dispose();
   }
-  return { update, resize, render: () => renderer.render(scene, camera), dispose, positions: model.slots.length };
+  return { update, resize, render: () => renderer.render(scene, activeCamera), dispose, positions: model.slots.length };
 }
