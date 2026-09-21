@@ -128,8 +128,9 @@ export default function ResultPanel({ lang, input, result, onBack }) {
 
       <div className="kon-sticky" aria-hidden="true">
         <div>
-          {r.positions != null && <><strong>{r.positions}</strong> {c.positions} · </>}
-          {r.price && <><strong>{fmt(r.price.totalNoVat)}</strong> {lang === 'uz' ? 'soʻm' : 'сум'}</>}
+          {r.price
+            ? <><strong>{fmt(r.price.totalNoVat)}</strong> <span className="kon-sticky__pos">{lang === 'uz' ? 'soʻm' : 'сум'}</span>{r.positions != null && <span className="kon-sticky__pos"> · {r.positions} {c.positions}</span>}</>
+            : r.positions != null && <><strong>{r.positions}</strong> {c.positions}</>}
         </div>
         <button type="button" className="kon-btn kon-btn--solid" onClick={toLead}>{c.sticky.cta}</button>
       </div>

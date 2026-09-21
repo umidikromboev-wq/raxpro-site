@@ -47,7 +47,7 @@ export const KON_COPY = {
       err: 'Не получилось разложить: ',
       byEngineer: 'Цену для этого типоразмера называет инженер после замера.',
       floorNote: 'Нижний ярус — пол, он тоже считается местом.',
-      sticky: { cta: 'Получить спецификацию' },
+      sticky: { cta: 'Получить расчёт' },
     },
     guide: {
       t: 'Как это работает',
@@ -108,7 +108,7 @@ export const KON_COPY = {
       err: 'Joylashtirib boʻlmadi: ',
       byEngineer: 'Bu oʻlcham narxini muhandis oʻlchovdan keyin aytadi.',
       floorNote: 'Pastki yarus — pol, u ham oʻrin hisoblanadi.',
-      sticky: { cta: 'Spetsifikatsiya olish' },
+      sticky: { cta: 'Hisobni olish' },
     },
     guide: {
       t: 'Bu qanday ishlaydi',
