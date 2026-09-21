@@ -2,14 +2,24 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { HERO_COPY, STAGE_ORDER } from './heroCopy';
-import { countPositions, floorPositions } from './rackModel';
-import { IcoArrow } from '../Icons';
+import { countPositions, floorPositions, ROOM } from './rackModel';
+import { IcoArrow, IcoRuler, IcoClock } from '../Icons';
+
+// Иконки чипов первого экрана — по порядку copy.chips: замер · срок монтажа · рассрочка.
+function IcoCard(p) { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20M6 15h4" /></svg>; }
+const CHIP_ICONS = [IcoRuler, IcoClock, IcoCard];
+const Actions = ({ copy, ctaHref, cta2Href, innerRef, className = '' }) => (
+  <div className={`rack-actions ${className}`} ref={innerRef}>
+    <a className="rack-cta" href={ctaHref}><span>{copy.cta1}</span><i aria-hidden="true"><IcoArrow className="w-4 h-4" /></i></a>
+    <a className="rack-secondary" href={cta2Href}>{copy.cta2}</a>
+  </div>
+);
 
 const STOPS = [0, 0.23, 0.57, 1];
-export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Href = '#zayavka' }) {
+export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Href = '#zayavka', konHref = '/ru/konstruktor' }) {
   const copy = HERO_COPY[lang] || HERO_COPY.ru;
   const positions = countPositions(), floor = floorPositions();
-  const sectionRef = useRef(null), canvasRef = useRef(null), introRef = useRef(null);
+  const sectionRef = useRef(null), canvasRef = useRef(null), introRef = useRef(null), stageActionsRef = useRef(null);
   const panels = useRef({}), navigationRef = useRef(null), capacityRef = useRef(null), filledRef = useRef(null);
   // Server-rendered content is fully readable before WebGL progressively enhances it.
   const [mode, setMode] = useState('static');
@@ -42,6 +52,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
       api.render();
       if (Math.abs(p - lastProgress) > 0.00001) {
         show(introRef.current, state.intro);
+        show(stageActionsRef.current, 1 - state.intro);
         for (const key of STAGE_ORDER) show(panels.current[key], state.panels[key]);
         const current = p < 0.055 ? 0 : p < 0.28 ? 1 : p < 0.66 ? 2 : 3;
         navigationRef.current?.querySelectorAll('button').forEach((button, index) => {
@@ -109,7 +120,14 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
     const event = new CustomEvent('raxpro:scroll-to', { cancelable: true, detail: { top } });
     if (window.dispatchEvent(event)) window.scrollTo({ top, behavior: 'instant' });
   };
-  const number = (value) => value.replace('{positions}', String(positions)).replace('{floor}', String(floor)).replace('{upper}', String(positions - floor));
+  // Масштаб модели и «во сколько раз больше» — из rackModel, чтобы цифры не расходились со сценой.
+  const fmt = (v) => String(v).replace(".", ",");
+  const ratio = fmt(Math.round(positions / floor * 10) / 10);
+  const room = `${ROOM.width} × ${ROOM.depth} м`.replace(' м', lang === 'uz' ? ' m' : ' м');
+  const height = `${fmt(ROOM.height)} ${lang === 'uz' ? 'm' : 'м'}`;
+  const number = (value) => value
+    .replace('{positions}', String(positions)).replace('{floor}', String(floor)).replace('{upper}', String(positions - floor))
+    .replace('{ratio}', ratio).replace('{room}', room).replace('{height}', height);
 
   return (
     <section ref={sectionRef} className="rack-hero" data-mode={mode} aria-label={copy.eyebrow}>
@@ -121,19 +139,23 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
         </div>
         <div className="rack-editorial">
           <div className="rack-intro" ref={introRef}>
-            <span className="rack-kicker">{copy.eyebrow}</span>
+            <div className="rack-segments" role="group" aria-label={copy.eyebrow}>
+              <span className="rack-kicker">{copy.eyebrow}</span>
+              {copy.segments.map((s) => <a key={s.type} href={`${konHref}?type=${s.type}`}>{s.label}</a>)}
+            </div>
             <h1>{copy.title} <em>{copy.titleAccent}</em></h1>
             <p className="rack-description">{copy.text}</p>
+            <Actions copy={copy} ctaHref={ctaHref} cta2Href={cta2Href} className="rack-actions--intro" />
             <ul className="rack-chips">
-              {copy.chips.map((chip) => <li key={chip}>{chip}</li>)}
+              {copy.chips.map((chip, index) => { const Ico = CHIP_ICONS[index] || IcoRuler; return <li key={chip}><Ico className="rack-chip-ico" />{chip}</li>; })}
             </ul>
             <p className="rack-price">{copy.price}</p>
           </div>
           {STAGE_ORDER.map((key) => (
             <div key={key} className="rack-stage" ref={(element) => { panels.current[key] = element; }}>
               <span className="rack-kicker">{copy.stages[key].kicker}</span>
-              <h2>{copy.stages[key].title}</h2>
-              <p className="rack-description">{copy.stages[key].text}</p>
+              <h2>{number(copy.stages[key].title)}</h2>
+              <p className="rack-description">{number(copy.stages[key].text)}</p>
               <dl className="rack-facts">
                 {copy.stages[key].facts.map((fact) => (
                   <div key={fact.l}><dt>{fact.l}</dt><dd>{number(fact.n)}</dd></div>
@@ -141,15 +163,13 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
               </dl>
             </div>
           ))}
-          <div className="rack-actions">
-            <a className="rack-cta" href={ctaHref}>{copy.cta1}<IcoArrow className="w-4 h-4" /></a>
-            <a className="rack-secondary" href={cta2Href}>{copy.cta2}</a>
-          </div>
+          <Actions copy={copy} ctaHref={ctaHref} cta2Href={cta2Href} innerRef={stageActionsRef} className="rack-actions--stages" />
         </div>
         <div className="rack-capacity" ref={capacityRef} aria-hidden="true">
           <span className="rack-capacity-label">{copy.loaded}</span>
           <div><strong ref={filledRef}>00</strong><span> / {positions}</span></div>
           <div className="rack-capacity-bar"><i /></div>
+          <span className="rack-capacity-scale">{number(copy.scale)}</span>
         </div>
         <div className="rack-footer">
           <nav ref={navigationRef} className="rack-navigation" aria-label={copy.navigation}>

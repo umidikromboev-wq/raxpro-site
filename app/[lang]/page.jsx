@@ -9,7 +9,6 @@ import RackHero from "../../components/hero/RackHero";
 import { directionCards } from "../../lib/directionCards";
 import VideoHero from "../../components/hero/VideoHero";
 import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
-import ProductSlider from "../../components/ProductSlider";
 import PriceBreakdown from "../../components/PriceBreakdown";
 import { SplitHead, Eyebrow } from "../../components/Section";
 import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
@@ -18,7 +17,9 @@ import Faq from "../../components/Faq";
 import { getLatest, localize } from "../../lib/articles";
 import { organizationSchema, JsonLd } from "../../lib/schema";
 import { REVIEWS, localizeReview } from "../../lib/reviews";
-import OpinionsSlider from "../../components/OpinionsSlider";
+import CaseSlider from "../../components/CaseSlider";
+import Reviews from "../../components/Reviews";
+import { CASES, localizeCase } from "../../lib/cases";
 
 import LogoMarquee from "../../components/LogoMarquee";
 import {
@@ -37,17 +38,15 @@ import {
   IcoArrow,
   IcoPin,
   IcoPhone,
-  IcoTg,
-  IcoQuote,
 } from "../../components/Icons";
 
 const IMG = {
   hero: "/works/hero.jpg",
-  pallet: "/works/pallet.jpg",
-  medium: "/works/medium-1.jpg",
-  archive: "/works/archive-1.jpg",
-  retail: "/works/retail-1.jpg",
-  drivein: "/works/max1.jpg",
+  pallet: "/directions/pallet.jpg",
+  medium: "/directions/medium.jpg",
+  archive: "/directions/archive.jpg",
+  retail: "/directions/retail.jpg",
+  drivein: "/directions/drive-in.jpg",
   welder: "/works/w6.jpg",
 };
 const STEP_ICONS = [IcoRuler, IcoDraft, IcoFactory, IcoWrench];
@@ -84,88 +83,14 @@ const ADV_ICONS = [
 ];
 const INC_ICONS = [IcoLayers, IcoShield, IcoShop];
 
-const PROJECTS = {
-  ru: [
-    {
-      t: "Super Pack",
-      d: "Паллетные стеллажи для крупнейшего в Узбекистане завода бумаги и упаковки. Безопасные сертифицированные системы под тяжёлую нагрузку.",
-      load: "Завод · паллетные",
-      img: "/works/w1.jpg",
-    },
-    {
-      t: "JAC Motors",
-      d: "Паллетные стеллажи для склада автомобильного завода. Проектирование под интенсивную работу погрузочной техники.",
-      load: "Автозавод · паллетные",
-      img: "/works/new1.jpg",
-    },
-    {
-      t: "Bloom Shop",
-      d: "30 комплектов среднегрузовых стеллажей: высота 2.5 м, 5 ярусов, до 400 кг на ярус. Склад косметики для маркетплейса — под ключ.",
-      load: "Маркетплейс",
-      metrics: ["30 комплектов", "2,5 м", "5 ярусов", "400 кг / ярус"],
-      img: "/works/new2.jpg",
-    },
-    {
-      t: "Caffelito Coffee",
-      d: "Стеллажи для склада кофейни: высота 4 м, 1.5 тонны на ярус. Поставлено и смонтировано за 12 часов.",
-      load: "HoReCa",
-      metrics: ["4 м", "1,5 т / ярус", "монтаж за 12 ч"],
-      img: "/works/new3.jpg",
-    },
-    {
-      t: "Sayqal Family Restaurant",
-      d: "Проектные стеллажи для складского помещения ресторана. Компактная и надёжная система хранения.",
-      load: "Ресторан · проект",
-      img: "/works/new4.jpg",
-    },
-    {
-      t: "Discovery Invest",
-      d: "Системы хранения для складского комплекса. Полный цикл: замер, проектирование, поставка и монтаж.",
-      load: "Складской комплекс",
-      img: "/works/new5.jpg",
-    },
-  ],
-  uz: [
-    {
-      t: "Super Pack",
-      d: "Oʻzbekistondagi eng yirik qogʻoz va qadoqlash zavodi uchun palletli stellajlar. Ogʻir yuklamaga moʻljallangan xavfsiz sertifikatlangan tizimlar.",
-      load: "Zavod · palletli",
-      img: "/works/w1.jpg",
-    },
-    {
-      t: "JAC Motors",
-      d: "Avtomobil zavodi ombori uchun palletli stellajlar. Texnikaning jadal ishlashiga moslab loyihalangan.",
-      load: "Avtozavod · palletli",
-      img: "/works/new1.jpg",
-    },
-    {
-      t: "Bloom Shop",
-      d: "30 komplekt oʻrta yuklamali stellaj: balandligi 2.5 m, 5 qavat, har qavatga 400 kg gacha. Marketpleys uchun kosmetika ombori — kalit topshirish.",
-      load: "Marketpleys",
-      metrics: ["30 komplekt", "2,5 m", "5 qavat", "400 kg / qavat"],
-      img: "/works/new2.jpg",
-    },
-    {
-      t: "Caffelito Coffee",
-      d: "Kafe ombori uchun stellajlar: balandligi 4 m, har qavatga 1.5 tonna. 12 soatda yetkazilib oʻrnatildi.",
-      load: "HoReCa",
-      metrics: ["4 m", "1,5 t / qavat", "12 soatda montaj"],
-      img: "/works/new3.jpg",
-    },
-    {
-      t: "Sayqal Family Restaurant",
-      d: "Restoran ombor xonasi uchun loyihaviy stellajlar. Ixcham va ishonchli saqlash tizimi.",
-      load: "Restoran · loyiha",
-      img: "/works/new4.jpg",
-    },
-    {
-      t: "Discovery Invest",
-      d: "Ombor majmuasi uchun saqlash tizimlari. Toʻliq sikl: oʻlchov, loyiha, yetkazish va montaj.",
-      load: "Ombor majmuasi",
-      img: "/works/new5.jpg",
-    },
-  ],
-};
+/** «32 отзыва» / «21 отзыв» / «5 отзывов»; uz — без склонений. */
+function reviewsWord(n, lang) {
+  if (lang === "uz") return "ta mijoz sharhi";
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return "отзыв клиентов";
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return "отзыва клиентов";
+  return "отзывов клиентов";
+}
 
 export default async function Home({ params, searchParams }) {
   const L = normalizeLang((await params).lang);
@@ -189,7 +114,7 @@ export default async function Home({ params, searchParams }) {
   const directions = t.directions.map((d, i) => ({ ...d, ...DIR_META[i], ...cards[i] }));
   const adv = t.adv.map((a, i) => ({ ...a, Ico: ADV_ICONS[i] }));
   const income = t.income.map((a, i) => ({ ...a, Ico: INC_ICONS[i] }));
-  const projects = PROJECTS[L];
+  const cases = CASES.map((c) => localizeCase(c, L));
   const reviews = REVIEWS.map((r) => localizeReview(r, L));
 
   const certificates = [
@@ -234,7 +159,7 @@ export default async function Home({ params, searchParams }) {
         ? <VideoHeroMp4 lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
         : heroMode === "video"
           ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
-          : <RackHero lang={L} ctaHref="#kalkulyator" cta2Href={href(L, "/katalog")} />}
+          : <RackHero lang={L} ctaHref={href(L, "/konstruktor")} konHref={href(L, "/konstruktor")} cta2Href={href(L, "/katalog")} />}
 
       {/* CLIENTS + NUMBERS — один белый блок: кому сделали и в каких цифрах */}
       <section className="bg-white border-b border-cloud-200" aria-labelledby="clients-title">
@@ -366,7 +291,7 @@ export default async function Home({ params, searchParams }) {
                   height={960}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/70 to-navy-900/20" />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/45 to-navy-900/5" />
                 {/* Вся карточка — ссылка на страницу направления; кнопка конструктора лежит поверх */}
                 <a href={href(L, d.href)} className="absolute inset-0 z-[1]" aria-label={`${d.t} — ${d.more}`} />
                 <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-white/95 text-navy-800 grid place-items-center pointer-events-none">
@@ -428,53 +353,86 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
-      {/* COMPARISON — factory vs artisan */}
+      {/* COMPARISON — factory vs artisan: два крупных плана узла, под каждым — своя колонка */}
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
         <SplitHead eyebrow={x.cmpEyebrow} title={x.cmpTitle} desc={x.cmpText} />
         <div className="grid md:grid-cols-2 gap-4 mt-10">
-          <div className="rounded-xl2 bg-navy-900 text-white overflow-hidden relative">
-            <div className="absolute inset-0 bg-brand-grad opacity-90" />
-            <div className="relative p-6 sm:p-8">
+          <Reveal className="rounded-xl2 bg-navy-900 text-white overflow-hidden flex flex-col">
+            <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden">
+              <img
+                src="/images/cmp-factory.jpg"
+                alt={x.cmpUs}
+                width={1168}
+                height={880}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-navy-900 to-transparent" />
+              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white text-navy-900 text-xs font-bold px-3 py-1.5">
+                <IcoCheck className="w-3.5 h-3.5" />
+                {x.cmpUs}
+              </div>
+            </div>
+            <div className="relative p-6 sm:p-8 -mt-6">
               <div className="font-display font-medium text-xl sm:text-2xl">
                 {x.cmpUs}
               </div>
               <ul className="mt-5 space-y-3">
                 {x.cmpRows.map((r) => (
                   <li key={r.us} className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-white/20 grid place-items-center shrink-0 mt-0.5">
-                      <IcoCheck className="w-4 h-4 text-white" />
+                    <span className="w-6 h-6 rounded-full bg-sky-500/25 grid place-items-center shrink-0 mt-0.5">
+                      <IcoCheck className="w-4 h-4 text-sky-300" />
                     </span>
                     <span className="text-white/95">{r.us}</span>
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
-          <div className="rounded-xl2 bg-white border border-cloud-200 shadow-card p-6 sm:p-8">
-            <div className="font-display font-medium text-xl sm:text-2xl text-slate-500">
-              {x.cmpThem}
+          </Reveal>
+          <Reveal delay={80} className="rounded-xl2 bg-white border border-cloud-200 shadow-card overflow-hidden flex flex-col">
+            <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden">
+              <img
+                src="/images/cmp-crude.jpg"
+                alt={x.cmpThem}
+                width={1168}
+                height={880}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover grayscale-[35%]"
+              />
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
+              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-slate-800 text-white text-xs font-bold px-3 py-1.5">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                {x.cmpThem}
+              </div>
             </div>
-            <ul className="mt-5 space-y-3">
-              {x.cmpRows.map((r) => (
-                <li key={r.them} className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-cloud-100 grid place-items-center shrink-0 mt-0.5 text-slate-400">
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="14"
-                      height="14"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
-                      strokeLinecap="round"
-                    >
-                      <path d="M6 6l12 12M18 6L6 18" />
-                    </svg>
-                  </span>
-                  <span className="text-slate-500">{r.them}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className="relative p-6 sm:p-8 -mt-6">
+              <div className="font-display font-medium text-xl sm:text-2xl text-slate-500">
+                {x.cmpThem}
+              </div>
+              <ul className="mt-5 space-y-3">
+                {x.cmpRows.map((r) => (
+                  <li key={r.them} className="flex items-start gap-3">
+                    <span className="w-6 h-6 rounded-full bg-cloud-100 grid place-items-center shrink-0 mt-0.5 text-slate-400">
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="14"
+                        height="14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                      >
+                        <path d="M6 6l12 12M18 6L6 18" />
+                      </svg>
+                    </span>
+                    <span className="text-slate-500">{r.them}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -489,7 +447,7 @@ export default async function Home({ params, searchParams }) {
           desc={t.projText}
         />
         <div className="mt-10">
-          <ProductSlider items={projects} lang={L} />
+          <CaseSlider items={cases} lang={L} />
         </div>
       </section>
 
@@ -618,10 +576,14 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
-      {/* REVIEWS — designed testimonial cards (no chat screenshots: they exposed phone numbers) */}
-      <section className="bg-cloud-50 border-y border-cloud-200 overflow-hidden">
+      {/* REVIEWS — один блок: видеоинтервью + цитаты из переписок и голосовых с фото объекта */}
+      <section id="otzyvy" className="bg-cloud-50 border-y border-cloud-200 overflow-hidden">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
-          <div className="flex items-end justify-between gap-4 flex-wrap">
+          <div className="grid lg:grid-cols-[auto,1fr] gap-8 lg:gap-14 items-end">
+            <div className="flex items-baseline gap-3">
+              <span className="font-display font-medium text-[88px] sm:text-[120px] leading-none tracking-tight text-navy-900">{reviews.length}</span>
+              <span className="text-slate-500 text-lg leading-tight max-w-[120px]">{reviewsWord(reviews.length, L)}</span>
+            </div>
             <div>
               <Eyebrow>{t.revEyebrow}</Eyebrow>
               <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
@@ -629,40 +591,8 @@ export default async function Home({ params, searchParams }) {
               </h2>
               <p className="mt-3 text-slate-500 max-w-xl">{t.revText}</p>
             </div>
-            <a
-              href={SITE.reviewsChannel}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-11 inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white font-semibold px-5 py-2.5 rounded-xl transition"
-            >
-              <IcoTg className="w-5 h-5" /> {t.revCta}
-            </a>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-            {reviews.map((r, i) => (
-              <Reveal key={r.id} delay={i * 60}>
-                <figure className="h-full flex flex-col rounded-xl2 bg-white border border-cloud-200 shadow-card p-6 hover:border-sky-300 hover:shadow-card-hover transition">
-                  <IcoQuote className="w-9 h-9 text-sky-500/25 shrink-0" />
-                  <blockquote className="mt-4 text-slate-700 leading-relaxed flex-1">
-                    {r.text}
-                  </blockquote>
-                  <figcaption className="mt-6 pt-5 border-t border-cloud-200 flex items-center gap-3">
-                    <span className="w-11 h-11 rounded-full bg-brand-grad text-white grid place-items-center font-display font-medium text-lg shrink-0">
-                      {r.name.charAt(0)}
-                    </span>
-                    <span>
-                      <span className="block font-bold text-navy-800 leading-tight">
-                        {r.name}
-                      </span>
-                      <span className="block text-slate-400 text-sm mt-0.5">
-                        {r.role}
-                      </span>
-                    </span>
-                  </figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
+          <Reviews items={reviews} lang={L} />
         </div>
       </section>
 
@@ -694,7 +624,6 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
-      <OpinionsSlider L={L} translations={t} />
 
       {/* BLOG */}
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
@@ -707,7 +636,7 @@ export default async function Home({ params, searchParams }) {
           </div>
           <a
             href={href(L, "/blog")}
-            className="inline-flex items-center gap-2 text-navy-700 font-semibold hover:text-sky-600"
+            className="btn-11 inline-flex items-center gap-2 border border-navy-800 text-navy-800 font-semibold px-5 py-2.5 rounded-xl hover:bg-navy-800 hover:text-white transition"
           >
             {t.blogAll} <IcoArrow className="w-5 h-5" />
           </a>
@@ -829,87 +758,65 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
-      {/* CONTACTS */}
+      {/* CONTACTS — фото офиса + телефоны/адрес + карта; соцсети живут только в футере */}
       <section
         id="kontakty"
-        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 grid md:grid-cols-2 gap-10"
+        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20"
       >
-        <div>
-          <Eyebrow>{t.contEyebrow}</Eyebrow>
-          <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
-            {t.contTitle}
-          </h2>
-          <div className="mt-6 space-y-5">
-            <div>
-              <div className="text-slate-400 text-sm">{t.phones}</div>
-              <a
-                href={`tel:${SITE.phoneMain}`}
-                className="block text-xl font-bold text-navy-800 hover:text-sky-600"
-              >
-                {SITE.phoneMainHuman}
-              </a>
-              <a
-                href={`tel:${SITE.phoneAlt}`}
-                className="block text-navy-700 hover:text-sky-600"
-              >
-                {SITE.phoneAltHuman}
-              </a>
-              <a
-                href={`tel:${SITE.landline}`}
-                className="block text-navy-700 hover:text-sky-600"
-              >
-                {SITE.landlineHuman}
-              </a>
-            </div>
-            <div>
-              <div className="text-slate-400 text-sm">Email</div>
-              <p className="text-navy-700">{SITE.emails.join(" · ")}</p>
-            </div>
-            <div>
-              <div className="text-slate-400 text-sm">{t.address}</div>
-              <p className="text-navy-700">
+        <div className="grid lg:grid-cols-[1.1fr,0.9fr] gap-6 lg:gap-8 items-stretch">
+          <div className="relative rounded-xl2 overflow-hidden bg-navy-900 min-h-[360px] lg:min-h-[520px]">
+            <img
+              src="/images/office.jpg"
+              alt={`RAXPRO — ${loc.addressCity}, ${loc.address}`}
+              width={1168}
+              height={880}
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 text-white">
+              <Eyebrow light>{t.contEyebrow}</Eyebrow>
+              <h2 className="mt-3 font-display font-medium text-3xl sm:text-4xl">{t.contTitle}</h2>
+              <p className="mt-3 text-white/80 max-w-md">
                 {loc.addressCity}, {loc.address}
+                <span className="block text-white/55 text-sm mt-1">{loc.landmark}</span>
               </p>
-              <p className="text-slate-400 text-sm">{loc.landmark}</p>
-            </div>
-            <div>
-              <div className="text-slate-400 text-sm">{t.socials}</div>
-              <div className="flex gap-3 mt-1">
-                <a
-                  href={SITE.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-navy-700 font-semibold hover:text-sky-600"
-                >
-                  Instagram
-                </a>
-                <a
-                  href={SITE.telegram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-navy-700 font-semibold hover:text-sky-600"
-                >
-                  Telegram
-                </a>
-                <a
-                  href={SITE.reviewsChannel}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-navy-700 font-semibold hover:text-sky-600"
-                >
-                  {t.reviews}
-                </a>
-              </div>
             </div>
           </div>
-        </div>
-        <div className="rounded-xl2 overflow-hidden border border-cloud-200 shadow-card min-h-[340px]">
-          <iframe
-            title="RAXPRO"
-            className="w-full h-full min-h-[340px]"
-            src="https://maps.google.com/maps?q=Стеллажи%20в%20Ташкенте%20от%20RaxPro,%20Тоshkent&z=15&output=embed"
-            loading="lazy"
-          />
+
+          <div className="grid grid-rows-[auto,1fr] gap-6 lg:gap-8">
+            <div className="rounded-xl2 border border-cloud-200 bg-white shadow-card p-6 sm:p-8 grid sm:grid-cols-2 gap-6">
+              <div>
+                <div className="text-slate-400 text-sm">{t.phones}</div>
+                <a href={`tel:${SITE.phoneMain}`} className="block mt-1 text-2xl font-display font-medium text-navy-900 hover:text-sky-600">
+                  {SITE.phoneMainHuman}
+                </a>
+                <a href={`tel:${SITE.phoneAlt}`} className="block mt-1 text-navy-700 hover:text-sky-600">{SITE.phoneAltHuman}</a>
+                <a href={`tel:${SITE.landline}`} className="block text-navy-700 hover:text-sky-600">{SITE.landlineHuman}</a>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <div className="text-slate-400 text-sm">Email</div>
+                  {SITE.emails.map((e) => (
+                    <a key={e} href={`mailto:${e}`} className="block text-navy-700 hover:text-sky-600 break-all">{e}</a>
+                  ))}
+                </div>
+                <div>
+                  <div className="text-slate-400 text-sm">{t.hours}</div>
+                  <p className="text-navy-700">{loc.hours}</p>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-xl2 overflow-hidden border border-cloud-200 shadow-card min-h-[260px]">
+              <iframe
+                title="RAXPRO"
+                className="w-full h-full min-h-[260px]"
+                src="https://maps.google.com/maps?q=Стеллажи%20в%20Ташкенте%20от%20RaxPro,%20Тоshkent&z=15&output=embed"
+                loading="lazy"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

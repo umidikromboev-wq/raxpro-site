@@ -13,11 +13,11 @@ const A = {
     title: 'О компании RAXPRO',
     seoTitle: 'О компании RAXPRO — производитель стеллажей в Ташкенте с 2021 года',
     seoDesc:
-      'RAXPRO — производство металлических стеллажей и систем хранения в Ташкенте: 1000+ реализованных проектов, сертификаты ISO, гарантия 10 лет по документу, полный цикл от замера до монтажа.',
+      'RAXPRO — производство металлических стеллажей и систем хранения в Ташкенте: 1000+ реализованных проектов, сертификаты ISO, гарантия 10 лет по договору, полный цикл от замера до монтажа.',
     lead: 'Мы производим и монтируем металлические стеллажи и системы хранения в Узбекистане. Полный цикл: замер, проект, изготовление, доставка и монтаж — без подрядчиков-посредников.',
     stats: [
       { v: '1000+', k: 'реализованных проектов' },
-      { v: '10 лет', k: 'гарантия по документу' },
+      { v: '10 лет', k: 'гарантия по договору' },
       { v: 'до 4 т', k: 'нагрузка на ярус' },
       { v: 'с 2021', k: 'года на рынке' },
     ],
@@ -50,11 +50,11 @@ const A = {
     title: 'RAXPRO kompaniyasi haqida',
     seoTitle: 'RAXPRO haqida — 2021 yildan Toshkentda stellaj ishlab chiqaruvchi',
     seoDesc:
-      'RAXPRO — Toshkentda metall stellajlar va saqlash tizimlari ishlab chiqarish: 1000+ amalga oshirilgan loyiha, ISO sertifikatlari, hujjat asosida 10 yil kafolat, oʻlchovdan montajgacha toʻliq sikl.',
+      'RAXPRO — Toshkentda metall stellajlar va saqlash tizimlari ishlab chiqarish: 1000+ amalga oshirilgan loyiha, ISO sertifikatlari, shartnoma boʻyicha 10 yil kafolat, oʻlchovdan montajgacha toʻliq sikl.',
     lead: 'Biz Oʻzbekistonda metall stellajlar va saqlash tizimlarini ishlab chiqaramiz va oʻrnatamiz. Toʻliq sikl: oʻlchov, loyiha, tayyorlash, yetkazish va montaj — vositachi pudratchilarsiz.',
     stats: [
       { v: '1000+', k: 'amalga oshirilgan loyiha' },
-      { v: '10 yil', k: 'hujjat asosida kafolat' },
+      { v: '10 yil', k: 'shartnoma boʻyicha kafolat' },
       { v: '4 t gacha', k: 'har yarusga yuklama' },
       { v: '2021 yildan', k: 'bozorda' },
     ],

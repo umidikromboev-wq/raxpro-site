@@ -88,16 +88,16 @@ export default async function CatalogPage({ params }) {
               >
                 <a
                   href={href(L, `/katalog/${p.slug}`)}
-                  className="block bg-cloud-50 p-6"
+                  className="block aspect-[4/3] overflow-hidden bg-cloud-50"
                 >
                   <img
                     src={p.image}
                     alt={c.name}
-                    width={1200}
-                    height={1200}
+                    width={1168}
+                    height={880}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-56 object-contain group-hover:scale-[1.04] transition duration-500"
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition duration-500"
                   />
                 </a>
 

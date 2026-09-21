@@ -80,16 +80,16 @@ export default async function ProductPage({ params }) {
       {/* ГЛАВНЫЙ БЛОК: фото + цена + покупка */}
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pb-14 grid lg:grid-cols-[1fr,0.85fr] gap-10 items-start">
         <div>
-          <div className="rounded-xl2 bg-cloud-50 border border-cloud-200 p-8">
+          <div className="rounded-xl2 overflow-hidden border border-cloud-200 bg-cloud-50 aspect-[4/3]">
             <img
               src={p.image}
               alt={c.name}
-              width={1200}
-              height={1200}
+              width={1168}
+              height={880}
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              className="w-full h-auto max-h-[520px] object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
           {p.gallery?.length > 0 && (
@@ -97,16 +97,16 @@ export default async function ProductPage({ params }) {
               {p.gallery.map((src, i) => (
                 <div
                   key={src}
-                  className="rounded-xl2 overflow-hidden border border-cloud-200 bg-cloud-100"
+                  className="rounded-xl2 overflow-hidden border border-cloud-200 bg-cloud-100 aspect-[4/3]"
                 >
                   <img
                     src={src}
                     alt={`${c.name} — ${i + 1}`}
-                    width={1200}
-                    height={900}
+                    width={1168}
+                    height={880}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-48 object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               ))}
