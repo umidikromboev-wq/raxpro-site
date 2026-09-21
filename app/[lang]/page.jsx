@@ -192,6 +192,68 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
+      {/* DIRECTIONS — сразу после цифр: фото отдельно от описания, чтобы оба читались */}
+      <section
+        id="napravleniya"
+        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20"
+      >
+        <SplitHead eyebrow={t.dirEyebrow} title={t.dirTitle} desc={t.dirText} />
+        <div className="grid md:grid-cols-2 gap-5 mt-10">
+          {directions.map((d, i) => (
+            <Reveal
+              key={d.t}
+              delay={i * 80}
+              className={
+                i === directions.length - 1 && directions.length % 2
+                  ? "md:col-span-2"
+                  : undefined
+              }
+            >
+              <div className="group relative h-full flex flex-col rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover transition">
+                {/* Вся карточка — ссылка на страницу направления; кнопка конструктора лежит поверх */}
+                <a href={href(L, d.href)} className="absolute inset-0 z-[1]" aria-label={`${d.t} — ${d.more}`} />
+                {/* Фото — своя зона без текста поверх */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-cloud-100">
+                  <img loading="lazy" decoding="async"
+                    src={d.img}
+                    alt={d.t}
+                    width={1280}
+                    height={960}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                  />
+                  <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-white/95 text-navy-800 grid place-items-center pointer-events-none shadow-card">
+                    <d.Ico className="w-6 h-6" />
+                  </div>
+                  <span className="absolute bottom-4 left-4 rounded-full bg-white text-navy-900 text-xs font-semibold px-3 py-1.5 shadow-card pointer-events-none">{d.price}</span>
+                  <div className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 text-navy-800 grid place-items-center group-hover:bg-navy-900 group-hover:text-white transition pointer-events-none">
+                    <IcoArrow className="w-5 h-5 -rotate-45" />
+                  </div>
+                </div>
+                {/* Описание — отдельная белая панель */}
+                <div className="relative flex-1 flex flex-col p-6 pointer-events-none">
+                  <h3 className="font-display font-bold text-2xl text-navy-800">{d.t}</h3>
+                  <p className="text-slate-600 text-sm mt-2 max-w-md leading-relaxed">{d.d}</p>
+                  <div className="mt-4 flex flex-wrap gap-2 text-xs">
+                    {d.specs.map((sp) => (
+                      <span key={sp.k} className="rounded-full border border-cloud-200 bg-cloud-50 px-3 py-1.5 text-navy-800">{sp.k}: {sp.v}</span>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs text-slate-500 max-w-md"><b className="text-navy-800 font-semibold">{d.forWhom}:</b> {d.useCases}</p>
+                  <div className="mt-auto pt-5 flex flex-wrap items-center gap-x-5 gap-y-2 pointer-events-auto">
+                    <a href={d.cta.href} className="relative z-[2] inline-flex items-center gap-2 bg-navy-900 hover:bg-sky-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition">
+                      {d.cta.label} <IcoArrow className="w-4 h-4" />
+                    </a>
+                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 group-hover:text-navy-800">
+                      {d.more} <IcoArrow className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       {/* CALCULATOR */}
       <section
         id="kalkulyator"
@@ -260,66 +322,6 @@ export default async function Home({ params, searchParams }) {
                 <p className="text-slate-500 text-[15px] mt-2 leading-relaxed max-w-xs">
                   {s.d}
                 </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* DIRECTIONS */}
-      <section
-        id="napravleniya"
-        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20"
-      >
-        <SplitHead eyebrow={t.dirEyebrow} title={t.dirTitle} desc={t.dirText} />
-        <div className="grid md:grid-cols-2 gap-5 mt-10">
-          {directions.map((d, i) => (
-            <Reveal
-              key={d.t}
-              delay={i * 80}
-              className={
-                i === directions.length - 1 && directions.length % 2
-                  ? "md:col-span-2"
-                  : undefined
-              }
-            >
-              <div className="group relative rounded-xl2 overflow-hidden shadow-card bg-navy-900">
-                <img loading="lazy" decoding="async"
-                  src={d.img}
-                  alt={d.t}
-                  width={1280}
-                  height={960}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/80 to-navy-900/5" />
-                {/* Вся карточка — ссылка на страницу направления; кнопка конструктора лежит поверх */}
-                <a href={href(L, d.href)} className="absolute inset-0 z-[1]" aria-label={`${d.t} — ${d.more}`} />
-                <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-white/95 text-navy-800 grid place-items-center pointer-events-none">
-                  <d.Ico className="w-6 h-6" />
-                </div>
-                <div className="absolute top-4 right-4 w-11 h-11 rounded-full border border-white/40 text-white grid place-items-center group-hover:bg-white group-hover:text-navy-800 transition pointer-events-none">
-                  <IcoArrow className="w-5 h-5 -rotate-45" />
-                </div>
-                {/* Текст в потоке, а не absolute: на 320px контент выше 400px и раньше вылезал за верх карточки */}
-                <div className="relative pt-44 sm:pt-56 p-6 text-white pointer-events-none">
-                  <h3 className="font-display font-bold text-2xl">{d.t}</h3>
-                  <p className="text-cloud-200/85 text-sm mt-2 max-w-md leading-relaxed">{d.d}</p>
-                  <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                    <span className="rounded-full bg-white text-navy-900 font-semibold px-3 py-1.5">{d.price}</span>
-                    {d.specs.map((sp) => (
-                      <span key={sp.k} className="rounded-full border border-white/25 px-3 py-1.5 text-white/90">{sp.k}: {sp.v}</span>
-                    ))}
-                  </div>
-                  <p className="mt-3 text-xs text-cloud-200/75 max-w-md"><b className="text-white/90 font-semibold">{d.forWhom}:</b> {d.useCases}</p>
-                  <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 pointer-events-auto">
-                    <a href={d.cta.href} className="relative z-[2] inline-flex items-center gap-2 bg-sky-500 hover:bg-white hover:text-navy-900 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition">
-                      {d.cta.label} <IcoArrow className="w-4 h-4" />
-                    </a>
-                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-sky-300 group-hover:text-white">
-                      {d.more} <IcoArrow className="w-4 h-4" />
-                    </span>
-                  </div>
-                </div>
               </div>
             </Reveal>
           ))}

@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 
-import { PRODUCTS, formatPrice } from '../../../lib/products';
+import { PRICED_PRODUCTS, formatPrice } from '../../../lib/products';
 
 const STATUS_KEYBOARD = {
   inline_keyboard: [
@@ -16,7 +16,7 @@ const STATUS_KEYBOARD = {
   ],
 };
 
-const BY_SKU = Object.fromEntries(PRODUCTS.map((p) => [p.sku, p]));
+const BY_SKU = Object.fromEntries(PRICED_PRODUCTS.map((p) => [p.sku, p]));
 
 /**
  * Пересобираем заказ из каталога на сервере: цены и названия берём из

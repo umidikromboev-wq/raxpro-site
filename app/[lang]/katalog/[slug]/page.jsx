@@ -4,7 +4,7 @@ import Footer from "../../../../components/Footer";
 import AddToCart from "../../../../components/AddToCart";
 import LeadForm from "../../../../components/LeadForm";
 import { IcoCheck, IcoArrow } from "../../../../components/Icons";
-import { PRODUCTS, getProduct, formatPrice } from "../../../../lib/products";
+import { PRODUCTS, getProduct, formatPrice, isProjectPriced } from "../../../../lib/products";
 import { getDirection } from "../../../../lib/directions";
 import { SHOP } from "../../../../lib/shop";
 import { normalizeLang } from "../../../../lib/i18n";
@@ -46,8 +46,9 @@ export default async function ProductPage({ params }) {
   const L = normalizeLang(lang);
   const c = p[L];
   const t = SHOP[L];
-  const direction = getDirection(p.directionSlug);
+  const direction = p.directionSlug ? getDirection(p.directionSlug) : null;
   const others = PRODUCTS.filter((x) => x.slug !== p.slug);
+  const byProject = isProjectPriced(p);
 
   const crumbs = breadcrumbSchema(L, [
     { name: t.home, path: "/" },
@@ -116,13 +117,22 @@ export default async function ProductPage({ params }) {
 
         <div className="lg:sticky lg:top-28">
           <div className="flex items-center gap-3 text-sm">
-            <span className="inline-flex items-center gap-1.5 text-emerald-600 font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              {t.inStock}
-            </span>
-            <span className="text-slate-400">
-              {t.sku}: {p.sku}
-            </span>
+            {byProject ? (
+              <span className="inline-flex items-center gap-1.5 text-sky-600 font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-sky-500" />
+                {t.toOrder}
+              </span>
+            ) : (
+              <>
+                <span className="inline-flex items-center gap-1.5 text-emerald-600 font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  {t.inStock}
+                </span>
+                <span className="text-slate-400">
+                  {t.sku}: {p.sku}
+                </span>
+              </>
+            )}
           </div>
 
           <h1 className="mt-3 font-display font-medium text-2xl sm:text-3xl lg:text-4xl text-navy-800 tracking-tight leading-[1.12]">
@@ -131,25 +141,54 @@ export default async function ProductPage({ params }) {
           <p className="mt-4 text-slate-600 leading-relaxed">{c.lead}</p>
 
           <div className="mt-7 rounded-xl2 border border-cloud-200 bg-white shadow-card p-6">
-            <div className="text-sm text-slate-400">{t.from}</div>
-            <div className="font-display font-medium text-4xl text-navy-800 mt-1">
-              {formatPrice(p.price, L)}
-            </div>
-            <div className="mt-2 text-sm text-slate-500">{t.priceNote}</div>
-            <div className="mt-1 text-sm text-slate-500">{t.madeDays}</div>
+            {byProject ? (
+              <>
+                <div className="font-display font-medium text-3xl text-navy-800">
+                  {t.byProject}
+                </div>
+                <div className="mt-2 text-sm text-slate-500">{t.byProjectNote}</div>
+                <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                  <a
+                    href="#zayavka"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-navy-900 text-white hover:bg-sky-600 font-semibold px-6 py-3.5 rounded-xl transition"
+                  >
+                    {t.withEngineer}
+                  </a>
+                  {p.konType && (
+                    <a
+                      href={href(L, `/konstruktor?type=${p.konType}`)}
+                      className="flex-1 inline-flex items-center justify-center gap-2 border border-navy-900/15 text-navy-800 hover:border-sky-500 hover:text-sky-600 font-semibold px-6 py-3.5 rounded-xl transition"
+                    >
+                      {t.inKonstruktor}
+                    </a>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-sm text-slate-400">{t.from}</div>
+                <div className="font-display font-medium text-4xl text-navy-800 mt-1">
+                  {formatPrice(p.price, L)}
+                </div>
+                <div className="mt-2 text-sm text-slate-500">{t.priceNote}</div>
+                <div className="mt-1 text-sm text-slate-500">{t.madeDays}</div>
 
-            <div className="mt-5 flex flex-col sm:flex-row gap-3">
-              <AddToCart product={p} lang={L} className="flex-1" />
-              {/* Форма заявки живёт на этой же странице — уводить на главную
-                  значит терять покупателя, который уже выбрал товар. */}
-              <a
-                href="#zayavka"
-                className="flex-1 inline-flex items-center justify-center gap-2 border border-navy-900/15 text-navy-800 hover:border-sky-500 hover:text-sky-600 font-semibold px-6 py-3.5 rounded-xl transition"
-              >
-                {t.buyNow}
-              </a>
-            </div>
+                <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                  <AddToCart product={p} lang={L} className="flex-1" />
+                  {/* Форма заявки живёт на этой же странице — уводить на главную
+                      значит терять покупателя, который уже выбрал товар. */}
+                  <a
+                    href="#zayavka"
+                    className="flex-1 inline-flex items-center justify-center gap-2 border border-navy-900/15 text-navy-800 hover:border-sky-500 hover:text-sky-600 font-semibold px-6 py-3.5 rounded-xl transition"
+                  >
+                    {t.buyNow}
+                  </a>
+                </div>
+              </>
+            )}
 
+            {/* «Что входит в цену» — только у позиций с ценой; по проекту состав задаёт КП. */}
+            {!byProject && (
             <ul className="mt-6 space-y-2.5 border-t border-cloud-200 pt-5">
               {t.included.map((i) => (
                 <li
@@ -163,6 +202,7 @@ export default async function ProductPage({ params }) {
                 </li>
               ))}
             </ul>
+            )}
 
             <p className="mt-5 text-sm text-slate-500 leading-relaxed">
               {t.deliveryShort}{" "}
@@ -278,7 +318,7 @@ export default async function ProductPage({ params }) {
                     {o[L].short}
                   </h3>
                   <div className="mt-2 font-display font-medium text-xl text-navy-800">
-                    {formatPrice(o.price, L)}
+                    {isProjectPriced(o) ? t.byProject : formatPrice(o.price, L)}
                   </div>
                 </div>
               </a>

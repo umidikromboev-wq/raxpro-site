@@ -3,7 +3,7 @@ import Footer from "../../../components/Footer";
 import LeadForm from "../../../components/LeadForm";
 import AddToCart from "../../../components/AddToCart";
 import { IcoArrow, IcoCheck } from "../../../components/Icons";
-import { PRODUCTS, formatPrice } from "../../../lib/products";
+import { PRODUCTS, formatPrice, isProjectPriced } from "../../../lib/products";
 import { SHOP } from "../../../lib/shop";
 import { normalizeLang } from "../../../lib/i18n";
 import { alternatesFor, href, absHref } from "../../../lib/lang";
@@ -81,6 +81,7 @@ export default async function CatalogPage({ params }) {
         <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {PRODUCTS.map((p) => {
             const c = p[L];
+            const byProject = isProjectPriced(p);
             return (
               <article
                 key={p.slug}
@@ -103,13 +104,22 @@ export default async function CatalogPage({ params }) {
 
                 <div className="flex flex-col flex-1 p-6">
                   <div className="flex items-center gap-2 text-xs">
-                    <span className="inline-flex items-center gap-1.5 text-emerald-600 font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      {t.inStock}
-                    </span>
-                    <span className="text-slate-400">
-                      {t.sku}: {p.sku}
-                    </span>
+                    {byProject ? (
+                      <span className="inline-flex items-center gap-1.5 text-sky-600 font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-sky-500" />
+                        {t.toOrder}
+                      </span>
+                    ) : (
+                      <>
+                        <span className="inline-flex items-center gap-1.5 text-emerald-600 font-semibold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          {t.inStock}
+                        </span>
+                        <span className="text-slate-400">
+                          {t.sku}: {p.sku}
+                        </span>
+                      </>
+                    )}
                   </div>
 
                   <h2 className="mt-3 font-semibold text-navy-800 leading-snug">
@@ -135,14 +145,23 @@ export default async function CatalogPage({ params }) {
 
                   <div className="mt-auto pt-6">
                     <div className="font-display font-medium text-2xl text-navy-800">
-                      {formatPrice(p.price, L)}
+                      {byProject ? t.byProject : formatPrice(p.price, L)}
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2.5">
-                      <AddToCart
-                        product={p}
-                        lang={L}
-                        className="flex-1 min-w-[140px] !py-3"
-                      />
+                      {byProject ? (
+                        <a
+                          href={href(L, `/katalog/${p.slug}#zayavka`)}
+                          className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 bg-navy-900 text-white hover:bg-sky-600 font-semibold px-5 py-3 rounded-xl transition"
+                        >
+                          {t.withEngineer}
+                        </a>
+                      ) : (
+                        <AddToCart
+                          product={p}
+                          lang={L}
+                          className="flex-1 min-w-[140px] !py-3"
+                        />
+                      )}
                       <a
                         href={href(L, `/katalog/${p.slug}`)}
                         className="inline-flex items-center justify-center gap-2 border border-navy-900/15 text-navy-800 hover:border-sky-500 hover:text-sky-600 font-semibold px-5 py-3 rounded-xl transition"
