@@ -12,12 +12,12 @@ import "../../../components/konstruktor/konstruktor.css";
 
 const META = {
   ru: {
-    title: "Онлайн-конструктор стеллажей: паллетомест, план, 3D и цена за минуту | RAXPRO",
+    title: "Конструктор стеллажей онлайн: план, 3D и цена | RAXPRO",
     description:
       "Спроектируйте склад за три шага: введите помещение или секции — получите паллетомест, план расстановки, 3D-модель, спецификацию и расчётную цену до звонка менеджеру.",
   },
   uz: {
-    title: "Onlayn stellaj konstruktori: pallet oʻrinlari, reja, 3D va narx bir daqiqada | RAXPRO",
+    title: "Onlayn stellaj konstruktori: reja, 3D va narx | RAXPRO",
     description:
       "Omboringizni uch qadamda loyihalang: xona yoki seksiyalarni kiriting — pallet oʻrinlari, joylashuv rejasi, 3D model, spetsifikatsiya va hisobiy narxni menejerga qoʻngʻiroqdan oldin oling.",
   },
