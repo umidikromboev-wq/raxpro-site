@@ -22,6 +22,11 @@ const FT = {
     err: "Ошибка отправки. Позвоните:",
     consent: "Нажимая кнопку, вы соглашаетесь на обработку персональных данных",
     altContact: "Не любите звонки? Напишите в",
+    photo: "Фото или чертёж помещения",
+    photoHint: "JPG, PNG или PDF до 10 МБ — так расчёт точнее",
+    photoRemove: "Убрать",
+    fast: "Ответим за 5 минут",
+    tgFirst: "Написать в Telegram",
   },
   uz: {
     name: "Ismingiz *",
@@ -43,18 +48,32 @@ const FT = {
     consent:
       "Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz",
     altContact: "Qoʻngʻiroqni yoqtirmaysizmi? Yozing:",
+    photo: "Xona surati yoki chizmasi",
+    photoHint: "JPG, PNG yoki PDF, 10 MB gacha — hisob-kitob aniqroq boʻladi",
+    photoRemove: "Olib tashlash",
+    fast: "5 daqiqada javob beramiz",
+    tgFirst: "Telegramga yozish",
   },
 };
 
-export default function LeadForm({ compact = false, lang = "ru" }) {
+const MAX_FILE = 10 * 1024 * 1024;
+
+// withPhoto — поле для фото/чертежа помещения (уходит в Telegram документом).
+// context — текст, который клиент не пишет, но менеджер должен видеть:
+// конфигурация из конструктора, ссылка на расчёт.
+export default function LeadForm({
+  compact = false, lang = "ru", withPhoto = false,
+  initialProduct = "", context = "", submitLabel = "",
+}) {
   const router = useRouter();
   const t = FT[lang === "uz" ? "uz" : "ru"];
   const [f, setF] = useState({
     name: "",
     phone: "+998 ",
-    product: "",
+    product: initialProduct,
     message: "",
   });
+  const [file, setFile] = useState(null);
   const [state, setState] = useState("idle");
 
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
@@ -107,17 +126,27 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
     setState("sending");
 
     try {
-      const r = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...f,
-          phone: f.phone, // Formatlangan holda yuboriladi: +998 93 002 95 71
-        }),
-      });
+      const message = context ? `${f.message}\n\n${context}`.trim() : f.message;
+      let r;
+      if (file) {
+        const fd = new FormData();
+        fd.append("name", f.name);
+        fd.append("phone", f.phone);
+        fd.append("product", f.product);
+        fd.append("message", message);
+        fd.append("file", file);
+        r = await fetch("/api/lead", { method: "POST", body: fd });
+      } else {
+        r = await fetch("/api/lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...f, message, phone: f.phone }),
+        });
+      }
 
       if (r.ok) {
         setF({ name: "", phone: "+998 ", product: "", message: "" });
+        setFile(null);
         setState("idle");
         router.push(`/thank-you?lang=${lang}`);
       } else {
@@ -183,12 +212,41 @@ export default function LeadForm({ compact = false, lang = "ru" }) {
         />
       )}
 
+      {withPhoto && (
+        <label className={`${field} mt-3 flex items-center gap-3 cursor-pointer`}>
+          <input
+            type="file"
+            accept="image/*,.pdf"
+            className="sr-only"
+            onChange={(e) => {
+              const picked = e.target.files?.[0] || null;
+              setFile(picked && picked.size <= MAX_FILE ? picked : null);
+            }}
+          />
+          <span className="w-9 h-9 rounded-lg bg-white border border-cloud-200 grid place-items-center text-sky-600 shrink-0" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h3l2-2h6l2 2h3v12H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className={`block text-sm font-semibold ${file ? "text-ink" : "text-slate-500"} truncate`}>{file ? file.name : t.photo}</span>
+            <span className="block text-xs text-slate-400">{t.photoHint}</span>
+          </span>
+          {file && (
+            <button type="button" className="text-xs font-semibold text-slate-400 hover:text-red-600" onClick={(e) => { e.preventDefault(); setFile(null); }}>
+              {t.photoRemove}
+            </button>
+          )}
+        </label>
+      )}
+
       <button
         disabled={state === "sending"}
         className="btn-11 w-full mt-4 bg-brand-grad text-white font-bold py-3.5 rounded-xl disabled:opacity-60 shadow-glow hover:brightness-110"
       >
-        {state === "sending" ? t.sending : t.submit}
+        {state === "sending" ? t.sending : submitLabel || t.submit}
       </button>
+      <p className="mt-2 text-center text-xs font-semibold text-sky-700 inline-flex w-full justify-center items-center gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" /> {t.fast}
+      </p>
 
       {state === "err" && (
         <p className="text-red-600 text-sm mt-2 text-center">

@@ -82,20 +82,62 @@ async function sendToBitrix(lead) {
   return Boolean(data.result);
 }
 
+const MAX_FILE = 10 * 1024 * 1024;
+const FILE_TYPES = /^(image\/(jpeg|png|webp|heic|heif)|application\/pdf)$/;
+
+/**
+ * Forward the customer's photo or drawing to the same Telegram chat as a document,
+ * so the manager sees the room next to the lead card. Failure here never blocks the lead.
+ * @param {File} file
+ * @param {{ name?: string, phone: string }} lead
+ */
+async function sendFileToTelegram(file, lead) {
+  const token = process.env.TG_BOT_TOKEN;
+  const chatId = process.env.LEAD_CHAT_ID;
+  if (!token || !chatId || !file) return false;
+  const fd = new FormData();
+  fd.append('chat_id', chatId);
+  fd.append('caption', `📐 Помещение к заявке: ${lead.name || '—'} · ${lead.phone}`);
+  fd.append('document', file, file.name || 'room');
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, { method: 'POST', body: fd });
+  const data = await res.json();
+  return Boolean(data.ok);
+}
+
+/** Lead body arrives as JSON from the plain form or as multipart when a file is attached. */
+async function readLead(req) {
+  const type = req.headers.get('content-type') || '';
+  if (type.includes('multipart/form-data')) {
+    const fd = await req.formData();
+    const raw = fd.get('file');
+    const file = raw && typeof raw === 'object' && raw.size > 0 && raw.size <= MAX_FILE && FILE_TYPES.test(raw.type) ? raw : null;
+    return {
+      name: String(fd.get('name') || ''),
+      phone: String(fd.get('phone') || ''),
+      product: String(fd.get('product') || ''),
+      message: String(fd.get('message') || ''),
+      file,
+    };
+  }
+  const { name, phone, product, message } = await req.json();
+  return { name, phone, product, message, file: null };
+}
+
 export async function POST(req) {
   try {
-    const { name, phone, product, message } = await req.json();
+    const { name, phone, product, message, file } = await readLead(req);
     if (!phone || String(phone).trim().length < 5) {
       return Response.json({ error: 'phone required' }, { status: 400 });
     }
 
-    const lead = { name, phone, product, message };
+    const lead = { name, phone, product, message: String(message || '').slice(0, 3000) };
 
     // Deliver to both destinations independently so one failure never loses a lead.
     const [tg, bx] = await Promise.allSettled([
       sendToTelegram(lead),
       sendToBitrix(lead),
     ]);
+    if (file) await sendFileToTelegram(file, lead).catch(() => false);
     const telegramOk = tg.status === 'fulfilled' && tg.value === true;
     const bitrixOk = bx.status === 'fulfilled' && bx.value === true;
 

@@ -18,7 +18,8 @@ const MM = 0.001;
 const SHOT_W = 1280;
 const SHOT_H = 720;
 
-export default function RackScene({ room, layout, height = 460, onCapture, apiRef }) {
+export default function RackScene({ room, layout, height = 460, onCapture, apiRef, lang = 'ru', figure = false }) {
+  const uz = lang === 'uz';
   const canvasRef = useRef(null);
   const stateRef = useRef(null);
   const [ready, setReady] = useState(false);
@@ -241,6 +242,20 @@ export default function RackScene({ room, layout, height = 460, onCapture, apiRe
       boxMesh.instanceMatrix.needsUpdate = true;
       if (boxMesh.instanceColor) boxMesh.instanceColor.needsUpdate = true;
 
+      // Силуэт человека 1,75 м у первой секции — масштаб читается без подписей.
+      if (figure && bays.length) {
+        const man = new THREE.Group();
+        const skin = new THREE.MeshStandardMaterial({ color: 0xf2b134, roughness: 0.8 });
+        const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.2, 0.9, 4, 10), skin);
+        body.position.y = 0.85;
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.13, 12, 10), skin);
+        head.position.y = 1.62;
+        man.add(body, head);
+        const first = layout.bays[0];
+        man.position.set(first.x * MM + bayW / 2, 0, first.y * MM + rackD + 0.9);
+        scene.add(man);
+      }
+
       // ——— орбита
       let az = -0.72;
       let el = 0.34;
@@ -264,16 +279,32 @@ export default function RackScene({ room, layout, height = 460, onCapture, apiRe
         cam.updateProjectionMatrix();
       };
 
+      // Один палец — поворот, два — щипок-зум: конструктор открывают с телефона.
       let drag = null;
-      const onDown = (e) => { drag = { x: e.clientX, y: e.clientY }; canvas.setPointerCapture?.(e.pointerId); };
+      const pointers = new Map();
+      let pinch = 0;
+      const onDown = (e) => {
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        drag = { x: e.clientX, y: e.clientY };
+        canvas.setPointerCapture?.(e.pointerId);
+      };
       const onMove = (e) => {
+        if (pointers.has(e.pointerId)) pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (pointers.size >= 2) {
+          const [a, b] = [...pointers.values()];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (pinch) { dist *= pinch / Math.max(1, d); applyCam(); }
+          pinch = d;
+          drag = null;
+          return;
+        }
         if (!drag) return;
         az -= (e.clientX - drag.x) * 0.006;
         el += (e.clientY - drag.y) * 0.005;
         drag = { x: e.clientX, y: e.clientY };
         applyCam();
       };
-      const onUp = () => { drag = null; };
+      const onUp = (e) => { pointers.delete(e.pointerId); if (pointers.size < 2) pinch = 0; drag = null; };
       const onWheel = (e) => { e.preventDefault(); dist *= 1 + Math.sign(e.deltaY) * 0.08; applyCam(); };
 
       canvas.addEventListener('pointerdown', onDown);
@@ -343,7 +374,7 @@ export default function RackScene({ room, layout, height = 460, onCapture, apiRe
     })();
 
     return () => { disposed = true; cleanup(); };
-  }, [room, layout, height, apiRef]);
+  }, [room, layout, height, apiRef, figure]);
 
   useEffect(() => {
     const s = stateRef.current;
@@ -361,15 +392,15 @@ export default function RackScene({ room, layout, height = 460, onCapture, apiRe
     <div className="relative">
       <canvas
         ref={canvasRef}
-        style={{ width: '100%', height, display: 'block', background: '#0d1116', cursor: 'grab' }}
+        style={{ width: '100%', height, display: 'block', background: '#0d1116', cursor: 'grab', touchAction: 'none' }}
         aria-label="Интерактивная модель склада"
       />
       {error && (
         <p className="absolute inset-0 grid place-items-center text-sm text-white/70">{error}</p>
       )}
       <div className="absolute left-3 top-3 flex gap-2 text-[11px]">
-        <Toggle on={shell} onClick={() => setShell((v) => !v)}>Здание</Toggle>
-        <Toggle on={pallets} onClick={() => setPallets((v) => !v)}>Груз</Toggle>
+        <Toggle on={shell} onClick={() => setShell((v) => !v)}>{uz ? 'Bino' : 'Здание'}</Toggle>
+        <Toggle on={pallets} onClick={() => setPallets((v) => !v)}>{uz ? 'Yuk' : 'Груз'}</Toggle>
         {onCapture && (
           <button
             onClick={() => {
@@ -383,7 +414,7 @@ export default function RackScene({ room, layout, height = 460, onCapture, apiRe
         )}
       </div>
       <p className="absolute bottom-3 right-3 text-[10px] text-white/45">
-        тянуть — поворот · колесо — приближение
+        {uz ? 'tortish — burish · gʻildirak — yaqinlashtirish' : 'тянуть — поворот · колесо — приближение'}
       </p>
     </div>
   );
