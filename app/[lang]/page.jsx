@@ -11,6 +11,7 @@ import { directionCards } from "../../lib/directionCards";
 import VideoHero from "../../components/hero/VideoHero";
 import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
 import ProductSlider from "../../components/ProductSlider";
+import PriceBreakdown from "../../components/PriceBreakdown";
 import { SplitHead, Eyebrow } from "../../components/Section";
 import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
 import { T, EXTRA, normalizeLang } from "../../lib/i18n";
@@ -281,6 +282,9 @@ export default async function Home({ params, searchParams }) {
           </div>
         </div>
       </section>
+
+      {/* PRICE — из чего складывается цена: состав секции, что входит, оплата */}
+      <PriceBreakdown lang={L} />
 
       {/* PROCESS */}
       <section
