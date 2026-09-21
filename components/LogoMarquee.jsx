@@ -16,15 +16,15 @@ export default function LogoMarquee({ logos }) {
         {row.map((c, i) => (
           <div
             key={`${c.alt}-${i}`}
-            className="shrink-0 w-[150px] h-14 grid place-items-center"
+            className="shrink-0 w-[220px] h-20 grid place-items-center"
             aria-hidden={i >= logos.length ? 'true' : undefined}
           >
             <img loading="lazy" decoding="async"
               src={c.src}
               alt={i >= logos.length ? '' : c.alt}
-              width={150}
-              height={56}
-              className="max-h-9 max-w-[130px] w-auto object-contain opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition"
+              width={220}
+              height={80}
+              className="max-h-14 max-w-[180px] w-auto object-contain opacity-85 hover:opacity-100 transition"
             />
           </div>
         ))}

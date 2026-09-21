@@ -13,6 +13,24 @@ const LABEL_TEXT = { ru: ['до 4 т / ярус', 'Ваше помещение',
 const PORTRAIT_FROM = { position: [4.4, 3.6, 10.6], target: [-1.6, 1.0, 2.5], fov: 46 };
 const PORTRAIT_TO = { position: [12.5, 8.2, 12.8], target: [-1.2, 2.3, -0.4], fov: 40 };
 const FOG_COLOR = 0x0b4f80;
+const ORBIT_FOV = 38;
+// Ключи облёта на десктопе: az — азимут (рад, камера в квадранте +x +z, стены
+// сзади не перекрывают), el — высота, dist — расстояние до цели, ty — высота цели.
+const ORBIT = [
+  { p: 0.0, az: 1.14, el: 0.54, dist: 30, ty: 2.4 },
+  { p: 0.28, az: 0.98, el: 0.42, dist: 25, ty: 2.8 },
+  { p: 0.66, az: 0.8, el: 0.32, dist: 23, ty: 2.5 },
+  { p: 0.96, az: 0.9, el: 0.32, dist: 24, ty: 2.5 },
+  { p: 1.0, az: 1.0, el: 0.36, dist: 26, ty: 2.5 },
+];
+function orbitAt(p) {
+  let i = 0;
+  while (i < ORBIT.length - 2 && p > ORBIT[i + 1].p) i++;
+  const a = ORBIT[i], b = ORBIT[i + 1];
+  const t = smoothstep((p - a.p) / (b.p - a.p));
+  const mix = (k) => a[k] + (b[k] - a[k]) * t;
+  return { az: mix('az'), el: mix('el'), dist: mix('dist'), ty: mix('ty') };
+}
 
 export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } = {}) {
   const model = rackModel();
@@ -37,8 +55,8 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     scene.environmentIntensity = 0.5;
     pmrem.dispose();
   }
-  scene.add(new THREE.HemisphereLight(0xe9f4ff, 0x68829b, RoomEnvironment ? 1.4 : 2.2));
-  const sun = new THREE.DirectionalLight(0xfff3dd, 4.0);
+  scene.add(new THREE.HemisphereLight(0xdceefc, 0x48627a, RoomEnvironment ? 1.0 : 1.7));
+  const sun = new THREE.DirectionalLight(0xfff3dd, 2.6);
   sun.position.set(-7, 17, 10); sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   Object.assign(sun.shadow.camera, { left: -16, right: 16, top: 16, bottom: -16, near: 1, far: 60 });
@@ -56,7 +74,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     film: new THREE.MeshStandardMaterial({ color: 0xdbe7f0, transparent: true, opacity: 0.42, roughness: 0.15, metalness: 0.05, depthWrite: false }),
     wrap: new THREE.MeshStandardMaterial({ map: wrapTexture(THREE), roughness: 0.28, metalness: 0.05 }),
     drum: material(0x2b62b8, 0.35, 0.3), label: new THREE.MeshStandardMaterial({ map: loadLabelTexture(THREE, text[0]), roughness: 0.5 }),
-    jackBody: material(0xf0731a, 0.45, 0.25), floor: material(0x8399a9, 0.98), column: material(0xb7bcb9, 0.98),
+    jackBody: material(0xf0731a, 0.45, 0.25), floor: material(0x5f7488, 0.98), column: material(0x93a2ad, 0.98),
     extinguisher: material(0xd12b2b, 0.4, 0.3), extinguisherSign: material(0xe03030, 0.7),
   };
 
@@ -205,12 +223,19 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
       portrait.updateProjectionMatrix();
       return;
     }
-    activeCamera = camera; scene.fog = null;
-    // Цель камеры выше центра сцены, чтобы верх стен не уходил под плавающее меню.
-    const span = Math.max(10.3, 12.9 / aspect) * (1 + end * 0.04);
-    const target = [0, 3.0, 0];
-    camera.left = -span * aspect; camera.right = span * aspect; camera.top = span; camera.bottom = -span;
-    camera.position.set(target[0] + 18, target[1] + 18, target[2] + 25); camera.lookAt(...target); camera.updateProjectionMatrix();
+    // Десктоп: перспективная камера облетает цех, как в первой версии героя
+    // (ветка feat/rack-hero): дальний общий план на замере, ближе к чертежу и
+    // сборке, лёгкий отъезд на загрузке. Азимут и высота идут по ключам.
+    const c = orbitAt(progress);
+    activeCamera = portrait; scene.fog = fog;
+    portrait.aspect = aspect; portrait.fov = ORBIT_FOV * (1 + end * 0.04);
+    const target = [0, c.ty, 0];
+    portrait.position.set(
+      target[0] + c.dist * Math.cos(c.el) * Math.cos(c.az),
+      target[1] + c.dist * Math.sin(c.el),
+      target[2] + c.dist * Math.cos(c.el) * Math.sin(c.az),
+    );
+    portrait.lookAt(...target); portrait.updateProjectionMatrix();
   }
   function placeItem(item, t) {
     const o = item.owner;

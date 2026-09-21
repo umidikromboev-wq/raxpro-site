@@ -6,7 +6,6 @@ import Calculator from "../../components/Calculator";
 import Reveal from "../../components/Reveal";
 import Parallax from "../../components/Parallax";
 import RackHero from "../../components/hero/RackHero";
-import { referencePerPalletPosition } from "@/lib/rack/konstruktor";
 import { directionCards } from "../../lib/directionCards";
 import VideoHero from "../../components/hero/VideoHero";
 import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
@@ -235,15 +234,18 @@ export default async function Home({ params, searchParams }) {
         ? <VideoHeroMp4 lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
         : heroMode === "video"
           ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
-          : <RackHero lang={L} chips={t.heroChips} ctaHref={`/${L}/konstruktor`} cta2Href="#zayavka" pricePerPosition={referencePerPalletPosition()} />}
+          : <RackHero lang={L} ctaHref="#kalkulyator" cta2Href="#zayavka" />}
 
       {/* CLIENTS */}
-      <section className="border-b border-cloud-200 bg-cloud-50">
-        <div className="w-full py-8">
-          <p className="text-center text-slate-500 text-xs uppercase tracking-widest mb-6">
-            {t.clients}
-          </p>
-          <LogoMarquee logos={CLIENT_LOGOS} />
+      <section className="border-b border-cloud-200 bg-white" aria-labelledby="clients-title">
+        <div className="w-full py-14 sm:py-16">
+          <div className="text-center px-5">
+            <h2 id="clients-title" className="font-display font-medium text-2xl sm:text-3xl text-navy-800">{t.clients}</h2>
+            <p className="mt-2 text-slate-500"><span className="font-display text-sky-600 text-3xl sm:text-4xl align-middle mr-2">{t.clientsCount}</span>{t.clientsText}</p>
+          </div>
+          <div className="mt-10">
+            <LogoMarquee logos={CLIENT_LOGOS} />
+          </div>
         </div>
       </section>
 

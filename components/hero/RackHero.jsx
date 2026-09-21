@@ -6,7 +6,7 @@ import { countPositions, floorPositions } from './rackModel';
 import { IcoArrow } from '../Icons';
 
 const STOPS = [0, 0.23, 0.57, 1];
-export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Href = '#napravleniya', pricePerPosition = 0 }) {
+export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Href = '#zayavka' }) {
   const copy = HERO_COPY[lang] || HERO_COPY.ru;
   const positions = countPositions(), floor = floorPositions();
   const sectionRef = useRef(null), canvasRef = useRef(null), introRef = useRef(null);
@@ -46,6 +46,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
         const current = p < 0.055 ? 0 : p < 0.28 ? 1 : p < 0.66 ? 2 : 3;
         navigationRef.current?.querySelectorAll('button').forEach((button, index) => {
           button.dataset.active = String(index === current);
+          button.dataset.done = String(index < current);
           if (index === current) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
         });
         if (capacityRef.current) {
@@ -123,11 +124,6 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
             <span className="rack-kicker">{copy.eyebrow}</span>
             <h1>{copy.title}</h1>
             <p className="rack-description">{copy.text}</p>
-            <dl className="rack-facts rack-intro-facts">
-              {copy.introFacts.map((fact) => (
-                <div key={fact.l}><dt>{fact.l}</dt><dd>{fact.n}</dd></div>
-              ))}
-            </dl>
           </div>
           {STAGE_ORDER.map((key) => (
             <div key={key} className="rack-stage" ref={(element) => { panels.current[key] = element; }}>
@@ -143,10 +139,6 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
           ))}
           <div className="rack-actions">
             <a className="rack-cta" href={ctaHref}>{copy.cta1}<IcoArrow className="w-4 h-4" /></a>
-            <span className="rack-free">
-              {pricePerPosition > 0 && <b>{copy.perPosition.replace('{price}', Math.round(pricePerPosition).toLocaleString('ru-RU'))}</b>}
-              {copy.free}
-            </span>
             <a className="rack-secondary" href={cta2Href}>{copy.cta2}<span aria-hidden="true">↗</span></a>
           </div>
         </div>
@@ -157,9 +149,8 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
         </div>
         <div className="rack-footer">
           <nav ref={navigationRef} className="rack-navigation" aria-label={copy.navigation}>
-            {copy.labels.map((label, index) => <button type="button" key={label} onClick={() => jump(index)} data-active={index === 0 ? 'true' : 'false'}><span>0{index + 1}</span>{label}<i /></button>)}
+            {copy.labels.map((label, index) => <button type="button" key={label} onClick={() => jump(index)} data-active={index === 0 ? 'true' : 'false'} data-done="false"><i /><span>0{index + 1}</span>{label}</button>)}
           </nav>
-          <p className="rack-model-note">{copy.modelNote}</p>
           <span className="rack-scroll-hint">{copy.scrollHint}<span aria-hidden="true">↓</span></span>
         </div>
       </div>

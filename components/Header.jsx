@@ -7,7 +7,6 @@ import { NAV_T, T, normalizeLang } from "../lib/i18n";
 // Обещание из отчёта по нише: срок ответа стоит рядом с телефоном, а не в подвале.
 const FAST = { ru: "Ответим за 5 минут", uz: "5 daqiqada javob beramiz" };
 import { IcoTg, IcoPhone } from "./Icons";
-import CartLink from "./CartLink";
 import { href, switchLangPath } from "../lib/lang";
 
 export default function Header({ lang = "ru" }) {
@@ -102,7 +101,6 @@ export default function Header({ lang = "ru" }) {
             >
               <IcoTg className="w-5 h-5" />
             </a>
-            <CartLink lang={L} />
             <a
               href={home + "#zayavka"}
               className="btn-11 hidden lg:inline-flex text-sm font-medium px-5 py-2.5 rounded-xl bg-white/12 !border !border-white/20 text-white hover:bg-white hover:text-navy-800 transition backdrop-blur-sm whitespace-nowrap"

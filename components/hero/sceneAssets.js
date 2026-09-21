@@ -98,8 +98,8 @@ export function floorMarkingTexture(THREE, room, aisleLines) {
 export function wallTexture(THREE, widthMeters, heightMeters) {
   const px = 32;
   return canvasTexture(THREE, widthMeters * px, heightMeters * px, (ctx, w, h) => {
-    ctx.fillStyle = '#d5dee6'; ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = 'rgba(90,110,130,0.38)'; ctx.lineWidth = 2;
+    ctx.fillStyle = '#7f97ab'; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(60,80,100,0.42)'; ctx.lineWidth = 2;
     for (let x = 0; x <= widthMeters; x += 1) { ctx.beginPath(); ctx.moveTo(x * px, 0); ctx.lineTo(x * px, h); ctx.stroke(); }
     ctx.fillStyle = '#3b4a58'; ctx.fillRect(0, h - 0.6 * px, w, 0.6 * px);
   });
