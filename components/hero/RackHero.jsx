@@ -6,7 +6,7 @@ import { countPositions, floorPositions } from './rackModel';
 import { IcoArrow } from '../Icons';
 
 const STOPS = [0, 0.23, 0.57, 1];
-export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Href = '#napravleniya' }) {
+export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Href = '#napravleniya', pricePerPosition = 0 }) {
   const copy = HERO_COPY[lang] || HERO_COPY.ru;
   const positions = countPositions(), floor = floorPositions();
   const sectionRef = useRef(null), canvasRef = useRef(null), introRef = useRef(null);
@@ -123,6 +123,11 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
             <span className="rack-kicker">{copy.eyebrow}</span>
             <h1>{copy.title}</h1>
             <p className="rack-description">{copy.text}</p>
+            <dl className="rack-facts rack-intro-facts">
+              {copy.introFacts.map((fact) => (
+                <div key={fact.l}><dt>{fact.l}</dt><dd>{fact.n}</dd></div>
+              ))}
+            </dl>
           </div>
           {STAGE_ORDER.map((key) => (
             <div key={key} className="rack-stage" ref={(element) => { panels.current[key] = element; }}>
@@ -138,7 +143,10 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
           ))}
           <div className="rack-actions">
             <a className="rack-cta" href={ctaHref}>{copy.cta1}<IcoArrow className="w-4 h-4" /></a>
-            <span className="rack-free">{copy.free}</span>
+            <span className="rack-free">
+              {pricePerPosition > 0 && <b>{copy.perPosition.replace('{price}', Math.round(pricePerPosition).toLocaleString('ru-RU'))}</b>}
+              {copy.free}
+            </span>
             <a className="rack-secondary" href={cta2Href}>{copy.cta2}<span aria-hidden="true">↗</span></a>
           </div>
         </div>

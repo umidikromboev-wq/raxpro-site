@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import { IcoArrow } from './Icons';
 
-export default function ProductSlider({ items }) {
+const CTA = { ru: 'Хочу так же', uz: 'Menga ham shunday' };
+
+export default function ProductSlider({ items, lang = 'ru' }) {
   const [i, setI] = useState(0);
   const n = items.length;
   const p = items[i];
@@ -21,11 +23,15 @@ export default function ProductSlider({ items }) {
           </div>
           <h3 className="font-display font-medium text-2xl sm:text-3xl mt-6">{p.t}</h3>
           <p className="text-cloud-200/75 mt-3 max-w-sm leading-relaxed">{p.d}</p>
-          <div className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-sky-300 bg-white/5 rounded-full px-3.5 py-1.5">
-            {p.load}
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center text-sm font-semibold text-sky-300 bg-white/5 rounded-full px-3.5 py-1.5">{p.load}</span>
+            {/* Метрики проекта — только те цифры, что стоят в его описании */}
+            {p.metrics?.map((m) => (
+              <span key={m} className="inline-flex items-center text-sm text-white/90 border border-white/20 rounded-full px-3 py-1.5">{m}</span>
+            ))}
           </div>
-          <a href="#zayavka" className="mt-auto inline-flex items-center justify-center gap-2 self-start bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 transition">
-            Перейти <IcoArrow className="w-5 h-5" />
+          <a href="#zayavka" className="mt-6 md:mt-auto inline-flex items-center justify-center gap-2 self-start bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 transition">
+            {CTA[lang] || CTA.ru} <IcoArrow className="w-5 h-5" />
           </a>
         </div>
 

@@ -3,8 +3,10 @@ export const HERO_COPY = {
   ru: {
     eyebrow: 'Стеллажи под ваш бизнес', title: 'Больше товара.\nНа той же площади.',
     text: 'Спроектируем систему хранения под ваше помещение, товары и нагрузку. От первого замера до готового стеллажа.',
-    cta1: 'Получить бесплатный проект', cta2: 'Смотреть стеллажи',
-    scrollHint: 'Листайте — соберём ваш склад', free: 'Замер и проектирование по Ташкенту — бесплатно',
+    cta1: 'Спроектировать склад онлайн', cta2: 'Оставить заявку',
+    scrollHint: 'Листайте — соберём ваш склад', free: 'Замер и проект по Ташкенту — бесплатно',
+    perPosition: 'от {price} сум за паллетоместо · расчётная, без НДС',
+    introFacts: [{ n: '1000+', l: 'реализованных проектов' }, { n: 'до 4 т', l: 'нагрузка на ярус' }, { n: 'с 2021', l: 'на рынке систем хранения' }],
     navigation: 'Этапы создания стеллажа', labels: ['Замер', 'Проект', 'Сборка', 'Вместимость'],
     modelNote: 'Иллюстрация планировки. Вместимость рассчитывается под ваш объект.',
     loaded: 'мест заполнено', total: 'мест в этой модели',
@@ -20,8 +22,10 @@ export const HERO_COPY = {
   uz: {
     eyebrow: 'Biznesingiz uchun stellajlar', title: 'Koʻproq tovar.\nOʻsha maydonda.',
     text: 'Xonangiz, tovarlaringiz va yuklamangizga mos saqlash tizimini loyihalaymiz. Birinchi oʻlchovdan tayyor stellajgacha.',
-    cta1: 'Bepul loyiha olish', cta2: 'Stellajlarni koʻrish',
-    scrollHint: 'Pastga suring — omborni yigʻamiz', free: 'Toshkent boʻylab oʻlchov va loyihalash — bepul',
+    cta1: 'Omborni onlayn loyihalash', cta2: 'Ariza qoldirish',
+    scrollHint: 'Pastga suring — omborni yigʻamiz', free: 'Toshkent boʻylab oʻlchov va loyiha — bepul',
+    perPosition: '{price} soʻmdan bir pallet oʻrni · hisobiy, QQSsiz',
+    introFacts: [{ n: '1000+', l: 'amalga oshirilgan loyiha' }, { n: '4 t gacha', l: 'har bir qavatga yuklama' }, { n: '2021 dan', l: 'saqlash tizimlari bozorida' }],
     navigation: 'Stellaj yaratish bosqichlari', labels: ['Oʻlchov', 'Loyiha', 'Yigʻish', 'Sigʻim'],
     modelNote: 'Joylashuv namunasi. Sigʻim obyektga qarab hisoblanadi.', loaded: 'joy toʻldirildi', total: 'ushbu modeldagi joylar',
     stages: {

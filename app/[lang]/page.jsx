@@ -6,6 +6,8 @@ import Calculator from "../../components/Calculator";
 import Reveal from "../../components/Reveal";
 import Parallax from "../../components/Parallax";
 import RackHero from "../../components/hero/RackHero";
+import { referencePerPalletPosition } from "@/lib/rack/konstruktor";
+import { directionCards } from "../../lib/directionCards";
 import VideoHero from "../../components/hero/VideoHero";
 import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
 import ProductSlider from "../../components/ProductSlider";
@@ -99,13 +101,15 @@ const PROJECTS = {
     {
       t: "Bloom Shop",
       d: "30 комплектов среднегрузовых стеллажей: высота 2.5 м, 5 ярусов, до 400 кг на ярус. Склад косметики для маркетплейса — под ключ.",
-      load: "Маркетплейс · 30 комплектов",
+      load: "Маркетплейс",
+      metrics: ["30 комплектов", "2,5 м", "5 ярусов", "400 кг / ярус"],
       img: "/works/new2.jpg",
     },
     {
       t: "Caffelito Coffee",
       d: "Стеллажи для склада кофейни: высота 4 м, 1.5 тонны на ярус. Поставлено и смонтировано за 12 часов.",
-      load: "HoReCa · 12 часов",
+      load: "HoReCa",
+      metrics: ["4 м", "1,5 т / ярус", "монтаж за 12 ч"],
       img: "/works/new3.jpg",
     },
     {
@@ -137,13 +141,15 @@ const PROJECTS = {
     {
       t: "Bloom Shop",
       d: "30 komplekt oʻrta yuklamali stellaj: balandligi 2.5 m, 5 qavat, har qavatga 400 kg gacha. Marketpleys uchun kosmetika ombori — kalit topshirish.",
-      load: "Marketpleys · 30 komplekt",
+      load: "Marketpleys",
+      metrics: ["30 komplekt", "2,5 m", "5 qavat", "400 kg / qavat"],
       img: "/works/new2.jpg",
     },
     {
       t: "Caffelito Coffee",
       d: "Kafe ombori uchun stellajlar: balandligi 4 m, har qavatga 1.5 tonna. 12 soatda yetkazilib oʻrnatildi.",
-      load: "HoReCa · 12 soat",
+      load: "HoReCa",
+      metrics: ["4 m", "1,5 t / qavat", "12 soatda montaj"],
       img: "/works/new3.jpg",
     },
     {
@@ -179,7 +185,8 @@ export default async function Home({ params, searchParams }) {
     })),
   };
   const steps = t.steps.map((s, i) => ({ ...s, Ico: STEP_ICONS[i] }));
-  const directions = t.directions.map((d, i) => ({ ...d, ...DIR_META[i] }));
+  const cards = directionCards(L);
+  const directions = t.directions.map((d, i) => ({ ...d, ...DIR_META[i], ...cards[i] }));
   const adv = t.adv.map((a, i) => ({ ...a, Ico: ADV_ICONS[i] }));
   const income = t.income.map((a, i) => ({ ...a, Ico: INC_ICONS[i] }));
   const projects = PROJECTS[L];
@@ -227,7 +234,7 @@ export default async function Home({ params, searchParams }) {
         ? <VideoHeroMp4 lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
         : heroMode === "video"
           ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
-          : <RackHero lang={L} chips={t.heroChips} ctaHref="#kalkulyator" cta2Href="#napravleniya" />}
+          : <RackHero lang={L} chips={t.heroChips} ctaHref={`/${L}/konstruktor`} cta2Href="#zayavka" pricePerPosition={referencePerPalletPosition()} />}
 
       {/* CLIENTS */}
       <section className="border-b border-cloud-200 bg-cloud-50">
@@ -367,10 +374,7 @@ export default async function Home({ params, searchParams }) {
                   : undefined
               }
             >
-              <a
-                href={d.href}
-                className="group relative block rounded-xl2 overflow-hidden min-h-[320px] shadow-card"
-              >
+              <div className="group relative rounded-xl2 overflow-hidden min-h-[400px] shadow-card bg-navy-900">
                 <img loading="lazy" decoding="async"
                   src={d.img}
                   alt={d.t}
@@ -378,23 +382,35 @@ export default async function Home({ params, searchParams }) {
                   height={960}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-900/95 via-navy-900/55 to-navy-900/20" />
-                <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-white/95 text-navy-800 grid place-items-center">
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/70 to-navy-900/20" />
+                {/* Вся карточка — ссылка на страницу направления; кнопка конструктора лежит поверх */}
+                <a href={href(L, d.href)} className="absolute inset-0 z-[1]" aria-label={`${d.t} — ${d.more}`} />
+                <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-white/95 text-navy-800 grid place-items-center pointer-events-none">
                   <d.Ico className="w-6 h-6" />
                 </div>
-                <div className="absolute top-4 right-4 w-11 h-11 rounded-full border border-white/40 text-white grid place-items-center group-hover:bg-white group-hover:text-navy-800 transition">
+                <div className="absolute top-4 right-4 w-11 h-11 rounded-full border border-white/40 text-white grid place-items-center group-hover:bg-white group-hover:text-navy-800 transition pointer-events-none">
                   <IcoArrow className="w-5 h-5 -rotate-45" />
                 </div>
-                <div className="absolute inset-x-0 bottom-0 p-6 text-white">
+                <div className="absolute inset-x-0 bottom-0 p-6 text-white pointer-events-none">
                   <h3 className="font-display font-bold text-2xl">{d.t}</h3>
-                  <p className="text-cloud-200/85 text-sm mt-2 max-w-md leading-relaxed">
-                    {d.d}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-300 group-hover:text-white">
-                    {t.goto} <IcoArrow className="w-4 h-4" />
-                  </span>
+                  <p className="text-cloud-200/85 text-sm mt-2 max-w-md leading-relaxed">{d.d}</p>
+                  <div className="mt-4 flex flex-wrap gap-2 text-xs">
+                    <span className="rounded-full bg-white text-navy-900 font-semibold px-3 py-1.5">{d.price}</span>
+                    {d.specs.map((sp) => (
+                      <span key={sp.k} className="rounded-full border border-white/25 px-3 py-1.5 text-white/90">{sp.k}: {sp.v}</span>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs text-cloud-200/75 max-w-md"><b className="text-white/90 font-semibold">{d.forWhom}:</b> {d.useCases}</p>
+                  <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 pointer-events-auto">
+                    <a href={d.cta.href} className="relative z-[2] inline-flex items-center gap-2 bg-sky-500 hover:bg-white hover:text-navy-900 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition">
+                      {d.cta.label} <IcoArrow className="w-4 h-4" />
+                    </a>
+                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-sky-300 group-hover:text-white">
+                      {d.more} <IcoArrow className="w-4 h-4" />
+                    </span>
+                  </div>
                 </div>
-              </a>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -489,7 +505,7 @@ export default async function Home({ params, searchParams }) {
           desc={t.projText}
         />
         <div className="mt-10">
-          <ProductSlider items={projects} />
+          <ProductSlider items={projects} lang={L} />
         </div>
       </section>
 
@@ -770,19 +786,22 @@ export default async function Home({ params, searchParams }) {
           </h2>
           <p className="mt-3 text-slate-500">{x.afterText}</p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+        <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-8 mt-10 border-t border-cloud-200 pt-8">
           {x.afterSteps.map((s, i) => (
-            <Reveal key={s.t} delay={i * 80}>
-              <div className="relative">
-                <div className="w-12 h-12 rounded-full bg-brand-grad text-white grid place-items-center font-display font-medium text-lg shadow-glow">
-                  {i + 1}
-                </div>
-                <h3 className="font-bold text-navy-800 mt-4">{s.t}</h3>
-                <p className="text-slate-500 text-sm mt-1.5 leading-relaxed">
-                  {s.d}
-                </p>
-              </div>
-            </Reveal>
+            <li key={s.t}>
+              <Reveal delay={i * 80}>
+                <span className="font-display text-sky-600 text-xl sm:text-2xl tracking-tight">{s.time}</span>
+                <h3 className="font-bold text-navy-800 mt-3">{s.t}</h3>
+                <p className="text-slate-500 text-sm mt-1.5 leading-relaxed">{s.d}</p>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+        {/* Что клиент получает физически — снимает вопрос «а что мне дадут за бесплатно» */}
+        <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2">
+          <span className="text-sm font-semibold text-navy-800 mr-1">{x.afterHandsTitle}:</span>
+          {x.afterHands.map((h) => (
+            <span key={h} className="text-sm text-navy-800 bg-cloud-100 border border-cloud-200 rounded-full px-3.5 py-1.5">{h}</span>
           ))}
         </div>
       </section>

@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SITE } from "../lib/site";
 import { NAV_T, T, normalizeLang } from "../lib/i18n";
+
+// Обещание из отчёта по нише: срок ответа стоит рядом с телефоном, а не в подвале.
+const FAST = { ru: "Ответим за 5 минут", uz: "5 daqiqada javob beramiz" };
 import { IcoTg, IcoPhone } from "./Icons";
 import CartLink from "./CartLink";
 import { href, switchLangPath } from "../lib/lang";
@@ -85,7 +88,10 @@ export default function Header({ lang = "ru" }) {
               className="hidden 2xl:flex items-center gap-2 text-white font-medium text-[15px] hover:text-sky-300 whitespace-nowrap"
             >
               <IcoPhone className="w-4 h-4 text-sky-300" />
-              {SITE.phoneMainHuman}
+              <span className="flex flex-col leading-tight">
+                {SITE.phoneMainHuman}
+                <span className="text-[11px] font-normal text-sky-200/90">{FAST[L]}</span>
+              </span>
             </a>
             <a
               href={SITE.telegram}
@@ -147,7 +153,10 @@ export default function Header({ lang = "ru" }) {
                 className="flex items-center gap-2 font-medium text-white"
               >
                 <IcoPhone className="w-4 h-4 text-sky-300" />{" "}
-                {SITE.phoneMainHuman}
+                <span className="flex flex-col leading-tight">
+                  {SITE.phoneMainHuman}
+                  <span className="text-[11px] font-normal text-sky-200/90">{FAST[L]}</span>
+                </span>
               </a>
               <LangToggle />
             </div>
