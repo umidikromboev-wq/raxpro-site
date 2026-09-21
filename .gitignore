@@ -17,3 +17,13 @@ research/rack-calc/__pycache__/
 
 # тяжёлые исходники медиа, не для репозитория
 assets-src/
+
+# Разведка рынка 20.09.2026: скриншоты 40+ сайтов конкурентов (330 МБ) и
+# картинки отчёта. В репозитории только тексты (research/*.md) и генератор
+# отчёта (research/report/build.py); сама страница отчёта живёт в claude.ai.
+research/competitors/
+research/conversion/
+research/report/img/
+research/report/*.html
+research/report/files*.json
+docs/superpowers/
