@@ -234,18 +234,36 @@ export default async function Home({ params, searchParams }) {
         ? <VideoHeroMp4 lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
         : heroMode === "video"
           ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
-          : <RackHero lang={L} ctaHref="#kalkulyator" cta2Href="#zayavka" />}
+          : <RackHero lang={L} ctaHref="#kalkulyator" cta2Href={href(L, "/katalog")} />}
 
-      {/* CLIENTS */}
-      <section className="border-b border-cloud-200 bg-white" aria-labelledby="clients-title">
-        <div className="w-full py-14 sm:py-16">
-          <div className="text-center px-5">
-            <h2 id="clients-title" className="font-display font-medium text-2xl sm:text-3xl text-navy-800">{t.clients}</h2>
-            <p className="mt-2 text-slate-500"><span className="font-display text-sky-600 text-3xl sm:text-4xl align-middle mr-2">{t.clientsCount}</span>{t.clientsText}</p>
+      {/* CLIENTS + NUMBERS — один белый блок: кому сделали и в каких цифрах */}
+      <section className="bg-white border-b border-cloud-200" aria-labelledby="clients-title">
+        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pt-16 sm:pt-20">
+          <div className="grid lg:grid-cols-[minmax(0,1fr),minmax(0,1.5fr)] gap-10 lg:gap-20 items-end">
+            <div>
+              <Eyebrow>{t.numsEyebrow}</Eyebrow>
+              <h2 id="clients-title" className="mt-4 font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-navy-900">
+                {t.clients}
+              </h2>
+              <p className="mt-5 text-slate-600 max-w-md leading-relaxed">
+                <strong className="text-navy-900 font-semibold">{t.clientsCount}</strong> {t.clientsText}. {t.numsText}
+              </p>
+            </div>
+            <Reveal as="dl" variant="fade" stagger={60} className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-cloud-200 border-y border-cloud-200">
+              {t.stats.map((s) => (
+                <div key={s.l} className="bg-white py-6 px-5 sm:px-6">
+                  <dd className="font-display font-medium text-4xl sm:text-[44px] leading-none text-navy-900 tracking-tight">
+                    {s.n}
+                    {s.s && <span className="text-xl text-sky-600 ml-1">{s.s}</span>}
+                  </dd>
+                  <dt className="mt-2 text-sm text-slate-500 leading-snug max-w-[180px]">{s.l}</dt>
+                </div>
+              ))}
+            </Reveal>
           </div>
-          <div className="mt-10">
-            <LogoMarquee logos={CLIENT_LOGOS} />
-          </div>
+        </div>
+        <div className="mt-12 sm:mt-16 pb-16 sm:pb-20">
+          <LogoMarquee logos={CLIENT_LOGOS} />
         </div>
       </section>
 
@@ -320,46 +338,6 @@ export default async function Home({ params, searchParams }) {
               </div>
             </Reveal>
           ))}
-        </div>
-      </section>
-
-      {/* METRICS */}
-      <section className="relative bg-navy-900 text-white overflow-hidden notch-tr">
-        <div className="absolute inset-0 grid-lines opacity-30" />
-        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16">
-          <div className="grid lg:grid-cols-[1fr,1.5fr] gap-10 items-center">
-            <div>
-              <Eyebrow light>{t.numsEyebrow}</Eyebrow>
-              <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl">
-                {t.numsTitle}
-              </h2>
-              <p className="mt-3 text-cloud-200/75 max-w-md">{t.numsText}</p>
-              <a
-                href="#zayavka"
-                className="btn-11 inline-flex items-center gap-2 mt-6 bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 hover:text-white transition"
-              >
-                {t.numsCta} <IcoArrow className="w-5 h-5" />
-              </a>
-            </div>
-            <Reveal
-              as="div"
-              variant="fade"
-              stagger={70}
-              className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-white/10 rounded-xl2 overflow-hidden border border-white/10"
-            >
-              {t.stats.map((s) => (
-                <div key={s.l} className="bg-navy-900 p-6">
-                  <div className="font-display font-medium text-4xl sm:text-5xl text-sky-400 leading-none">
-                    {s.n}
-                    <span className="text-2xl text-sky-300 ml-1">{s.s}</span>
-                  </div>
-                  <div className="text-cloud-200/70 text-sm mt-2 leading-snug">
-                    {s.l}
-                  </div>
-                </div>
-              ))}
-            </Reveal>
-          </div>
         </div>
       </section>
 

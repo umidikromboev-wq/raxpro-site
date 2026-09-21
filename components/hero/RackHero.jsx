@@ -122,8 +122,12 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
         <div className="rack-editorial">
           <div className="rack-intro" ref={introRef}>
             <span className="rack-kicker">{copy.eyebrow}</span>
-            <h1>{copy.title}</h1>
+            <h1>{copy.title} <em>{copy.titleAccent}</em></h1>
             <p className="rack-description">{copy.text}</p>
+            <ul className="rack-chips">
+              {copy.chips.map((chip) => <li key={chip}>{chip}</li>)}
+            </ul>
+            <p className="rack-price">{copy.price}</p>
           </div>
           {STAGE_ORDER.map((key) => (
             <div key={key} className="rack-stage" ref={(element) => { panels.current[key] = element; }}>
@@ -139,7 +143,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
           ))}
           <div className="rack-actions">
             <a className="rack-cta" href={ctaHref}>{copy.cta1}<IcoArrow className="w-4 h-4" /></a>
-            <a className="rack-secondary" href={cta2Href}>{copy.cta2}<span aria-hidden="true">↗</span></a>
+            <a className="rack-secondary" href={cta2Href}>{copy.cta2}</a>
           </div>
         </div>
         <div className="rack-capacity" ref={capacityRef} aria-hidden="true">

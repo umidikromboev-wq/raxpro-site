@@ -1,9 +1,11 @@
 // Capacity is an illustration calculated from rackModel, not a promised customer saving.
 export const HERO_COPY = {
   ru: {
-    eyebrow: 'Стеллажи от производителя', title: 'Склад под ключ\nза 1 день.',
-    text: 'Бесплатный замер и проект по Ташкенту, монтаж до 300 м² за день, гарантия 10 лет по документу.',
-    cta1: 'Рассчитать стоимость', cta2: 'Оставить заявку',
+    eyebrow: 'Системы хранения · Ташкент', title: 'Стеллажи и системы хранения', titleAccent: 'полного цикла',
+    text: 'Производим и монтируем стеллажи любого типа по всему Узбекистану. Нагрузка до 4 тонн · гарантия 10 лет · бесплатный замер за 24 часа.',
+    cta1: 'Рассчитать стоимость за 1 минуту', cta2: 'Смотреть каталог',
+    chips: ['До 300 м² под ключ за 1 день', 'Гарантия 10 лет по документу', 'Отвечаем за 5 минут', 'Рассрочка и лизинг'],
+    price: 'Проекты от 1,2 млн сум · бесплатный расчёт за 24 часа',
     scrollHint: 'Листайте — соберём ваш склад',
     navigation: 'Этапы создания стеллажа', labels: ['Замер', 'Проект', 'Сборка', 'Вместимость'],
     loaded: 'мест заполнено', total: 'мест в этой модели',
@@ -17,9 +19,11 @@ export const HERO_COPY = {
     },
   },
   uz: {
-    eyebrow: 'Ishlab chiqaruvchidan stellajlar', title: 'Ombor kalit topshirish\n1 kunda.',
-    text: 'Toshkent boʻylab bepul oʻlchov va loyiha, 300 m² gacha montaj bir kunda, hujjat asosida 10 yil kafolat.',
-    cta1: 'Narxni hisoblash', cta2: 'Ariza qoldirish',
+    eyebrow: 'Saqlash tizimlari · Toshkent', title: 'Stellajlar va saqlash tizimlari —', titleAccent: 'toʻliq sikl',
+    text: 'Butun Oʻzbekiston boʻylab istalgan turdagi stellajlarni ishlab chiqaramiz va oʻrnatamiz. Yuk koʻtarish 4 tonnagacha · 10 yil kafolat · 24 soatda bepul oʻlchov.',
+    cta1: 'Narxni 1 daqiqada hisoblang', cta2: 'Katalogni koʻrish',
+    chips: ['Kuniga 300 m² gacha kalit topshirish', 'Hujjat asosida 10 yil kafolat', '5 daqiqada javob beramiz', 'Boʻlib toʻlash va lizing'],
+    price: 'Loyihalar 1,2 mln soʻmdan · 24 soatda bepul hisob-kitob',
     scrollHint: 'Pastga suring — omborni yigʻamiz',
     navigation: 'Stellaj yaratish bosqichlari', labels: ['Oʻlchov', 'Loyiha', 'Yigʻish', 'Sigʻim'],
     loaded: 'joy toʻldirildi', total: 'ushbu modeldagi joylar',

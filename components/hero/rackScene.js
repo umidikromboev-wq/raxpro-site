@@ -162,19 +162,9 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     [text[6], [firstFrame.x, firstFrame.height + 0.35, firstFrame.z + RACK_DEPTH / 2]],
   ].map(([label, position]) => { const sprite = textSprite(THREE, label, 0.62, '700 120px sans-serif'); sprite.position.set(...position); scene.add(sprite); return sprite; });
 
-  // Замер: размерные линии по двум сторонам помещения с цифрами и подписью.
+  // Замер: по просьбе заказчика без подписи «Ваше помещение» и размерных линий — остаются замерщики и лазер.
   const measure = new THREE.Group(); scene.add(measure);
-  const fx = ROOM.width / 2 - 0.2, fz = ROOM.depth / 2 - 0.2, m = 0.5;
-  const measurePoints = [
-    -fx, 0.06, fz + m, fx, 0.06, fz + m, -fx, 0.06, fz + m - 0.3, -fx, 0.06, fz + m + 0.3, fx, 0.06, fz + m - 0.3, fx, 0.06, fz + m + 0.3,
-    fx + m, 0.06, -fz, fx + m, 0.06, fz, fx + m - 0.3, 0.06, -fz, fx + m + 0.3, 0.06, -fz, fx + m - 0.3, 0.06, fz, fx + m + 0.3, 0.06, fz,
-  ];
-  const measureGeo = new THREE.BufferGeometry(); measureGeo.setAttribute('position', new THREE.Float32BufferAttribute(measurePoints, 3));
-  const measureMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true });
-  measure.add(new THREE.LineSegments(measureGeo, measureMat));
-  const measureLabels = [
-    [text[1], [-1.5, 2.45, 2.9], 0.9], [text[2], [0.5, 0.5, fz + 1.05], 0.62], [text[3], [fx + 1.3, 0.5, 0], 0.62],
-  ].map(([label, position, height]) => { const sprite = textSprite(THREE, label, height, height < 0.8 ? '700 120px sans-serif' : undefined); sprite.position.set(...position); measure.add(sprite); return sprite; });
+  const measureLabels = [];
 
   const workerA = createWorker(THREE, WORKER.SURVEYOR_PLAN), workerB = createWorker(THREE, WORKER.SURVEYOR_LASER);
   const installer = createWorker(THREE, WORKER.INSTALLER), operator = createWorker(THREE, WORKER.OPERATOR);
@@ -199,7 +189,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
   const laserDot = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0xff3b30, transparent: true, depthTest: false })); laserDot.scale.set(0.16, 0.16, 1); measure.add(laserDot);
   const toolPosition = new THREE.Vector3();
 
-  // В портрете подписи-спрайты стоят близко к перспективной камере и раздуваются — размеры чертежа уменьшаем, подписи замера прячем: «Ваше помещение» уже сказано заголовком, а «17 м / 13 м» режутся краем кадра.
+  // В портрете подписи-спрайты стоят близко к перспективной камере и раздуваются — размеры чертежа уменьшаем.
   const labelSprites = [...draftLabels, ...measureLabels];
   for (const sprite of labelSprites) sprite.userData.baseScale = sprite.scale.clone();
   function scaleLabels() {
@@ -293,7 +283,6 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     installer.head.rotation.x = 0.25 - swing * 0.15;
     measure.visible = s.people > 0.01;
     const reveal = s.people * Math.min(time / 1.2, 1);
-    measureMat.opacity = reveal;
     for (const sprite of measureLabels) sprite.material.opacity = reveal;
     workerB.group.updateMatrixWorld(true);
     workerB.tool.getWorldPosition(toolPosition);
