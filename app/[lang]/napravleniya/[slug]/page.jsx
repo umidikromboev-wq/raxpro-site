@@ -8,6 +8,7 @@ import { DIRECTIONS, DIR_UI, getDirection } from '../../../../lib/directions';
 import { getArticle, localize } from '../../../../lib/articles';
 import { normalizeLang } from '../../../../lib/i18n';
 import { IcoCheck, IcoArrow } from '../../../../components/Icons';
+import { directionCards, directionSizes, SIZES_T } from '../../../../lib/directionCards';
 
 export function generateStaticParams() {
   return LANGS.flatMap((lang) => DIRECTIONS.map((d) => ({ lang, slug: d.slug })));
@@ -37,6 +38,9 @@ export default async function DirectionPage({ params }) {
   const related = d.relatedSlug ? localize(getArticle(d.relatedSlug), L) : null;
   const relatedTitle = related ? related.title : null;
   const others = DIRECTIONS.filter((x) => x.slug !== d.slug);
+  const card = directionCards(L).find((x) => x.slug === d.slug);
+  const sizes = directionSizes(d.slug);
+  const st = SIZES_T[L];
 
   const crumbs = breadcrumbSchema(L, [
     { name: ui.home, path: '/' },
@@ -66,9 +70,11 @@ export default async function DirectionPage({ params }) {
             </nav>
             <h1 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08]">{c.name}</h1>
             <p className="mt-5 text-lg text-cloud-200/85 max-w-xl leading-relaxed">{c.intro}</p>
-            <div className="flex flex-wrap gap-3 mt-7">
-              <a href="#zayavka" className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">
-                {ui.calcPrice} <IcoArrow className="w-5 h-5" />
+            {/* Цена «от» — из прайса lib/products; там, где прайса нет, честное «цена по проекту» */}
+            <p className="mt-5 inline-flex items-center rounded-full bg-white text-navy-900 font-semibold text-sm px-4 py-2">{card.price}</p>
+            <div className="flex flex-wrap gap-3 mt-6">
+              <a href={card.cta.href} className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">
+                {card.cta.label} <IcoArrow className="w-5 h-5" />
               </a>
               <a href={href(L, "/") + "#proekty"} className="inline-flex items-center gap-2 border border-white/25 hover:border-sky-400 text-white px-7 py-3.5 rounded-xl font-semibold">{ui.seeProjects}</a>
             </div>
@@ -89,6 +95,29 @@ export default async function DirectionPage({ params }) {
             </div>
           ))}
         </div>
+
+        {sizes && (
+          <div className="mt-12">
+            <h2 className="font-display font-medium text-2xl sm:text-3xl text-navy-800 tracking-tight">{st.title}</h2>
+            <div className="mt-5 overflow-x-auto rounded-xl2 border border-cloud-200">
+              <table className="w-full min-w-[420px] text-sm">
+                <thead className="bg-cloud-50 text-slate-500 text-left">
+                  <tr><th className="px-4 py-3 font-medium">{st.size}</th><th className="px-4 py-3 font-medium">{st.levels}</th><th className="px-4 py-3 font-medium text-right">{st.price}</th></tr>
+                </thead>
+                <tbody className="divide-y divide-cloud-200">
+                  {sizes.rows.map((r) => (
+                    <tr key={r.code}>
+                      <td className="px-4 py-3 font-medium text-navy-800">{r.size}</td>
+                      <td className="px-4 py-3">{r.levels}</td>
+                      <td className="px-4 py-3 text-right font-semibold text-navy-800">{r.price ? r.price.toLocaleString('ru-RU') : <span className="font-normal text-slate-400">{st.byRequest}</span>}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-sm text-slate-500">{st.note}</p>
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-10 mt-12 items-start">
           <div>
