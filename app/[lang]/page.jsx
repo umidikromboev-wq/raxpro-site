@@ -283,7 +283,7 @@ export default async function Home({ params, searchParams }) {
                   : undefined
               }
             >
-              <div className="group relative rounded-xl2 overflow-hidden min-h-[400px] shadow-card bg-navy-900">
+              <div className="group relative rounded-xl2 overflow-hidden shadow-card bg-navy-900">
                 <img loading="lazy" decoding="async"
                   src={d.img}
                   alt={d.t}
@@ -291,7 +291,7 @@ export default async function Home({ params, searchParams }) {
                   height={960}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/45 to-navy-900/5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/80 to-navy-900/5" />
                 {/* Вся карточка — ссылка на страницу направления; кнопка конструктора лежит поверх */}
                 <a href={href(L, d.href)} className="absolute inset-0 z-[1]" aria-label={`${d.t} — ${d.more}`} />
                 <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-white/95 text-navy-800 grid place-items-center pointer-events-none">
@@ -300,7 +300,8 @@ export default async function Home({ params, searchParams }) {
                 <div className="absolute top-4 right-4 w-11 h-11 rounded-full border border-white/40 text-white grid place-items-center group-hover:bg-white group-hover:text-navy-800 transition pointer-events-none">
                   <IcoArrow className="w-5 h-5 -rotate-45" />
                 </div>
-                <div className="absolute inset-x-0 bottom-0 p-6 text-white pointer-events-none">
+                {/* Текст в потоке, а не absolute: на 320px контент выше 400px и раньше вылезал за верх карточки */}
+                <div className="relative pt-44 sm:pt-56 p-6 text-white pointer-events-none">
                   <h3 className="font-display font-bold text-2xl">{d.t}</h3>
                   <p className="text-cloud-200/85 text-sm mt-2 max-w-md leading-relaxed">{d.d}</p>
                   <div className="mt-4 flex flex-wrap gap-2 text-xs">
