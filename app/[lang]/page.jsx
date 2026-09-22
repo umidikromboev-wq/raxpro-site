@@ -247,6 +247,21 @@ export default async function Home({ params, searchParams }) {
       {/* STAGES — «Этапы и сроки»: карточки проявляются по скроллу (components/Stages) */}
       <Stages lang={L} />
 
+      {/* PROJECTS SLIDER — кейсы перед «Стеллажи, которые работают на вас» (правка 22.09) */}
+      <section
+        id="proekty"
+        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-12 sm:py-20"
+      >
+        <SplitHead
+          title={t.projTitle}
+          desc={t.projText}
+          hideDescOnMobile
+        />
+        <div className="mt-6 sm:mt-10">
+          <CaseSlider items={cases} lang={L} />
+        </div>
+      </section>
+
       {/* WHY RAXPRO — bento по макету: вместимость, наличие, гарантия, безопасность… + CTA (components/WhyRaxPro) */}
       <WhyRaxPro lang={L} />
 
@@ -287,21 +302,6 @@ export default async function Home({ params, searchParams }) {
 
       {/* COMPARISON — заводские против кустарных: таблица пар, безопасность, честно про цену */}
       <Comparison lang={L} />
-
-      {/* PROJECTS SLIDER */}
-      <section
-        id="proekty"
-        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-12 sm:py-20"
-      >
-        <SplitHead
-          title={t.projTitle}
-          desc={t.projText}
-          hideDescOnMobile
-        />
-        <div className="mt-6 sm:mt-10">
-          <CaseSlider items={cases} lang={L} />
-        </div>
-      </section>
 
       {/* FOUNDER */}
       <section
