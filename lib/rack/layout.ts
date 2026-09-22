@@ -10,6 +10,8 @@
 //
 // Все размеры в миллиметрах.
 
+import { aisleFor, MOVERS, ruleFor, TRUCKS, type LayoutRule, type Mover, type TruckKey } from "./layoutRules";
+
 export const WALL_GAP = 300;        // зазор до стены
 export const CEILING_RESERVE = 500; // запас под спринклеры и балки перекрытия
 export const LOAD_CLEARANCE = 150;  // зазор над грузом при постановке паллеты
@@ -22,12 +24,10 @@ export const DOCK_BUFFER = 2500;    // свободная зона перед в
  *  иначе расчёт под 10-метровый потолок выдаёт раму 7100 мм, которой нет. */
 export const MAX_FRAME_HEIGHT = 6000;
 
-export const TRUCKS = {
-  reachtruck: { aisle: 2900, ru: "Ричтрак", uz: "Richtrak" },
-  stacker: { aisle: 2500, ru: "Штабелёр", uz: "Shtabelyor" },
-  counterbal: { aisle: 3800, ru: "Вилочный погрузчик", uz: "Vilkali yuklagich" },
-} as const;
-export type TruckKey = keyof typeof TRUCKS;
+// TRUCKS переехал в layoutRules.ts — правила раскладки стали нижним слоем.
+// Здесь он перевыставляется, чтобы не править два десятка импортов.
+export { TRUCKS };
+export type { TruckKey, Mover } from "./layoutRules";
 
 export const BEAMS: Record<number, { pallets: number; capacity: number }> = {
   2700: { pallets: 3, capacity: 3000 },
@@ -58,6 +58,19 @@ export interface Room {
   beam: number;
   rackDepth: number; // глубина ряда: у RaxPro встречаются 1050 и 1100
   mode?: LayoutMode;
+  /** Тип стеллажа. Из него берутся проход, зазор до стены и спина к спине
+   *  (lib/rack/layoutRules.ts). Без него ядро ведёт себя как раньше —
+   *  по-паллетному: так старые вызовы не поехали. */
+  productKey?: string;
+  /** Кто обслуживает: техника, человек или покупатель. Тип задаёт список. */
+  mover?: Mover;
+  /** Паллет на ярус секции. Обычно выводится из длины балки; у непаллетных
+   *  типов балка — это просто ширина секции, и мест хранения в паллетах нет. */
+  palletsPerBay?: number;
+  /** Готовый типоразмер из прайса: высота рамы и число полок заданы заводом,
+   *  а не потолком. У среднегрузового, архивного и торгового считать ярусы
+   *  по высоте груза неверно — их продают ростовками 2000 и 2500 мм. */
+  fixedSize?: { h: number; levels: number };
   /** Предел высоты рамы. Меняется только в регрессии против Python-версии. */
   maxFrameHeight?: number;
 }
@@ -72,7 +85,9 @@ export interface Layout {
   levels: number;    // ярусов балок, пол не считается
   frameHeight: number;
   aisle: number;
-  positions: number; // паллето-мест, включая пол
+  positions: number; // паллето-мест, включая пол; 0 у непаллетных типов
+  /** Полок всего — величина непаллетных типов, где «паллетоместо» не значит ничего. */
+  shelves: number;
   cappedByFrame: boolean;
   fillRatio: number;
   polygon: Point[];
@@ -192,22 +207,28 @@ function obstaclesOf(room: Room, swap: boolean): Rect[] {
 }
 
 /** Одна конфигурация рядов. Ориентация задана поворотом контура, offset — сдвиг сетки. */
-function tryRows(room: Room, poly: Point[], obstacles: Rect[], offset: number, aisle: number, bay: number) {
+function tryRows(
+  room: Room, poly: Point[], obstacles: Rect[], offset: number, aisle: number, bay: number,
+  wallGap = WALL_GAP, backToBack = true
+) {
   const { minx, miny, maxx, maxy } = polyBounds(poly);
   const bays: Bay[] = [];
   let row = 0;
-  const limit = maxy - WALL_GAP;
-  let y = miny + WALL_GAP + offset;
+  const limit = maxy - wallGap;
+  let y = miny + wallGap + offset;
 
   while (y + room.rackDepth <= limit) {
     // Ряд обслуживается только если с лицевой стороны есть проход нужной ширины
     // либо ряд стоит спиной к стене. Иначе паллету туда не поставить.
+    // Типы, которым спина к спине запрещена (набивной, мезонин), сюда не доходят:
+    // у них свой движок. Флаг оставлен для торгового, где островной ряд бывает
+    // одиночным по требованию зала.
     const roomAfter = limit - (y + 2 * room.rackDepth);
-    const double = y + 2 * room.rackDepth <= limit && roomAfter >= aisle;
+    const double = backToBack && y + 2 * room.rackDepth <= limit && roomAfter >= aisle;
     for (const d of double ? [0, room.rackDepth] : [0]) {
       const ry = y + d;
-      let x = minx + WALL_GAP;
-      while (x + bay <= maxx - WALL_GAP) {
+      let x = minx + wallGap;
+      while (x + bay <= maxx - wallGap) {
         const b: Bay = { x, y: ry, w: bay, h: room.rackDepth, row };
         if (rectInside(poly, x, ry, bay, room.rackDepth) && !obstacles.some((o) => overlaps(b, o)))
           bays.push(b);
@@ -222,7 +243,7 @@ function tryRows(room: Room, poly: Point[], obstacles: Rect[], offset: number, a
 
 /** Ряды вдоль стен, центр остаётся под проезд. Так собран склад Toshkent.uz —
  *  стеллажи буквой П по периметру, включая скошенную стену. */
-function perimeterRows(room: Room, poly: Point[], obstacles: Rect[], bay: number, depth: number) {
+function perimeterRows(room: Room, poly: Point[], obstacles: Rect[], bay: number, depth: number, wallGap = WALL_GAP) {
   const bays: Bay[] = [];
   const n = poly.length;
   for (let i = 0; i < n; i++) {
@@ -237,9 +258,9 @@ function perimeterRows(room: Room, poly: Point[], obstacles: Rect[], bay: number
     if (!polyContains(poly, mx + nx * depth * 0.5, my + ny * depth * 0.5)) { nx = -nx; ny = -ny; }
     if (!polyContains(poly, mx + nx * depth * 0.5, my + ny * depth * 0.5)) continue;
 
-    const count = Math.floor((seg - 2 * WALL_GAP) / bay);
+    const count = Math.floor((seg - 2 * wallGap) / bay);
     for (let k = 0; k < count; k++) {
-      const t = WALL_GAP + k * bay;
+      const t = wallGap + k * bay;
       const cx0 = x1 + ux * t, cy0 = y1 + uy * t;
       const pts: Point[] = [
         [cx0, cy0],
@@ -270,27 +291,49 @@ function perimeterRows(room: Room, poly: Point[], obstacles: Rect[], bay: number
 }
 
 export function design(room: Room): Layout {
+  // Правила типа. Без productKey ядро ведёт себя как до их появления —
+  // по-паллетному: старые вызовы (конструктор, ссылки на КП) не поехали.
+  const rule: LayoutRule | null = room.productKey ? ruleFor(room.productKey) : null;
+  if (rule && rule.engine !== "rows")
+    throw new DesignError(
+      `«${room.productKey}» раскладывается движком «${rule.engine}», а не рядами. ` +
+        `Вызывайте designChannels или designDeck.`
+    );
+
   const beam = BEAMS[room.beam];
-  if (!beam) throw new DesignError(`Неизвестный типоразмер балки: ${room.beam} мм`);
-  if (room.palletLoad * beam.pallets > beam.capacity)
+  // Длина балки лежит в BEAMS только у паллетных: там от неё зависит и число
+  // паллет на ярус, и грузоподъёмность. У среднегрузового, архивного и
+  // торгового «балка» — это просто ширина секции из прайса, проверять её
+  // по паллетной таблице нельзя.
+  const palletsPerBay = room.palletsPerBay ?? beam?.pallets ?? 0;
+  if (!beam && room.palletsPerBay == null && !rule)
+    throw new DesignError(`Неизвестный типоразмер балки: ${room.beam} мм`);
+  if (beam && palletsPerBay > 0 && room.palletLoad * beam.pallets > beam.capacity)
     throw new DesignError(
       `Перегруз балки: ${beam.pallets} × ${room.palletLoad} кг = ` +
         `${beam.pallets * room.palletLoad} кг при паспортных ${beam.capacity} кг`
     );
 
   const poly = room.polygon?.length ? room.polygon : rectPolygon(room.width, room.depth);
-  const { levels, frameHeight, cappedByFrame } = levelsFor(
-    room.ceiling, room.palletHeight, room.maxFrameHeight ?? MAX_FRAME_HEIGHT
-  );
-  const aisle = TRUCKS[room.truck].aisle;
+  const { levels, frameHeight, cappedByFrame } = room.fixedSize
+    ? { levels: room.fixedSize.levels, frameHeight: room.fixedSize.h, cappedByFrame: false }
+    : levelsFor(room.ceiling, room.palletHeight, room.maxFrameHeight ?? MAX_FRAME_HEIGHT);
+  if (room.fixedSize && room.fixedSize.h + CEILING_RESERVE > room.ceiling)
+    throw new DesignError(
+      `Стеллаж ${room.fixedSize.h} мм не встаёт под потолок ${room.ceiling} мм: ` +
+        `${CEILING_RESERVE} мм оставляем под спринклеры и балки перекрытия.`
+    );
+  const aisle = room.productKey ? aisleFor(room.productKey, room.mover) : TRUCKS[room.truck].aisle;
+  const wallGap = rule?.wallGap ?? WALL_GAP;
+  const backToBack = rule?.backToBack ?? true;
   const mode: LayoutMode = room.mode ?? "auto";
   const tiers = levels + 1;
 
   let best: { bays: Bay[]; orientation: Layout["orientation"]; positions: number } | null = null;
 
   if (mode === "auto" || mode === "perimeter") {
-    const pb = perimeterRows(room, poly, obstaclesOf(room, false), room.beam, room.rackDepth);
-    if (pb.length) best = { bays: pb, orientation: -1, positions: pb.length * tiers * beam.pallets };
+    const pb = perimeterRows(room, poly, obstaclesOf(room, false), room.beam, room.rackDepth, wallGap);
+    if (pb.length) best = { bays: pb, orientation: -1, positions: pb.length * tiers * palletsPerBay };
   }
 
   if (mode !== "perimeter") {
@@ -298,14 +341,17 @@ export function design(room: Room): Layout {
       const p: Point[] = swap ? poly.map(([x, y]) => [y, x] as Point) : poly;
       const obstacles = obstaclesOf(room, swap);
       for (let offset = 0; offset < 2 * room.rackDepth + aisle; offset += 500) {
-        const raw = tryRows(room, p, obstacles, offset, aisle, room.beam);
+        const raw = tryRows(room, p, obstacles, offset, aisle, room.beam, wallGap, backToBack);
         if (!raw.length) continue;
         const bays = swap
           ? raw.map((b) => ({ x: b.y, y: b.x, w: b.h, h: b.w, row: b.row }))
           : raw;
-        const positions = bays.length * tiers * beam.pallets;
-        if (!best || positions > best.positions)
-          best = { bays, orientation: swap ? 90 : 0, positions };
+        // У непаллетных типов паллетомест нет — сравниваем по числу секций,
+        // иначе все варианты дают ноль и побеждает первый попавшийся.
+        const positions = bays.length * tiers * palletsPerBay;
+        const score = palletsPerBay > 0 ? positions : bays.length;
+        const bestScore = best ? (palletsPerBay > 0 ? best.positions : best.bays.length) : -1;
+        if (score > bestScore) best = { bays, orientation: swap ? 90 : 0, positions };
       }
     }
   }
@@ -313,7 +359,7 @@ export function design(room: Room): Layout {
   if (!best)
     throw new DesignError(
       `Контур не вмещает ни одного ряда с проходом ${(aisle / 1000).toFixed(1)} м ` +
-        `под «${TRUCKS[room.truck].ru.toLowerCase()}»`
+        `под «${MOVERS[room.productKey ? (room.mover ?? ruleFor(room.productKey).movers[0]) : room.truck].ru.toLowerCase()}»`
     );
 
   const area = polyArea(poly);
@@ -326,6 +372,7 @@ export function design(room: Room): Layout {
     frameHeight,
     aisle,
     positions: best.positions,
+    shelves: best.bays.length * levels,
     cappedByFrame,
     fillRatio: area ? best.bays.reduce((s, b) => s + b.w * b.h, 0) / area : 0,
     polygon: poly,

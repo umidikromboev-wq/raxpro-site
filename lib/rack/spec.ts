@@ -50,8 +50,11 @@ export function palletPositions(g: Geometry): number {
   return g.sections * tiers * g.palletsPerLevel;
 }
 
+/** Спецификация рядных типов: паллетный фронтальный, среднегрузовой,
+ *  архивный, торговый. Набивной и мезонин считаются своими сборщиками
+ *  (specChannels.ts, specDeck.ts) — у них другая номенклатура. */
 export function buildSpec(product: Product, g: Geometry): SpecLine[] {
-  const calc: Record<BomItem, () => { qty: number; formula: string }> = {
+  const calc: Partial<Record<BomItem, () => { qty: number; formula: string }>> = {
     frame:  () => ({ qty: frames(g),  formula: `секции ${g.sections} + ряды ${g.rows}` }),
     beam:   () => ({ qty: beams(g),   formula: `секции ${g.sections} × ярусы ${g.levels} × 2` }),
     lock:   () => ({ qty: locks(g),   formula: `балки ${beams(g)} × 2` }),
@@ -62,7 +65,13 @@ export function buildSpec(product: Product, g: Geometry): SpecLine[] {
   };
 
   return product.bom.map((item) => {
-    const { qty, formula } = calc[item]();
+    const f = calc[item];
+    if (!f)
+      throw new Error(
+        `Позиция «${item}» не считается рядной спецификацией. ` +
+          `Для «${product.key}» вызывайте сборщик своего типа.`
+      );
+    const { qty, formula } = f();
     const l = BOM_LABELS[item];
     return {
       item,

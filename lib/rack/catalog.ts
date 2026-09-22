@@ -56,7 +56,15 @@ export type BomItem =
   | "anchor"      // анкер
   | "deck"        // настил
   | "panel"       // панель
-  | "guard";      // защитник (отбойник стойки)
+  | "guard"       // защитник (отбойник стойки)
+  // ——— набивной: паллета лежит не на балке, а на направляющей вдоль канала
+  | "rail"        // направляющая
+  // ——— мезонин: плита продаётся не секциями, а площадью и метражом
+  | "column"      // колонна плиты
+  | "mainBeam"    // главная балка
+  | "subBeam"     // второстепенная балка
+  | "railing"     // ограждение, погонные метры
+  | "stair";      // лестничный марш
 
 export const PRODUCTS: Product[] = [
   {
@@ -95,7 +103,9 @@ export const PRODUCTS: Product[] = [
     bayStepMm: [1200],
     depthMm: [2700, 4000, 5400],
     sizes: [{ code: "PD-4000-1200", h: 4000, w: 1200, d: 2700, levels: 3 }],
-    bom: ["frame", "beam", "lock", "anchor", "guard"],
+    // Паллета лежит на направляющих вдоль канала, а не на поперечной балке:
+    // балка здесь только верхняя связь между стойками.
+    bom: ["frame", "rail", "beam", "lock", "anchor", "guard"],
     hasModel3d: false,
     hasReferenceKp: false,
     notesRu:
@@ -181,7 +191,9 @@ export const PRODUCTS: Product[] = [
     bayStepMm: [2700],
     depthMm: [1050],
     sizes: [],
-    bom: ["frame", "beam", "deck", "anchor", "guard"],
+    // Мезонин продаётся площадью: колонны, две очереди балок, настил в м²,
+    // ограждение в погонных метрах и лестницы. Рам и секций у него нет.
+    bom: ["column", "mainBeam", "subBeam", "deck", "railing", "stair", "anchor"],
     hasModel3d: false,
     hasReferenceKp: false,
     notesRu: "Каждый мезонин проектируется индивидуально (msg 100, 105). Ни 3D, ни КП в группе нет.",
@@ -202,4 +214,10 @@ export const BOM_LABELS: Record<BomItem, { ru: string; uz: string; unit: { ru: s
   deck:  { ru: "Настил", uz: "Nastil", unit: { ru: "шт", uz: "dona" } },
   panel: { ru: "Панель", uz: "Panel", unit: { ru: "шт", uz: "dona" } },
   guard: { ru: "Защита стойки", uz: "Ustun himoyachisi", unit: { ru: "шт", uz: "dona" } },
+  rail:  { ru: "Направляющая канала", uz: "Kanal yoʻnaltiruvchisi", unit: { ru: "шт", uz: "dona" } },
+  column:{ ru: "Колонна мезонина", uz: "Mezanin ustuni", unit: { ru: "шт", uz: "dona" } },
+  mainBeam: { ru: "Главная балка плиты", uz: "Plita asosiy balkasi", unit: { ru: "шт", uz: "dona" } },
+  subBeam:  { ru: "Второстепенная балка", uz: "Ikkilamchi balka", unit: { ru: "шт", uz: "dona" } },
+  railing:  { ru: "Ограждение плиты", uz: "Plita toʻsigʻi", unit: { ru: "п.м.", uz: "p.m." } },
+  stair:    { ru: "Лестничный марш", uz: "Zina marshi", unit: { ru: "шт", uz: "dona" } },
 };

@@ -158,7 +158,9 @@ function syntheticLayout(s: SectionInput, size: { h: number; w: number; d: numbe
   const positions = isPallet ? s.sections * s.rows * (levels + 1) * (BEAMS[size.w]?.pallets ?? 3) : 0;
   const layout: Layout = {
     orientation: 0, bays, rows: s.rows, sections: s.sections * s.rows, levels,
-    frameHeight: size.h, aisle, positions, cappedByFrame: false,
+    frameHeight: size.h, aisle, positions,
+    shelves: isPallet ? 0 : s.sections * s.rows * levels,
+    cappedByFrame: false,
     fillRatio: bays.reduce((a, b) => a + b.w * b.h, 0) / (width * depth),
     polygon: rectPolygon(width, depth),
   };
