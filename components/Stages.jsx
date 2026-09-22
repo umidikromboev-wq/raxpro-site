@@ -16,6 +16,23 @@ import { href } from '../lib/lang';
 const TOTAL_DAYS = 7; // PLACEHOLDER
 const STOCK_TONS = '150'; // PLACEHOLDER
 const FACTORY_LEAD = '14–28'; // PLACEHOLDER
+// Диаграмма сроков — одна шкала дней для обеих строк. PLACEHOLDER: завод 14 дней
+// гарантированно + до 28 (неопределённость), потом монтаж 3; у нас 1+2+1+3 = 7.
+const FACTORY_SEGMENTS = [
+  { key: 'make', days: 14 },
+  { key: 'wait', days: 14, uncertain: true },
+  { key: 'mount', days: 3 },
+];
+const OUR_SEGMENTS = [
+  { key: 'measure', days: 1 },
+  { key: 'design', days: 2 },
+  { key: 'stock', days: 1, dark: true },
+  { key: 'mount', days: 3 },
+];
+const FACTORY_TOTAL = FACTORY_SEGMENTS.reduce((a, s) => a + s.days, 0);
+const OUR_TOTAL = OUR_SEGMENTS.reduce((a, s) => a + s.days, 0);
+const SCALE_DAYS = FACTORY_TOTAL + 1;
+const TICKS = [0, 7, 14, 21, 28];
 
 const COPY = {
   ru: {
@@ -27,11 +44,15 @@ const COPY = {
     tons: `${STOCK_TONS} тонн`,
     tonsNote: 'комплектующих на нашем складе в Ташкенте — отгружаем любой объём',
     visit: 'Приезжайте посмотреть металл до договора',
+    cmpTitle: 'Сколько ждать склад, в днях',
+    cmpDelta: `На ${FACTORY_TOTAL - OUR_TOTAL} дня раньше`,
     cmpFactory: 'Под заказ у производителя',
-    cmpFactoryBar: `изготовление и доставка — ${FACTORY_LEAD} дней, потом монтаж`,
+    cmpFactoryTotal: `до ${FACTORY_TOTAL} дня`,
     cmpUs: 'RaxPro · всё в наличии',
-    cmpUsBar: `${TOTAL_DAYS} дней под ключ`,
-    cmpUsNote: '0 дней ожидания производства',
+    cmpUsTotal: `${OUR_TOTAL} дней`,
+    cmpTail: 'склад уже работает',
+    cmpDays: 'дней',
+    seg: { make: `изготовление и доставка — ${FACTORY_LEAD} дней`, wait: 'возможная задержка завода', mount: 'монтаж', measure: 'замер', design: 'проект', stock: 'комплектация со склада' },
     dayLabels: ['День 1', 'Дни 2–3', 'День 4', 'Дни 5–7 · склад работает'],
     get: 'Вы получаете',
     inStock: 'Всё в наличии',
@@ -54,11 +75,15 @@ const COPY = {
     tons: `${STOCK_TONS} tonna`,
     tonsNote: 'butlovchi qism Toshkentdagi omborimizda — istalgan hajmni joʻnatamiz',
     visit: 'Shartnomagacha kelib metallni koʻring',
+    cmpTitle: 'Omborni necha kun kutasiz',
+    cmpDelta: `${FACTORY_TOTAL - OUR_TOTAL} kun oldin`,
     cmpFactory: 'Ishlab chiqaruvchiga buyurtma',
-    cmpFactoryBar: `ishlab chiqarish va yetkazish — ${FACTORY_LEAD} kun, keyin montaj`,
+    cmpFactoryTotal: `${FACTORY_TOTAL} kungacha`,
     cmpUs: 'RaxPro · hammasi mavjud',
-    cmpUsBar: `${TOTAL_DAYS} kunda kalit topshirish`,
-    cmpUsNote: 'ishlab chiqarishni kutish — 0 kun',
+    cmpUsTotal: `${OUR_TOTAL} kun`,
+    cmpTail: 'ombor allaqachon ishlayapti',
+    cmpDays: 'kun',
+    seg: { make: `ishlab chiqarish va yetkazish — ${FACTORY_LEAD} kun`, wait: 'zavodning ehtimoliy kechikishi', mount: 'montaj', measure: 'oʻlchov', design: 'loyiha', stock: 'ombordan butlash' },
     dayLabels: ['1-kun', '2–3-kunlar', '4-kun', '5–7-kunlar · ombor ishlaydi'],
     get: 'Siz olasiz',
     inStock: 'Hammasi mavjud',
@@ -85,6 +110,106 @@ function rowProgress(el) {
   const vh = window.innerHeight;
   const start = vh * 0.92, end = vh * 0.38;
   return Math.min(1, Math.max(0, (start - rect.top) / Math.max(1, start - end)));
+}
+
+/** Стиль сегментов: завод — серые, штриховка = неопределённость; мы — синие, комплектация тёмная как её карточка. */
+const SEG_CLASS = {
+  make: 'bg-slate-300 text-slate-700',
+  wait: 'text-slate-600',
+  mount: 'bg-sky-600 text-white',
+  measure: 'bg-sky-300 text-navy-900',
+  design: 'bg-sky-400 text-navy-900',
+  stock: 'bg-navy-900 text-white',
+};
+const HATCH = { backgroundImage: 'repeating-linear-gradient(135deg, #cbd5e1 0 5px, #e8eef5 5px 11px)' };
+
+function LeadRow({ label, total, segments, tail, on, strong, c }) {
+  let offset = 0;
+  const parts = segments.map((seg, i) => {
+    const left = (offset / SCALE_DAYS) * 100, width = (seg.days / SCALE_DAYS) * 100;
+    offset += seg.days;
+    const cls = seg.dark ? SEG_CLASS.stock : SEG_CLASS[seg.key];
+    return (
+      <div
+        key={seg.key}
+        className={`absolute top-0 bottom-0 flex items-center overflow-hidden text-[11px] font-semibold px-2 ${cls} ${i === 0 ? 'rounded-l-md' : ''} ${i === segments.length - 1 ? 'rounded-r-md' : ''}`}
+        style={{ left: `${left}%`, width: `calc(${width}% - 2px)`, ...(seg.uncertain ? HATCH : {}), transform: on ? 'scaleX(1)' : 'scaleX(0)', transformOrigin: 'left', transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)', transitionDelay: `${i * 160}ms` }}
+        title={c.seg[seg.key]}
+      >
+        {seg.days >= 2 && <span className="truncate hidden sm:inline">{seg.days} {c.cmpDays}</span>}
+      </div>
+    );
+  });
+  const used = (offset / SCALE_DAYS) * 100;
+  return (
+    <div className="grid sm:grid-cols-[200px,1fr] gap-2 sm:gap-6 items-center">
+      <div className={`flex items-baseline justify-between gap-3 text-sm ${strong ? 'font-semibold text-navy-900' : 'text-slate-500'}`}>
+        {label}
+        <span className={`sm:hidden shrink-0 whitespace-nowrap text-[11px] font-semibold ${strong ? 'text-sky-700' : 'text-slate-500'}`}>{total}</span>
+      </div>
+      <div className="relative h-10">
+        {parts}
+        {tail && (
+          <div
+            className="absolute top-0 bottom-0 rounded-md border border-dashed border-sky-400 text-sky-700 text-[11px] font-semibold flex items-center px-2 overflow-hidden"
+            style={{ left: `calc(${used}% + 6px)`, right: 0, opacity: on ? 1 : 0, transition: 'opacity 0.6s', transitionDelay: `${segments.length * 160 + 200}ms` }}
+          >
+            <span className="truncate">{tail} · {FACTORY_TOTAL - OUR_TOTAL} {c.cmpDays}</span>
+          </div>
+        )}
+        <span
+          className={`hidden sm:block absolute -top-5 text-[11px] font-semibold whitespace-nowrap ${strong ? 'text-sky-700' : 'text-slate-500'}`}
+          style={{ left: `${used}%`, transform: 'translateX(-100%)', opacity: on ? 1 : 0, transition: 'opacity 0.5s', transitionDelay: `${segments.length * 160}ms` }}
+        >
+          {total}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/** Две полосы на одной шкале дней: длина = срок, разница видна без чтения цифр. */
+function LeadTimeChart({ c }) {
+  const ref = useRef(null);
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setOn(true); return; }
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setOn(true); o.disconnect(); } }, { threshold: 0.4 });
+    o.observe(el);
+    return () => o.disconnect();
+  }, []);
+  const legend = ['make', 'wait', 'mount', 'measure', 'design', 'stock'];
+  return (
+    <div ref={ref} className="mt-10 rounded-xl2 bg-cloud-50 border border-cloud-200 p-5 sm:p-7">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="font-bold text-navy-900">{c.cmpTitle}</h3>
+        <span className="rounded-full bg-sky-600 text-white text-sm font-semibold px-4 py-1.5">{c.cmpDelta}</span>
+      </div>
+      <div className="mt-6 sm:mt-8 grid gap-5 sm:gap-7">
+        {/* Шкала дней и вертикальные линии — только там, где полосы */}
+        <div className="grid sm:grid-cols-[200px,1fr] gap-2 sm:gap-6">
+          <span className="hidden sm:block" />
+          <div className="relative h-4 text-[10px] text-slate-400">
+            {TICKS.map((d) => (
+              <span key={d} className="absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${(d / SCALE_DAYS) * 100}%` }}>{d}</span>
+            ))}
+          </div>
+        </div>
+        <LeadRow c={c} label={c.cmpFactory} total={c.cmpFactoryTotal} segments={FACTORY_SEGMENTS} on={on} />
+        <LeadRow c={c} label={c.cmpUs} total={c.cmpUsTotal} segments={OUR_SEGMENTS} tail={c.cmpTail} on={on} strong />
+      </div>
+      <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-500">
+        {legend.map((k) => (
+          <li key={k} className="flex items-center gap-2">
+            <span className={`w-3 h-3 rounded-sm ${k === 'wait' ? '' : SEG_CLASS[k].split(' ')[0]}`} style={k === 'wait' ? HATCH : undefined} />
+            {c.seg[k]}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default function Stages({ lang = 'ru' }) {
@@ -146,20 +271,8 @@ export default function Stages({ lang = 'ru' }) {
         </div>
       </div>
 
-      {/* Сравнение сроков */}
-      <div className="mt-10 rounded-xl2 bg-cloud-50 border border-cloud-200 p-5 sm:p-6 grid gap-4">
-        <div className="grid sm:grid-cols-[220px,1fr] gap-2 sm:gap-6 items-center">
-          <span className="text-sm text-slate-500">{c.cmpFactory}</span>
-          <span className="rounded-lg bg-cloud-200 text-slate-600 text-sm px-4 py-2.5">{c.cmpFactoryBar}</span>
-        </div>
-        <div className="grid sm:grid-cols-[220px,1fr] gap-2 sm:gap-6 items-center">
-          <span className="text-sm font-semibold text-navy-900">{c.cmpUs}</span>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="rounded-lg bg-sky-600 text-white text-sm font-semibold px-4 py-2.5">{c.cmpUsBar}</span>
-            <span className="text-sm text-navy-900">{c.cmpUsNote}</span>
-          </div>
-        </div>
-      </div>
+      {/* Сравнение сроков — диаграмма на общей шкале дней */}
+      <LeadTimeChart c={c} />
 
       {/* Полоска дней + карточки этапов; появляются по скроллу */}
       <div ref={rowRef} className="mt-10">
