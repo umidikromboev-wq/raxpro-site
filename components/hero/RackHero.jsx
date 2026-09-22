@@ -21,9 +21,12 @@ const Actions = ({ copy, ctaHref, cta2Href, innerRef, className = '' }) => (
 // стартовал только после гидрации. Правил сцену — `npm run build:three`.
 const HERO_BUNDLE_URL = '/vendor/rax-hero.js';
 const STOPS = [0, 0.23, 0.57, 1];
-// Телефон: сцена собирается сама, без скролла. Вперёд ~11 с, пауза на готовом складе,
+// Телефон: сцена собирается сама, без скролла. Вперёд ~6 с, пауза на готовом складе,
 // быстрый откат и снова. Заголовки стадий и таймлайн идут по тому же прогрессу.
-const AUTO = { forward: 11000, hold: 2800, back: 1200, rest: 500 };
+// Было 11 с на прямой ход и 15,5 с на круг — человек уходил вниз, не дождавшись
+// собранного склада (Умид, 22.09). Теперь весь круг ~9 с, и дольше всего держится
+// кадр, ради которого всё: полный стеллаж.
+const AUTO = { forward: 6000, hold: 2200, back: 800, rest: 400 };
 const AUTO_TOTAL = AUTO.forward + AUTO.hold + AUTO.back + AUTO.rest;
 const easeInOutSine = (t) => 0.5 - 0.5 * Math.cos(Math.PI * t);
 function autoProgress(ms) {
