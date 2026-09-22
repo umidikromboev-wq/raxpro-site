@@ -27,3 +27,6 @@ research/report/img/
 research/report/*.html
 research/report/files*.json
 docs/superpowers/
+
+# three.js для 3D-героя собирается в prebuild (scripts/build-three.mjs)
+public/vendor/

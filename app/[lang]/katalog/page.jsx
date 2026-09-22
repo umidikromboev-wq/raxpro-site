@@ -1,7 +1,6 @@
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import LeadForm from "../../../components/LeadForm";
-import AddToCart from "../../../components/AddToCart";
 import { IcoArrow, IcoCheck } from "../../../components/Icons";
 import { PRODUCTS, formatPrice, isProjectPriced } from "../../../lib/products";
 import { SHOP } from "../../../lib/shop";
@@ -148,20 +147,14 @@ export default async function CatalogPage({ params }) {
                       {byProject ? t.byProject : formatPrice(p.price, L)}
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2.5">
-                      {byProject ? (
-                        <a
-                          href={href(L, `/katalog/${p.slug}#zayavka`)}
-                          className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 bg-navy-900 text-white hover:bg-sky-600 font-semibold px-5 py-3 rounded-xl transition"
-                        >
-                          {t.withEngineer}
-                        </a>
-                      ) : (
-                        <AddToCart
-                          product={p}
-                          lang={L}
-                          className="flex-1 min-w-[140px] !py-3"
-                        />
-                      )}
+                      {/* Корзины на сайте нет (решение 22.09): у любой позиции одно действие —
+                          заявка на странице товара, штучные — «Купить в 1 клик». */}
+                      <a
+                        href={href(L, `/katalog/${p.slug}#zayavka`)}
+                        className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 bg-navy-900 text-white hover:bg-sky-600 font-semibold px-5 py-3 rounded-xl transition"
+                      >
+                        {byProject ? t.withEngineer : t.buyNow}
+                      </a>
                       <a
                         href={href(L, `/katalog/${p.slug}`)}
                         className="inline-flex items-center justify-center gap-2 border border-navy-900/15 text-navy-800 hover:border-sky-500 hover:text-sky-600 font-semibold px-5 py-3 rounded-xl transition"

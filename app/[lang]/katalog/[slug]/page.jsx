@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import Header from "../../../../components/Header";
 import Footer from "../../../../components/Footer";
-import AddToCart from "../../../../components/AddToCart";
 import LeadForm from "../../../../components/LeadForm";
 import { IcoCheck, IcoArrow } from "../../../../components/Icons";
 import { PRODUCTS, getProduct, formatPrice, isProjectPriced } from "../../../../lib/products";
@@ -174,12 +173,11 @@ export default async function ProductPage({ params }) {
                 <div className="mt-1 text-sm text-slate-500">{t.madeDays}</div>
 
                 <div className="mt-5 flex flex-col sm:flex-row gap-3">
-                  <AddToCart product={p} lang={L} className="flex-1" />
-                  {/* Форма заявки живёт на этой же странице — уводить на главную
-                      значит терять покупателя, который уже выбрал товар. */}
+                  {/* Корзины нет (решение 22.09). Форма заявки живёт на этой же странице —
+                      уводить на главную значит терять покупателя, который уже выбрал товар. */}
                   <a
                     href="#zayavka"
-                    className="flex-1 inline-flex items-center justify-center gap-2 border border-navy-900/15 text-navy-800 hover:border-sky-500 hover:text-sky-600 font-semibold px-6 py-3.5 rounded-xl transition"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-navy-900 text-white hover:bg-sky-600 font-semibold px-6 py-3.5 rounded-xl transition"
                   >
                     {t.buyNow}
                   </a>

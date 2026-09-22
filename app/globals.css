@@ -367,7 +367,7 @@ html {
 .rack-sticky { position: relative; min-height: 100svh; background: radial-gradient(ellipse at 74% 36%, #147db5 0%, #07568d 47%, #073b67 100%); overflow: hidden; }
 [data-mode='live'] .rack-sticky { position: sticky; top: 0; height: 100svh; min-height: 660px; }
 .rack-viewport { position: absolute; right: -3%; top: 9%; width: 70%; height: 78%; }
-.rack-viewport canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.9s ease; }
+.rack-viewport canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.4s ease; }
 .rack-shade { display: none; position: absolute; inset: 0; pointer-events: none; }
 /* Холст проявляется только когда сцена собрана — без постера и без скачка раскладки */
 [data-mode='live'][data-ready='true'] .rack-viewport canvas { opacity: 1; }

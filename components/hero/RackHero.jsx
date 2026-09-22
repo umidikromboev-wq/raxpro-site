@@ -15,6 +15,11 @@ const Actions = ({ copy, ctaHref, cta2Href, innerRef, className = '' }) => (
   </div>
 );
 
+// three.js и сцена едут одним файлом вне бандла Next (scripts/build-three.mjs →
+// public/vendor): esbuild оставляет от three только нужные классы (499 КБ вместо
+// 706), а постоянный адрес даёт предзагрузку с самого HTML — раньше import()
+// стартовал только после гидрации. Правил сцену — `npm run build:three`.
+const HERO_BUNDLE_URL = '/vendor/rax-hero.js';
 const STOPS = [0, 0.23, 0.57, 1];
 // Телефон: сцена собирается сама, без скролла. Вперёд ~11 с, пауза на готовом складе,
 // быстрый откат и снова. Заголовки стадий и таймлайн идут по тому же прогрессу.
@@ -126,9 +131,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
     let intersection = null;
     (async () => {
       try {
-        const [THREE, { createRackScene }, { RoomEnvironment }] = await Promise.all([
-          import('three'), import('./rackScene'), import('three/examples/jsm/environments/RoomEnvironment.js'),
-        ]);
+        const { THREE, RoomEnvironment, createRackScene } = await import(/* webpackIgnore: true */ /* turbopackIgnore: true */ HERO_BUNDLE_URL);
         if (disposed) return;
         api = createRackScene(THREE, canvas, lang, { RoomEnvironment });
         start = performance.now();
@@ -172,6 +175,8 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
 
   return (
     <section ref={sectionRef} className="rack-hero" data-mode={mode} data-ready={ready ? 'true' : 'false'} aria-label={copy.eyebrow}>
+      {/* React поднимает <link> в <head>: браузер начинает качать three.js с первых байт HTML */}
+      <link rel="modulepreload" href={HERO_BUNDLE_URL} />
       <div className="rack-sticky">
         <div className="rack-viewport">
           <img className="rack-poster" src="/works/hero.jpg" alt="" width="1600" height="1200" aria-hidden="true" />
