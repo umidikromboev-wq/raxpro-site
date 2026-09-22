@@ -1,11 +1,13 @@
 import { sceneState, stagger, dropOffset, easeOutCubic, smoothstep, span as spanOf, STAGES } from './timeline.js';
-import { rackModel, ROOM, BAY_WIDTH, RACK_DEPTH, floorPositions } from './rackModel.js';
+import { rackModel, ROOM, BAY_WIDTH, RACK_DEPTH, floorPositions, FLOOR_SPOTS, CARRY_LEVEL } from './rackModel.js';
 import { cartonTexture, cartonTapeTexture, wrapTexture, loadLabelTexture, textSprite, createWorker, WORKER } from './sceneAssets.js';
 import { buildRoom } from './sceneRoom.js';
 import { addRackDetails, addPalletLoad, addPalletJack, addFloorPallets } from './sceneProps.js';
 export { countPositions } from './rackModel.js';
 
 const SLIDE_DISTANCE = 7;
+// Высота дуги, по которой паллета с пола заезжает на ярус: её поднимают, а не тащат сквозь стойку.
+const CARRY_ARC = 0.75;
 const JACK_AT = [-1.6, 0.9];
 const LEFT_WALL_X = -ROOM.width / 2;
 const LABEL_TEXT = { ru: ['до 4 т / ярус', 'Ваше помещение', '17 м', '13 м', '2,3 м', '6,3 м', '1,3 м', 'Стеллажи под ваш бизнес'], uz: ['4 t gacha / yarus', 'Sizning omboringiz', '17 m', '13 m', '2,3 m', '6,3 m', '1,3 m', 'Biznesingiz uchun stellajlar'] };
@@ -80,10 +82,21 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
 
   // Одинаковые детали складываются в InstancedMesh; владелец (owner) говорит, на каком этапе деталь падает на место.
   const batches = new Map();
+  const UP = new THREE.Vector3(0, 1, 0);
   function part(size, name, position, owner = null, rotation = [0, 0, 0], shape = 'box') {
     const key = `${name}:${shape}:${size.join(',')}`;
     if (!batches.has(key)) batches.set(key, { size, name, shape, items: [] });
-    batches.get(key).items.push({ position, owner, quaternion: new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation, 'YXZ')) });
+    const item = { position, owner, quaternion: new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation, 'YXZ')) };
+    // Паллета «с пола»: место на полу считаем здесь один раз. Деталь поворачивается
+    // вокруг центра паллеты, а не вокруг себя, иначе доски разъезжаются.
+    if (owner && owner.from) {
+      const f = owner.from;
+      const dx = position[0] - f.cx, dz = position[2] - f.cz;
+      const cos = Math.cos(f.yaw), sin = Math.sin(f.yaw);
+      item.start = [f.x + dx * cos - dz * sin, position[1] - f.cy, f.z + dx * sin + dz * cos];
+      item.startQuaternion = new THREE.Quaternion().setFromAxisAngle(UP, f.yaw).multiply(item.quaternion);
+    }
+    batches.get(key).items.push(item);
   }
   function framePart(f, size, name, u, y, v, owner, tilt = 0) {
     const x = f.x + u * Math.cos(f.rot) - v * Math.sin(f.rot);
@@ -127,7 +140,21 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
       [b.x + Math.cos(b.rot) * BAY_WIDTH / 2, b.y, b.z + Math.sin(b.rot) * BAY_WIDTH / 2]);
   });
   addRackDetails(part, framePart, model);
-  model.slots.forEach((s, i) => addPalletLoad(part, { stage: 'load', index: i, count: model.slots.length, window: 0.22 }, s));
+  // Порядок загрузки: сначала на стеллаж уезжает то, что лежало на полу (ярус
+  // CARRY_LEVEL), и только потом сверху приходит новый товар — пол освобождается
+  // раньше, чем стеллаж наполняется. Внутри группы порядок исходный, по ярусам.
+  const loadQueue = model.slots
+    .map((s, i) => ({ s, i }))
+    .sort((a, b) => (a.s.level === CARRY_LEVEL ? -1 : a.s.level) - (b.s.level === CARRY_LEVEL ? -1 : b.s.level) || a.i - b.i);
+  let carried = 0;
+  loadQueue.forEach(({ s }, order) => {
+    const owner = { stage: 'load', index: order, count: model.slots.length, window: 0.22 };
+    if (s.level === CARRY_LEVEL && carried < FLOOR_SPOTS.length) {
+      const spot = FLOOR_SPOTS[carried++];
+      owner.from = { x: spot.x, z: spot.z, yaw: spot.yaw, cx: s.x, cy: s.y, cz: s.z };
+    }
+    addPalletLoad(part, owner, s);
+  });
   addFloorPallets(part);
   addPalletJack(part, JACK_AT[0], JACK_AT[1]);
 
@@ -231,6 +258,18 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
   }
   function placeItem(item, t) {
     const o = item.owner;
+    if (item.start) {
+      // Коробки клиента видно с первого кадра: при t = 0 паллета стоит на полу,
+      // дальше едет на своё место по дуге и доворачивается к стойке.
+      const e = smoothstep(t);
+      dummy.position.set(
+        item.start[0] + (item.position[0] - item.start[0]) * e,
+        item.start[1] + (item.position[1] - item.start[1]) * e + Math.sin(Math.PI * e) * CARRY_ARC,
+        item.start[2] + (item.position[2] - item.start[2]) * e,
+      );
+      dummy.quaternion.copy(item.startQuaternion).slerp(item.quaternion, e); dummy.updateMatrix();
+      return;
+    }
     const slide = o.motion === 'slide' ? (1 - easeOutCubic(t)) * SLIDE_DISTANCE : 0;
     const lift = o.motion === 'slide' ? 0 : dropOffset(t);
     dummy.position.set(item.position[0] + slide, t <= 0 ? -60 : item.position[1] + lift, item.position[2]);

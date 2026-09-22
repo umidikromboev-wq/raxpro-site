@@ -41,5 +41,26 @@ export function rackModel() {
   return { bays, frames, beams, slots, point };
 }
 
+/**
+ * Паллеты, которые у клиента уже лежат на полу: с них начинается сцена, и
+ * именно они первыми переезжают на стеллаж (ярус 1 — ровно столько же мест).
+ * Точки выбраны в проходе и у стен — мимо будущих стеллажей, колонны, рохли
+ * и замерщиков; yaw — разворот «как поставили», а не по линейке.
+ * Их количество и есть «сколько паллет влезает на пол без стеллажей» из
+ * текста героя: раньше это же число считалось по нижнему ярусу стеллажа.
+ */
+export const FLOOR_SPOTS = [
+  { x: -7.1, z: -0.9, yaw: 0.18 }, { x: -7.2, z: 1.0, yaw: -0.12 },
+  { x: -5.9, z: 0.1, yaw: 0.34 }, { x: -6.3, z: 2.2, yaw: -0.26 },
+  { x: -4.7, z: 1.3, yaw: 0.1 }, { x: -5.4, z: 3.4, yaw: 0.42 },
+  { x: -3.9, z: 2.6, yaw: -0.3 }, { x: -3.0, z: 4.2, yaw: 0.22 },
+  { x: -1.5, z: 4.8, yaw: 0.15 }, { x: 0.5, z: 4.4, yaw: -0.2 },
+  { x: 1.4, z: 3.2, yaw: 0.3 }, { x: -0.3, z: 5.8, yaw: -0.35 },
+  { x: 1.8, z: 5.4, yaw: 0.12 }, { x: 1.9, z: 1.7, yaw: -0.24 },
+];
+
+/** Ярус, на который уезжают паллеты с пола: первая полка, её видно целиком. */
+export const CARRY_LEVEL = 1;
+
 export function countPositions() { return rackModel().slots.length; }
-export function floorPositions() { return rackModel().slots.filter((s) => s.level === 0).length; }
+export function floorPositions() { return FLOOR_SPOTS.length; }
