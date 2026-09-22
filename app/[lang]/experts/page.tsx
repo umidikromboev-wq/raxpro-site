@@ -3,8 +3,6 @@ import { alternatesFor, href, absHref, LANGS } from "../../../lib/lang";
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import { T, normalizeLang } from "../../../lib/i18n";
-import { Eyebrow } from "../../../components/Section";
-import Reveal from "../../../components/Reveal";
 import { IcoArrow } from "../../../components/Icons";
 import SpecialistsSection from "../../../components/SpecialistsSection";
 
@@ -368,47 +366,6 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* METRICS SECTION */}
-      <section className="relative bg-navy-900 text-white overflow-hidden notch-tr">
-        <div className="absolute inset-0 grid-lines opacity-30" />
-        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16">
-          <div className="grid lg:grid-cols-[1fr,1.5fr] gap-10 items-center">
-            <div>
-              <Eyebrow light>{t.numsEyebrow}</Eyebrow>
-              <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl">
-                {t.numsTitle}
-              </h2>
-              <p className="mt-3 text-cloud-200/75 max-w-md">{t.numsText}</p>
-              <a
-                href="https://raxpro.uz/#kontakty"
-                className="inline-flex items-center gap-2 mt-6 bg-white text-navy-900 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 hover:text-white transition"
-              >
-                {t.numsCta} <IcoArrow className="w-5 h-5" />
-              </a>
-            </div>
-
-            <Reveal
-              as="div"
-              variant="fade"
-              stagger={70}
-              className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-white/10 rounded-xl2 overflow-hidden border border-white/10"
-            >
-              {t.stats?.map((s, idx) => (
-                <div key={s.l || idx} className="bg-navy-900 p-6">
-                  <div className="font-display font-medium text-4xl sm:text-5xl text-sky-400 leading-none">
-                    {s.n}
-                    <span className="text-2xl text-sky-300 ml-1">{s.s}</span>
-                  </div>
-                  <div className="text-cloud-200/70 text-sm mt-2 leading-snug">
-                    {s.l}
-                  </div>
-                </div>
-              ))}
-            </Reveal>
           </div>
         </div>
       </section>
