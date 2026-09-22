@@ -38,7 +38,7 @@ function autoProgress(ms) {
 }
 /** Сколько мс от начала цикла даёт нужный прогресс на прямом ходе. */
 const autoTimeFor = (p) => (Math.acos(1 - 2 * Math.min(1, Math.max(0, p))) / Math.PI) * AUTO.forward;
-export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Href = '#zayavka', konHref = '/ru/konstruktor' }) {
+export default function RackHero({ lang = 'ru', ctaHref = '#zayavka', cta2Href = '#katalog' }) {
   const copy = HERO_COPY[lang] || HERO_COPY.ru;
   const positions = countPositions(), floor = floorPositions();
   const sectionRef = useRef(null), canvasRef = useRef(null), introRef = useRef(null), stageActionsRef = useRef(null);
@@ -190,8 +190,8 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
           <div className="rack-intro" ref={introRef}>
             <div className="rack-segments" role="group" aria-label={copy.eyebrow}>
               <span className="rack-kicker">{copy.eyebrow}</span>
-              {/* Сегменты с `type` ведут в конструктор; набивные и мезонин считаются по проекту — ведут на свои страницы */}
-              {copy.segments.map((s) => <a key={s.label} href={s.type ? `${konHref}?type=${s.type}` : `/${lang}${s.href}`}>{s.label}</a>)}
+              {/* Чип без своей страницы ведёт в форму заявки — туда же, куда главная кнопка */}
+              {copy.segments.map((s) => <a key={s.label} href={s.href ? `/${lang}${s.href}` : ctaHref}>{s.label}</a>)}
             </div>
             <h1>{copy.title} <em>{copy.titleAccent}</em></h1>
             <p className="rack-description">{copy.text}</p>

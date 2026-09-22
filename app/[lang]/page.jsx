@@ -146,7 +146,7 @@ export default async function Home({ params, searchParams }) {
         ? <VideoHeroMp4 lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
         : heroMode === "video"
           ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
-          : <RackHero lang={L} ctaHref="#zayavka" konHref={href(L, "/konstruktor")} cta2Href={href(L, "/katalog")} />}
+          : <RackHero lang={L} ctaHref="#zayavka" cta2Href={href(L, "/katalog")} />}
 
       {/* CLIENTS + NUMBERS — один белый блок: цифра в заголовке, факты сеткой, логотипы как мини-кейсы */}
       <section className="bg-white border-b border-cloud-200" aria-labelledby="clients-title">
