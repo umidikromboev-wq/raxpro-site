@@ -30,3 +30,6 @@ docs/superpowers/
 
 # three.js для 3D-героя собирается в prebuild (scripts/build-three.mjs)
 public/vendor/
+
+# Оригиналы скриншотов для презентаций — 181 МБ, в репозитории не нужны
+deck/shots/

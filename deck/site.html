@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>RaxPro — исследование и пересборка сайта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+
+<!-- ============ 01 · ОБЛОЖКА ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Prototype Agency</span><span>Кейс · 22 сентября 2026</span></div>
+    <div style="margin-top:auto">
+      <svg width="34" height="34" viewBox="0 0 34 34" style="margin-bottom:12mm">
+        <rect x="1" y="1" width="32" height="32" fill="none" stroke="#20C47E" stroke-width="2"/>
+        <rect x="9" y="9" width="16" height="16" fill="#20C47E"/>
+      </svg>
+      <div class="eyebrow" style="margin-bottom:5mm">Разбор проекта · RAX PRO · Ташкент</div>
+      <h1>Сайт, который<br>считает склад<br>до звонка</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:130mm;color:#9DA0A8">
+        Как из сайта-визитки «стеллажи полного цикла» получился инструмент, который называет
+        цену за паллетоместо, показывает, сколько поместится в конкретное помещение, и отдаёт
+        спецификацию до того, как человек дошёл до телефона.
+      </p>
+      <p class="sm" style="margin-top:5mm;color:#6B6E77">
+        Исследование рынка, разбор старого сайта, решение, приёмка и прогноз — полностью, со всеми экранами.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Разобрано</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">45 сайтов</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Прочитано</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">260 постов</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Собрано</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">17 блоков</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Языки</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">RU · UZ</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 · РЕЗЮМЕ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>01</b> · Резюме</span><span>RAX PRO · сайт</span></div>
+    <h2>Что было сделано и что изменилось</h2>
+    <p class="lede" style="max-width:160mm;margin-bottom:6mm">
+      Старый сайт отвечал на вопрос «кто вы такие». Новый отвечает на вопрос, с которым человек
+      приходит на самом деле: <strong>сколько товара влезет в мой склад и сколько это будет стоить</strong>.
+      Между этими двумя вопросами лежит всё, что описано дальше в этой презентации.
+    </p>
+
+    <div class="grid g3" style="margin-bottom:6mm">
+      <div class="box pad3">
+        <div class="idx">01</div><h4 style="margin:2mm 0 1.5mm">Цена стала видимой</h4>
+        <p class="xs muted">На карточке каждого из шести типов — цена за секцию из прайса: от 1 200 000 сум за архивный, 3 620 000 за среднегрузовой, 7 032 128 за паллетный. До этого цен на сайте не было нигде.</p>
+      </div>
+      <div class="box pad3">
+        <div class="idx">02</div><h4 style="margin:2mm 0 1.5mm">Расчёт переехал в интерфейс</h4>
+        <p class="xs muted">Вопросы, которые менеджер задаёт по телефону, задаёт калькулятор. Ядро расчёта уже существовало внутри генератора КП — его вывели наружу.</p>
+      </div>
+      <div class="box pad3">
+        <div class="idx">03</div><h4 style="margin:2mm 0 1.5mm">Обещание привязано к сроку</h4>
+        <p class="xs muted">Не «полный цикл», а «150 тонн на складе в Ташкенте — привезём завтра». Проверяемое утверждение вместо оценочного.</p>
+      </div>
+    </div>
+
+    <div class="grid g4" style="margin-bottom:6mm">
+      <div class="box-fill pad3"><div class="stat acc">6</div><div class="xs muted" style="margin-top:1.5mm">типов стеллажей на главной вместо пяти: добавлен мезонин</div></div>
+      <div class="box-fill pad3"><div class="stat acc">17</div><div class="xs muted" style="margin-top:1.5mm">блоков главной, каждый закрывает конкретный страх из списка семи</div></div>
+      <div class="box-fill pad3"><div class="stat acc">3</div><div class="xs muted" style="margin-top:1.5mm">варианта первого экрана собраны и сравнены на живом адресе</div></div>
+      <div class="box-fill pad3"><div class="stat acc">0</div><div class="xs muted" style="margin-top:1.5mm">выдуманных цифр: всё считается из каталога и прайса или помечено к подтверждению</div></div>
+    </div>
+
+    <div class="box-acc pad3">
+      <div class="label" style="margin-bottom:2mm">Главный вывод исследования</div>
+      <p class="sm">
+        В Узбекистане ни у одного игрока нет четырёх вещей: <strong>цены за паллетоместо</strong>,
+        <strong>онлайн-проектирования</strong>, <strong>спецификации до звонка</strong> и
+        <strong>кейсов с цифрами в м² и паллетоместах</strong>. Самообслуживание в 3D существует
+        только в мебели и в США. Это и есть свободная позиция: первый в СНГ конфигуратор
+        паллетных стеллажей со спецификацией и ценой.
+      </p>
+    </div>
+
+    <div style="margin-top:auto">
+      <div class="label" style="margin-bottom:2.5mm">Что внутри этой презентации</div>
+      <div class="grid g4" style="gap:3mm">
+        <div class="xs"><b class="mono acc">I</b> · Исследование: рынок, сегменты, страхи, библиотека решений</div>
+        <div class="xs"><b class="mono acc">II</b> · Старый сайт: что работало, что мешало, где противоречия</div>
+        <div class="xs"><b class="mono acc">III</b> · Решение: ключевой визуал, первый экран, все блоки по порядку</div>
+        <div class="xs"><b class="mono acc">IV</b> · Сравнение версий, прогноз конверсии, что осталось</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">02</span></div>
+</section>
+
+<!-- ============ 03 · МЕТОД ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span><b>02</b> · Метод</span><span>Как мы работали</span></div>
+    <h2>Пять источников, ни одного «мне кажется»</h2>
+    <p class="lede" style="max-width:160mm;margin-bottom:7mm;color:#9DA0A8">
+      Дизайн начинался не с макета, а с чтения. Сначала — кто покупает и чего боится,
+      потом — как это устроено у других, и только потом — как это должно выглядеть.
+      Каждое решение в третьей части ссылается на строку из первой.
+    </p>
+
+    <div class="grid" style="gap:3mm;margin-bottom:7mm">
+      <div class="box pad3" style="display:grid;grid-template-columns:8mm 42mm minmax(0,1fr);gap:4mm;align-items:start">
+        <div class="idx" style="color:var(--acc-hi)">01</div>
+        <div><h4>Канал отзывов целиком</h4><div class="xxs faint mono" style="margin-top:1mm">@RaxPro_otziv · год</div></div>
+        <p class="xs muted">260 постов с 24.09.2025 по 10.09.2026, 66 названных объектов с описанием, разнесены вручную по сегментам. Плюс 31 расшифрованный отзыв: 8 видео, 17 переписок, 6 голосовых, и 11 кейсов с цифрами.</p>
+      </div>
+      <div class="box pad3" style="display:grid;grid-template-columns:8mm 42mm minmax(0,1fr);gap:4mm;align-items:start">
+        <div class="idx" style="color:var(--acc-hi)">02</div>
+        <div><h4>Пять записанных звонков</h4><div class="xxs faint mono" style="margin-top:1mm">разбор ProAudit</div></div>
+        <p class="xs muted">Оценки 29 · 22 · 61 · 67 · 38 из 100. Продаж — ноль из пяти при трёх тёплых и двух горячих лидах. Теряют не на трафике, а в разговоре: в двух звонках грузоподъёмность названа 400 кг вместо 2–3 тонн.</p>
+      </div>
+      <div class="box pad3" style="display:grid;grid-template-columns:8mm 42mm minmax(0,1fr);gap:4mm;align-items:start">
+        <div class="idx" style="color:var(--acc-hi)">03</div>
+        <div><h4>Доска из 45 сайтов</h4><div class="xxs faint mono" style="margin-top:1mm">UZ · RU · KZ · мир · дизайн</div></div>
+        <p class="xs muted">Первый экран, социальное доказательство, способ приёма заявки и слабое место каждого. Снято 100 файлов скриншотов: герой и полная страница отдельно.</p>
+      </div>
+      <div class="box pad3" style="display:grid;grid-template-columns:8mm 42mm minmax(0,1fr);gap:4mm;align-items:start">
+        <div class="idx" style="color:var(--acc-hi)">04</div>
+        <div><h4>Рабочая группа RaxPro</h4><div class="xxs faint mono" style="margin-top:1mm">Telegram, 7 тем</div></div>
+        <p class="xs muted">Переписка инженеров по шести типам стеллажей и мезонину: реальные размеры, шаг колонны, глубины каналов, уникальные страницы КП. Отсюда все числа расчёта — не из интернета.</p>
+      </div>
+      <div class="box pad3" style="display:grid;grid-template-columns:8mm 42mm minmax(0,1fr);gap:4mm;align-items:start">
+        <div class="idx" style="color:var(--acc-hi)">05</div>
+        <div><h4>Сам raxpro.uz</h4><div class="xxs faint mono" style="margin-top:1mm">снят целиком</div></div>
+        <p class="xs muted">Каждый блок старого сайта снят отдельно на 1600 и на 390 пикселей, разобран по назначению и сверен с FAQ и текстами на противоречия.</p>
+      </div>
+    </div>
+
+    <div class="box-fill pad3" style="border-left:2px solid var(--acc-hi);margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Правило, которое держало работу</div>
+      <p class="sm" style="color:#C9CCD3">
+        Ни одна цифра на сайте не придумана. Всё, что можно посчитать, считается из каталога,
+        прайса и формул; всё, что должен подтвердить RaxPro, помечено и вынесено в отдельный
+        список. Сайт, который обещает нагрузку «до 4 тонн», не имеет права ошибиться в ней
+        так, как ошиблись в двух звонках из пяти.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">03</span></div>
+</section>
+
+<!-- ============ 04 · РАЗДЕЛИТЕЛЬ I ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Часть I</span><span>Исследование</span></div>
+    <div style="margin-top:auto">
+      <div class="mono" style="font-size:54pt;font-weight:800;letter-spacing:-.05em;color:var(--acc-hi);line-height:.9">I</div>
+      <h1 style="margin-top:8mm">Исследование</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:130mm;color:#9DA0A8">
+        Ситуация покупки и семь страхов · четыре сегмента по 66 объектам ·
+        45 первых экранов рынка · библиотека из 38 решений по 12 категориям ·
+        восемь ходов и восемь анти-паттернов.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Полосы</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">05 — 20</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Сайтов</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">45</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Объектов</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">66</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Решений</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">38</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · СИТУАЦИЯ ПОКУПКИ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>03</b> · Ситуация покупки</span><span>Часть I · Исследование</span></div>
+    <h2>Что за покупка и почему она тяжёлая</h2>
+    <p class="lede" style="max-width:160mm;margin-bottom:5mm">
+      Прежде чем переносить чужие решения, нужно понять, чем эта покупка отличается от
+      покупки футболки или подписки. Шесть критериев ниже — фильтр: решение с чужого сайта
+      берётся, только если ситуация покупки там совпадает.
+    </p>
+
+    <table style="margin-bottom:6mm">
+      <thead><tr><th style="width:38mm">Критерий</th><th>RaxPro</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Что продаём</td><td>Физический продукт <strong>плюс проект под помещение</strong>: замер → проект → поставка → монтаж. Это не товар с полки — это инженерная работа, у которой есть чертёж.</td></tr>
+        <tr><td class="k">Чей кошелёк</td><td>Деньги компании: склад, магазин, завод. Реже — свои, если это гараж или подсобка.</td></tr>
+        <tr><td class="k">Чем рискует</td><td>Деньгами — от 1,2 млн до сотен млн сум. <strong>Безопасностью</strong> — обрушение стеллажа это товар и люди. Сроками запуска склада.</td></tr>
+        <tr><td class="k">Обратимость</td><td>Низкая. Отверстия в бетонном полу, размер подогнан под помещение, переделка — это новые рамы.</td></tr>
+        <tr><td class="k">Длина решения</td><td>Дни или недели, 2–4 контакта, сравнение 3–5 поставщиков преимущественно по цене.</td></tr>
+        <tr><td class="k">Кто решает</td><td>Директор или завхоз с согласованием у собственника. В малом бизнесе — сам владелец.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-bottom:3mm">Откуда брали решения: доноры по ситуации, а не по отрасли</h3>
+    <p class="sm muted" style="margin-bottom:4mm">
+      Соседние ниши, где покупка устроена так же — необратимая, дорогая, с проектом под помещение.
+      Их приёмы работают здесь, а приёмы интернет-магазина одежды не работают.
+    </p>
+    <div class="grid g4" style="margin-bottom:6mm">
+      <div class="box pad3"><h4 style="margin-bottom:1.5mm">Застройщики<br>и ремонт под ключ</h4><p class="xs muted">Страх подрядчика: «сдадут ли в срок», «не бросят ли на середине».</p></div>
+      <div class="box pad3"><h4 style="margin-bottom:1.5mm">Кухни<br>на заказ</h4><p class="xs muted">Проект под конкретное помещение плюс визуализация до оплаты.</p></div>
+      <div class="box pad3"><h4 style="margin-bottom:1.5mm">Мебельные<br>конфигураторы</h4><p class="xs muted">Самообслуживание: человек собирает сам и видит цену, не спрашивая.</p></div>
+      <div class="box pad3"><h4 style="margin-bottom:1.5mm">B2B-<br>логистика</h4><p class="xs muted">Спецификация, тендер, документ на руки как условие сделки.</p></div>
+    </div>
+
+    <div class="box-warn pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm;color:var(--warn)">Следствие для дизайна</div>
+      <p class="sm">
+        Покупка необратимая и рискованная — значит, главная валюта сайта не «красиво», а
+        <strong>доказательство</strong>. Каждый блок обязан снимать конкретное сомнение,
+        иначе он занимает экран зря.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">05</span></div>
+</section>
+
+<!-- ============ 06 · СЕМЬ СТРАХОВ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>04</b> · Страхи и критерии успеха</span><span>Часть I · Исследование</span></div>
+    <h2>Семь вопросов, с которыми приходят</h2>
+    <p class="lede" style="max-width:160mm;margin-bottom:5mm">
+      Собраны из FAQ самого raxpro.uz, пяти расшифрованных звонков в отдел продаж и
+      тестовых КП. Всё, что не закрывает один из этих семи пунктов, на сайт не попадало —
+      это и был фильтр отбора блоков.
+    </p>
+
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:6mm">#</th><th style="width:52mm">Вопрос клиента</th><th>Что за ним стоит</th><th style="width:44mm">Чем закрыт на новом сайте</th></tr></thead>
+      <tbody>
+        <tr><td class="k">1</td><td class="k">«Сколько это стоит?»</td><td>Нет ориентира цены до звонка — человек уходит туда, где цены написаны в сумах.</td><td>Цена за секцию на каждой карточке типа, калькулятор, блок «из чего складывается цена».</td></tr>
+        <tr><td class="k">2</td><td class="k">«Выдержит ли?»</td><td>Нагрузка на ярус, толщина металла, анкеровка. Прямой страх обрушения.</td><td>«4 т на ярус» в bento, пять пунктов безопасности, сравнение с кустарной сваркой.</td></tr>
+        <tr><td class="k">3</td><td class="k">«Влезет ли в моё помещение и сколько паллетомест?»</td><td>Ключевой вопрос склада. Ответа не даёт никто в стране.</td><td>Первый экран прямо про это, калькулятор вместимости, конструктор.</td></tr>
+        <tr><td class="k">4</td><td class="k">«Сделают ли в срок?»</td><td>Запуск склада привязан к дате: аренда идёт, товар едет.</td><td>«150 тонн на складе — привезём завтра», этапы со сроками, «под ключ за 5 дней».</td></tr>
+        <tr><td class="k">5</td><td class="k">«Кустарные сварщики или завод?»</td><td>Страх переплатить за то же железо — или купить ржавое.</td><td>Отдельный блок сравнения с фотографией сварного шва и таблицей из девяти пар.</td></tr>
+        <tr><td class="k">6</td><td class="k">«Что будет после заявки?»</td><td>Спам, навязчивые звонки или тишина.</td><td>Колонка у формы: что происходит после отправки и в какой срок.</td></tr>
+        <tr><td class="k">7</td><td class="k">«Гарантия на бумаге или на словах?»</td><td>Десять лет звучат одинаково и у завода, и у сварщика из гаража.</td><td>«10 лет по договору. На рынке обычно — до 5», ISO-сертификаты сканами.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g2" style="gap:4mm">
+      <div class="box-bad pad3">
+        <div class="label" style="margin-bottom:2mm;color:var(--bad)">Почему это не теория</div>
+        <p class="xs">
+          Пять звонков в отдел продаж разобраны платформой: <strong>29 · 22 · 61 · 67 · 38</strong> из 100.
+          Продаж — ноль из пяти, при этом три лида тёплые и два горячих. В двух звонках менеджер
+          назвал грузоподъёмность <strong>400 кг вместо 2–3 тонн</strong> — то есть страх №2 был
+          не просто не закрыт, а усилен. В одном звонке потребность («оптовый склад лекарств»)
+          так и не выяснили и сразу назвали цену.
+        </p>
+      </div>
+      <div class="box-acc pad3">
+        <div class="label" style="margin-bottom:2mm">Что из этого следует</div>
+        <p class="xs">
+          Теряют не на трафике, а в разговоре. Значит, ответы должны стоять <strong>до</strong> разговора
+          и не зависеть от того, кто снял трубку: нагрузка, цена, вместимость, срок и гарантия —
+          написаны на странице цифрами, а не рассказываются по телефону. Это и есть главный ход
+          всей пересборки — перенести вопрос менеджера в интерфейс.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">06</span></div>
+</section>
+
+<!-- ============ 07 · ICP: ОТКУДА ДАННЫЕ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>05</b> · Кто покупает</span><span>Часть I · Исследование</span></div>
+    <h2>Четыре сегмента по 66 реальным объектам</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Сегменты собраны не по отрасли и не по размеру компании, а по тому, какую работу
+      клиент нанимает стеллажи выполнить и по каким критериям судит, что получилось.
+      Источник — весь канал отзывов за год, а не витрина лучших кейсов.
+    </p>
+
+    <div class="grid g4" style="margin-bottom:6mm">
+      <div class="box-fill pad3"><div class="stat">260</div><div class="xs muted" style="margin-top:1.5mm">постов канала @RaxPro_otziv с 24.09.2025 по 10.09.2026</div></div>
+      <div class="box-fill pad3"><div class="stat">66</div><div class="xs muted" style="margin-top:1.5mm">объектов с описанием, разнесены по сегментам вручную</div></div>
+      <div class="box-fill pad3"><div class="stat">31</div><div class="xs muted" style="margin-top:1.5mm">отзыв расшифрован: 8 видео, 17 переписок, 6 голосовых</div></div>
+      <div class="box-fill pad3"><div class="stat">11</div><div class="xs muted" style="margin-top:1.5mm">кейсов с цифрами: площадь, паллетоместа, срок</div></div>
+    </div>
+
+    <h3 style="margin-bottom:3mm">Распределение объектов по сегментам</h3>
+    <div style="margin-bottom:5mm">
+      <div style="display:grid;grid-template-columns:52mm minmax(0,1fr) 30mm;gap:3mm;align-items:center;margin-bottom:2.2mm">
+        <div class="sm"><strong>B · Коробочный склад</strong></div>
+        <div class="bar"><i style="width:56%"></i></div>
+        <div class="xs mono faint">37 объектов · 56 %</div>
+      </div>
+      <div style="display:grid;grid-template-columns:52mm minmax(0,1fr) 30mm;gap:3mm;align-items:center;margin-bottom:2.2mm">
+        <div class="sm"><strong>D · Дом и гараж</strong></div>
+        <div class="bar"><i style="width:20%"></i></div>
+        <div class="xs mono faint">13 объектов · 20 %</div>
+      </div>
+      <div style="display:grid;grid-template-columns:52mm minmax(0,1fr) 30mm;gap:3mm;align-items:center;margin-bottom:2.2mm">
+        <div class="sm"><strong>C · Паллеты и погрузчик</strong></div>
+        <div class="bar"><i style="width:14%"></i></div>
+        <div class="xs mono faint">9 объектов · 14 %</div>
+      </div>
+      <div style="display:grid;grid-template-columns:52mm minmax(0,1fr) 30mm;gap:3mm;align-items:center">
+        <div class="sm"><strong>A · Торговый зал</strong></div>
+        <div class="bar"><i style="width:10%"></i></div>
+        <div class="xs mono faint">7 объектов · 10 %</div>
+      </div>
+    </div>
+
+    <div class="box-warn pad3" style="margin-bottom:5mm">
+      <div class="label" style="margin-bottom:2mm;color:var(--warn)">Важная поправка, которую дало полное чтение канала</div>
+      <p class="xs">
+        Первая версия карты строилась на 31 расшифрованном отзыве — то есть на тех, кто написал
+        «спасибо» менеджеру. Проверка всего канала сдвинула картину: домашних установок оказалось
+        в пять раз больше, паллетных — в четыре, а магазинов меньше. Видеоотзывы снимают в
+        торговых залах, потому что там красиво, — и сегмент A выглядел крупнее, чем он есть.
+        <strong>Если бы карту строили по отзывам, сайт был бы сделан не для того сегмента.</strong>
+      </p>
+    </div>
+
+    <div class="grid g2" style="gap:4mm;margin-top:auto">
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Подсегменты внутри B, которых не было видно в отзывах</div>
+        <ul class="dash xs">
+          <li><strong>Аптечные и медицинские склады</strong> — 3 объекта: свой критерий — чистота и учёт партий</li>
+          <li><strong>Архив для организаций</strong> — 4: детсад, Минспорта (3 комплекта), IT Park</li>
+          <li><strong>Склад при магазине</strong> — 8: триггер не склад, а рост розницы</li>
+          <li><strong>Рестораны и кофе</strong> — 4: Caffelito, Sayqal, Ankara Picnic, кондитерский цех</li>
+        </ul>
+      </div>
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">География: треть объектов вне Ташкента</div>
+        <p class="xs muted">
+          Около 20 из 66: Андижан ×6, Сурхандарья ×3, Самарканд, Хорезм, Каракалпакстан, Навои,
+          Фергана, Коканд, Чуст, Джизак. При этом у половины региональных постов подпись
+          «отправлено», а не «смонтировано» — разрыв цепочки на монтаже в области подтверждается
+          данными, а не ощущением.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">07</span></div>
+</section>
+
+<!-- ============ 08 · СЕГМЕНТЫ B И A ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>05</b> · Кто покупает</span><span>Сегменты B и A</span></div>
+    <h2>Целевой сегмент и второй фокус</h2>
+
+    <div class="box" style="margin-bottom:5mm;border-color:var(--acc)">
+      <div style="display:flex;gap:4mm;align-items:baseline;padding:3.5mm 4mm 2.5mm;border-bottom:1px solid var(--line)">
+        <span class="mono acc" style="font-size:11pt;font-weight:800">B</span>
+        <h3 style="flex:1">Коробочный склад малого бизнеса</h3>
+        <span class="chip chip-acc">целевой сегмент · 56 %</span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)">
+        <div style="padding:3.5mm 4mm">
+          <div class="label" style="margin-bottom:1.2mm">Кто это</div>
+          <p class="xs muted" style="margin-bottom:2.5mm">Дистрибьютор, интернет-магазин, склад ресторана или сети, оптовик, склад при магазине, аптечный склад, архив организации. Товар в коробках, собирают руками, без погрузчика.</p>
+          <div class="label" style="margin-bottom:1.2mm">Работа, на которую нанимают стеллажи</div>
+          <p class="sm" style="border:1px dashed var(--line-2);padding:2.4mm 3mm;margin-bottom:2.5mm"><strong>Разместить в 3–4 раза больше товара на той же площади</strong> и быстро находить нужное, чтобы не снимать второй склад и принимать поставки без задержек.</p>
+          <div class="label" style="margin-bottom:1.2mm">Критерии успеха по приоритету</div>
+          <ul class="num xs" style="margin-bottom:0">
+            <li><strong>Вместимость:</strong> «на месте одной единицы — три-четыре, четыре яруса»</li>
+            <li><strong>Скорость:</strong> привезли и собрали за один день; Самарканд — 7 часов</li>
+            <li><strong>Доехало целым</strong> в регион</li>
+            <li><strong>Докупается по мере роста:</strong> «ещё два таких же комплекта»</li>
+            <li><strong>Держит вес и не гнётся</strong></li>
+          </ul>
+        </div>
+        <div class="box-fill" style="padding:3.5mm 4mm;border:0;border-left:1px solid var(--line)">
+          <div class="stat" style="font-size:15pt">10–30</div><div class="xxs muted" style="margin-bottom:2.5mm">комплектов среднегрузовых в заказе</div>
+          <div class="stat" style="font-size:15pt">36–110 млн</div><div class="xxs muted" style="margin-bottom:2.5mm">сум чек при 3,62 млн за секцию</div>
+          <div class="stat acc" style="font-size:15pt">7 из 9</div><div class="xxs muted" style="margin-bottom:3mm">постоянных клиентов канала — отсюда</div>
+          <p class="quote xxs">Теперь на месте одной единицы размещаем три-четыре — четыре яруса. Увидели в Instagram, привезли за один день.</p>
+          <div class="xxs faint mono" style="margin-top:1.2mm">Собиржон, склад ресторана</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div style="display:flex;gap:4mm;align-items:baseline;padding:3.5mm 4mm 2.5mm;border-bottom:1px solid var(--line)">
+        <span class="mono" style="font-size:11pt;font-weight:800">A</span>
+        <h3 style="flex:1">Торговый зал магазина</h3>
+        <span class="chip">второй фокус · 10 %</span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)">
+        <div style="padding:3.5mm 4mm">
+          <div class="label" style="margin-bottom:1.2mm">Кто это</div>
+          <p class="xs muted" style="margin-bottom:2.5mm">Владелец продуктового или хозяйственного магазина — Сергели, Ургут, Паркент, махалля. Открывает первую точку или переоборудует зал. Часто «впервые в этой сфере».</p>
+          <div class="label" style="margin-bottom:1.2mm">Работа, на которую нанимают стеллажи</div>
+          <p class="sm" style="border:1px dashed var(--line-2);padding:2.4mm 3mm;margin-bottom:2.5mm"><strong>Выставить весь товар на витрину так, чтобы покупатель сам находил и брал</strong>, чтобы магазин продавал больше с той же площади.</p>
+          <div class="label" style="margin-bottom:1.2mm">Где рвётся цепочка</div>
+          <p class="xs muted">Выбор. Новичок «мучился: искал в интернете, спрашивал знакомых». Нет понятной единицы измерения — сколько погонных метров нужно на зал 40 м². Критерий №1 здесь — продажи, а не вместимость, поэтому коммуникация и кейсы нужны отдельные.</p>
+        </div>
+        <div class="box-fill" style="padding:3.5mm 4mm;border:0;border-left:1px solid var(--line)">
+          <div class="stat" style="font-size:15pt">6–20</div><div class="xxs muted" style="margin-bottom:2.5mm">комплектов торговых на зал</div>
+          <div class="stat" style="font-size:15pt">+30–40 %</div><div class="xxs muted" style="margin-bottom:3mm">товара помещается после переоборудования</div>
+          <p class="quote xxs">Первой проблемой при открытии магазина были стеллажи. Работа на 10–15 дней закрылась за один день.</p>
+          <div class="xxs faint mono" style="margin-top:1.2mm">видеоотзыв, магазин</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">08</span></div>
+</section>
+
+<!-- ============ 09 · СЕГМЕНТЫ C И D + ВЕРДИКТ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>05</b> · Кто покупает</span><span>Сегменты C и D · вердикт</span></div>
+    <h2>Путь роста и сегмент на самообслуживание</h2>
+
+    <div class="grid g2" style="gap:4mm;margin-bottom:5mm">
+      <div class="box">
+        <div style="display:flex;gap:3mm;align-items:baseline;padding:3mm 3.5mm 2mm;border-bottom:1px solid var(--line)">
+          <span class="mono" style="font-size:10pt;font-weight:800">C</span>
+          <h4 style="flex:1">Паллетный склад с погрузчиком</h4>
+        </div>
+        <div style="padding:3mm 3.5mm">
+          <p class="xs muted" style="margin-bottom:2.5mm">Завод, холодильный склад, логистика, сеть кофеен с центральным складом. Товар на паллетах, есть погрузчик, есть ЛПР и договор. 9 объектов — вчетверо больше, чем в расшифрованных отзывах.</p>
+          <p class="xs" style="border:1px dashed var(--line-2);padding:2.2mm 2.6mm;margin-bottom:2.5mm"><strong>Использовать высоту помещения под паллеты</strong>, чтобы не расширять дорогую площадь — особенно холод — и чтобы погрузчик работал безопасно.</p>
+          <ul class="dash xxs">
+            <li>Нагрузка и расчёт: 1,5–4 т на ярус, сертификат на систему</li>
+            <li>Безопасность при технике: удары погрузчика, анкеровка, отбойники</li>
+            <li>Площадь ×2 без стройки</li>
+            <li>Срок под ключ: 12 часов на 4-метровые</li>
+            <li>Гарантия по договору — аргумент для ЛПР</li>
+          </ul>
+          <div class="kv" style="margin-top:2.5mm"><span class="xs">Чек при 20–60 секциях</span><b>140–420 млн</b></div>
+          <div class="kv"><span class="xs">Цена паллетной секции</span><b>7,03 млн</b></div>
+        </div>
+      </div>
+      <div class="box">
+        <div style="display:flex;gap:3mm;align-items:baseline;padding:3mm 3.5mm 2mm;border-bottom:1px solid var(--line)">
+          <span class="mono" style="font-size:10pt;font-weight:800">D</span>
+          <h4 style="flex:1">Дом, гараж, автосервис</h4>
+        </div>
+        <div style="padding:3mm 3.5mm">
+          <p class="xs muted" style="margin-bottom:2.5mm">Частник: кладовая, подвал многоэтажки, дача, гараж, небольшой автосервис. Одна-четыре секции, платит сам, часто в рассрочку. Каждый пятый пост канала.</p>
+          <p class="xs" style="border:1px dashed var(--line-2);padding:2.2mm 2.6mm;margin-bottom:2.5mm"><strong>Навести порядок в кладовой или гараже</strong>, чтобы вещи не портились и было не стыдно перед гостями и клиентами.</p>
+          <ul class="dash xxs">
+            <li>Красиво и аккуратно — «лучше, чем ожидал»</li>
+            <li>Приехали и установили — сам собирать не хочет</li>
+            <li>Держит до тонны, детали не царапаются</li>
+          </ul>
+          <div class="kv" style="margin-top:2.5mm"><span class="xs">Чек</span><b>1,2–4 млн</b></div>
+          <div class="kv"><span class="xs">Докупок за год</span><b>0</b></div>
+          <p class="xxs warn" style="margin-top:2.5mm">Чек не окупает выезд инженера и замер. 13 таких выездов за год — это 13 дней бригады. Ценность сегмента — рекомендации, а не деньги.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:3mm">Где конкурировать: четыре вопроса к каждому сегменту</h3>
+    <p class="xs muted" style="margin-bottom:3mm">Сегмент стоит фокуса, только если ответ «да» на все четыре. Чеки — из прайса, без маржи по факту.</p>
+    <table class="tiny" style="margin-bottom:5mm">
+      <thead><tr><th style="width:26mm">Сегмент</th><th>Ценность доказана</th><th>Маржа закрывается</th><th>Спрос создаётся</th><th style="width:22mm">Размер</th><th style="width:30mm">Вердикт</th></tr></thead>
+      <tbody>
+        <tr style="background:var(--acc-wash)"><td class="k">B · Склад</td><td>×3–4 вместимости, монтаж за день</td><td>36–110 млн, простой монтаж</td><td>Instagram, сарафан, регионы</td><td>37 из 66</td><td><strong>Фокус.</strong> Целевой сегмент</td></tr>
+        <tr><td class="k">A · Магазин</td><td>+30–40 % товара, 7 видео</td><td class="warn">Торговые «по проекту», чек ниже</td><td>Открытие точки — чёткий триггер</td><td>7 из 66</td><td><strong>Держать.</strong> Своя коммуникация</td></tr>
+        <tr><td class="k">C · Паллеты</td><td>Площадь ×2, 4 м, 12 часов</td><td>Самый большой чек</td><td class="warn">Длинная сделка, нужен ЛПР</td><td>9 из 66</td><td><strong>Растить из B.</strong> Апгрейд</td></tr>
+        <tr><td class="k">D · Дом</td><td>Доволен</td><td class="bad">1,2–4 млн не окупают выезд</td><td class="warn">Рекомендации, рассрочка</td><td>13 из 66</td><td><strong>Самообслуживание.</strong> Каталог</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-acc pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Что это меняет на сайте — прямо и буквально</div>
+      <div class="grid g2" style="gap:4mm">
+        <ul class="ticks xs" style="margin:0">
+          <li>Главный оффер «больше товара на той же площади» — это критерий №1 сегмента B</li>
+          <li>«Привезём завтра» — критерий №2 сегментов B и A</li>
+          <li>Кейсы с цифрами — доказательство для C, который отзывы не читает</li>
+        </ul>
+        <ul class="ticks xs" style="margin:0">
+          <li class="no">Форма не спрашивает «что храните» — лиды D едут к инженеру наравне с C</li>
+          <li class="no">Для регионов нигде не сказано, кто собирает на месте — а это разрыв у половины B</li>
+          <li class="no">Набивной и мезонин в чипах героя — ноль отзывов и ноль кейсов, это допущение</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">09</span></div>
+</section>
+
+<!-- ============ 10 · КОНТАКТНЫЙ ЛИСТ 1 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>06</b> · Рынок</span><span>45 первых экранов · лист 1 из 2</span></div>
+    <h2>Что мы видели своими глазами</h2>
+    <p class="sm muted" style="max-width:165mm;margin-bottom:4.5mm">
+      Сорок пять сайтов сняты целиком: первый экран и вся страница отдельно, 100 файлов.
+      Ниже — контактные листы всей доски. Дальше каждый слой разобран таблицей:
+      что на первом экране, чем доказывают, как принимают заявку и где слабое место.
+    </p>
+    <div class="grid g2" style="gap:3mm;margin-bottom:3mm">
+      <div><div class="sheet"><img src="img/comp/_sheet-01.jpg" alt=""></div><div class="cap">Лист 1 · конфигураторы мебели и дизайн-бренды</div></div>
+      <div><div class="sheet"><img src="img/comp/_sheet-02.jpg" alt=""></div><div class="cap">Лист 2 · дизайн-сегмент и мировые производители</div></div>
+    </div>
+    <div class="grid g3" style="gap:3.5mm;margin-top:auto">
+      <div class="box-fill pad3"><div class="stat">45</div><div class="xs muted" style="margin-top:1.5mm">сайтов в доске: 6 UZ, 11 RU, 5 RU-конфигураторов, 6 KZ, 8 мировых, 9 дизайн-брендов</div></div>
+      <div class="box-fill pad3"><div class="stat">100</div><div class="xs muted" style="margin-top:1.5mm">файлов скриншотов: герой и полная страница каждого сайта</div></div>
+      <div class="box-fill pad3"><div class="stat">38</div><div class="xs muted" style="margin-top:1.5mm">решений отобрано в библиотеку и разложено по 12 категориям</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">10</span></div>
+</section>
+
+<!-- ============ 11 · КОНТАКТНЫЙ ЛИСТ 2 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>06</b> · Рынок</span><span>45 первых экранов · лист 2 из 2</span></div>
+    <h2>Узбекистан, Россия, Казахстан</h2>
+    <p class="sm muted" style="max-width:165mm;margin-bottom:4.5mm">
+      Локальный слой и ближайшие рынки. Здесь видно главное: один и тот же движок
+      интернет-магазина у большинства площадок Казахстана и Узбекистана — рынок
+      узнаётся как шаблон, и любая непохожая страница уже выделяется.
+    </p>
+    <div class="grid g2" style="gap:3mm;margin-bottom:3mm">
+      <div><div class="sheet"><img src="img/comp/_sheet-03.jpg" alt=""></div><div class="cap">Лист 3 · Казахстан, мировые системы, Россия</div></div>
+      <div><div class="sheet"><img src="img/comp/_sheet-04.jpg" alt=""></div><div class="cap">Лист 4 · Россия и Узбекистан</div></div>
+    </div>
+    <div class="box-warn pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm;color:var(--warn)">Оговорка о полноте</div>
+      <p class="xs">
+        Слой витрин на Tilda не снят: поиск по витрине через API недоступен. Он заменён
+        российскими сайтами того же бюджета — profstellag, stel-teh, dimax. Один узбекский
+        сайт (aviastal.uz) отдаёт 403 роботу и потому не снят вовсе — это, кстати, и есть
+        его слабое место: он не попадает в поиск по картинкам. Ещё один (mirvalino.uz)
+        перенаправляет на Facebook: сайта фактически нет.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">11</span></div>
+</section>
+
+<!-- ============ 12 · ДОСКА: УЗБЕКИСТАН ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>06</b> · Рынок</span><span>Слой 1 · Узбекистан</span></div>
+    <h2>Локальные конкуренты: шесть сайтов</h2>
+    <p class="sm muted" style="margin-bottom:4mm">
+      Прямые конкуренты RaxPro в стране. Только один из них — настоящий соперник за клиента.
+    </p>
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:26mm">Компания</th><th style="width:40mm">Первый экран</th><th style="width:38mm">Соцдоказательство</th><th style="width:30mm">Приём заявки</th><th>Слабое место</th></tr></thead>
+      <tbody>
+        <tr style="background:var(--silver)"><td class="k">raxpro.uz<br><span class="xxs faint">(было)</span></td><td>Тёмно-синий герой, «полного цикла», квиз из 4 вопросов, чипы «замер 24 ч / 10 лет»</td><td>1000+ проектов, ISO×3, логотипы, основатель с фото, TG-канал отзывов</td><td>Квиз → форма, TG, WhatsApp</td><td class="bad">Нет цен и каталога на главной, нет «за паллетоместо», карточки направлений без размеров, пустые блоки при загрузке</td></tr>
+        <tr><td class="k">prostellaj.uz</td><td>Баннер «Акция 2+1», e-commerce, <strong>цены в сумах</strong></td><td>Google 5.0 / Yandex 4.7, благодарственные письма, Tegen · Artel · Knauf · Ecco, кейс 646 м² / 1344 паллетоместа</td><td>Корзина, «ответим онлайн за 5 минут», TG-канал</td><td>Шаблон интернет-магазина, слабые фото (белые рендеры), нет проектирования онлайн</td></tr>
+        <tr><td class="k">promet.uz</td><td>Каталог-витрина сейфов и мебели, поиск, WhatsApp / Telegram</td><td class="non">нет</td><td>Корзина, «Заказать звонок»</td><td>Стеллажи — одна из 20 категорий, нет отраслевой экспертизы</td></tr>
+        <tr><td class="k">innotek.uz</td><td>Фото склада, H1 «Стеллажи для склада в Ташкенте», SEO-текст</td><td>Видеокейсы в отдельном разделе</td><td>Только телефон и контакты</td><td>Текстовая простыня вместо страницы, нет цен, нет расчёта</td></tr>
+        <tr><td class="k">aviastal.uz</td><td class="non">403 для робота</td><td class="non">—</td><td class="non">—</td><td>Сайт закрыт от краулеров → не в поиске по картинкам</td></tr>
+        <tr><td class="k">mirvalino.uz</td><td class="non">редирект на Facebook</td><td class="non">—</td><td class="non">—</td><td>Сайта фактически нет</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:4mm">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>prostellaj.uz</span></div>
+        <div class="shot" style="height:44mm"><img src="img/comp/uz-prostellaj.jpg" alt=""></div>
+        <div class="cap">Единственный, кто показывает цены</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>innotek.uz</span></div>
+        <div class="shot" style="height:44mm"><img src="img/comp/uz-innotek.jpg" alt=""></div>
+        <div class="cap">SEO-простыня вместо страницы</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>promet.uz</span></div>
+        <div class="shot" style="height:44mm"><img src="img/comp/uz-promet.jpg" alt=""></div>
+        <div class="cap">Стеллажи как одна из 20 категорий</div>
+      </div>
+    </div>
+
+    <div class="box-acc pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Вывод по локальному слою</div>
+      <p class="sm">
+        Настоящий конкурент один — <strong>prostellaj.uz</strong>. Он выигрывал у старого raxpro.uz
+        не дизайном, а тремя вещами: цены в сумах прямо в каталоге, внешние оценки Google и Yandex,
+        и категории «по поводу» — для гаража, для шин, для ПВЗ, для аптеки. Ни одна из трёх не требует
+        производства или инженеров. Все три закрываются на сайте.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">12</span></div>
+</section>
+
+<!-- ============ 13 · ДОСКА: РОССИЯ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>06</b> · Рынок</span><span>Слой 2 · Россия</span></div>
+    <h2>Россия: откуда взяты главные приёмы</h2>
+    <p class="sm muted" style="max-width:165mm;margin-bottom:4mm">
+      Рынок на пятнадцать лет старше узбекского и уже прошёл путь «каталог → цена →
+      самообслуживание». Здесь лежат готовые ответы на страхи 1, 3 и 7.
+    </p>
+    <table class="tight" style="margin-bottom:4.5mm">
+      <thead><tr><th style="width:26mm">Компания</th><th style="width:44mm">Первый экран</th><th style="width:38mm">Соцдоказательство</th><th style="width:28mm">Приём заявки</th><th>Слабое место</th></tr></thead>
+      <tbody>
+        <tr style="background:var(--acc-wash)"><td class="k">gortorgsnab.ru</td><td>Видео с производства, <strong>«цена от 2 200 ₽ за паллетоместо»</strong>, 30 000+ проектов</td><td>Отзывы 4.8 / 13, клиенты Audi и McDonald's, «профиль стойки 85» на карточках</td><td>Корзина, «Заказать звонок», конфигуратор в меню, рассрочка 15 / 85 / 0 %</td><td>Дизайн уровня 2015 года, плотный каталог</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">1logistik.ru</td><td>Иллюстрация-3D стеллажа, «Калькулятор стоимости» рядом с «Оставить заявку»</td><td>NPS 9,8 · 25 000+ проектов · с 2003 · видео с основателем · кейсы 3800 м² / 6839 паллетомест / 11,5 м</td><td><strong>Квиз «какие данные вы знаете»</strong> с иллюстрацией, форма</td><td>Перегружен текстом, cookie-баннер, чат-виджет одновременно</td></tr>
+        <tr><td class="k">kifato-mk.com</td><td>Тёмный editorial, фото цеха, цифры 2000+ объектов / 200 000 м²</td><td>Wildberries · Магнит · Яндекс · Пятёрочка, 9+ стран</td><td>«Рассчитать проект»</td><td>B2B-гигант: нет цен и нет самообслуживания</td></tr>
+        <tr><td class="k">stellmart.ru</td><td>«Дарим расширенную гарантию до 7 лет, даже на б/у»</td><td>Магнит · X5 · Яндекс Маркет, сканы благодарственных писем, с 2008</td><td>«Гарантия лучшей цены — нашли дешевле, снизим», выкуп стеллажей</td><td>Визуально устаревший магазин</td></tr>
+        <tr><td class="k">stelkon.ru</td><td>Фото складов, «Получить бесплатный проект склада»</td><td>Фото реализованных проектов, сертификаты</td><td>Оранжевые CTA-полосы, FAQ про крепление к полу и схемы оплаты</td><td>Ничего интерактивного</td></tr>
+        <tr><td class="k">dimaxmet.ru</td><td>Каталог с фильтрами по высоте, ширине и ярусам, цены</td><td class="non">—</td><td>Корзина</td><td>Магазин-конструктор без проектирования</td></tr>
+        <tr><td class="k">profstellag.ru</td><td>«Оцинкованные стеллажи от 2600 руб», хиты продаж</td><td>Red Wings в клиентах</td><td>Корзина, звонок</td><td>Шаблон 2010-х</td></tr>
+        <tr><td class="k">whtrade.ru</td><td>Тёмный оранжевый, «Рассчитать стоимость проекта»</td><td>Дилер Kifato</td><td>Форма</td><td>Пустая главная</td></tr>
+        <tr><td class="k">kiit.ru</td><td>Баннер «Стеллажи», тендерная подача</td><td class="non">—</td><td>«Пригласить в тендер»</td><td>Каталог без цен</td></tr>
+        <tr><td class="k">stel-teh.ru</td><td>Слайдер, доставка / сертификация / 12 000 позиций</td><td class="non">—</td><td>Магазин</td><td>Шаблон</td></tr>
+        <tr><td class="k">promet.ru</td><td>Слайдер сейфов и дверей</td><td>Бренды</td><td>Каталог</td><td>Стеллажи вторичны</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g2" style="gap:3.5mm;margin-top:auto">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>gortorgsnab.ru — цена за паллетоместо на первом экране</span></div>
+        <div class="shot" style="height:50mm"><img src="img/conv/gortorgsnab-pallet-01.jpg" alt=""></div>
+        <div class="cap">Взято: единица измерения клиента, а не продавца</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>1logistik.ru — квиз «какие данные вы знаете»</span></div>
+        <div class="shot" style="height:50mm"><img src="img/conv/1logistik-pallet-05.jpg" alt=""></div>
+        <div class="cap">Взято: спрашивать то, что человек знает, а не то, что нужно нам</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">13</span></div>
+</section>
+
+<!-- ============ 14 · ДОСКА: КАЗАХСТАН, МИР, ДИЗАЙН ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>06</b> · Рынок</span><span>Слои 3–5 · Казахстан · мир · дизайн</span></div>
+    <h2>Остальные три слоя</h2>
+    <table class="tiny" style="margin-bottom:4.5mm">
+      <thead><tr><th style="width:14mm">Слой</th><th style="width:30mm">Компания</th><th style="width:52mm">Первый экран</th><th style="width:30mm">Приём заявки</th><th>Слабое место</th></tr></thead>
+      <tbody>
+        <tr class="grp"><td colspan="5">Казахстан · ближайший по устройству рынок</td></tr>
+        <tr><td>KZ</td><td class="k">idiamarket.kz</td><td>Категория с фильтрами цена / высота / глубина / ширина / нагрузка, цены в тенге, «3D Дизайн» в меню</td><td>Корзина, «Позвонить»</td><td>Шаблон</td></tr>
+        <tr><td>KZ</td><td class="k">lkw-safe.kz</td><td>Тёмный герой, форма «Быстрая консультация», шаги «Как мы работаем»</td><td>Форма</td><td class="bad">Капча Yandex перекрывает форму</td></tr>
+        <tr><td>KZ</td><td class="k">metalgroup.kz</td><td>Каталог с иконками типов</td><td>Корзина</td><td>Шаблон</td></tr>
+        <tr><td>KZ</td><td class="k">stellazh.kz</td><td>Витрина маркетплейса Satu</td><td>Корзина</td><td>Не свой сайт</td></tr>
+        <tr><td>KZ</td><td class="k">imebkz.kz</td><td>Карточки без картинок</td><td>«Узнать цену»</td><td class="bad">Битые изображения</td></tr>
+        <tr><td>KZ</td><td class="k">almaty.gmsatu.com</td><td>Каталог «Железной мебели» — тот же движок, что у promet.uz</td><td>Корзина</td><td>Узнаётся как шаблон</td></tr>
+        <tr class="grp"><td colspan="5">Мир · большие системы и настоящие конфигураторы</td></tr>
+        <tr><td>Мир</td><td class="k">mecalux.com</td><td>Видео склада; страница продукта: продукт → преимущества → применения → галерея → отзывы → кейсы → конфигурации → компоненты → аксессуары</td><td>«Request information and/or a quote»</td><td>Cookie-стена, нет цен</td></tr>
+        <tr style="background:var(--acc-wash)"><td>Мир</td><td class="k">shelving.com</td><td><strong>3D Pallet Rack Builder</strong>: рама → балки → ярусы → секции, живая спецификация с артикулами и суммой</td><td>Add to cart / Request a quote</td><td>Ортографический 3D, рынок США</td></tr>
+        <tr><td>Мир</td><td class="k">racking-wizard.com</td><td>SaaS для продавцов: «create any rack, generate full sales offer»</td><td>Register</td><td>Инструмент, а не сайт продавца</td></tr>
+        <tr><td>Мир</td><td class="k">configurix.com</td><td>3D-конфигуратор склада как продукт: геометрия → стеллажи → цена → КП</td><td>Book a demo</td><td>Продаётся как софт</td></tr>
+        <tr><td>Мир</td><td class="k">unarcorack.com</td><td>Программа расчёта нагрузок по запросу</td><td>Request software</td><td>Скрытый инструмент</td></tr>
+        <tr><td>Мир</td><td class="k">ssi-schaefer · ar-racking · dexion</td><td>Корпоративные герои, «Up to 20 % more storage capacity»</td><td>Contact us</td><td>Нет самообслуживания</td></tr>
+        <tr class="grp"><td colspan="5">Дизайн · отсюда взята подача, а не отрасль</td></tr>
+        <tr><td>Дизайн</td><td class="k">usm.com</td><td>«Design your own» и 3D-конфигуратор, «ready to install in 14–16 weeks»</td><td>Start designing</td><td>—</td></tr>
+        <tr><td>Дизайн</td><td class="k">vitsoe.com/606</td><td>Одно фото, одна система, «Start small. Add to it. Reconfigure it», персональный планировщик, «мы не получаем комиссию»</td><td>Planner и консультант</td><td>—</td></tr>
+        <tr><td>Дизайн</td><td class="k">regalraum.com</td><td>«Configure the shelf you always wanted», видео, 4 системы; в FAQ — «можно прислать эскиз?»</td><td>Конфигуратор → корзина</td><td>Cookie-стена</td></tr>
+        <tr><td>Дизайн</td><td class="k">elfa · kardex · string · smow · modernshelving · roomle</td><td>«Create more space», «Real stories. Smart growth», обзоры планировщиков, бесплатный дизайн-сервис</td><td>Planning tool, free design service</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Что взято из дизайн-слоя</div>
+      <p class="xs">
+        Не стиль, а обещание. Vitsoe говорит «начни с малого, дополняй, переставляй» — это в точности
+        то, что отличает заводской стеллаж от сварного, и этот довод переехал в блок сравнения.
+        USM привязывает обещание к сроку («готово к монтажу за 14–16 недель») — у RaxPro срок
+        в разы короче, и это главный козырь, который старый сайт не называл цифрой.
+        Regalraum держит в FAQ вопрос «а можно прислать эскиз?» — у RaxPro эскиз уже читает
+        генератор КП, об этом вторая презентация.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">14</span></div>
+</section>
+
+<!-- ============ 15 · КОНФИГУРАТОРЫ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>07</b> · Конфигураторы</span><span>Часть I · Исследование</span></div>
+    <h2>Самообслуживание: кто его уже сделал</h2>
+    <p class="lede" style="max-width:165mm;margin-bottom:5mm">
+      Главный вопрос исследования был такой: существует ли конфигуратор стеллажей, в котором
+      человек сам собирает конструкцию и видит цену? Ответ: существует — в мебели и в США.
+      В складских стеллажах СНГ его нет ни у кого.
+    </p>
+
+    <div class="grid g2" style="gap:4mm;margin-bottom:4mm">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>constructor.pilometr.ru</span></div>
+        <div class="shot" style="height:52mm"><img src="img/conv/cfg-pilometr-0.jpg" alt=""></div>
+        <div class="cap">Секции, тип секции, В/Ш/Г, полки, гид из 12 шагов, «Спецификация» — но только полочные стеллажи для дома и офиса</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>shelving.com/pallet-rack-builder</span></div>
+        <div class="shot" style="height:52mm"><img src="img/conv/cfg-shelvinginc-2.jpg" alt=""></div>
+        <div class="cap">Живая спецификация с артикулами и суммой: «2 frames 96×42, 6 beams… Total $529.62». Ближайший аналог того, что нужно RaxPro</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>komodmsk.ru/constructor</span></div>
+        <div class="shot" style="height:52mm"><img src="img/conv/cfg-komod-0.jpg" alt=""></div>
+        <div class="cap">3D со слайдерами Ш/В/Г, живая цена, силуэт человека для масштаба, «сделаем за 4–7 дней». Мебель, не металл</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>racking-wizard.com</span></div>
+        <div class="shot" style="height:52mm"><img src="img/conv/cfg-rackingwizard-1.jpg" alt=""></div>
+        <div class="cap">Единственный, кто делает то же для складских стеллажей — но продаётся как SaaS продавцам, а не стоит на сайте продавца</div>
+      </div>
+    </div>
+
+    <div class="box-acc pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Что это значит для RaxPro</div>
+      <p class="sm">
+        Ядро расчёта у RaxPro <strong>уже существует</strong> — оно считает КП внутри компании:
+        раскладку по помещению, ярусы, спецификацию и цену. То есть самая дорогая часть
+        конфигуратора написана. Её нужно было не построить, а <strong>вынести наружу</strong> —
+        на публичную страницу. Отсюда и главный ход всей работы: сделать видимым то, что уже есть.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">15</span></div>
+</section>
+
+<!-- ============ 16 · СВОБОДНАЯ ПОЗИЦИЯ ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span><b>08</b> · Вывод по рынку</span><span>Часть I · Исследование</span></div>
+    <h2>Чего нет ни у кого в Узбекистане</h2>
+
+    <div class="grid g2" style="gap:4mm;margin:6mm 0">
+      <div class="box pad3"><div class="idx" style="color:var(--acc-hi)">A</div><h4 style="margin:2mm 0 1.5mm">Цены за паллетоместо</h4><p class="xs muted">Единственная величина, в которой клиент может сравнить два предложения. Есть в Москве (ГТС — «от 2 200 ₽»), нет ни у кого в стране.</p></div>
+      <div class="box pad3"><div class="idx" style="color:var(--acc-hi)">B</div><h4 style="margin:2mm 0 1.5mm">Онлайн-проектирования</h4><p class="xs muted">Ввести размеры помещения и увидеть раскладку. Есть у configurix и racking-wizard как продукт для продавцов, нет ни у одного продавца в регионе.</p></div>
+      <div class="box pad3"><div class="idx" style="color:var(--acc-hi)">C</div><h4 style="margin:2mm 0 1.5mm">Спецификации до звонка</h4><p class="xs muted">Список рам, балок, замков и анкеров с количеством. Есть у shelving.com в США. В СНГ — только после разговора с менеджером.</p></div>
+      <div class="box pad3"><div class="idx" style="color:var(--acc-hi)">D</div><h4 style="margin:2mm 0 1.5mm">Кейсов с цифрами</h4><p class="xs muted">Не «сделали склад», а «3800 м² · 6839 паллетомест · 11,5 м». Есть у 1logistik и prostellaj, нет у RaxPro — хотя объекты такие есть.</p></div>
+    </div>
+
+    <div class="box-fill pad3" style="border-left:2px solid var(--acc-hi);margin-bottom:6mm">
+      <div class="label" style="margin-bottom:2.5mm">Свободная позиция</div>
+      <p class="lede" style="color:#ECEDF0;margin-bottom:3mm">
+        Первый в СНГ конфигуратор паллетных стеллажей со спецификацией и ценой.
+      </p>
+      <p class="sm" style="color:#9DA0A8">
+        Это не лозунг, а описание пустой клетки на доске из 45 сайтов. Самообслуживание в 3D
+        живёт только в мебели (Пилометр, КомодМск) и в США (Shelving.com). Складские стеллажи
+        в России и Казахстане продаются каталогом и звонком. Тот, кто первым поставит расчёт
+        на страницу, получает не «лучший дизайн», а другую единицу разговора с клиентом.
+      </p>
+    </div>
+
+    <h3 style="margin-bottom:3mm">Расстановка сил одной таблицей</h3>
+    <table class="tiny">
+      <thead><tr><th style="width:36mm">Площадка</th><th>Цена видна</th><th>Цена за паллетоместо</th><th>Расчёт онлайн</th><th>Спецификация</th><th>Кейсы с цифрами</th><th>3D</th></tr></thead>
+      <tbody>
+        <tr><td class="k">raxpro.uz (было)</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td></tr>
+        <tr style="background:rgba(32,196,126,.1)"><td class="k">raxpro.uz (стало)</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td class="k">prostellaj.uz</td><td class="yes">✓</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="yes">✓</td><td class="non">—</td></tr>
+        <tr><td class="k">promet.uz · innotek.uz</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td></tr>
+        <tr><td class="k">gortorgsnab.ru</td><td class="yes">✓</td><td class="yes">✓</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td></tr>
+        <tr><td class="k">1logistik.ru</td><td class="non">—</td><td class="non">—</td><td class="yes">квиз</td><td class="non">—</td><td class="yes">✓</td><td class="yes">илл.</td></tr>
+        <tr><td class="k">kifato-mk.com</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="yes">✓</td><td class="non">—</td></tr>
+        <tr><td class="k">shelving.com (США)</td><td class="yes">✓</td><td class="non">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="non">—</td><td class="yes">✓</td></tr>
+        <tr><td class="k">mecalux.com</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="non">—</td><td class="yes">✓</td><td class="yes">изо</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">16</span></div>
+</section>
+
+<!-- ============ 17 · БИБЛИОТЕКА ФИШЕК · 1 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>09</b> · Библиотека решений</span><span>Категории 1–6</span></div>
+    <h2>38 решений, отобранных через фильтр страхов</h2>
+    <p class="sm muted" style="max-width:165mm;margin-bottom:4mm">
+      Каждое решение записано одинаково: что это · у кого подсмотрено · какой страх закрывает ·
+      как переносится на RaxPro. Элементы, которые не попадали ни в один из семи страхов,
+      в библиотеку не вносились — даже красивые.
+    </p>
+    <table class="tiny" style="margin-bottom:4mm">
+      <thead><tr><th style="width:44mm">Решение</th><th style="width:26mm">Источник</th><th style="width:12mm">Страх</th><th>Как переносим</th><th style="width:16mm">Цена</th></tr></thead>
+      <tbody>
+        <tr class="grp"><td colspan="5">1 · Первый экран</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Цена за паллетоместо в шапке</td><td>gortorgsnab</td><td>1</td><td>«от N сум за паллетоместо» считается из каталога по паллетному 4000×2700×1050</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">3D-иллюстрация продукта вместо стока</td><td>1logistik</td><td>3</td><td>3D-герой со сценой склада — уже собран</td><td>сделано</td></tr>
+        <tr><td class="k">Три цифры в герое</td><td>kifato</td><td>5</td><td>1000+ проектов · до 4 т на ярус · с 2021</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Обещание сроком, не качеством</td><td>usm, komod</td><td>4</td><td>«расчёт за 24 ч · отгрузка · монтаж N дней» вместо «полного цикла»</td><td>дёшево</td></tr>
+        <tr class="grp"><td colspan="5">2 · Доказательство цифрой</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Кейс с тремя метриками</td><td>1logistik, prostellaj</td><td>3</td><td>у каждого объекта в слайдере — м², паллетоместа, высота, срок монтажа</td><td>дёшево</td></tr>
+        <tr><td class="k">Оценка и «с такого-то года»</td><td>1logistik</td><td>5</td><td>«с 2021» есть; оценка Google — когда появится карточка</td><td>дёшево</td></tr>
+        <tr><td class="k">Таблица нагрузок по высоте рамы</td><td>1logistik</td><td>2</td><td>таблица из спецификации производителя — запросить, не выдумывать</td><td>дёшево</td></tr>
+        <tr class="grp"><td colspan="5">3 · Снятие конкретного страха</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">«Заводские против кустарных»</td><td>было на raxpro.uz</td><td>5</td><td>оставлено и усилено: фото сварного шва против оцинковки, 9 пар</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Гарантия как оффер</td><td>stellmart</td><td>7</td><td>«10 лет по договору. На рынке обычно — до 5»</td><td>дёшево</td></tr>
+        <tr><td class="k">«Гарантия лучшей цены»</td><td>stellmart</td><td>1, 5</td><td>только если RaxPro подтвердит политику — не внедрено</td><td>решение клиента</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">«Что вы получите на руки»</td><td>1logistik</td><td>6, 7</td><td>паспорт изделия, схема нагрузок, гарантийный талон, акт монтажа</td><td>дёшево</td></tr>
+        <tr><td class="k">FAQ про крепление к полу и оплату</td><td>stelkon</td><td>2</td><td>дополнить FAQ: «анкеры — сколько и какие», «нужен ли ровный пол»</td><td>дёшево</td></tr>
+        <tr class="grp"><td colspan="5">4 · Форма</td></tr>
+        <tr><td class="k">Квиз «какие характеристики вы знаете»</td><td>1logistik</td><td>3</td><td>спрашивать то, что человек знает: паллетоместа / площадь+высота / длина ряда / «не знаю»</td><td>средне</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">«Ответим за 5 минут» + TG и WhatsApp в шапке</td><td>prostellaj</td><td>6</td><td>поднято в шапку рядом с телефоном</td><td>дёшево</td></tr>
+        <tr><td class="k">«Пришлите эскиз помещения»</td><td>regalraum</td><td>3</td><td>загрузка фото в форму; в генераторе КП эскиз уже читается</td><td>средне</td></tr>
+        <tr class="grp"><td colspan="5">5 · Квиз, калькулятор, конфигуратор</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">3D-конструктор со спецификацией</td><td>pilometr</td><td>1, 3</td><td><strong>ядро новой версии</strong>: движок расчёта уже есть внутри генератора КП, вынесен на страницу</td><td>дорого, 60 % готово</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Живая цена и спецификация с артикулами</td><td>shelving.com</td><td>1</td><td>«рамы N · балки N · замки N · анкеры N → итого» из формул ядра</td><td>средне</td></tr>
+        <tr><td class="k">Слайдеры и силуэт человека для масштаба</td><td>komod</td><td>3</td><td>в 3D уже есть фигурки людей — добавить рядом со стеллажом</td><td>дёшево</td></tr>
+        <tr><td class="k">Код конфигурации для возврата</td><td>usm</td><td>6</td><td>ссылка на конфигурацию без хранилища уже работает — показать как «отправить коллеге»</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Размеры помещения → раскладка</td><td>configurix, racking-wizard</td><td>3</td><td>режим «по помещению»: длина × ширина × высота, колонны, ворота → сколько паллетомест влезет</td><td>средне</td></tr>
+        <tr class="grp"><td colspan="5">6 · Интерактив на изображении</td></tr>
+        <tr><td class="k">Схема элементов с подписями</td><td>1logistik, mecalux</td><td>2</td><td>подписи на 3D: стойка 1,5 мм, балка, замок, анкер, отбойник</td><td>средне</td></tr>
+        <tr><td class="k">Контурные иллюстрации типов</td><td>kifato</td><td>навигация</td><td>единый линейный стиль карточек вместо разнородных фото</td><td>средне</td></tr>
+        <tr><td class="k">Изометрия конфигураций</td><td>mecalux</td><td>3</td><td>«фронтальный / двойной / drive-in» изометрией из нашего же 3D</td><td>средне</td></tr>
+      </tbody>
+    </table>
+    <p class="xxs faint mono" style="margin-top:auto">Зелёным отмечено то, что вошло в новую версию сайта. Остальное — очередь.</p>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">17</span></div>
+</section>
+
+<!-- ============ 18 · БИБЛИОТЕКА ФИШЕК · 2 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>09</b> · Библиотека решений</span><span>Категории 7–12</span></div>
+    <h2>Доказательство, процесс, цена, навигация</h2>
+    <table class="tiny" style="margin-bottom:4.5mm">
+      <thead><tr><th style="width:44mm">Решение</th><th style="width:26mm">Источник</th><th style="width:12mm">Страх</th><th>Как переносим</th><th style="width:16mm">Цена</th></tr></thead>
+      <tbody>
+        <tr class="grp"><td colspan="5">7 · Социальное доказательство</td></tr>
+        <tr><td class="k">Внешние оценки Google и Yandex с числом отзывов</td><td>prostellaj</td><td>5</td><td>виджет отзывов Google; сейчас у RaxPro только свой канал в Telegram</td><td>дёшево</td></tr>
+        <tr><td class="k">Сканы благодарственных писем</td><td>stellmart, prostellaj</td><td>5</td><td>запросить у RaxPro 3–5 писем</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Отзыв с должностью и компанией</td><td>mecalux</td><td>5</td><td>в слайдере отзывов — должность и компания, а не «Партнёр»</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Логотипы с отраслевой подписью</td><td>—</td><td>5</td><td>под логотипом — что построили: «Super Pack — 1200 паллетомест»</td><td>дёшево</td></tr>
+        <tr class="grp"><td colspan="5">8 · Прозрачность процесса</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">«Как мы работаем» с иконками и сроками</td><td>lkw, stelkon</td><td>4</td><td>4 этапа были — добавлен срок каждого</td><td>дёшево</td></tr>
+        <tr><td class="k">Персональный планировщик с портретом</td><td>vitsoe</td><td>6</td><td>«ваш инженер»: фото, имя, Telegram</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Что происходит после заявки</td><td>1logistik</td><td>6</td><td>колонка у формы: «5 мин — ответ, 24 ч — расчёт, 2 дня — выезд»</td><td>дёшево</td></tr>
+        <tr class="grp"><td colspan="5">9 · Прозрачность цены</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Цена «от» на каждой карточке типа</td><td>1logistik, dimax, idia</td><td>1</td><td>«от N сум за секцию» на всех шести карточках направлений</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Рассрочка цифрами</td><td>gortorgsnab</td><td>1</td><td>«50 / 50: половина сейчас, половина после монтажа» плюс Uzum Nasiya</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Из чего складывается цена</td><td>1logistik</td><td>1</td><td>отдельный блок: состав секции, что входит, порядок оплаты</td><td>дёшево</td></tr>
+        <tr class="grp"><td colspan="5">10 · Люди</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Основатель в кадре</td><td>1logistik</td><td>5</td><td>фото и слово основателя — было, оставлено; видео с производства в очереди</td><td>средне</td></tr>
+        <tr><td class="k">Команда по ролям</td><td>prostellaj</td><td>4</td><td>страница «Эксперты» есть — привязать людей к этапам работы</td><td>дёшево</td></tr>
+        <tr class="grp"><td colspan="5">11 · Микровзаимодействия</td></tr>
+        <tr><td class="k">Гид по конфигуратору с возможностью пропустить</td><td>pilometr</td><td>нагрузка</td><td>тур по 5 шагам при первом открытии</td><td>средне</td></tr>
+        <tr><td class="k">Липкая полоса с итогом при скролле</td><td>shelving.com</td><td>1</td><td>цена и паллетоместа всегда на виду в конфигураторе</td><td>дёшево</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Кнопка с временем ответа</td><td>marya</td><td>6</td><td>«замерщик у вас завтра» вместо «оставить заявку»</td><td>дёшево</td></tr>
+        <tr class="grp"><td colspan="5">12 · Структура и навигация</td></tr>
+        <tr><td class="k">Категории «по поводу», а не по типу</td><td>prostellaj</td><td>сегмент</td><td>вторая ось: склад · магазин · архив · производство · гараж</td><td>средне</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Фильтры по размерам и нагрузке в каталоге</td><td>idia, dimax, gortorgsnab</td><td>3</td><td>каталог с фильтрами по габаритам и нагрузке из карточек товара</td><td>средне</td></tr>
+        <tr style="background:var(--acc-wash)"><td class="k">Страница продукта по схеме Mecalux</td><td>mecalux</td><td>весь путь</td><td>шаблон страницы направления: продукт → преимущества → применения → галерея → кейсы → конфигурации → компоненты</td><td>средне</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g3" style="gap:3mm;margin-top:auto">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>1logistik — «что вы получите»</span></div>
+        <div class="shot" style="height:40mm"><img src="img/conv/1logistik-pallet-09.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>1logistik — кейс с метриками</span></div>
+        <div class="shot" style="height:40mm"><img src="img/conv/1logistik-pallet-06.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>prostellaj — оценки Google и Yandex</span></div>
+        <div class="shot" style="height:40mm"><img src="img/conv/prostellaj-07.jpg" alt=""></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">18</span></div>
+</section>
+
+<!-- ============ 19 · ВОСЕМЬ ХОДОВ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>10</b> · Ходы</span><span>Слой выше элементов</span></div>
+    <h2>Восемь ходов, в которые сжимаются 38 решений</h2>
+    <p class="lede" style="max-width:165mm;margin-bottom:5.5mm">
+      Копировать элементы по одному — значит собрать чужой сайт из деталей. Поэтому
+      библиотека была сжата до восьми ходов: это уже не «что добавить», а «что изменить
+      в самом способе разговора с клиентом». Дизайн третьей части сделан по ним.
+    </p>
+
+    <div class="grid g2" style="gap:4mm">
+      <div class="box pad3" style="border-left:2px solid var(--acc)">
+        <div class="idx">01</div><h4 style="margin:2mm 0 1.5mm">Перенести вопрос менеджера в интерфейс</h4>
+        <p class="xs muted">Квиз «что вы знаете» и конфигуратор со спецификацией: цена и паллетоместа считаются до звонка. Прямое следствие разбора пяти звонков — ноль продаж при пяти тёплых лидах.</p>
+      </div>
+      <div class="box pad3" style="border-left:2px solid var(--acc)">
+        <div class="idx">02</div><h4 style="margin:2mm 0 1.5mm">Назвать цену единицей клиента</h4>
+        <p class="xs muted">Клиент думает не «секциями», а «сколько паллет влезет». Цена за паллетоместо — единственная величина, в которой два предложения вообще сравнимы.</p>
+      </div>
+      <div class="box pad3" style="border-left:2px solid var(--acc)">
+        <div class="idx">03</div><h4 style="margin:2mm 0 1.5mm">Сделать видимым то, что уже есть</h4>
+        <p class="xs muted">3D-ядро расчёта, десятилетняя гарантия документом, три ISO, 1000+ проектов. Всё это существовало, но не было предъявлено. Самый дешёвый ход из восьми.</p>
+      </div>
+      <div class="box pad3" style="border-left:2px solid var(--acc)">
+        <div class="idx">04</div><h4 style="margin:2mm 0 1.5mm">Привязать обещание к сроку</h4>
+        <p class="xs muted">«Полный цикл» проверить нельзя, «привезём завтра» — можно. Срок делает обещание фальсифицируемым, а значит — убедительным.</p>
+      </div>
+      <div class="box pad3" style="border-left:2px solid var(--acc)">
+        <div class="idx">05</div><h4 style="margin:2mm 0 1.5mm">Закрыть страх до того, как он сформулирован</h4>
+        <p class="xs muted">Таблица нагрузок, схема элементов, «что получаете на руки». Человек не должен спрашивать «а выдержит?» — ответ должен встретиться раньше вопроса.</p>
+      </div>
+      <div class="box pad3" style="border-left:2px solid var(--acc)">
+        <div class="idx">06</div><h4 style="margin:2mm 0 1.5mm">Разделить по поводу, а не по типу</h4>
+        <p class="xs muted">«Паллетный фронтальный» — слово продавца. «Для склада», «для магазина», «для архива» — слово покупателя. Вторая ось навигации.</p>
+      </div>
+      <div class="box pad3" style="border-left:2px solid var(--acc)">
+        <div class="idx">07</div><h4 style="margin:2mm 0 1.5mm">Показать, что будет после</h4>
+        <p class="xs muted">Паспорт изделия, акт монтажа, гарантийный талон, инженер по имени. Страх №6 — это страх неизвестности, а не страх цены.</p>
+      </div>
+      <div class="box pad3" style="border-left:2px solid var(--acc)">
+        <div class="idx">08</div><h4 style="margin:2mm 0 1.5mm">Отдать документ вместо звонка</h4>
+        <p class="xs muted">PDF-спецификация из конфигуратора. У RaxPro это уже умеет генератор КП — вторая презентация целиком про него.</p>
+      </div>
+    </div>
+
+    <div class="box-acc pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Один ход важнее остальных семи</div>
+      <p class="sm">
+        Ход №1. Все прочие его обслуживают. Пока ответ на «сколько влезет и сколько стоит»
+        живёт в голове менеджера, сайт остаётся визиткой, а конверсия зависит от того,
+        кто снял трубку — и разбор звонков показывает, чем это заканчивается.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">19</span></div>
+</section>
+
+<!-- ============ 20 · АНТИ-ПАТТЕРНЫ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>11</b> · Анти-паттерны</span><span>Что не повторять</span></div>
+    <h2>Восемь ошибок с той же доски</h2>
+    <p class="lede" style="max-width:165mm;margin-bottom:5.5mm">
+      Разведка даёт не только приёмы, но и предупреждения. Всё перечисленное ниже встречено
+      на реальных сайтах из доски и сознательно не повторено. Часть из этого выглядит
+      «как у всех» — и именно поэтому проскакивает без обсуждения.
+    </p>
+
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:8mm">#</th><th style="width:56mm">Ошибка</th><th style="width:34mm">Где встречена</th><th>Чем она стоит денег</th></tr></thead>
+      <tbody>
+        <tr><td class="k">01</td><td class="k">Cookie-стена на пол-экрана</td><td>mecalux, regalraum, ar-racking</td><td>Первый экран уходит под баннер согласия. Для Узбекистана такой баннер не обязателен — и не поставлен.</td></tr>
+        <tr><td class="k">02</td><td class="k">Поп-ап «скидка 10 %» поверх конфигуратора</td><td>shelving.com</td><td>Прерывает работу ровно в момент, когда человек считает свой склад. Это самый ценный посетитель на сайте.</td></tr>
+        <tr><td class="k">03</td><td class="k">Капча поверх формы</td><td>lkw-safe.kz</td><td>Форма физически недоступна. Вместо капчи — скрытое поле-ловушка и ограничение частоты.</td></tr>
+        <tr><td class="k">04</td><td class="k">Белые рендеры без контекста в карточках</td><td>prostellaj, imebkz</td><td>Стеллаж на белом фоне не даёт масштаба. На новых карточках — стеллаж в работающем помещении.</td></tr>
+        <tr><td class="k">05</td><td class="k">SEO-простыня вместо страницы</td><td>innotek</td><td>Текст написан для робота. Человек уходит, не долистав до сути.</td></tr>
+        <tr><td class="k">06</td><td class="k">Сайт, закрытый от роботов</td><td>aviastal (403)</td><td>Выпадает из поиска по картинкам — теряется бесплатный трафик.</td></tr>
+        <tr><td class="k">07</td><td class="k">Один движок у всех площадок региона</td><td>almaty.gmsatu, promet.uz, stellazh.kz</td><td>Узнаётся как шаблон с первого экрана. Доверие падает до того, как прочитан заголовок.</td></tr>
+        <tr><td class="k">08</td><td class="k">Чат-виджет, cookie и «я живая» одновременно</td><td>1logistik</td><td>Три перекрытия на одном экране. Каждое по отдельности разумно, вместе — шум.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g2" style="gap:4mm;margin-top:auto">
+      <div class="box-bad pad3">
+        <div class="label" style="margin-bottom:2mm;color:var(--bad)">Общее у всех восьми</div>
+        <p class="xs">Каждая ошибка сделана ради своей локальной пользы: юристы просили баннер, маркетинг — поп-ап, безопасность — капчу. Ни одна не была решением про клиента. Поэтому анти-паттерны и выписаны отдельным списком: их приносят не дизайнеры, а смежные отделы, и отбивать их нужно заранее.</p>
+      </div>
+      <div class="box-acc pad3">
+        <div class="label" style="margin-bottom:2mm">Чего мы не делали сверх этого</div>
+        <ul class="ticks xs" style="margin:0">
+          <li>Не ставили ни одного всплывающего окна</li>
+          <li>Не добавляли счётчиков обратного отсчёта и «осталось 3 места»</li>
+          <li>Не прятали цену за формой «узнать стоимость»</li>
+          <li>Не писали цифр, которые нельзя подтвердить документом</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">20</span></div>
+</section>
+
+<!-- ============ 21 · РАЗДЕЛИТЕЛЬ II ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Часть II</span><span>Старый сайт</span></div>
+    <div style="margin-top:auto">
+      <div class="mono" style="font-size:54pt;font-weight:800;letter-spacing:-.05em;color:var(--acc-hi);line-height:.9">II</div>
+      <h1 style="margin-top:8mm">Старый сайт<br>под лупой</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:130mm;color:#9DA0A8">
+        Сайт снят целиком — каждый блок отдельным файлом, на компьютере и на телефоне.
+        Дальше: что на нём работало, что мешало и какие утверждения спорят друг с другом
+        в пределах одного скролла.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Снято блоков</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">21</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Найдено проблем</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">12</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Противоречий</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">4</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 22 · ПЕРВЫЙ ЭКРАН СТАРОГО ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>12</b> · Старый первый экран</span><span>Часть II</span></div>
+    <h2>С чего начинался разговор</h2>
+    <div class="brow"><i></i><i></i><i></i><span>raxpro.uz/ru</span><em class="old">было</em></div>
+    <div class="shot" style="height:72mm;margin-bottom:4mm"><img src="img/old/00-block-0.jpg" alt=""></div>
+
+    <div class="grid g2" style="gap:5mm;margin-bottom:4mm">
+      <div>
+        <div class="label" style="margin-bottom:2mm">Что здесь работало</div>
+        <ul class="ticks xs" style="margin:0">
+          <li>Тёмно-синий тон — уместный, серьёзный, не похож на магазин</li>
+          <li>Две кнопки: основная и второстепенная — правильная иерархия</li>
+          <li>Чипы с фактами: гарантия, срок ответа, рассрочка</li>
+          <li>Нижняя плашка с ценой «от 1,2 млн сум» — единственное упоминание цены на всей главной</li>
+        </ul>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom:2mm">Что мешало</div>
+        <ul class="ticks xs" style="margin:0">
+          <li class="no"><strong>Заголовок ни о чём.</strong> «Системы хранения полного цикла» — это описание компании, а не выгода клиента. Проверить его нельзя</li>
+          <li class="no"><strong>Стоковое фото сварки</strong> во весь экран: производства у RaxPro нет, а картинка обещает завод</li>
+          <li class="no"><strong>Фото затемнено</strong> на 60 %, чтобы текст читался — значит, оно и не нужно</li>
+          <li class="no"><strong>«Производим и монтируем»</strong> — прямое противоречие с оффером «всё в наличии»</li>
+          <li class="no">Ни слова про вместимость — главный вопрос сегмента B остался без ответа</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box-warn pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm;color:var(--warn)">Главная потеря первого экрана</div>
+      <p class="sm">
+        Человек с вопросом «сколько товара влезет в мой склад» не получал даже намёка, что
+        здесь на этот вопрос отвечают. Он видел, что компания серьёзная, — и шёл сравнивать
+        цены туда, где они написаны. По доске конкурентов это prostellaj.uz.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">22</span></div>
+</section>
+
+<!-- ============ 23 · ДВА БЛОКА СТАРОГО ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>13</b> · Старые блоки</span><span>Часть II</span></div>
+    <h2>Два блока, которые объясняют остальное</h2>
+
+    <div class="blockrow" style="grid-template-columns:100mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>raxpro.uz — направления</span><em class="old">было</em></div>
+        <div class="shot" style="height:62mm"><img src="img/old/05-napravleniya.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">Блок 05 · Направления</div>
+        <h4 style="margin-bottom:2mm">Пять карточек, на которых нельзя ничего решить</h4>
+        <ul class="dash xs" style="margin-bottom:2.5mm">
+          <li>Текст лежит <strong>поверх фотографии</strong> — читается плохо оба: и текст, и фото</li>
+          <li>Фотографии разнородные: часть — реальные объекты, часть — тёмные кадры без масштаба</li>
+          <li>Нет цены, нет нагрузки, нет размеров, нет «для кого»</li>
+          <li>Одна ссылка «Перейти» — человек обязан уйти со страницы, чтобы что-то узнать</li>
+          <li>Пять типов из шести: мезонина нет вовсе, хотя он есть в продаже</li>
+        </ul>
+        <div class="was">
+          <div class="label">Что это стоило</div>
+          <p class="xs muted">Карточка типа — это место, где человек понимает «моё / не моё». Без нагрузки и цены решение не принимается, и весь блок работает как оглавление, а не как выбор.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:100mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>raxpro.uz — преимущества</span><em class="old">было</em></div>
+        <div class="shot" style="height:62mm"><img src="img/old/09-preimushchestva.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">Блок 09 · Преимущества</div>
+        <h4 style="margin-bottom:2mm">«Не обещания, а факты» — и четыре обещания внутри</h4>
+        <ul class="dash xs" style="margin-bottom:2.5mm">
+          <li><strong>Большая карточка пустая:</strong> синий прямоугольник размером в треть экрана, в нём одна строка текста внизу</li>
+          <li><strong>«Собственное производство. Изготавливаем стеллажи любого объёма»</strong> — производства нет, есть завод-партнёр</li>
+          <li>«Нагрузка 100 кг – 4 тонны» — диапазон в сорок раз, из него ничего не следует</li>
+          <li>«Полный цикл под ключ. По Ташкенту все услуги бесплатно» — спорит с прайсом, где монтаж считается отдельно</li>
+          <li>Ни одной цифры, которую можно проверить документом</li>
+        </ul>
+        <div class="was">
+          <div class="label">Что это стоило</div>
+          <p class="xs muted">Блок, обещающий факты вместо обещаний, состоял из обещаний. Клиент, который проверит «собственное производство» одним вопросом менеджеру, теряет доверие ко всей странице, а не к одной карточке.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Наблюдение, общее для всего старого сайта</div>
+      <p class="sm">
+        Он сделан аккуратно. Там правильная типографика, приличная сетка, ровные отступы.
+        Проблема не в оформлении, а в том, <strong>что именно оформлено</strong>: страница
+        рассказывает о компании там, где клиенту нужно решение про его собственное помещение.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">23</span></div>
+</section>
+
+<!-- ============ 24 · АУДИТ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>14</b> · Аудит старой версии</span><span>Часть II</span></div>
+    <h2>Двенадцать проблем по приоритету</h2>
+    <p class="sm muted" style="max-width:165mm;margin-bottom:4mm">
+      Отсортированы не по тяжести исправления, а по тому, сколько сделок каждая стоит.
+      Столбец «страх» ссылается на список из семи вопросов на полосе 06.
+    </p>
+    <table class="tight">
+      <thead><tr><th style="width:7mm">#</th><th style="width:48mm">Проблема</th><th style="width:10mm">Страх</th><th>Почему это дорого</th><th style="width:34mm">Решено</th></tr></thead>
+      <tbody>
+        <tr><td class="k bad">01</td><td class="k">Нет ни одной цены на главной, кроме плашки «от 1,2 млн»</td><td>1</td><td>Человек не может сравнить и уходит туда, где цены есть. Это единственное, в чём prostellaj.uz реально сильнее</td><td>Цена за секцию на всех шести карточках + блок состава цены</td></tr>
+        <tr><td class="k bad">02</td><td class="k">Нет ответа на «сколько влезет в моё помещение»</td><td>3</td><td>Главный вопрос целевого сегмента. Ядро расчёта в компании существовало, но на сайт не выходило</td><td>Первый экран про вместимость, калькулятор, конструктор</td></tr>
+        <tr><td class="k bad">03</td><td class="k">Заголовок первого экрана не проверяем</td><td>4</td><td>«Полного цикла» ничего не обещает и ничем не рискует. Обещание без срока не работает</td><td>«150 тонн на складе — привезём завтра»</td></tr>
+        <tr><td class="k bad">04</td><td class="k">«Производим» против «всё в наличии»</td><td>5, 7</td><td>Противоречие видно за один скролл. Пойманное клиентом — обесценивает и остальные утверждения</td><td>91 замена по всему сайту на «поставляем со склада в Ташкенте»</td></tr>
+        <tr><td class="k warn">05</td><td class="k">Карточки направлений без нагрузки, размеров и «для кого»</td><td>2, 3</td><td>Выбор типа стеллажа — первое решение клиента. Принять его на старых карточках было нечем</td><td>Цена, нагрузка, высота, «для кого» и две кнопки на каждой</td></tr>
+        <tr><td class="k warn">06</td><td class="k">Пять типов вместо шести: мезонина нет</td><td>3</td><td>Продукт продаётся, но на сайте не существует. Запрос уходит конкуренту</td><td>Шестая карточка и страница в каталоге</td></tr>
+        <tr><td class="k warn">07</td><td class="k">Текст поверх фотографий</td><td>—</td><td>Ни текст, ни фотография не читаются. Фото приходится затемнять на 60 %, то есть оно уже не нужно</td><td>Фото и описание разведены в разные зоны карточки</td></tr>
+        <tr><td class="k warn">08</td><td class="k">Пустые блоки при первой загрузке</td><td>—</td><td>Анимация появления срабатывала по скроллу: робот поисковика и человек с медленным интернетом видели пустые экраны</td><td>Содержимое видно сразу, анимация — поверх видимого состояния</td></tr>
+        <tr><td class="k warn">09</td><td class="k">«Нагрузка 100 кг – 4 тонны»</td><td>2</td><td>Диапазон в сорок раз не снимает страх обрушения, а создаёт его: значит, никто не считал</td><td>«4 т на ярус» отдельной карточкой + пять пунктов безопасности</td></tr>
+        <tr><td class="k">10</td><td class="k">Отзывы без должности и компании</td><td>5</td><td>«Партнёр» — это никто. Отзыв без имени компании не работает как доказательство</td><td>Витрина отобранных отзывов, полная страница отдельно</td></tr>
+        <tr><td class="k">11</td><td class="k">Не сказано, что будет после заявки</td><td>6</td><td>Страх спама и тишины — причина не отправлять форму даже у готового клиента</td><td>Колонка рядом с формой: срок ответа, расчёт, выезд</td></tr>
+        <tr><td class="k">12</td><td class="k">Нет кейсов с цифрами</td><td>3, 5</td><td>Объекты такие есть — 11 штук с площадями и паллетоместами. На сайте они были фотографиями без чисел</td><td>Слайдер объектов с площадью, паллетоместами и сроком</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">24</span></div>
+</section>
+
+<!-- ============ 25 · ПРОТИВОРЕЧИЯ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>15</b> · Противоречия</span><span>Часть II</span></div>
+    <h2>Четыре утверждения, спорящие друг с другом</h2>
+    <p class="lede" style="max-width:165mm;margin-bottom:5.5mm">
+      Это отдельная находка разбора: не «плохо сформулировано», а <strong>взаимоисключающе</strong>.
+      Все четыре пары видны в пределах одного скролла или одного перехода. Каждая из них —
+      готовый вопрос, который клиент задаст менеджеру, и на который у менеджера нет ответа.
+    </p>
+
+    <div class="grid" style="gap:4mm">
+      <div class="box">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 10mm minmax(0,1fr)">
+          <div class="pad3"><div class="label" style="margin-bottom:1.5mm;color:var(--bad)">Утверждение A</div><p class="sm"><strong>«Производим»</strong> — в первом экране, в заголовке вкладки и в описании «Завод RaxPro»</p></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12pt;color:var(--bad);font-weight:700">↔</div>
+          <div class="pad3" style="border-left:1px solid var(--line)"><div class="label" style="margin-bottom:1.5mm;color:var(--bad)">Утверждение B</div><p class="sm"><strong>«Изготовление на заводе-партнёре»</strong> и одновременно <strong>«всё в наличии, завод не ждём»</strong></p></div>
+        </div>
+        <div class="box-fill pad3" style="border:0;border-top:1px solid var(--line)"><p class="xs"><strong>Почему это хуже всего:</strong> своего производства нет, а первый экран обещает завод. При этом главный оффер — «не надо ждать завод». Одно предложение отменяет другое.<br><span class="acc">Решено:</span> 91 замена по всему сайту. Везде — «поставляем со склада в Ташкенте», партнёрский завод назван честно и с ISO.</p></div>
+      </div>
+
+      <div class="box">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 10mm minmax(0,1fr)">
+          <div class="pad3"><div class="label" style="margin-bottom:1.5mm;color:var(--warn)">Утверждение A</div><p class="sm"><strong>«Монтаж по Ташкенту бесплатно»</strong> — в блоке этапов и в FAQ</p></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12pt;color:var(--warn);font-weight:700">↔</div>
+          <div class="pad3" style="border-left:1px solid var(--line)"><div class="label" style="margin-bottom:1.5mm;color:var(--warn)">Утверждение B</div><p class="sm"><strong>«Монтаж — от N сум»</strong> в расчёте стоимости</p></div>
+        </div>
+        <div class="box-fill pad3" style="border:0;border-top:1px solid var(--line)"><p class="xs"><strong>Почему это дорого:</strong> клиент считает по первой формулировке, счёт приходит по второй. Это спор на этапе подписания, а не на этапе выбора.<br><span class="acc">Решено:</span> в блоке состава цены прямо написано, что входит в цену секции, а что считается отдельно.</p></div>
+      </div>
+
+      <div class="box">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 10mm minmax(0,1fr)">
+          <div class="pad3"><div class="label" style="margin-bottom:1.5mm;color:var(--warn)">Утверждение A</div><p class="sm"><strong>«Единственная компания на рынке»</strong> с гарантией 10 лет</p></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12pt;color:var(--warn);font-weight:700">↔</div>
+          <div class="pad3" style="border-left:1px solid var(--line)"><div class="label" style="margin-bottom:1.5mm;color:var(--warn)">Проверка по доске</div><p class="sm">Stellmart даёт <strong>до 7 лет даже на б/у</strong>; гарантию на письменном документе даёт не одна компания</p></div>
+        </div>
+        <div class="box-fill pad3" style="border:0;border-top:1px solid var(--line)"><p class="xs"><strong>Почему это риск:</strong> непроверяемое превосходство легко опровергается одним поиском — и тогда под сомнение попадает вся остальная страница.<br><span class="acc">Решено:</span> формулировка заменена на проверяемую: «10 лет по договору. На рынке обычно — до 5».</p></div>
+      </div>
+
+      <div class="box">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 10mm minmax(0,1fr)">
+          <div class="pad3"><div class="label" style="margin-bottom:1.5mm;color:var(--warn)">Утверждение A</div><p class="sm"><strong>«Нагрузка 100 кг – 4 тонны»</strong> в преимуществах</p></div>
+          <div style="display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12pt;color:var(--warn);font-weight:700">↔</div>
+          <div class="pad3" style="border-left:1px solid var(--line)"><div class="label" style="margin-bottom:1.5mm;color:var(--warn)">Утверждение B</div><p class="sm">В двух записанных звонках менеджер называл <strong>400 кг</strong> как максимум</p></div>
+        </div>
+        <div class="box-fill pad3" style="border:0;border-top:1px solid var(--line)"><p class="xs"><strong>Почему это опасно буквально:</strong> речь о нагрузке над головами людей. Расхождение сайта и менеджера в десять раз — это не маркетинг, а безопасность.<br><span class="acc">Решено:</span> «до 4 т на ярус» вынесено отдельной карточкой с пятью пунктами безопасности. <span class="warn">Требует подтверждения RaxPro: 4 т или 3,5 т.</span></p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">25</span></div>
+</section>
+
+<!-- ============ 26 · РАЗДЕЛИТЕЛЬ III ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Часть III</span><span>Решение</span></div>
+    <div style="margin-top:auto">
+      <div class="mono" style="font-size:54pt;font-weight:800;letter-spacing:-.05em;color:var(--acc-hi);line-height:.9">III</div>
+      <h1 style="margin-top:8mm">Новый сайт:<br>блок за блоком</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:130mm;color:#9DA0A8">
+        Дальше — каждый экран нового сайта настоящим снимком, и к каждому один вопрос:
+        <strong style="color:#ECEDF0">какую работу этот блок делает за менеджера</strong>.
+        Блок, который не отвечает на этот вопрос, на странице не появился.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:5mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Блоков главной</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">17</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Вариантов героя</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">3</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Внутренних страниц</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">6</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Языка</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">2</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 27 · KEY VISUAL ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span><b>16</b> · Key visual</span><span>Часть III</span></div>
+    <h2 style="color:#ECEDF0">Почему первый экран — 3D-сцена,<br>а не фотография</h2>
+    <div class="rule"></div>
+
+    <p class="lede" style="max-width:150mm;color:#9DA0A8;margin-bottom:6mm">
+      Решение про главную картинку принималось не «что красивее», а из ограничений проекта.
+      Их было четыре, и каждое отсекало один класс решений.
+    </p>
+
+    <div class="grid g2" style="gap:4mm;margin-bottom:5mm">
+      <div class="box pad3" style="background:#111114;border-color:var(--line-d)">
+        <div class="num-lead">Ограничение 01</div>
+        <h4 style="color:#ECEDF0;margin:1.5mm 0 1.5mm">Производства нет</h4>
+        <p class="xs" style="color:#8A8D95">Значит, на первом экране не может быть ни цеха, ни сварки, ни станка. Всё, что показывает завод, — ложь про компанию, которая возит со склада. Это сразу вычеркнуло стоковую индустриальную фотографию — то есть ровно то, что стояло на старом сайте.</p>
+      </div>
+      <div class="box pad3" style="background:#111114;border-color:var(--line-d)">
+        <div class="num-lead">Ограничение 02</div>
+        <h4 style="color:#ECEDF0;margin:1.5mm 0 1.5mm">Своих съёмок нужного качества нет</h4>
+        <p class="xs" style="color:#8A8D95">Объектов много, но снимали их на телефон в рабочем порядке: смешанный свет, случайный кадр, коробки в проходе. Такой кадр не выдерживает размера в полэкрана. Ставить чужой красивый склад — снова обещание, которого нет.</p>
+      </div>
+      <div class="box pad3" style="background:#111114;border-color:var(--line-d)">
+        <div class="num-lead">Ограничение 03</div>
+        <h4 style="color:#ECEDF0;margin:1.5mm 0 1.5mm">Обещание — про вместимость</h4>
+        <p class="xs" style="color:#8A8D95">Заголовок говорит «больше товара на той же площади». Это утверждение о геометрии: ряды, ярусы, проходы, высота. Фотография показывает атмосферу, но не показывает геометрию. Нужен объект, который можно рассмотреть.</p>
+      </div>
+      <div class="box pad3" style="background:#111114;border-color:var(--line-d)">
+        <div class="num-lead">Ограничение 04</div>
+        <h4 style="color:#ECEDF0;margin:1.5mm 0 1.5mm">Внутри уже есть расчётное ядро</h4>
+        <p class="xs" style="color:#8A8D95">Компания считает раскладку по помещению — это её настоящее отличие от конкурентов. Первый экран должен намекать именно на это: что здесь считают, а не просто продают железо.</p>
+      </div>
+    </div>
+
+    <div class="box pad3" style="background:var(--acc);border-color:var(--acc);margin-top:auto">
+      <div class="label" style="color:#CFF3E3;margin-bottom:2mm">Вывод</div>
+      <p class="sm" style="color:#fff">
+        Осталось одно решение: <strong>трёхмерная сцена стеллажного ряда, собранная нами</strong>.
+        Она ничего не обещает про завод, показывает ровно ту геометрию, о которой идёт речь
+        в заголовке, принадлежит проекту целиком и меняется вместе с ним.
+        Плюс побочный эффект: ни у одного конкурента в Узбекистане на первом экране нет
+        собственного трёхмерного объекта — по доске из 45 сайтов таких нет вообще.
+      </p>
+    </div>
+  </div>
+  <div class="foot" style="border-color:var(--line-d)"><span style="color:#6E717A">Prototype · RAX PRO</span><span class="n" style="color:#9DA0A8">27</span></div>
+</section>
+
+<!-- ============ 28 · ТРИ ВАРИАНТА ПЕРВОГО ЭКРАНА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>17</b> · Эксперимент</span><span>Часть III</span></div>
+    <h2>Три варианта первого экрана</h2>
+    <p class="sm muted" style="max-width:168mm;margin-bottom:4mm">
+      Варианты живут на одном адресе и переключаются параметром <span class="mono xs">?hero=</span> —
+      их можно открыть рядом в двух вкладках и сравнить на своём экране, а не по описанию.
+      Ниже — реальные снимки всех трёх.
+    </p>
+
+    <div class="grid g3" style="gap:3.5mm;margin-bottom:4mm">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>?hero=3d</span><em class="new">выбран</em></div>
+        <div class="shot" style="height:44mm"><img src="img/hero/01-hero-3d.jpg" alt=""></div>
+        <div class="cap">Собственная 3D-сцена</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>?hero=video</span></div>
+        <div class="shot" style="height:44mm"><img src="img/hero/02-hero-video.jpg" alt=""></div>
+        <div class="cap">Видеофон, склад в движении</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>?hero=mp4</span></div>
+        <div class="shot" style="height:44mm"><img src="img/hero/03-hero-mp4.jpg" alt=""></div>
+        <div class="cap">Лёгкий mp4 без 3D-движка</div>
+      </div>
+    </div>
+
+    <table class="tight" style="margin-bottom:4mm">
+      <thead><tr><th style="width:38mm">Критерий</th><th>3D-сцена</th><th>Видеофон</th><th>mp4</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Показывает геометрию</td><td class="yes">да, объект вращается и рассматривается</td><td class="non">нет, общий план</td><td class="non">нет, общий план</td></tr>
+        <tr><td class="k">Правдив про компанию</td><td class="yes">да, ничего не обещает</td><td class="yes">да, если кадр свой</td><td class="yes">да, если кадр свой</td></tr>
+        <tr><td class="k">Вес и скорость</td><td>тяжелее: движок и сцена</td><td class="non">тяжелее всего</td><td class="yes">легче всех</td></tr>
+        <tr><td class="k">Поведение на телефоне</td><td>анимация ускорена после правки</td><td class="non">автовоспроизведение не везде</td><td class="yes">предсказуемо</td></tr>
+        <tr><td class="k">Отличается от конкурентов</td><td class="yes">ни у кого из 45</td><td class="non">типовой приём</td><td class="non">типовой приём</td></tr>
+        <tr><td class="k">Меняется вместе с продуктом</td><td class="yes">да, сцена наша</td><td class="non">нужна пересъёмка</td><td class="non">нужна пересъёмка</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-acc pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm;color:var(--acc)">Что решили</div>
+      <p class="sm">
+        Основной — 3D. Видеоварианты оставлены живыми не «на всякий случай», а как запасной
+        путь: если на реальном трафике окажется, что мобильный посетитель уходит до конца
+        загрузки сцены, переключение занимает один параметр, а не новый спринт.
+        <span class="warn">Перед боевым запуском переключатель убирается, остаётся один вариант.</span>
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">28</span></div>
+</section>
+
+<!-- ============ 29 · БЫЛО → СТАЛО ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>18</b> · Первый экран</span><span>Часть III</span></div>
+    <h2>Было → стало</h2>
+
+    <div style="margin-bottom:3mm">
+      <div class="brow"><i></i><i></i><i></i><span>raxpro.uz</span><em class="old">было</em></div>
+      <div class="shot" style="height:58mm"><img src="img/old/00-block-0.jpg" alt=""></div>
+    </div>
+    <div style="margin-bottom:4mm">
+      <div class="brow"><i></i><i></i><i></i><span>новая версия</span><em class="new">стало</em></div>
+      <div class="shot" style="height:58mm"><img src="img/hero/01-hero-3d.jpg" alt=""></div>
+    </div>
+
+    <table class="tight">
+      <thead><tr><th style="width:30mm">Элемент</th><th>Было</th><th>Стало</th><th style="width:52mm">Что это меняет в разговоре</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Заголовок</td><td>«Стеллажи и системы хранения полного цикла»</td><td class="acc">«Больше товара на той&nbsp;же площади склада.»</td><td>Первая строка совпадает с Core Job сегмента B, а не с описанием компании</td></tr>
+        <tr><td class="k">Подзаголовок</td><td>«Производим и монтируем»</td><td class="acc">«Импортные стеллажи с сертифицированного завода-партнёра: 150 тонн на складе в Ташкенте — привезём завтра»</td><td>Проверяемое обещание со сроком вместо непроверяемого статуса. Завод назван чужим прямым текстом</td></tr>
+        <tr><td class="k">Изображение</td><td>стоковое фото сварки, затемнено на 60 %</td><td class="acc">собственная 3D-сцена стеллажного ряда</td><td>Видна геометрия, о которой говорит заголовок; ничего не обещает про завод</td></tr>
+        <tr><td class="k">Выбор типа</td><td>нет</td><td class="acc">шесть чипов с типами стеллажей</td><td>Человек с первого экрана попадает в свой сценарий, а не в общий каталог</td></tr>
+        <tr><td class="k">Действие</td><td>«Оставить заявку» и «Каталог» — обе про компанию</td><td class="acc">«Узнать вместимость моего склада» ведёт в направления, вторая — в каталог</td><td>Кнопка названа словами задачи клиента, а не словами отдела продаж</td></tr>
+        <tr><td class="k">Цена</td><td>плашка «от 1,2 млн» внизу</td><td class="acc">цена появляется в карточке каждого типа</td><td>Цена привязана к выбору клиента, а не висит абстрактным «от»</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">29</span></div>
+</section>
+
+<!-- ============ 30 · КАРТА ГЛАВНОЙ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>19</b> · Карта главной</span><span>Часть III</span></div>
+    <h2>Семнадцать блоков и их работа</h2>
+    <p class="sm muted" style="max-width:168mm;margin-bottom:4mm">
+      Порядок собран по логике сделки, а не по привычной схеме лендинга: сначала снимаем
+      страх «подойдёт ли мне», потом «сколько это стоит», потом «можно ли вам верить»,
+      и только в конце просим контакт. Столбец «страх» — из списка на полосе 06.
+    </p>
+    <table class="tiny">
+      <thead><tr><th style="width:8mm">#</th><th style="width:38mm">Блок</th><th style="width:9mm">Страх</th><th>Работа, которую он снимает с менеджера</th></tr></thead>
+      <tbody>
+        <tr><td class="k">01</td><td class="k">Первый экран</td><td>1, 3</td><td>Сказать, чем компания полезна этому человеку, и дать выбрать свой тип</td></tr>
+        <tr><td class="k">02</td><td class="k">Клиенты и цифры</td><td>5</td><td>Показать, что компания работает с известными именами, до всякого текста</td></tr>
+        <tr><td class="k">03</td><td class="k">Направления</td><td>2, 3</td><td>Дать выбрать тип стеллажа по нагрузке, высоте и цене без звонка</td></tr>
+        <tr><td class="k">04</td><td class="k">Из чего складывается цена</td><td>1</td><td>Ответить на «почему столько» до того, как клиент решит, что дорого</td></tr>
+        <tr><td class="k">05</td><td class="k">Этапы работы</td><td>6</td><td>Показать, что будет после заявки: замер, расчёт, монтаж, сроки</td></tr>
+        <tr><td class="k">06</td><td class="k">Объекты</td><td>3, 5</td><td>Дать сопоставимый пример: площадь, паллетоместа, срок</td></tr>
+        <tr><td class="k">07</td><td class="k">Почему RaxPro</td><td>2, 5, 7</td><td>Собрать проверяемые факты в одном месте: наличие, гарантия, нагрузка</td></tr>
+        <tr><td class="k">08</td><td class="k">Калькулятор</td><td>1, 3</td><td>Посчитать вместимость и порядок суммы — главный вопрос сегмента B</td></tr>
+        <tr><td class="k">09</td><td class="k">Заводские против кустарных</td><td>2, 7</td><td>Отработать «у сварщика дешевле» — самое частое возражение на звонке</td></tr>
+        <tr><td class="k">10</td><td class="k">Основатель</td><td>5</td><td>Поставить за компанией живого человека с именем и лицом</td></tr>
+        <tr><td class="k">11</td><td class="k">Отзывы</td><td>5</td><td>Показать, что говорят клиенты, с указанием объекта и типа стеллажа</td></tr>
+        <tr><td class="k">12</td><td class="k">Сертификаты</td><td>2</td><td>Подтвердить качество металла документом, а не прилагательным</td></tr>
+        <tr><td class="k">13</td><td class="k">Вопросы и ответы</td><td>1, 4, 6</td><td>Снять остаток мелких вопросов, которые иначе станут поводом не писать</td></tr>
+        <tr><td class="k">14</td><td class="k">Форма заявки</td><td>6</td><td>Попросить контакт, назвав рядом, что произойдёт дальше и за какой срок</td></tr>
+        <tr><td class="k">15</td><td class="k">Контакты</td><td>6</td><td>Дать прямой канал тем, кто не пишет в формы</td></tr>
+        <tr><td class="k">16</td><td class="k">Статьи</td><td>3</td><td>Подобрать поисковый трафик по запросам «как увеличить вместимость»</td></tr>
+        <tr><td class="k">17</td><td class="k">Подвал</td><td>—</td><td>Реквизиты, языки, ссылки на типы и правовые страницы</td></tr>
+      </tbody>
+    </table>
+    <div class="box-fill pad3" style="margin-top:auto">
+      <p class="xs"><strong>Главный порядковый сдвиг против старого сайта:</strong> калькулятор с девятнадцатого экрана поднялся на восьмой, направления с обычного перечисления стали решением с ценой, а «Нам доверяют» переехало из середины на вторую позицию — логотипы работают, только пока человек ещё решает, стоит ли читать дальше.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">30</span></div>
+</section>
+
+<!-- ============ 31 · БЛОКИ 02–03 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>20</b> · Блок за блоком</span><span>02 · 03</span></div>
+    <h2>Клиенты и цифры · Направления</h2>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 02</span><em class="new">стало</em></div>
+        <div class="shot" style="height:40mm"><img src="img/new/01-clients-title.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">02 · Клиенты и цифры</div>
+        <h4 style="margin-bottom:2mm">Зачем блок</h4>
+        <p class="xs muted" style="margin-bottom:2mm">Второй экран — место, где человек решает, читать ли дальше. Логотипы Radisson, Asaxiy, IT Park, MIDEX и цифры компании отвечают на «вы вообще кто» за две секунды и без единого прилагательного.</p>
+        <div class="was">
+          <div class="label">Было</div>
+          <p class="xs muted">Логотипы стояли отдельным блоком без цифр, а «RAXPRO в цифрах» — далеко ниже, на тёмном экране. Оба работали вполсилы: доверие набирается один раз и сразу.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 03</span><em class="new">стало</em></div>
+        <div class="shot" style="height:62mm"><img src="img/new/02-napravleniya.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">03 · Направления</div>
+        <h4 style="margin-bottom:2mm">Зачем блок</h4>
+        <p class="xs muted" style="margin-bottom:2mm">Это главный экран выбора. Шесть типов, и на каждой карточке ровно то, чем человек решает: <strong>цена за секцию, нагрузка на ярус, высота, «для кого»</strong> и две кнопки — подробно и рассчитать. Мезонин появился шестым: его продавали, но на сайте не показывали.</p>
+        <ul class="dash xs" style="margin-bottom:2mm">
+          <li>Цена — из прайса, не «от»</li>
+          <li>Фото и текст разведены: ни одно не мешает другому</li>
+          <li>Карточка сама по себе достаточна для решения</li>
+        </ul>
+        <div class="was">
+          <div class="label">Было</div>
+          <p class="xs muted">Пять карточек, текст поверх тёмных фотографий, ни цены, ни нагрузки, одна ссылка «Перейти».</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">31</span></div>
+</section>
+
+<!-- ============ 32 · БЛОКИ 04–05 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>21</b> · Блок за блоком</span><span>04 · 05</span></div>
+    <h2>Состав цены · Этапы</h2>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 04</span><em class="new">новый</em></div>
+        <div class="shot" style="height:52mm"><img src="img/new/03-price-title.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">04 · Из чего складывается цена</div>
+        <h4 style="margin-bottom:2mm">Зачем блок</h4>
+        <p class="xs muted" style="margin-bottom:2mm">Возражение «дорого» рождается не из суммы, а из непонимания, за что она. Блок разбирает цену секции на части — металл, покрытие, комплектующие, доставка, монтаж — и отдельно называет, что <strong>не входит</strong>. Это снимает спор на этапе счёта, о который спотыкались два разобранных звонка.</p>
+        <div class="was">
+          <div class="label">Было</div>
+          <p class="xs muted">Блока не существовало. Единственное упоминание цены — «от 1,2 млн сум» под первым экраном, без расшифровки.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 05</span><em class="new">стало</em></div>
+        <div class="shot" style="height:52mm"><img src="img/new/04-o-kompanii.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">05 · Этапы работы</div>
+        <h4 style="margin-bottom:2mm">Зачем блок</h4>
+        <p class="xs muted" style="margin-bottom:2mm">Страх №6 — «что будет после заявки». Этапы отвечают на него до формы, а не после: замер, расчёт и спецификация, согласование, поставка, монтаж. У каждого шага — срок. Человек видит процесс целиком и понимает, во что ввязывается.</p>
+        <div class="was">
+          <div class="label">Было</div>
+          <p class="xs muted">Этапы упоминались текстом в блоке «о компании» вместе с формулировкой «по Ташкенту все услуги бесплатно», которая спорила с прайсом на монтаж.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">32</span></div>
+</section>
+
+<!-- ============ 33 · БЛОКИ 06–07 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>22</b> · Блок за блоком</span><span>06 · 07</span></div>
+    <h2>Объекты · Почему RaxPro</h2>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 06</span><em class="new">стало</em></div>
+        <div class="shot" style="height:52mm"><img src="img/new/05-proekty.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">06 · Объекты</div>
+        <h4 style="margin-bottom:2mm">Зачем блок</h4>
+        <p class="xs muted" style="margin-bottom:2mm">Клиент сегмента B решает не «нравится ли», а «похоже ли на мой случай». Поэтому в слайдере не фотогалерея, а сопоставимые параметры: <strong>площадь, паллетоместа, тип, срок</strong>. Одиннадцать объектов с числами в базе есть — их собрали из канала отзывов.</p>
+        <div class="was">
+          <div class="label">Было</div>
+          <p class="xs muted">Фотографии объектов без единой цифры. При этом самый сильный факт компании — «с 150 до 650 паллет без расширения площади» — лежал в карточке статьи в самом низу страницы.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 07</span><em class="new">стало</em></div>
+        <div class="shot" style="height:52mm"><img src="img/new/06-pochemu.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">07 · Почему RaxPro</div>
+        <h4 style="margin-bottom:2mm">Зачем блок</h4>
+        <p class="xs muted" style="margin-bottom:2mm">Плитка разного размера вместо шести одинаковых карточек: крупное — то, что решает (наличие на складе, гарантия по документу, нагрузка на ярус), мелкое — поддерживающее. Каждый пункт проверяем: документом, складом или прайсом.</p>
+        <div class="was">
+          <div class="label">Было</div>
+          <p class="xs muted">Два блока подряд про одно и то же: «Качественные стеллажи увеличивают доход» с тремя общими карточками и «Не обещания, а факты» — где первой карточкой стояло несуществующее собственное производство.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">33</span></div>
+</section>
+
+<!-- ============ 34 · БЛОКИ 08–09 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>23</b> · Блок за блоком</span><span>08 · 09</span></div>
+    <h2>Калькулятор · Заводские против кустарных</h2>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 08</span><em class="new">стало</em></div>
+        <div class="shot" style="height:52mm"><img src="img/new/07-kalkulyator.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">08 · Калькулятор</div>
+        <h4 style="margin-bottom:2mm">Зачем блок</h4>
+        <p class="xs muted" style="margin-bottom:2mm">Это перенесённый в интерфейс первый вопрос менеджера. Человек вводит размеры помещения и получает вместимость и порядок суммы. Считает то же ядро, которое считает коммерческие предложения, — не отдельная «маркетинговая» формула.</p>
+        <ul class="dash xs" style="margin-bottom:2mm">
+          <li>Ни одной выдуманной цифры: всё из прайса и правил раскладки</li>
+          <li>Результат можно забрать, не оставляя контакт</li>
+          <li>Отсюда же открывается конструктор для точного плана</li>
+        </ul>
+        <div class="was">
+          <div class="label">Было</div>
+          <p class="xs muted">Калькулятор существовал, но стоял третьим блоком и считал упрощённо, без связи с прайсом.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 09</span><em class="new">стало</em></div>
+        <div class="shot" style="height:52mm"><img src="img/new/08-cmp-title.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">09 · Заводские против кустарных</div>
+        <h4 style="margin-bottom:2mm">Зачем блок</h4>
+        <p class="xs muted" style="margin-bottom:2mm">Самое частое возражение на разобранных звонках — «у сварщика дешевле». Блок не спорит с этим, а соглашается: <strong>«Да, сварной стеллаж дешевле на старте»</strong> — и дальше показывает девять пар и фотографию сварного шва. Признанное возражение снимается, отрицаемое — усиливается.</p>
+        <div class="was">
+          <div class="label">Было</div>
+          <p class="xs muted">Такой блок был: шесть пар, две карточки, без фотографии и без признания возражения. Сравнение читалось как реклама, а не как разбор.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">34</span></div>
+</section>
+
+<!-- ============ 35 · БЛОКИ 10–12 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>24</b> · Блок за блоком</span><span>10 · 11 · 12</span></div>
+    <h2>Основатель · Отзывы · Сертификаты</h2>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 10</span><em class="new">стало</em></div>
+        <div class="shot" style="height:40mm"><img src="img/new/09-osnovatel.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">10 · Основатель</div>
+        <p class="xs muted" style="margin-bottom:2mm">За компанией стоит имя и лицо — на рынке, где половина продавцов безымянна, это само по себе довод. Блок отвечает на страх №5 «не исчезнут ли они через год».</p>
+        <div class="was"><div class="label">Было</div><p class="xs muted">Блок был, но без прямой речи и без роли в сделке — просто портрет.</p></div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 11</span><em class="new">стало</em></div>
+        <div class="shot" style="height:40mm"><img src="img/new/10-otzyvy.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">11 · Отзывы</div>
+        <p class="xs muted" style="margin-bottom:2mm">Витрина отобранных отзывов с типом стеллажа и объектом; полный список — отдельной страницей. Источник настоящий: Telegram-канал отзывов, откуда взяты 31 расшифрованный отзыв и 11 кейсов.</p>
+        <div class="was"><div class="label">Было</div><p class="xs muted">Шесть карточек с подписями «Клиент из Ташкента», «Постоянный клиент», «Клиент RAXPRO». Отзыв без имени объекта не работает доказательством.</p></div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 12</span><em class="new">стало</em></div>
+        <div class="shot" style="height:40mm"><img src="img/new/11-sertifikaty.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">12 · Сертификаты</div>
+        <p class="xs muted" style="margin-bottom:2mm">«Металл 1 сорта» — прилагательное, пока рядом нет документа. Блок переводит качество из обещания в бумагу, которую можно открыть и увеличить.</p>
+        <div class="was"><div class="label">Было</div><p class="xs muted">Качество металла утверждалось словами в трёх разных блоках; документов на странице не было.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">35</span></div>
+</section>
+
+<!-- ============ 36 · БЛОКИ 13–17 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>25</b> · Блок за блоком</span><span>13 — 17</span></div>
+    <h2>Вопросы · Заявка · Контакты · Статьи</h2>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 13</span><em class="new">стало</em></div>
+        <div class="shot" style="height:44mm"><img src="img/new/12-block-12.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">13 · Вопросы и ответы</div>
+        <p class="xs muted" style="margin-bottom:2mm">Вопросы собраны не «как принято», а из пяти разобранных звонков и переписок канала: сроки, монтаж, доставка в регионы, нагрузка, гарантия, б/у. Каждый ответ — конкретный, без «свяжитесь с менеджером».</p>
+        <div class="was"><div class="label">Было</div><p class="xs muted">Список вопросов был, часть ответов отсылала к менеджеру — то есть возвращала клиента ровно в то место, где сделки и терялись.</p></div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блок 14</span><em class="new">стало</em></div>
+        <div class="shot" style="height:44mm"><img src="img/new/13-zayavka.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">14 · Заявка</div>
+        <p class="xs muted" style="margin-bottom:2mm">Рядом с формой — колонка «что дальше»: срок ответа, что пришлёт менеджер, когда выезжает замерщик. Полей минимум; всё, что можно не спрашивать, не спрашивается.</p>
+        <div class="was"><div class="label">Было</div><p class="xs muted">Форма без объяснения, что произойдёт после отправки. Страх спама — обычная причина не писать даже у готового клиента.</p></div>
+      </div>
+    </div>
+
+    <div class="blockrow" style="grid-template-columns:96mm minmax(0,1fr)">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>блоки 15–17</span><em class="new">стало</em></div>
+        <div class="shot" style="height:44mm"><img src="img/new/14-kontakty.jpg" alt=""></div>
+      </div>
+      <div>
+        <div class="bnum">15–17 · Контакты, статьи, подвал</div>
+        <p class="xs muted" style="margin-bottom:2mm">Контакты — прямые каналы для тех, кто не пишет в формы. Статьи работают на поиск: «как увеличить вместимость склада» — запрос ровно того человека, ради которого переделан первый экран.</p>
+        <div class="was"><div class="label">Было</div><p class="xs muted">В блоке статей все три обложки не загружались — на боевом сайте стояли пустые голубые прямоугольники. Заголовки написаны для поисковика: «Паллетные стеллажи | RAXPRO».</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO</span><span class="n">36</span></div>
+</section>
