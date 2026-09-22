@@ -78,14 +78,6 @@ const DIR_META = [
 ];
 
 /** «32 отзыва» / «21 отзыв» / «5 отзывов»; uz — без склонений. */
-function reviewsWord(n, lang) {
-  if (lang === "uz") return "ta mijoz sharhi";
-  const m10 = n % 10, m100 = n % 100;
-  if (m10 === 1 && m100 !== 11) return "отзыв клиентов";
-  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return "отзыва клиентов";
-  return "отзывов клиентов";
-}
-
 export default async function Home({ params, searchParams }) {
   const L = normalizeLang((await params).lang);
   // Сравнение методов первого экрана на одном preview: ?hero=video (кадры), ?hero=mp4 (ролик), по умолчанию 3D.
@@ -432,45 +424,15 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
-      {/* GUARANTEE */}
-      <section className="relative bg-navy-900 overflow-hidden">
-        <div className="absolute inset-0 bg-brand-grad opacity-95" />
-        <div className="absolute inset-0 grid-lines opacity-30" />
-        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 max-w-4xl mx-auto py-20 text-center text-white">
-          <Reveal>
-            <div className="inline-flex items-center gap-3">
-              <span className="w-16 h-16 rounded-2xl bg-white/15 grid place-items-center">
-                <IcoShield className="w-9 h-9 text-white" />
-              </span>
-              <span className="font-display font-medium text-6xl sm:text-7xl">
-                10 {t.yil}
-              </span>
-            </div>
-            <h2 className="font-display font-medium text-2xl sm:text-3xl mt-4">
-              {t.guaranteeTitle}
-            </h2>
-            <p className="text-white/90 mt-4 max-w-2xl mx-auto leading-relaxed">
-              {t.guaranteeText}
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       {/* REVIEWS — витрина: отобранные видео и цитаты без фото, ссылка на страницу всех отзывов */}
       <section id="otzyvy" className="bg-cloud-50 border-y border-cloud-200 overflow-hidden">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
-          <div className="grid lg:grid-cols-[auto,1fr] gap-8 lg:gap-14 items-end">
-            <div className="flex items-baseline gap-3">
-              <span className="font-display font-medium text-[88px] sm:text-[120px] leading-none tracking-tight text-navy-900">{reviewsTotal}</span>
-              <span className="text-slate-500 text-lg leading-tight max-w-[120px]">{reviewsWord(reviewsTotal, L)}</span>
-            </div>
-            <div>
-              <Eyebrow>{t.revEyebrow}</Eyebrow>
-              <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
-                {t.revTitle}
-              </h2>
-              <p className="mt-3 text-slate-500 max-w-xl">{t.revText}</p>
-            </div>
+          <div className="max-w-3xl">
+            <Eyebrow>{t.revEyebrow}</Eyebrow>
+            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
+              {t.revTitle}
+            </h2>
+            <p className="mt-3 text-slate-500 max-w-xl">{t.revText}</p>
           </div>
           <Reviews items={reviews} lang={L} allHref={href(L, "/otzyvy")} total={reviewsTotal} />
         </div>

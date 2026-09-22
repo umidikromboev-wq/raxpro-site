@@ -1,5 +1,6 @@
 import Reveal from './Reveal';
 import { IcoArrow } from './Icons';
+import { CapacityFigure, TierFigure } from './RackFigures';
 
 // «Почему RaxPro» — bento по макету Умида (22.09): одна крупная карточка
 // вместимости с рисунком «пол vs стеллаж», рядом наличие и гарантия, ниже
@@ -68,59 +69,7 @@ function Kicker({ children, light = false }) {
 const card = 'h-full rounded-xl2 bg-white border border-cloud-200 shadow-card p-6 sm:p-7';
 
 /* Рисунок: паллеты на полу слева, тот же товар на стеллаже справа */
-function CapacityFigure({ c }) {
-  const box = { w: 34, h: 26, gap: 6 };
-  const floorX = 10;
-  const rackX = 250;
-  const baseY = 190;
-  const rowH = 44;
-  const rackW = FLOOR_PALLETS * (box.w + box.gap) + 6;
-  const pallets = (x0, y) => Array.from({ length: FLOOR_PALLETS }, (_, i) => (
-    <rect key={`${x0}-${y}-${i}`} x={x0 + i * (box.w + box.gap)} y={y - box.h} width={box.w} height={box.h} rx="3" className="fill-[#e6d3b3] stroke-[#c9b08a]" strokeWidth="1" />
-  ));
-  return (
-    <div className="max-w-[520px]">
-      {/* Подписи — HTML, чтобы не мельчали вместе с рисунком на телефоне */}
-      <div className="grid grid-cols-[1fr,1.15fr] gap-3 text-xs sm:text-sm mb-2">
-        <div className="text-slate-500 self-end">{c.before}</div>
-        <div className="font-bold text-navy-800">{c.after}</div>
-      </div>
-    <svg viewBox="0 30 430 180" className="w-full h-auto" role="img" aria-label={`${c.before} → ${c.after}`}>
-      {pallets(floorX, baseY)}
-      <line x1="0" y1={baseY + 1} x2="430" y2={baseY + 1} className="stroke-cloud-200" strokeWidth="2" />
-      {[0, 1, 2].map((k) => (
-        <rect key={k} x={rackX - 8 + k * ((rackW) / 2)} y="34" width="6" height={baseY - 34} rx="1" className="fill-[#1e3a8a]" />
-      ))}
-      {Array.from({ length: RACK_LEVELS + 1 }, (_, lvl) => {
-        const y = baseY - lvl * rowH;
-        return (
-          <g key={lvl}>
-            {lvl > 0 && <rect x={rackX - 8} y={y + 1} width={rackW + 6} height="5" rx="1" className="fill-[#f28b3a]" />}
-            {pallets(rackX, y - (lvl > 0 ? 6 : 0))}
-          </g>
-        );
-      })}
-    </svg>
-    </div>
-  );
-}
-
 /* Рисунок: две стойки, балка сдвинута вверх, старое место — пунктиром */
-function TierFigure() {
-  return (
-    <svg viewBox="0 0 160 150" className="w-full h-auto max-w-[180px]" aria-hidden="true">
-      {[14, 138].map((x) => (
-        <g key={x}>
-          <rect x={x} y="6" width="8" height="138" rx="1" className="fill-[#1e3a8a]" />
-          {Array.from({ length: 11 }, (_, i) => <rect key={i} x={x + 2.5} y={12 + i * 12} width="3" height="5" rx="0.5" className="fill-white/70" />)}
-        </g>
-      ))}
-      <rect x="22" y="66" width="116" height="7" rx="1" className="fill-[#f28b3a]/25" />
-      <rect x="22" y="112" width="116" height="7" rx="1" className="fill-[#f28b3a]" />
-      <path d="M80 100V78m0 0-6 6m6-6 6 6" className="stroke-sky-600" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 export default function WhyRaxPro({ lang = 'ru' }) {
   const c = COPY[lang] || COPY.ru;
@@ -147,7 +96,7 @@ export default function WhyRaxPro({ lang = 'ru' }) {
                   <div className="text-xs text-slate-500 mt-1">{c.cap.sub}</div>
                 </div>
               </div>
-              <div className="mt-6 sm:mt-auto pt-4"><CapacityFigure c={c.cap} /></div>
+              <div className="mt-6 sm:mt-auto pt-4"><CapacityFigure before={c.cap.before} after={c.cap.after} floorPallets={FLOOR_PALLETS} levels={RACK_LEVELS} /></div>
             </div>
           </Reveal>
 
@@ -208,7 +157,7 @@ export default function WhyRaxPro({ lang = 'ru' }) {
                 <h3 className="mt-2 font-display font-medium text-2xl leading-tight text-navy-900">{c.conv.t}</h3>
                 <p className="mt-3 text-slate-500 text-sm leading-relaxed max-w-md">{c.conv.d}</p>
               </div>
-              <div className="w-[110px] sm:w-[150px] shrink-0"><TierFigure /></div>
+              <div className="w-[128px] sm:w-[180px] shrink-0"><TierFigure /></div>
             </div>
           </Reveal>
 
