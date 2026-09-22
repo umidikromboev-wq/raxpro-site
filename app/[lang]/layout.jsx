@@ -28,26 +28,26 @@ const onest = Onest({
 const HOME_META = {
   ru: {
     title:
-      "Стеллажи в Ташкенте от производителя — Купить металлические стеллажи для склада и магазина | RaxPro",
+      "Стеллажи в Ташкенте со склада — Купить металлические стеллажи для склада и магазина | RaxPro",
     description:
-      "Завод RaxPro: производство и продажа металлических стеллажей в Ташкенте. Складские, торговые, паллетные и архивные стеллажные системы под ключ. Быстрая доставка, бесплатный замер и расчёт нагрузок по Узбекистану!",
+      "RaxPro: металлические стеллажи со склада в Ташкенте — поставка и монтаж под ключ. Складские, торговые, паллетные и архивные стеллажные системы под ключ. Быстрая доставка, бесплатный замер и расчёт нагрузок по Узбекистану!",
     keywords:
       "стеллажи ташкент, металлические стеллажи, купить стеллаж в ташкенте, стеллаж металлический цена в ташкенте, стеллажи для склада, стеллаж для магазина, заказать стеллаж на заказ, RaxPro",
     ogTitle: "RAXPRO — стеллажи и системы хранения полного цикла",
     ogDescription:
-      "Замер · проектирование · производство · монтаж. Гарантия 10 лет · нагрузка до 4 т · 1000+ проектов.",
+      "Замер · проект · поставка со склада · монтаж. Гарантия 10 лет · нагрузка до 4 т · 1000+ проектов.",
     ogLocale: "ru_RU",
   },
   uz: {
     title:
-      "Toshkentda stellajlar ishlab chiqaruvchidan — Ombor va doʻkon uchun metall stellajlar | RaxPro",
+      "Toshkentda ombordan stellajlar — Ombor va doʻkon uchun metall stellajlar | RaxPro",
     description:
-      "RaxPro: Toshkentda metall stellajlar ishlab chiqarish va sotish. Ombor, savdo, palletli va arxiv stellaj tizimlari kalit topshirish shartida. Tez yetkazib berish, bepul oʻlchov va yuklama hisobi — butun Oʻzbekiston boʻylab.",
+      "RaxPro: Toshkentdagi ombordan metall stellajlar — yetkazib berish va montaj. Ombor, savdo, palletli va arxiv stellaj tizimlari kalit topshirish shartida. Tez yetkazib berish, bepul oʻlchov va yuklama hisobi — butun Oʻzbekiston boʻylab.",
     keywords:
       "stellaj toshkent, metall stellajlar, stellaj sotib olish toshkent, stellaj narxi toshkent, ombor uchun stellaj, doʻkon uchun stellaj, buyurtma asosida stellaj, RaxPro",
     ogTitle: "RAXPRO — toʻliq sikl stellaj va saqlash tizimlari",
     ogDescription:
-      "Oʻlchov · loyihalash · ishlab chiqarish · montaj. 10 yil kafolat · 4 tonnagacha yuklama · 1000+ loyiha.",
+      "Oʻlchov · loyiha · ombordan yetkazish · montaj. 10 yil kafolat · 4 tonnagacha yuklama · 1000+ loyiha.",
     ogLocale: "uz_UZ",
   },
 };

@@ -12,12 +12,12 @@ const EXPERTS_META = {
   ru: {
     title: 'Специалисты RAXPRO — команда инженеров и монтажников | Ташкент',
     description:
-      'Кто проектирует, производит и монтирует ваши стеллажи: инженеры, замерщики и монтажные бригады RAXPRO. Сертификаты ISO, гарантия 10 лет, 1000+ выполненных проектов.',
+      'Кто проектирует, комплектует и монтирует ваши стеллажи: инженеры, замерщики и монтажные бригады RAXPRO. Сертификаты ISO, гарантия 10 лет, 1000+ выполненных проектов.',
   },
   uz: {
     title: 'RAXPRO mutaxassislari — muhandis va montajchilar jamoasi | Toshkent',
     description:
-      'Stellajlaringizni kim loyihalaydi, ishlab chiqaradi va oʻrnatadi: RAXPRO muhandislari, oʻlchovchilari va montaj brigadalari. ISO sertifikatlari, 10 yil kafolat, 1000+ loyiha.',
+      'Stellajlaringizni kim loyihalaydi, butlaydi va oʻrnatadi: RAXPRO muhandislari, oʻlchovchilari va montaj brigadalari. ISO sertifikatlari, 10 yil kafolat, 1000+ loyiha.',
   },
 };
 
@@ -133,8 +133,8 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
               >
                 {t.raxProText ||
                   (L === "uz"
-                    ? "RAX PRO mutaxassislari bilan ombor va savdo stellajlari bo‘yicha professional maslahat oling. Loyihalash, o‘lchov, ishlab chiqarish va montaj xizmatlari."
-                    : "Получите профессиональную консультацию по складским и торговым стеллажам от специалистов RAX PRO. Проектирование, замер, производство и монтаж.")}
+                    ? "RAX PRO mutaxassislari bilan ombor va savdo stellajlari bo‘yicha professional maslahat oling. Loyihalash, o‘lchov, ombordan yetkazish va montaj xizmatlari."
+                    : "Получите профессиональную консультацию по складским и торговым стеллажам от специалистов RAX PRO. Проектирование, замер, поставка со склада и монтаж.")}
               </p>
 
               <a

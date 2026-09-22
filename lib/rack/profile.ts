@@ -190,7 +190,7 @@ export function production(lang: Lang) {
  *  на премиальном листе выглядят хуже, чем чистый типографский набор. */
 export const CLIENTS = [
   "Uzum", "Ishonch", "Asaxiy", "Makro", "Prizma", "Dom Stroy", "JAC Motors",
-  "Discover Invest", "IT Park", "Ankara Picnic", "Sayqal", "Bloom", "Super Pack",
+  "Discovery Invest", "IT Park", "Ankara Picnic", "Sayqal", "Bloom", "Super Pack",
 ] as const;
 
 export const FOUNDER = {

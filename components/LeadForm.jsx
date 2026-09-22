@@ -25,7 +25,7 @@ const FT = {
     photo: "Фото или чертёж помещения",
     photoHint: "JPG, PNG или PDF до 10 МБ — так расчёт точнее",
     photoRemove: "Убрать",
-    fast: "Ответим за 5 минут",
+    fast: "Ответим за 5 минут в рабочее время",
     tgFirst: "Написать в Telegram",
   },
   uz: {
@@ -51,7 +51,7 @@ const FT = {
     photo: "Xona surati yoki chizmasi",
     photoHint: "JPG, PNG yoki PDF, 10 MB gacha — hisob-kitob aniqroq boʻladi",
     photoRemove: "Olib tashlash",
-    fast: "5 daqiqada javob beramiz",
+    fast: "Ish vaqtida 5 daqiqada javob beramiz",
     tgFirst: "Telegramga yozish",
   },
 };

@@ -1,5 +1,4 @@
 import { SCOPE, TERMS } from "../lib/rack/company";
-import { Eyebrow } from "./Section";
 import { IcoArrow, IcoCheck } from "./Icons";
 import { href } from "../lib/lang";
 
@@ -53,8 +52,7 @@ export default function PriceBreakdown({ lang = "ru" }) {
     <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 border-b border-cloud-200" aria-labelledby="price-title">
       <div className="grid lg:grid-cols-[1fr,1fr] gap-12 lg:gap-16 items-start">
         <div>
-          <Eyebrow>{c.eyebrow}</Eyebrow>
-          <h2 id="price-title" className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">{c.title}</h2>
+          <h2 id="price-title" className="font-display font-medium text-3xl sm:text-4xl text-navy-800">{c.title}</h2>
           <p className="mt-4 text-slate-500 max-w-lg leading-relaxed">{c.text}</p>
           <ol className="mt-8 divide-y divide-cloud-200 border-y border-cloud-200">
             {c.parts.map((p) => (

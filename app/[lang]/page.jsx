@@ -12,7 +12,7 @@ import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
 import PriceBreakdown from "../../components/PriceBreakdown";
 import Stages from "../../components/Stages";
 import WhyRaxPro from "../../components/WhyRaxPro";
-import { SplitHead, Eyebrow } from "../../components/Section";
+import { SplitHead } from "../../components/Section";
 import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
 import { T, EXTRA, normalizeLang } from "../../lib/i18n";
 import Faq from "../../components/Faq";
@@ -181,7 +181,7 @@ export default async function Home({ params, searchParams }) {
         id="napravleniya"
         className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20"
       >
-        <SplitHead eyebrow={t.dirEyebrow} title={t.dirTitle} desc={t.dirText} />
+        <SplitHead title={t.dirTitle} desc={t.dirText} />
         <div className="grid md:grid-cols-2 gap-5 mt-10">
           {directions.map((d, i) => (
             <Reveal
@@ -246,8 +246,7 @@ export default async function Home({ params, searchParams }) {
         <div className="absolute inset-0 grid-lines opacity-20" />
         <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 grid lg:grid-cols-[1fr,1.1fr] gap-12 items-center">
           <div className="text-white">
-            <Eyebrow light>{t.calcEyebrow}</Eyebrow>
-            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl leading-tight">
+            <h2 className="font-display font-medium text-3xl sm:text-4xl leading-tight">
               {t.calcTitle1}{" "}
               <span className="text-sky-400">{t.calcTitleAccent}</span>
             </h2>
@@ -285,7 +284,7 @@ export default async function Home({ params, searchParams }) {
 
       {/* COMPARISON — factory vs artisan: два крупных плана узла, под каждым — своя колонка */}
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
-        <SplitHead eyebrow={x.cmpEyebrow} title={x.cmpTitle} desc={x.cmpText} />
+        <SplitHead title={x.cmpTitle} desc={x.cmpText} />
         <div className="grid md:grid-cols-2 gap-4 mt-10">
           <Reveal className="rounded-xl2 bg-navy-900 text-white overflow-hidden flex flex-col">
             <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden">
@@ -372,7 +371,6 @@ export default async function Home({ params, searchParams }) {
         className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20"
       >
         <SplitHead
-          eyebrow={t.projEyebrow}
           title={t.projTitle}
           desc={t.projText}
         />
@@ -405,8 +403,7 @@ export default async function Home({ params, searchParams }) {
             </div>
           </div>
           <div>
-            <Eyebrow>{t.founderEyebrow}</Eyebrow>
-            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800 leading-tight">
+            <h2 className="font-display font-medium text-3xl sm:text-4xl text-navy-800 leading-tight">
               {t.founderQuote}
             </h2>
             <div className="mt-5 space-y-4 text-slate-600 leading-relaxed max-w-2xl">
@@ -428,8 +425,7 @@ export default async function Home({ params, searchParams }) {
       <section id="otzyvy" className="bg-cloud-50 border-y border-cloud-200 overflow-hidden">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
           <div className="max-w-3xl">
-            <Eyebrow>{t.revEyebrow}</Eyebrow>
-            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
+            <h2 className="font-display font-medium text-3xl sm:text-4xl text-navy-800">
               {t.revTitle}
             </h2>
             <p className="mt-3 text-slate-500 max-w-xl">{t.revText}</p>
@@ -462,55 +458,6 @@ export default async function Home({ params, searchParams }) {
         </details>
       </section>
 
-      {/* BLOG */}
-      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
-        <div className="flex items-end justify-between gap-4 flex-wrap">
-          <div>
-            <Eyebrow>{t.blogEyebrow}</Eyebrow>
-            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
-              {t.blogTitle}
-            </h2>
-          </div>
-          <a
-            href={href(L, "/blog")}
-            className="btn-11 inline-flex items-center gap-2 border border-navy-800 text-navy-800 font-semibold px-5 py-2.5 rounded-xl hover:bg-navy-800 hover:text-white transition"
-          >
-            {t.blogAll} <IcoArrow className="w-5 h-5" />
-          </a>
-        </div>
-        <div className="grid md:grid-cols-3 gap-5 mt-10">
-          {latest.map((a, i) => (
-            <Reveal key={a.slug} delay={i * 80}>
-              <a
-                href={href(L, `/blog/${a.slug}`)}
-                className="group block h-full rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition"
-              >
-                <div className="aspect-[16/9] overflow-hidden bg-cloud-100">
-                  <img loading="lazy" decoding="async"
-                    src={a.cover}
-                    alt={a.title}
-                    width={1280}
-                    height={853}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  />
-                </div>
-                <div className="p-5">
-                  <span className="text-xs font-semibold text-sky-600">
-                    {a.category}
-                  </span>
-                  <h3 className="font-bold text-navy-800 mt-1.5 leading-snug group-hover:text-sky-600">
-                    {a.title}
-                  </h3>
-                  <p className="text-slate-500 text-sm mt-2 line-clamp-2">
-                    {a.excerpt}
-                  </p>
-                </div>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       {/* FAQ */}
       <section className="bg-cloud-50 border-y border-cloud-200">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
@@ -519,40 +466,10 @@ export default async function Home({ params, searchParams }) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
           />
           <JsonLd data={organizationSchema(L)} />
-          <Eyebrow>{x.faqEyebrow}</Eyebrow>
-          <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
+          <h2 className="font-display font-medium text-3xl sm:text-4xl text-navy-800">
             {x.faqTitle}
           </h2>
           <Faq items={x.faq} />
-        </div>
-      </section>
-
-      {/* WHAT HAPPENS AFTER — removes the "scary to leave a request" fear */}
-      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
-        <div className="max-w-2xl">
-          <Eyebrow>{x.afterEyebrow}</Eyebrow>
-          <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl text-navy-800">
-            {x.afterTitle}
-          </h2>
-          <p className="mt-3 text-slate-500">{x.afterText}</p>
-        </div>
-        <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-8 mt-10 border-t border-cloud-200 pt-8">
-          {x.afterSteps.map((s, i) => (
-            <li key={s.t}>
-              <Reveal delay={i * 80}>
-                <span className="font-display text-sky-600 text-xl sm:text-2xl tracking-tight">{s.time}</span>
-                <h3 className="font-bold text-navy-800 mt-3">{s.t}</h3>
-                <p className="text-slate-500 text-sm mt-1.5 leading-relaxed">{s.d}</p>
-              </Reveal>
-            </li>
-          ))}
-        </ol>
-        {/* Что клиент получает физически — снимает вопрос «а что мне дадут за бесплатно» */}
-        <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2">
-          <span className="text-sm font-semibold text-navy-800 mr-1">{x.afterHandsTitle}:</span>
-          {x.afterHands.map((h) => (
-            <span key={h} className="text-sm text-navy-800 bg-cloud-100 border border-cloud-200 rounded-full px-3.5 py-1.5">{h}</span>
-          ))}
         </div>
       </section>
 
@@ -564,13 +481,25 @@ export default async function Home({ params, searchParams }) {
         <div className="absolute inset-0 grid-lines opacity-25" />
         <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-white">
-            <Eyebrow light>{t.formEyebrow}</Eyebrow>
-            <h2 className="mt-4 font-display font-medium text-3xl sm:text-4xl">
+            <h2 className="font-display font-medium text-3xl sm:text-4xl">
               {t.formTitle}
             </h2>
             <p className="mt-4 text-cloud-200/80 max-w-lg leading-relaxed">
               {t.formText}
             </p>
+            {/* «После заявки» — короткой колонкой у полей: страх оставить заявку снимается там, где он возникает */}
+            <div className="mt-8 max-w-lg border-t border-white/10 pt-6">
+              <div className="text-xs font-bold uppercase tracking-wider text-sky-300">{x.afterTitle}</div>
+              <ol className="mt-4 space-y-3">
+                {x.afterSteps.map((s) => (
+                  <li key={s.time} className="grid grid-cols-[72px,1fr] sm:grid-cols-[84px,1fr] gap-3 items-baseline">
+                    <span className="font-display text-white text-lg sm:text-xl tracking-tight whitespace-nowrap">{s.time}</span>
+                    <span className="text-cloud-200/85 text-sm leading-relaxed">{s.d}</span>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-4 text-white font-semibold text-sm">{x.afterNote}</p>
+            </div>
             <div className="mt-7 space-y-3 text-cloud-200/90">
               <a
                 href={`tel:${SITE.phoneMain}`}
@@ -613,8 +542,7 @@ export default async function Home({ params, searchParams }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 text-white">
-              <Eyebrow light>{t.contEyebrow}</Eyebrow>
-              <h2 className="mt-3 font-display font-medium text-3xl sm:text-4xl">{t.contTitle}</h2>
+              <h2 className="font-display font-medium text-3xl sm:text-4xl">{t.contTitle}</h2>
               <p className="mt-3 text-white/80 max-w-md">
                 {loc.addressCity}, {loc.address}
                 <span className="block text-white/55 text-sm mt-1">{loc.landmark}</span>
@@ -654,6 +582,54 @@ export default async function Home({ params, searchParams }) {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* BLOG */}
+      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
+        <div className="flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="font-display font-medium text-3xl sm:text-4xl text-navy-800">
+              {t.blogTitle}
+            </h2>
+          </div>
+          <a
+            href={href(L, "/blog")}
+            className="btn-11 inline-flex items-center gap-2 border border-navy-800 text-navy-800 font-semibold px-5 py-2.5 rounded-xl hover:bg-navy-800 hover:text-white transition"
+          >
+            {t.blogAll} <IcoArrow className="w-5 h-5" />
+          </a>
+        </div>
+        <div className="grid md:grid-cols-3 gap-5 mt-10">
+          {latest.map((a, i) => (
+            <Reveal key={a.slug} delay={i * 80}>
+              <a
+                href={href(L, `/blog/${a.slug}`)}
+                className="group block h-full rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition"
+              >
+                <div className="aspect-[16/9] overflow-hidden bg-cloud-100">
+                  <img loading="lazy" decoding="async"
+                    src={a.cover}
+                    alt={a.title}
+                    width={1280}
+                    height={853}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  />
+                </div>
+                <div className="p-5">
+                  <span className="text-xs font-semibold text-sky-600">
+                    {a.category}
+                  </span>
+                  <h3 className="font-bold text-navy-800 mt-1.5 leading-snug group-hover:text-sky-600">
+                    {a.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm mt-2 line-clamp-2">
+                    {a.excerpt}
+                  </p>
+                </div>
+              </a>
+            </Reveal>
+          ))}
         </div>
       </section>
 

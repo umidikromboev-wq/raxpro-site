@@ -13,7 +13,7 @@ const K = {
     title: 'Контакты',
     seoTitle: 'Контакты RAXPRO — стеллажи в Ташкенте: адрес, телефон, часы работы',
     seoDesc:
-      'Контакты компании RAXPRO: телефоны, e-mail, адрес офиса и производства в Ташкенте, режим работы, Telegram и WhatsApp. Отвечаем в течение 5 минут в рабочее время.',
+      'Контакты компании RAXPRO: телефоны, e-mail, адрес офиса и склада в Ташкенте, режим работы, Telegram и WhatsApp. Отвечаем в течение 5 минут в рабочее время.',
     lead: 'Позвоните, напишите в мессенджер или приезжайте — покажем продукцию и посчитаем проект на месте.',
     phones: 'Телефоны',
     email: 'Электронная почта',
@@ -29,7 +29,7 @@ const K = {
     title: 'Aloqa',
     seoTitle: 'RAXPRO kontaktlari — Toshkentda stellajlar: manzil, telefon, ish vaqti',
     seoDesc:
-      'RAXPRO kompaniyasi kontaktlari: telefonlar, e-mail, Toshkentdagi ofis va ishlab chiqarish manzili, ish vaqti, Telegram va WhatsApp. Ish vaqtida 5 daqiqada javob beramiz.',
+      'RAXPRO kompaniyasi kontaktlari: telefonlar, e-mail, Toshkentdagi ofis va ombor manzili, ish vaqti, Telegram va WhatsApp. Ish vaqtida 5 daqiqada javob beramiz.',
     lead: 'Qoʻngʻiroq qiling, messenjerga yozing yoki tashrif buyuring — mahsulotni koʻrsatamiz va loyihani joyida hisoblab beramiz.',
     phones: 'Telefonlar',
     email: 'Elektron pochta',

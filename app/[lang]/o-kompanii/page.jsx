@@ -11,10 +11,10 @@ import { breadcrumbSchema, organizationSchema, JsonLd } from '../../../lib/schem
 const A = {
   ru: {
     title: 'О компании RAXPRO',
-    seoTitle: 'О компании RAXPRO — производитель стеллажей в Ташкенте с 2021 года',
+    seoTitle: 'О компании RAXPRO — стеллажи со склада в Ташкенте с 2021 года',
     seoDesc:
-      'RAXPRO — производство металлических стеллажей и систем хранения в Ташкенте: 1000+ реализованных проектов, сертификаты ISO, гарантия 10 лет по договору, полный цикл от замера до монтажа.',
-    lead: 'Мы производим и монтируем металлические стеллажи и системы хранения в Узбекистане. Полный цикл: замер, проект, изготовление, доставка и монтаж — без подрядчиков-посредников.',
+      'RAXPRO — металлические стеллажи и системы хранения со склада в Ташкенте: 1000+ реализованных проектов, сертификаты ISO, гарантия 10 лет по договору, полный цикл от замера до монтажа.',
+    lead: 'Мы поставляем со своего склада и монтируем металлические стеллажи и системы хранения в Узбекистане. Полный цикл: замер, проект, комплектация со склада, доставка и монтаж — без подрядчиков-посредников.',
     stats: [
       { v: '1000+', k: 'реализованных проектов' },
       { v: '10 лет', k: 'гарантия по договору' },
@@ -24,7 +24,7 @@ const A = {
     whoTitle: 'Чем мы занимаемся',
     who: [
       'Проектируем стеллажные системы под конкретное помещение, технику и товар.',
-      'Производим паллетные, среднегрузовые, архивные, торговые и набивные стеллажи.',
+      'Держим на складе паллетные, среднегрузовые, архивные, торговые и набивные стеллажи сертифицированного завода.',
       'Делаем бесплатный замер и расчёт нагрузок по Ташкенту и регионам.',
       'Доставляем и монтируем своей бригадой, передаём гарантийный документ.',
     ],
@@ -32,12 +32,12 @@ const A = {
     why: [
       'Металл 1 сорта, оцинковка и порошковая окраска вместо кустарной покраски по ржавчине.',
       'Расчётная нагрузка подтверждена конструктивом, а не «на глаз».',
-      'Гарантия 10 лет оформляется документом — единственные на рынке Узбекистана.',
+      'Гарантия 10 лет оформляется документом — вдвое больше, чем обычно на рынке.',
       'Одинаковая геометрия секций: ряд собирается ровно и не «ведёт» со временем.',
     ],
     isoTitle: 'Сертификация',
     isoText:
-      'Производство работает по международным стандартам качества, экологии и охраны труда. Сертификаты подтверждены органом IQNET / CISQ.',
+      'Завод-производитель сертифицирован по ISO 9001, 14001 и 45001 — качество, экология и охрана труда. Сертификаты подтверждены органом IQNET / CISQ.',
     clientsTitle: 'Нам доверяют',
     teamTitle: 'Команда',
     teamText: 'Стеллажную систему ведёт не менеджер, а инженер: от замера до подписанного акта.',
@@ -48,10 +48,10 @@ const A = {
   },
   uz: {
     title: 'RAXPRO kompaniyasi haqida',
-    seoTitle: 'RAXPRO haqida — 2021 yildan Toshkentda stellaj ishlab chiqaruvchi',
+    seoTitle: 'RAXPRO haqida — 2021 yildan Toshkentdagi ombordan stellajlar',
     seoDesc:
-      'RAXPRO — Toshkentda metall stellajlar va saqlash tizimlari ishlab chiqarish: 1000+ amalga oshirilgan loyiha, ISO sertifikatlari, shartnoma boʻyicha 10 yil kafolat, oʻlchovdan montajgacha toʻliq sikl.',
-    lead: 'Biz Oʻzbekistonda metall stellajlar va saqlash tizimlarini ishlab chiqaramiz va oʻrnatamiz. Toʻliq sikl: oʻlchov, loyiha, tayyorlash, yetkazish va montaj — vositachi pudratchilarsiz.',
+      'RAXPRO — Toshkentdagi ombordan metall stellajlar va saqlash tizimlari: 1000+ amalga oshirilgan loyiha, ISO sertifikatlari, shartnoma boʻyicha 10 yil kafolat, oʻlchovdan montajgacha toʻliq sikl.',
+    lead: 'Biz Oʻzbekistonda metall stellajlar va saqlash tizimlarini oʻz omborimizdan yetkazib beramiz va oʻrnatamiz. Toʻliq sikl: oʻlchov, loyiha, ombordan butlash, yetkazish va montaj — vositachi pudratchilarsiz.',
     stats: [
       { v: '1000+', k: 'amalga oshirilgan loyiha' },
       { v: '10 yil', k: 'shartnoma boʻyicha kafolat' },
@@ -61,7 +61,7 @@ const A = {
     whoTitle: 'Biz nima qilamiz',
     who: [
       'Stellaj tizimlarini aniq xona, texnika va tovarga moslab loyihalaymiz.',
-      'Palletli, oʻrta yuklamali, arxiv, savdo va zich stellajlarni ishlab chiqaramiz.',
+      'Sertifikatlangan zavodning palletli, oʻrta yuklamali, arxiv, savdo va zich stellajlarini omborda tutamiz.',
       'Toshkent va viloyatlar boʻylab bepul oʻlchov va yuklama hisobini bajaramiz.',
       'Oʻz brigadamiz bilan yetkazamiz va montaj qilamiz, kafolat hujjatini topshiramiz.',
     ],
@@ -69,12 +69,12 @@ const A = {
     why: [
       'Zang ustidan qoʻlbola boʻyash oʻrniga 1-nav metall, sinklash va kukunli boʻyoq.',
       'Hisoblangan yuklama «koʻz bilan» emas, konstruksiya bilan tasdiqlangan.',
-      'Hujjat bilan rasmiylashtirilgan 10 yillik kafolat — Oʻzbekiston bozorida yagona.',
+      'Hujjat bilan rasmiylashtirilgan 10 yillik kafolat — bozordagi odatdagidan ikki barobar koʻp.',
       'Seksiyalarning bir xil geometriyasi: qator tekis yigʻiladi va vaqt oʻtib qiyshaymaydi.',
     ],
     isoTitle: 'Sertifikatlash',
     isoText:
-      'Ishlab chiqarish sifat, ekologiya va mehnat muhofazasi boʻyicha xalqaro standartlar asosida ishlaydi. Sertifikatlar IQNET / CISQ organi tomonidan tasdiqlangan.',
+      'Ishlab chiqaruvchi zavod ISO 9001, 14001 va 45001 boʻyicha sertifikatlangan — sifat, ekologiya va mehnat muhofazasi. Sertifikatlar IQNET / CISQ organi tomonidan tasdiqlangan.',
     clientsTitle: 'Bizga ishonishadi',
     teamTitle: 'Jamoa',
     teamText: 'Stellaj tizimini menejer emas, muhandis olib boradi: oʻlchovdan imzolangan dalolatnomagacha.',

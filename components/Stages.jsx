@@ -52,6 +52,7 @@ const COPY = {
     cmpUsTotal: `${OUR_TOTAL} дней`,
     cmpTail: 'склад уже работает',
     cmpDays: 'дней',
+    cmpTailDays: 'дня',
     seg: { make: `изготовление и доставка — ${FACTORY_LEAD} дней`, wait: 'возможная задержка завода', mount: 'монтаж', measure: 'замер', design: 'проект', stock: 'комплектация со склада' },
     dayLabels: ['День 1', 'Дни 2–3', 'День 4', 'Дни 5–7 · склад работает'],
     get: 'Вы получаете',
@@ -59,7 +60,7 @@ const COPY = {
     steps: [
       { n: '01 · 1 день', t: 'Замер', d: 'Бесплатный выезд в течение 24 часов. Меряем помещение, высоту, проёмы и нагрузку на пол.', r: 'План помещения с размерами' },
       { n: '02 · 1–2 дня', t: 'Проект и смета', d: 'Расставляем стеллажи под ваш товар и технику, считаем паллетоместа.', r: '3D-расстановку и точную смету — сумма фиксируется в договоре' },
-      { n: '03 · 1 день', t: 'Комплектация со склада', d: 'Собираем заказ с нашего склада в Ташкенте. Без производства, без растаможки, без ожидания.', r: 'Комплект и доставку на объект' },
+      { n: '03 · 1 день', t: 'Комплектация со склада', d: 'Собираем заказ с нашего склада в Ташкенте. Всё уже на месте — ждать нечего.', r: 'Комплект и доставку на объект' },
       { n: '04 · 1–3 дня', t: 'Монтаж', d: 'Собираем и анкеруем к полу. До 300 м² — за 1 день. По Ташкенту бесплатно.', r: 'Акт сдачи, инструктаж персонала и гарантию 10 лет по договору' },
     ],
     cta: 'Записаться на бесплатный замер',
@@ -83,6 +84,7 @@ const COPY = {
     cmpUsTotal: `${OUR_TOTAL} kun`,
     cmpTail: 'ombor allaqachon ishlayapti',
     cmpDays: 'kun',
+    cmpTailDays: 'kun',
     seg: { make: `ishlab chiqarish va yetkazish — ${FACTORY_LEAD} kun`, wait: 'zavodning ehtimoliy kechikishi', mount: 'montaj', measure: 'oʻlchov', design: 'loyiha', stock: 'ombordan butlash' },
     dayLabels: ['1-kun', '2–3-kunlar', '4-kun', '5–7-kunlar · ombor ishlaydi'],
     get: 'Siz olasiz',
@@ -90,7 +92,7 @@ const COPY = {
     steps: [
       { n: '01 · 1 kun', t: 'Oʻlchov', d: '24 soat ichida bepul chiqamiz. Xona, balandlik, oʻtish joylari va polga yuklamani oʻlchaymiz.', r: 'Oʻlchamlari bilan xona rejasi' },
       { n: '02 · 1–2 kun', t: 'Loyiha va smeta', d: 'Stellajlarni tovar va texnikangizga moslab joylashtiramiz, palleta oʻrinlarini hisoblaymiz.', r: '3D joylashuv va aniq smeta — summa shartnomada qayd etiladi' },
-      { n: '03 · 1 kun', t: 'Ombordan butlash', d: 'Buyurtmani Toshkentdagi omborimizdan yigʻamiz. Ishlab chiqarishsiz, bojxonasiz, kutishsiz.', r: 'Toʻliq komplekt va obyektga yetkazib berish' },
+      { n: '03 · 1 kun', t: 'Ombordan butlash', d: 'Buyurtmani Toshkentdagi omborimizdan yigʻamiz. Hammasi joyida — kutish shart emas.', r: 'Toʻliq komplekt va obyektga yetkazib berish' },
       { n: '04 · 1–3 kun', t: 'Montaj', d: 'Yigʻamiz va polga ankerlaymiz. 300 m² gacha — 1 kunda. Toshkent boʻylab bepul.', r: 'Topshirish dalolatnomasi, xodimlar uchun yoʻriqnoma va shartnoma boʻyicha 10 yil kafolat' },
     ],
     cta: 'Bepul oʻlchovga yozilish',
@@ -154,7 +156,7 @@ function LeadRow({ label, total, segments, tail, on, strong, c }) {
             className="absolute top-0 bottom-0 rounded-md border border-dashed border-sky-400 text-sky-700 text-[11px] font-semibold flex items-center px-2 overflow-hidden"
             style={{ left: `calc(${used}% + 6px)`, right: 0, opacity: on ? 1 : 0, transition: 'opacity 0.6s', transitionDelay: `${segments.length * 160 + 200}ms` }}
           >
-            <span className="truncate">{tail} · {FACTORY_TOTAL - OUR_TOTAL} {c.cmpDays}</span>
+            <span className="truncate">{tail} · {FACTORY_TOTAL - OUR_TOTAL} {c.cmpTailDays}</span>
           </div>
         )}
         <span
