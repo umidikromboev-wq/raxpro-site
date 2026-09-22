@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>RaxPro — генератор коммерческих предложений</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+
+<!-- ============ 01 · ОБЛОЖКА ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Prototype Agency</span><span>Кейс · 23 сентября 2026</span></div>
+    <div style="margin-top:auto">
+      <svg width="34" height="34" viewBox="0 0 34 34" style="margin-bottom:12mm">
+        <rect x="1" y="1" width="32" height="32" fill="none" stroke="#20C47E" stroke-width="2"/>
+        <rect x="9" y="9" width="16" height="16" fill="#20C47E"/>
+      </svg>
+      <div class="eyebrow" style="margin-bottom:5mm">Внутренний инструмент · RAX PRO · Ташкент</div>
+      <h1>Генератор<br>коммерческих<br>предложений</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:132mm;color:#9DA0A8">
+        Менеджер вводит габариты помещения — или просто фотографирует лист замерщика.
+        Через пять минут у него на руках КП с планом расстановки, трёхмерной моделью,
+        спецификацией до анкера и суммой, которую невозможно вписать руками.
+      </p>
+      <p class="sm" style="margin-top:5mm;color:#6B6E77">
+        Принцип работы · схема · инструменты · расход · инструкция · промпты · реальные результаты.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Типов стеллажей</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">6</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Правил приёмки</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">23</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Строк кода</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">10 205</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">КП за</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">5 минут</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 · РЕЗЮМЕ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>01</b> · Резюме</span><span>Одна полоса на всё</span></div>
+    <h2>Что это и что оно меняет</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:6mm">
+      Генератор — закрытый кабинет на <span class="mono">raxpro.uz/kp</span>. Он не помогает
+      оформить КП красивее. Он забирает у менеджера ту часть работы, где человек ошибается:
+      расстановку, спецификацию, арифметику и факты о компании. Менеджеру остаётся разговор
+      с клиентом и решение по цене.
+    </p>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:6mm">
+      <div class="box pad3">
+        <div class="bnum">БЫЛО</div>
+        <h4>Копия Word-файла</h4>
+        <p class="xs muted" style="margin-top:2mm">Прошлое КП открывали, меняли название клиента и числа. Всё, что не заметили, уезжало клиенту вместе с документом: чужая сумма, чужой срок, чужая скидка.</p>
+        <div class="was"><div class="label">Цена ошибки</div><div class="xs muted">Из семи КП 2026 года ошибка, видимая клиенту, есть в шести.</div></div>
+      </div>
+      <div class="box pad3">
+        <div class="bnum">СТАЛО</div>
+        <h4>Документ собирается из расчёта</h4>
+        <p class="xs muted" style="margin-top:2mm">Факты компании подставляются из справочника, спецификация считается формулами, НДС и скидка — арифметикой, а перед выпуском документ проходит приёмку из 23 правил.</p>
+        <div class="was"><div class="label">Что нельзя</div><div class="xs muted">Выпустить КП с блокирующим замечанием — кнопка не сработает.</div></div>
+      </div>
+      <div class="box-acc pad3">
+        <div class="bnum">ГЛАВНОЕ</div>
+        <h4>План и модель — в день замера</h4>
+        <p class="xs muted" style="margin-top:2mm">Раньше план расстановки рисовали в 3ds Max, и КП ждало проектировщика. Теперь раскладку считает сам генератор и рисует её прямо в документ.</p>
+        <div class="was" style="border-color:var(--acc)"><div class="label">Срок</div><div class="xs muted">Цепочка «под ключ» сократилась с 7 дней до 5 — проект переехал в день замера.</div></div>
+      </div>
+    </div>
+
+    <div class="grid g4" style="gap:3mm;margin-bottom:6mm">
+      <div class="box pad3"><div class="stat">6</div><div class="label" style="margin-top:1mm">типов стеллажей в каталоге</div></div>
+      <div class="box pad3"><div class="stat">3</div><div class="label" style="margin-top:1mm">движка раскладки: ряды · каналы · плита</div></div>
+      <div class="box pad3"><div class="stat">23</div><div class="label" style="margin-top:1mm">правила приёмки, 16 из них блокируют</div></div>
+      <div class="box pad3"><div class="stat">0</div><div class="label" style="margin-top:1mm">цифр КП приходит от нейросети</div></div>
+    </div>
+
+    <table class="tiny" style="margin-bottom:5mm">
+      <thead><tr><th style="width:38mm">Шаг работы</th><th style="width:56mm">Как было</th><th>Как стало</th></tr></thead>
+      <tbody>
+        <tr><td class="k">План расстановки</td><td class="xs">Ждали проектировщика с 3ds Max: очередь, день-два, иногда неделя.</td><td class="xs">Кнопка в кабинете. План с размерами появляется в документе сразу.</td></tr>
+        <tr><td class="k">Спецификация</td><td class="xs">Считали руками или копировали из прошлого КП вместе с чужими числами.</td><td class="xs">Семь формул из геометрии. Замки и анкеры проверяются отдельно.</td></tr>
+        <tr><td class="k">Сумма и НДС</td><td class="xs">Вписывали. Скидку ставили без основания.</td><td class="xs">Считается. Скидка без причины блокирует выпуск.</td></tr>
+        <tr><td class="k">Факты компании</td><td class="xs">Жили в десятке копий Word-файла и расходились между собой.</td><td class="xs">Один справочник на все КП. Стаж считается от года основания.</td></tr>
+        <tr><td class="k">Картинка склада</td><td class="xs">Брали рендер прошлого объекта — чужую расстановку.</td><td class="xs">Кадр этой расстановки: столько же рядов и ярусов, сколько в смете.</td></tr>
+        <tr><td class="k">Проверка перед отправкой</td><td class="xs">Перечитывали глазами, если успевали.</td><td class="xs">23 правила приёмки при каждом изменении формы.</td></tr>
+        <tr><td class="k">История предложений</td><td class="xs">Не велась вообще.</td><td class="xs">Реестр: номер, клиент, продукт, сумма, автор.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-fill pad3" style="border-left:2px solid var(--acc);margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Граница, на которой держится всё остальное</div>
+      <p class="sm">
+        Модель читает почерк замерщика и предлагает варианты расстановки. Ярусы, зазоры,
+        количество рам, спецификацию, цену и приёмку считает код. <strong>Ни одна цифра,
+        попадающая в КП, не приходит от нейросети.</strong> Основание — августовский прогон:
+        на явное «восемь рядов» модель вернула шесть.
+      </p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">2</span></div>
+</section>
+
+<!-- ============ 03 · ЗАЧЕМ ОН ПОЯВИЛСЯ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>02</b> · Повод</span><span>Разбор семи фактических КП</span></div>
+    <h2>Что уезжало клиентам до генератора</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Генератор собран не из головы. Сначала мы прочитали семь коммерческих предложений,
+      которые RaxPro отправил клиентам за 2026 год, и выписали каждую ошибку. Каждое правило
+      приёмки в коде подписано тем КП, из которого оно родилось.
+    </p>
+
+    <table style="margin-bottom:5mm">
+      <thead><tr><th style="width:62mm">Что стояло в документе</th><th style="width:44mm">В каких КП</th><th>Что видит клиент</th></tr></thead>
+      <tbody>
+        <tr><td class="k bad">«ISO <strong>g001</strong>:2015» вместо 9001</td><td class="mono xs">во всех семи</td><td>Сертификата с таким номером не существует. Первое, что проверит осторожный закупщик.</td></tr>
+        <tr><td class="k bad">Опыт 2, 3 и 4 года</td><td class="mono xs">Fathulla · Lion Print · Doniyor</td><td>Документы одного месяца называют разный возраст компании.</td></tr>
+        <tr><td class="k bad">Клиентов «150», «200», «300»</td><td class="mono xs">Rapid Sales · Fathulla · Sika</td><td>Число росло от письма к письму — значит, оно ничего не значит.</td></tr>
+        <tr><td class="k bad">Балка «33000×1200»</td><td class="mono xs">Lion Print, КП на 843 млн</td><td>Балка длиной 33 метра. В самом дорогом предложении года.</td></tr>
+        <tr><td class="k bad">«50 % + 50 %» и «100 % предоплата»</td><td class="mono xs">Fathulla, стр. 9 и 10</td><td>Две схемы оплаты в одном документе на соседних страницах.</td></tr>
+        <tr><td class="k bad">Скидка 15 % и 20 % без причины</td><td class="mono xs">BLOOMSHOP · Sika · Lion Print</td><td>Скидка без основания читается как «цена была завышена».</td></tr>
+        <tr><td class="k bad">Пустое «К: &laquo;&nbsp;&nbsp;&nbsp;&nbsp;&raquo;» в шапке</td><td class="mono xs">Rapid Sales</td><td>Не подставили название клиента — документ ушёл как есть.</td></tr>
+        <tr><td class="k warn">Нет паллето-мест и цены за место</td><td class="mono xs">все семь</td><td>Единственная величина, по которой клиент сравнивает поставщиков, в КП отсутствовала.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g2" style="gap:3mm;margin-bottom:5mm">
+      <div class="box-bad pad3">
+        <div class="label" style="margin-bottom:2mm">Почему так выходило</div>
+        <p class="xs muted">КП делали копией прошлого документа. Человек правит четыре очевидных поля — название, сумму, дату, продукт — и не перечитывает остальные двенадцать страниц. Ошибка живёт в шаблоне и размножается с каждым новым клиентом.</p>
+      </div>
+      <div class="box-acc pad3">
+        <div class="label" style="margin-bottom:2mm">Что с этим делает генератор</div>
+        <p class="xs muted">Каждая строка таблицы слева стала правилом в <span class="mono">validate.ts</span>. Семь из восьми блокируют выпуск документа: кнопка «Скачать PDF» не работает, пока замечание не снято. Восьмое — предупреждение.</p>
+      </div>
+    </div>
+
+    <div class="grid g4" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3"><div class="stat" style="font-size:15pt">7</div><div class="label" style="margin-top:1mm">КП прочитано целиком</div></div>
+      <div class="box-bad pad3"><div class="stat" style="font-size:15pt;color:var(--bad)">6</div><div class="label" style="margin-top:1mm">с ошибкой, видимой клиенту</div></div>
+      <div class="box pad3"><div class="stat" style="font-size:15pt">12</div><div class="label" style="margin-top:1mm">страниц повторяются из КП в КП</div></div>
+      <div class="box-acc pad3"><div class="stat acc" style="font-size:15pt">2</div><div class="label" style="margin-top:1mm">страницы уникальны: план и смета</div></div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Ещё одна находка, не про ошибки</div>
+      <p class="sm">Из семи КП в шести повторяются одни и те же двенадцать страниц: обложка, «что вы получаете», о компании, сертификаты, этапы, гарантия. Уникальны в каждом документе ровно две — <strong>план объекта и спецификация</strong>. Ради них клиент и открывает файл. Поэтому генератор делает сильной именно эту пару, а остальные страницы собирает сам.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">3</span></div>
+</section>
+
+<!-- ============ 04 · РАЗДЕЛИТЕЛЬ I ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Часть I</span><span>Принцип работы</span></div>
+    <div style="margin-top:auto">
+      <div class="mono" style="font-size:54pt;font-weight:800;letter-spacing:-.05em;color:var(--acc-hi);line-height:.9">I</div>
+      <h1 style="margin-top:8mm">Принцип<br>работы</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:132mm;color:#9DA0A8">
+        Граница между кодом и нейросетью · схема от замера до PDF · три движка раскладки ·
+        формулы спецификации · цена · приёмка · картинка в три слоя.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Полосы</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">05 — 13</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Движков</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">3</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Файлов ядра</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">24</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Слоёв картинки</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">3</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · ГРАНИЦА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>03</b> · Граница</span><span>Часть I · Принцип работы</span></div>
+    <h2>Что считает код и что делает нейросеть</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Это главное решение всей системы. Нейросеть работает там, где человеку тяжело, а ошибка
+      дешёвая: разобрать почерк, предложить варианты, написать абзац. Там, где ошибка стоит
+      денег клиента, считает код — детерминированно, одинаково при каждом нажатии.
+    </p>
+
+    <div class="grid g2" style="gap:3mm;margin-bottom:5mm">
+      <div class="box-acc pad3">
+        <div class="bnum">КОД · ЯДРО</div>
+        <h4>Всё, что попадает в счёт</h4>
+        <ul class="ticks xs" style="margin-top:2.5mm">
+          <li>Раскладка: ориентация рядов, ширина прохода, число секций</li>
+          <li>Ярусы: высота рамы, зазор под потолок, высота паллеты</li>
+          <li>Спецификация: рамы, балки, замки, анкеры, настил, защита</li>
+          <li>Паллето-места и заполнение площади</li>
+          <li>Сумма, скидка, НДС 12 %, цена за паллето-место</li>
+          <li>Приёмка: 23 правила, 16 из них блокируют выпуск</li>
+          <li>Факты компании: сертификаты, гарантия, стаж, реквизиты</li>
+        </ul>
+      </div>
+      <div class="box pad3">
+        <div class="bnum">НЕЙРОСЕТЬ</div>
+        <h4>Всё, где ошибка не стоит денег</h4>
+        <ul class="ticks xs" style="margin-top:2.5mm">
+          <li>Читает фотографию листа замерщика и снимает с неё геометрию</li>
+          <li>Распознаёт подписи рядов, глубины, зоны упаковки и приёмки</li>
+          <li>Предлагает 2–3 варианта расстановки на выбор менеджеру</li>
+          <li class="no">Не считает ярусы, зазоры и количество рам</li>
+          <li class="no">Не называет сумму и не ставит скидку</li>
+          <li class="no">Не пишет факты о компании</li>
+          <li class="no">Свободный текст модели в документ не попадает</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box-warn pad3" style="margin-bottom:5mm">
+      <div class="label" style="margin-bottom:2mm">Почему граница проведена именно здесь</div>
+      <p class="sm">
+        В августе мы дали модели прямое, однозначное задание: «восемь рядов». Она вернула
+        <strong>шесть</strong>. Не потому что плохая — потому что у неё нет обязанности быть
+        точной, а у спецификации на 1,2 млрд сум она есть. После этого прогона правило
+        записали в код: любая величина, которую клиент увидит в таблице, приходит из формулы.
+      </p>
+    </div>
+
+    <div class="label" style="margin-bottom:2.5mm">Три вопроса, по которым мы решали, кому отдать задачу</div>
+    <table class="tiny" style="margin-bottom:5mm">
+      <thead><tr><th style="width:52mm">Вопрос</th><th style="width:42mm">Ответ «да» → нейросеть</th><th>Ответ «нет» → код</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Ошибка здесь заметна человеку сразу?</td><td class="xs">Криво прочитанная подпись видна в списке «что распознано».</td><td class="xs">Лишние 20 рам в смете не видны никому до монтажа.</td></tr>
+        <tr><td class="k">Задача про восприятие или про арифметику?</td><td class="xs">Разобрать почерк, узнать «215 sm» — восприятие.</td><td class="xs">Поделить потолок на высоту яруса — арифметика.</td></tr>
+        <tr><td class="k">Нужен один и тот же ответ при каждом запуске?</td><td class="xs">Нет: вариантов расстановки может быть несколько.</td><td class="xs">Да: одна и та же форма обязана дать ту же сумму.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g3" style="gap:3mm;margin-top:auto">
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Проверка</div><p class="xs muted">Формулы спецификации прогоняются регрессией на шести фактических КП: <span class="mono">lib/rack/regression.mjs</span>. Расхождение с готовым документом — до 1 %.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Повторяемость</div><p class="xs muted">Одни и те же входные данные всегда дают один и тот же документ. КП, открытое через год, пересчитается тем же ядром и покажет ту же сумму.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Честность</div><p class="xs muted">Черновые числа не прячутся в расчёте: каждый тип возвращает список <span class="mono">assumptions</span>, и приёмка показывает его менеджеру списком.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">5</span></div>
+</section>
+
+<!-- ============ 06 · СХЕМА РАБОТЫ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>04</b> · Схема</span><span>Часть I · Принцип работы</span></div>
+    <h2>Путь от замера до файла у клиента</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Восемь шагов. Зелёным отмечены те, где работает нейросеть — их ровно два, и оба
+      необязательные: без них генератор считает так же, просто менеджер вводит габариты руками.
+    </p>
+
+    <div class="flow" style="margin-bottom:3mm">
+      <div class="st"><div class="bnum">01</div><h4 class="xs">Замер</h4><p class="xxs muted" style="margin-top:1.5mm">Замерщик выезжает и рисует помещение на листе: контур, метры, колонны, ворота.</p></div>
+      <div class="st hi"><div class="bnum">02</div><h4 class="xs">Фото листа</h4><p class="xxs muted" style="margin-top:1.5mm">Менеджер фотографирует набросок. Модель снимает геометрию и подписи. <b>Необязательно.</b></p></div>
+      <div class="st"><div class="bnum">03</div><h4 class="xs">Помещение</h4><p class="xxs muted" style="margin-top:1.5mm">Габариты, потолок, шаг колонн, техника, длина балки, вес паллеты.</p></div>
+      <div class="st"><div class="bnum">04</div><h4 class="xs">Раскладка</h4><p class="xxs muted" style="margin-top:1.5mm">Ядро подбирает ориентацию рядов, проход, ярусы и рисует план.</p></div>
+    </div>
+    <div class="flow" style="margin-bottom:5mm">
+      <div class="st"><div class="bnum">05</div><h4 class="xs">Спецификация</h4><p class="xxs muted" style="margin-top:1.5mm">Рамы, балки, замки, анкеры, защита — формулами из геометрии. Паллето-места.</p></div>
+      <div class="st"><div class="bnum">06</div><h4 class="xs">Цена</h4><p class="xxs muted" style="margin-top:1.5mm">Сумма по позициям, скидка с причиной, НДС 12 %, цена за паллето-место.</p></div>
+      <div class="st hi"><div class="bnum">07</div><h4 class="xs">Кадр</h4><p class="xxs muted" style="margin-top:1.5mm">3D-сцена превращается в фотореалистичный снимок склада. <b>Необязательно.</b></p></div>
+      <div class="st"><div class="bnum">08</div><h4 class="xs">Выпуск</h4><p class="xxs muted" style="margin-top:1.5mm">Приёмка → PDF, ссылка для клиента или печать → запись в реестр.</p></div>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Где заканчивается ручная работа</div>
+        <p class="xs muted">Менеджер вводит: название клиента, тип стеллажа, язык документа, габариты помещения, цены за единицу и условия. Это шесть полей и два числа. Всё остальное — 141 секция, 846 балок, 1692 замка, 600 анкеров — считается само.</p>
+      </div>
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Что невозможно пропустить</div>
+        <p class="xs muted">Шаг 08 не выполнится, пока приёмка держит хоть одно блокирующее замечание. Это не окно с вопросом «вы уверены?» — кнопка выпуска просто не срабатывает, а список замечаний висит вверху экрана всё время работы.</p>
+      </div>
+    </div>
+
+    <div class="grid g4" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Замер и фото</div><div class="stat" style="font-size:13pt">выезд</div><p class="xxs muted" style="margin-top:1.5mm">Единственный шаг вне кабинета. Дальше всё происходит за одним экраном.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Чтение наброска</div><div class="stat" style="font-size:13pt">до 3 мин</div><p class="xxs muted" style="margin-top:1.5mm">Необязательный шаг. Без него габариты вводятся руками за минуту.</p></div>
+      <div class="box-acc pad3"><div class="label" style="margin-bottom:1.5mm">Раскладка и смета</div><div class="stat acc" style="font-size:13pt">мгновенно</div><p class="xxs muted" style="margin-top:1.5mm">Считается в браузере. Здесь раньше стоял проектировщик с очередью задач.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Кадр и выпуск</div><div class="stat" style="font-size:13pt">до 2 мин</div><p class="xxs muted" style="margin-top:1.5mm">Фотореализм 60–90 секунд, PDF и ссылка — сразу.</p></div>
+    </div>
+
+    <div class="sheet" style="margin-top:auto"><img src="img/gen/registry.jpg" alt="Реестр КП"></div>
+    <div class="cap">Реестр: номер, клиент, продукт, сумма, кто выпустил. В реестре хранится ввод формы, а не готовые страницы — КП, открытое через год, пересчитается тем же ядром и покажет ту же сумму.</div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">6</span></div>
+</section>
+
+<!-- ============ 07 · РАСКЛАДКА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>05</b> · Раскладка</span><span>Часть I · Принцип работы</span></div>
+    <h2>Что происходит за одним нажатием «Рассчитать раскладку»</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Это та работа, ради которой раньше ждали проектировщика с 3ds Max. Сейчас она занимает
+      доли секунды и делается прямо в браузере менеджера.
+    </p>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:5mm">
+      <div>
+        <ul class="num xs" style="margin-bottom:4mm">
+          <li><strong>Контур.</strong> Берётся прямоугольник по габаритам или честный многоугольник с наброска — со скосом, нишей или вырезом.</li>
+          <li><strong>Препятствия.</strong> Колонны здания по шагу сетки и подписанные зоны — упаковка, приёмка, лестница, офис. Через них ряд не проходит.</li>
+          <li><strong>Ориентация.</strong> Ряды примеряются вдоль и поперёк; выигрывает та ориентация, где помещается больше секций.</li>
+          <li><strong>Проход.</strong> Ширина берётся не «на глаз», а по технике: ричтрак 2900 мм, штабелёр 2500, вилочный погрузчик 3800.</li>
+          <li><strong>Спина к спине.</strong> Где тип это допускает, ряды ставятся парами — один проход обслуживает два ряда вместо одного.</li>
+          <li><strong>Ярусы.</strong> Считаются от высоты потолка минус 500 мм запаса под спринклеры, делённой на высоту паллеты с балкой.</li>
+          <li><strong>Предел рамы.</strong> Выше 6000 мм рама не поднимается — завод таких не поставлял.</li>
+          <li><strong>План.</strong> Результат рисуется векторным чертежом с размерами и вставляется в документ.</li>
+        </ul>
+        <div class="box-warn pad3">
+          <div class="label" style="margin-bottom:2mm">Отдельное поведение, которое стоит знать</div>
+          <p class="xs muted">Если ярусы упёрлись не в потолок, а в предел рамы 6000 мм, генератор говорит об этом прямо в интерфейсе и предлагает считать мезонин — второй уровень хранения. Это не ошибка, а другой продукт, и менеджер должен узнать о нём до звонка клиенту, а не после.</p>
+        </div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>raxpro.uz/kp · помещение и план</span><em class="new">кабинет</em></div>
+        <div class="shot"><img src="img/gen/cabinet-room.jpg" alt="Форма помещения и рассчитанный план"></div>
+        <div class="cap">Девять полей — и план готов. Под планом строка результата: «9 рядов · 141 секция · 3 яруса · рама 5400 мм · заполнение 37 %» и предупреждение про предел рамы.</div>
+      </div>
+    </div>
+
+    <div class="grid g4" style="gap:3mm;margin-top:auto">
+      <div class="box pad3"><div class="stat">2900</div><div class="label" style="margin-top:1mm">мм · проход под ричтрак</div></div>
+      <div class="box pad3"><div class="stat">6000</div><div class="label" style="margin-top:1mm">мм · предел высоты рамы</div></div>
+      <div class="box pad3"><div class="stat">500</div><div class="label" style="margin-top:1mm">мм · запас под потолком</div></div>
+      <div class="box pad3"><div class="stat">37 %</div><div class="label" style="margin-top:1mm">площади занято стеллажами</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">7</span></div>
+</section>
+
+<!-- ============ 08 · ШЕСТЬ ТИПОВ, ТРИ ДВИЖКА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>06</b> · Каталог</span><span>Часть I · Принцип работы</span></div>
+    <h2>Шесть типов стеллажей и три способа их разложить</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Раньше каждый вызывающий сам решал, что делать с типом: конструктор знал только
+      паллетный, кабинет — паллетный и прайсовые, а набивной и мезонин не считались нигде.
+      Теперь движок выбирается по паспорту типа, и снаружи все шесть выглядят одинаково.
+    </p>
+
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:44mm">Тип</th><th style="width:20mm">Движок</th><th style="width:26mm">Кто обслуживает</th><th style="width:18mm">Проход</th><th>Чем меряется результат</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Паллетный фронтальный</td><td class="mono xs">ряды</td><td class="xs">Ричтрак · штабелёр · погрузчик</td><td class="mono xs">2900 мм</td><td class="xs">Паллето-места. Прямой доступ к каждой паллете.</td></tr>
+        <tr><td class="k">Паллетный набивной</td><td class="mono xs">каналы</td><td class="xs">Ричтрак · штабелёр</td><td class="mono xs">2900 мм</td><td class="xs">Паллето-места. Проходов внутри блока нет вовсе — в этом смысл типа.</td></tr>
+        <tr><td class="k">Среднегрузовой</td><td class="mono xs">ряды</td><td class="xs">Человек с тележкой</td><td class="mono xs">1000 мм</td><td class="xs">Полки. Ручная укладка, настил 5 листов на ярус.</td></tr>
+        <tr><td class="k">Архивный</td><td class="mono xs">ряды</td><td class="xs">Человек без тележки</td><td class="mono xs">800 мм</td><td class="xs">Полки. Глубина 300–400 мм под короб, продаётся комплектом.</td></tr>
+        <tr><td class="k">Торговый</td><td class="mono xs">ряды</td><td class="xs">Покупатель с корзиной</td><td class="mono xs">1200 мм</td><td class="xs">Полки. Пристенный контур плюс островные двусторонние ряды.</td></tr>
+        <tr><td class="k">Мезонин</td><td class="mono xs">плита</td><td class="xs">Человек</td><td class="mono xs">—</td><td class="xs">Квадратные метры плиты. Ни рам, ни ярусов — колонны, балки, настил, ограждение, лестницы.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3">
+        <div class="bnum">ДВИЖОК · РЯДЫ</div>
+        <p class="xs muted" style="margin-top:2mm">Линии секций с проходом между ними. Четыре типа из шести. Считает ориентацию, обход колонн, спину к спине, ярусы и паллето-места либо полки.</p>
+      </div>
+      <div class="box pad3">
+        <div class="bnum">ДВИЖОК · КАНАЛЫ</div>
+        <p class="xs muted" style="margin-top:2mm">Блок каналов вплотную, техника въезжает внутрь. Стойка каждые 1200 мм — по ширине паллеты. Паспортные глубины 2700 / 4000 / 5400 мм — это 2, 3 и 4 паллеты вглубь.</p>
+      </div>
+      <div class="box pad3">
+        <div class="bnum">ДВИЖОК · ПЛИТА</div>
+        <p class="xs muted" style="margin-top:2mm">Мезонин продаётся не секциями, а площадью. Спецификация другая по форме: колонны по сетке, две очереди балок, настил в м², ограждение в погонных метрах, лестницы.</p>
+      </div>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Почему ширина прохода — не настройка, а следствие</div>
+        <p class="xs muted">Проход задаёт не дизайнер склада, а техника, которая в него въезжает. Вилочный погрузчик требует 3800 мм, ричтрак — 2900, штабелёр — 2500. Разница между погрузчиком и ричтраком на складе 45 × 24 метра — это несколько дополнительных рядов, то есть сотни паллето-мест. Поэтому вопрос «какая у вас техника» стоит в форме вторым, а не последним.</p>
+      </div>
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Почему набивной не всегда выигрывает</div>
+        <p class="xs muted">Набивной плотнее фронтального — но сравнение зависит от того, с чем сравнивать. Против ричтрака с проходом 2,9 м выигрыш скромный. Против вилочного погрузчика с проходом 3,8 м — заметный, и это довод для КП. Генератор считает обе раскладки в одном и том же помещении и показывает разницу числом, а не словами.</p>
+      </div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Что генератор отказывается считать</div>
+      <p class="sm">Каждый тип носит с собой список запретов, и они доходят до приёмки дословно. Мезонин под потолком 4 метра — отказ: под плитой не останется рабочей высоты. Набивной с непаспортной глубиной канала — отказ с перечислением допустимых. <strong>Отказ честнее неверного числа:</strong> по этому документу компания выставит счёт на сотни миллионов сум.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">8</span></div>
+</section>
+
+<!-- ============ 09 · ПАСПОРТ ТИПА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>07</b> · Паспорт типа</span><span>Часть I · Принцип работы</span></div>
+    <h2>Где записаны правила, по которым всё считается</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Это сердце системы. Один файл описывает каждый тип стеллажа так, что из него читают
+      сразу четверо: ядро раскладки, спецификация, промпт для нейросети и приёмка. Поменялось
+      правило — поменялось везде одновременно, а не в четырёх местах поодиночке.
+    </p>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:5mm">
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Что описано у каждого типа</div>
+        <table class="tiny">
+          <tbody>
+            <tr><td class="k mono">engine</td><td class="xs">Каким движком раскладывать: ряды, каналы или плита.</td></tr>
+            <tr><td class="k mono">movers</td><td class="xs">Кто обслуживает тип — от этого ширина прохода, а не от привычки.</td></tr>
+            <tr><td class="k mono">backToBack</td><td class="xs">Можно ли ставить ряды спиной к спине.</td></tr>
+            <tr><td class="k mono">wallGap</td><td class="xs">Зазор до стены: 300 мм обычно, 200 мм в архиве.</td></tr>
+            <tr><td class="k mono">depthMeans</td><td class="xs">Что значит «глубина» у этого типа: ряд, канал или плита.</td></tr>
+            <tr><td class="k mono">channelDepths</td><td class="xs">Паспортные глубины канала и сколько паллет в них влезает.</td></tr>
+            <tr><td class="k mono">forbid</td><td class="xs">Что делать нельзя. Уходит в приёмку и в промпт модели дословно.</td></tr>
+            <tr><td class="k mono">assumed</td><td class="xs">Какие числа здесь черновые. Список видит менеджер, а не только программист.</td></tr>
+            <tr><td class="k mono">notes</td><td class="xs">Откуда взято правило: номер темы и сообщения в рабочей группе RaxPro.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Пример: запреты набивного стеллажа</div>
+        <div class="box-bad pad3" style="margin-bottom:3mm">
+          <ul class="dash xs">
+            <li>Проход между соседними каналами: их и не должно быть — в этом смысл набивного.</li>
+            <li>Разный товар в одном канале: выгрузка идёт в обратном порядке, последняя заехала — первая выехала.</li>
+            <li>Канал глубже четырёх паллет: техника не достаёт дальний ряд.</li>
+          </ul>
+        </div>
+        <div class="label" style="margin-bottom:2.5mm">Пример: что у него объявлено черновым</div>
+        <div class="box-warn pad3" style="margin-bottom:3mm">
+          <ul class="dash xs">
+            <li>Распределение каналов по блоку.</li>
+            <li>Ширина магистрального проезда перед блоком.</li>
+          </ul>
+          <p class="xxs faint" style="margin-top:2mm">Ни одного КП на набивной в архиве компании нет — эти два числа выведены из геометрии, а не из документа, и обязаны попасть в приёмку.</p>
+        </div>
+        <div class="box-acc pad3">
+          <div class="label" style="margin-bottom:2mm">А что не черновое</div>
+          <p class="xs muted">Шаг стойки 1200 мм — по ширине паллеты — и глубины 2700 / 4000 / 5400 мм взяты из переписки инженеров RaxPro с указанием темы и номера сообщения. Ни одно число не пришло из интернета.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Читает ядро</div><p class="xxs muted">Берёт движок, проход и зазор — и раскладывает помещение. Не знает, какой это тип: спрашивает у паспорта.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Читает промпт</div><p class="xxs muted">Список типов и запретов уходит в задание модели дословно. Появился тип — модель узнаёт о нём в тот же день.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Читает приёмка</div><p class="xxs muted">Запреты и черновые допущения становятся замечаниями менеджеру, а не комментариями в коде.</p></div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Регрессия: что проверяется при каждой правке</div>
+      <p class="sm" style="margin-bottom:2.5mm">Проверяются не конкретные числа — половина из них поедет, как только RaxPro пришлёт прайс и чертежи. Проверяются инварианты, которые ломаться не должны никогда:</p>
+      <div class="grid g3" style="gap:3mm">
+        <div><ul class="ticks xxs"><li>Каждый тип считается и отдаёт непустую спецификацию</li><li>У каждой позиции есть выкладка формулы</li></ul></div>
+        <div><ul class="ticks xxs"><li>Проход соответствует тому, кто обслуживает тип</li><li>Непаллетные типы не выдают паллето-мест</li></ul></div>
+        <div><ul class="ticks xxs"><li>Набивной плотнее фронтального в том же помещении</li><li>Каждое черновое число объявлено, а не спрятано</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">9</span></div>
+</section>
+
+<!-- ============ 10 · СПЕЦИФИКАЦИЯ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>08</b> · Спецификация</span><span>Часть I · Принцип работы</span></div>
+    <h2>Формулы, по которым собирается смета</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Четыре числа геометрии — и вся спецификация считается сама. Формулы не придуманы:
+      они выведены обратным счётом из шести фактических КП и прогоняются на них регрессией.
+      Расхождение с готовым документом — до одного процента.
+    </p>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:5mm">
+      <div>
+        <div class="box-fill pad3 mono" style="font-size:7.4pt;line-height:1.9;margin-bottom:3mm">
+          рамы&nbsp;&nbsp;&nbsp;&nbsp;= секции + ряды<br>
+          балки&nbsp;&nbsp;&nbsp;= секции × ярусы × 2<br>
+          замки&nbsp;&nbsp;&nbsp;= балки × 2<br>
+          анкеры&nbsp;&nbsp;= рамы × 4 или × 8<br>
+          настил&nbsp;&nbsp;= секции × ярусы × 5<br>
+          защита&nbsp;&nbsp;= рамы<br>
+          места&nbsp;&nbsp;&nbsp;= секции × (ярусы + пол) × паллет
+        </div>
+        <p class="xs muted" style="margin-bottom:3mm">Рам на один больше, чем секций в ряду: соседние секции делят общую раму. Балок вдвое больше произведения секций на ярусы — передняя и задняя. Замков вдвое больше балок — по одному на каждый конец.</p>
+        <div class="box-warn pad3">
+          <div class="label" style="margin-bottom:2mm">Единственное правило, которое мы не смогли вывести</div>
+          <p class="xs muted">Анкеров на раму — 4 или 8. В фактических КП встречаются оба варианта, и от чего это зависит, компания не ответила. Поэтому это поле формы, а не константа, и приёмка проверяет только то, что число кратно раме.</p>
+        </div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>КП-260905-305 · спецификация и стоимость</span><em class="new">документ</em></div>
+        <div class="shot"><img src="img/gen/kp-spec.jpg" alt="Спецификация в готовом КП"></div>
+        <div class="cap">Реальный прогон: помещение 45 × 24 м, потолок 10,5 м, ричтрак. 9 рядов, 141 секция, 3 яруса → 150 рам, 846 балок, 1692 замка, 600 анкеров, 150 защит стойки. 1692 паллето-места, 667 252 сум за место.</div>
+      </div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-bottom:5mm">
+      <div class="label" style="margin-bottom:2mm">Как проверить чужую спецификацию за тридцать секунд</div>
+      <p class="sm" style="margin-bottom:2.5mm">Три отношения, которые не зависят ни от типа, ни от прайса. Если хоть одно не сходится — смета собрана вручную, и её нельзя отправлять клиенту.</p>
+      <div class="grid g3" style="gap:3mm">
+        <div class="box pad3" style="background:#fff"><div class="mono xs" style="font-weight:700;color:var(--acc)">замки = балки × 2</div><p class="xxs muted" style="margin-top:1.5mm">По одному замку на каждый конец балки. Других вариантов нет.</p></div>
+        <div class="box pad3" style="background:#fff"><div class="mono xs" style="font-weight:700;color:var(--acc)">рамы = секции + ряды</div><p class="xxs muted" style="margin-top:1.5mm">Соседние секции делят общую раму, поэтому рам на одну больше в каждом ряду.</p></div>
+        <div class="box pad3" style="background:#fff"><div class="mono xs" style="font-weight:700;color:var(--acc)">анкеры = рамы × 4 или × 8</div><p class="xxs muted" style="margin-top:1.5mm">Любое другое число означает, что позицию правили руками.</p></div>
+      </div>
+    </div>
+
+    <div class="grid g5" style="gap:3mm;margin-top:auto">
+      <div class="box pad3"><div class="stat" style="font-size:14pt">150</div><div class="label" style="margin-top:1mm">рам</div></div>
+      <div class="box pad3"><div class="stat" style="font-size:14pt">846</div><div class="label" style="margin-top:1mm">балок</div></div>
+      <div class="box pad3"><div class="stat" style="font-size:14pt">1 692</div><div class="label" style="margin-top:1mm">замка</div></div>
+      <div class="box pad3"><div class="stat" style="font-size:14pt">600</div><div class="label" style="margin-top:1mm">анкеров</div></div>
+      <div class="box-acc pad3"><div class="stat acc" style="font-size:14pt">1 692</div><div class="label" style="margin-top:1mm">паллето-места</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">10</span></div>
+</section>
+
+<!-- ============ 11 · ЦЕНА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>09</b> · Цена</span><span>Часть I · Принцип работы</span></div>
+    <h2>Сумма, которую нельзя вписать руками</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Раньше скидку ставили в документе руками: BLOOMSHOP −15 %, Lion Print 843 → 800 млн,
+      Sika 35 → 28 млн — и ни одной строки о том, за что. Здесь скидка обязана иметь причину,
+      а НДС считается, а не вписывается.
+    </p>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:5mm">
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Пять допустимых причин скидки</div>
+        <table class="tiny" style="margin-bottom:4mm">
+          <tbody>
+            <tr><td class="k">Объём</td><td class="xs">Большой заказ. Причина попадает в документ рядом со скидкой.</td></tr>
+            <tr><td class="k">Предоплата</td><td class="xs">100 % вперёд — деньги стоят денег, и клиенту это видно.</td></tr>
+            <tr><td class="k">Срок</td><td class="xs">Подписание до даты. Скидка исчезает вместе со сроком.</td></tr>
+            <tr><td class="k">Повторный клиент</td><td class="xs">Работали раньше.</td></tr>
+            <tr><td class="k">Решение директора</td><td class="xs">Требует комментария текстом — иначе печать блокируется.</td></tr>
+          </tbody>
+        </table>
+        <div class="box-acc pad3" style="margin-bottom:3mm">
+          <div class="label" style="margin-bottom:2mm">Цена за паллето-место</div>
+          <p class="xs muted">Единственная величина, по которой клиент сравнивает вас с конкурентом. Ни в одном из семи фактических КП её не было — клиент сравнивал по итоговой сумме, то есть по самому невыгодному для RaxPro числу. Теперь она стоит в документе отдельной строкой.</p>
+        </div>
+        <div class="box pad3">
+          <div class="label" style="margin-bottom:2mm">Две модели цены</div>
+          <p class="xs muted">По позициям — когда есть прайс завода на раму, балку, замок и анкер. По прайс-листу секций — когда есть цена готовой секции; ряд делит рамы между соседями, поэтому сумма меньше, чем «секции × прайс».</p>
+        </div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>КП-260905-305 · за что вы платите</span><em class="new">документ</em></div>
+        <div class="shot"><img src="img/gen/kp-bars.jpg" alt="Структура суммы в КП"></div>
+        <div class="cap">Полоса «за что вы платите» — рама 38,1 %, балка 56,0 %, замки 1,2 %, анкеры 0,3 %, защита 4,4 %. Клиент видит, что покупает металл конструкции, а не сопутствующую мелочь. Строки «прочее» в расчёте нет.</div>
+        <div class="box-warn pad3" style="margin-top:4mm">
+          <div class="label" style="margin-bottom:2mm">Три типа из шести пока считаются вручную</div>
+          <p class="xs muted">Торговый, набивной и мезонин помечены «цена под проект»: прайса на них компания не давала. Генератор не подставляет им выдуманную цену — он требует ввести её руками и блокирует выпуск, пока все позиции стоят в нуле.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="tiny" style="margin-bottom:5mm">
+      <thead><tr><th style="width:44mm">Что стоит в документе</th><th style="width:30mm">Откуда берётся</th><th>Что было раньше</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Сумма по позициям</td><td class="xs">Количество × цена</td><td class="xs">Переносили из прошлого КП вместе с чужими количествами.</td></tr>
+        <tr><td class="k">Скидка</td><td class="xs">Процент + причина</td><td class="xs">Ставили процентом без строки о том, за что.</td></tr>
+        <tr><td class="k">Итого без НДС</td><td class="xs">Сумма минус скидка</td><td class="xs">Иногда не сходилось с таблицей выше на той же странице.</td></tr>
+        <tr><td class="k">НДС 12 %</td><td class="xs">Считается от итога</td><td class="xs">Вписывали. Приёмка теперь сверяет до одного сума.</td></tr>
+        <tr><td class="k">Цена за паллето-место</td><td class="xs">Итог ÷ места</td><td class="xs">Не считали вообще ни в одном из семи КП.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Проверка на пресетах</div>
+      <p class="sm">Четыре кнопки вверху кабинета — это реальные КП: Fathulla, Doniyor, BLOOMSHOP, Star Distribution. Пресет заполняет геометрию и показывает эталонную сумму. <strong>Если расчёт разошёлся с фактическим КП больше чем на 5 %, значит, цены за единицу устарели</strong> — это встроенный способ заметить, что завод поменял прайс, а вам не сказали.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">11</span></div>
+</section>
+
+<!-- ============ 12 · ПРИЁМКА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>10</b> · Приёмка</span><span>Часть I · Принцип работы</span></div>
+    <h2>Двадцать три правила, каждое из своей ошибки</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Приёмка — последний рубеж перед клиентом. Полоса состояния висит вверху экрана всё время
+      работы: красная — печать заблокирована, жёлтая — выпустить можно, но чего-то не хватает,
+      зелёная — замечаний нет.
+    </p>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box-bad pad3"><div class="stat" style="color:var(--bad)">16</div><div class="label" style="margin-top:1mm">блокирующих правил · выпуск невозможен</div></div>
+      <div class="box-warn pad3"><div class="stat" style="color:var(--warn)">7</div><div class="label" style="margin-top:1mm">предупреждений · нужно осознанное «да»</div></div>
+      <div class="box-acc pad3"><div class="stat acc">100 %</div><div class="label" style="margin-top:1mm">правил подписаны конкретным КП, из которого родились</div></div>
+    </div>
+
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:18mm">Уровень</th><th style="width:60mm">Замечание</th><th>Почему именно так</th></tr></thead>
+      <tbody>
+        <tr><td class="k bad">Блок</td><td class="xs">Не указан клиент</td><td class="xs">В КП Rapid Sales в шапке осталось пустое «К: &laquo;&nbsp;&nbsp;&raquo;».</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Опечатка «ISO g001»</td><td class="xs">Стоит во всех семи фактических КП. Текст проверяется на неё при каждом вводе.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Опыт вписан числом в текст</td><td class="xs">2, 3 и 4 года в документах одного месяца. Стаж считается от года основания.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Число клиентов вписано руками</td><td class="xs">150 / 200 / 300 в разных КП. Берётся из справочника компании.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Замков не вдвое больше балок</td><td class="xs">Значит, спецификацию собрали вручную и она неверна.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Анкеров не 4 и не 8 на раму</td><td class="xs">То же самое: число не выводится из геометрии.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Рядов больше, чем секций</td><td class="xs">Такой геометрии не бывает.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Ярусов меньше 1 или больше 6</td><td class="xs">Вне рабочего диапазона линейки.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Две схемы оплаты сразу</td><td class="xs">У Fathulla на стр. 9 «50 % + 50 %», на стр. 10 «100 % предоплата».</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Скидка без причины</td><td class="xs">BLOOMSHOP, Lion Print, Sika — скидка стояла без обоснования.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">НДС не 12 % от суммы</td><td class="xs">Ставка одна, и она считается, а не вписывается.</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Нулевая цена за единицу</td><td class="xs">Пустая строка в таблице уезжает клиенту как «бесплатно».</td></tr>
+        <tr><td class="k bad">Блок</td><td class="xs">Размер в пять и более цифр в тексте</td><td class="xs">Балка «33000×1200» у Lion Print — в КП на 843 млн.</td></tr>
+        <tr><td class="k warn">Внимание</td><td class="xs">Скидка больше 25 %</td><td class="xs">Больше четверти суммы — нужно подтверждение директора.</td></tr>
+        <tr><td class="k warn">Внимание</td><td class="xs">Нет цены за паллето-место</td><td class="xs">Единственная величина, по которой клиент сравнит вас с конкурентом.</td></tr>
+        <tr><td class="k warn">Внимание</td><td class="xs">Нет плана объекта</td><td class="xs">В фактических КП план был одной из двух уникальных страниц.</td></tr>
+        <tr><td class="k warn">Внимание</td><td class="xs">Нет рендера расстановки</td><td class="xs">Вторая из двух страниц, ради которых клиент открывает файл.</td></tr>
+        <tr><td class="k warn">Внимание</td><td class="xs">В тексте нет сертификата</td><td class="xs">Сертификаты перечислены в справочнике — проверяется их наличие в документе.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Чего приёмка не делает</div>
+      <p class="sm">Она не проверяет, хорошее ли это предложение и понравится ли оно клиенту. Она проверяет ровно одно: <strong>нет ли в документе того, что уже уезжало клиентам раньше.</strong> Каждое новое КП с ошибкой добавляет сюда строку — список будет расти, и это нормально.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">12</span></div>
+</section>
+
+<!-- ============ 13 · КАРТИНКА В ТРИ СЛОЯ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>11</b> · Картинка</span><span>Часть I · Принцип работы</span></div>
+    <h2>Три слоя, и ни одного придуманного склада</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Клиент открывает КП ради двух страниц — плана и картинки. Соблазн велик: попросить
+      нейросеть «нарисуй красивый склад». Тогда на листе «Решение» окажется склад, которого
+      нет в смете. Так уже было в их старых КП. Поэтому каждая картинка вырастает из расчёта.
+    </p>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:4mm">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>слой 1 · план</span><em class="new">ядро</em></div>
+        <div class="shot fit" style="height:52mm;background:#fff"><img src="img/gen/plan.jpg" alt="Векторный план расстановки"></div>
+        <div class="cap">Векторный чертёж с размерами. Рисуется из той же раскладки, что попала в спецификацию.</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>слой 2 · модель</span><em class="new">ядро</em></div>
+        <div class="shot fit" style="height:52mm;background:#0E1116"><img src="img/gen/kp-3d.jpg" alt="Трёхмерная модель расстановки"></div>
+        <div class="cap">Сцена строится из тех же рядов и ярусов. Её можно крутить и снять нужный ракурс прямо в КП.</div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>слой 3 · кадр</span><em class="new">нейросеть</em></div>
+        <div class="shot fit" style="height:52mm"><img src="img/gen/3d-overview.jpg" alt="Фотореалистичный кадр расстановки"></div>
+        <div class="cap">Фотореализм наводится поверх готовой геометрии как по референсу — ракурс и число рядов не меняются.</div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-bottom:4mm">
+      <div class="box-bad pad3">
+        <div class="label" style="margin-bottom:2mm">Что запрещено</div>
+        <p class="xs muted">Генерация картинки с нуля по словам «шесть рядов, три яруса». Нейросеть нарисует убедительный склад, в котором рядов окажется семь, а проход — вдвое уже посчитанного. Клиент сверит картинку со сметой и не поверит ни ей, ни смете.</p>
+      </div>
+      <div class="box-acc pad3">
+        <div class="label" style="margin-bottom:2mm">Что разрешено</div>
+        <p class="xs muted">Снимок посчитанной 3D-сцены уходит как референс, а в задании стоит прямым текстом: «сохрани в точности ракурс, число рядов, ширину проходов, число ярусов и положение стеллажей — меняются только материалы, свет и детали».</p>
+      </div>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-top:auto">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>взгляд вдоль прохода</span><em class="new">та же сцена</em></div>
+        <div class="shot"><img src="img/gen/3d-aisle.jpg" alt="Кадр вдоль прохода"></div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>фасад секции крупно</span><em class="new">та же сцена</em></div>
+        <div class="shot"><img src="img/gen/3d-detail.jpg" alt="Фасад секции крупным планом"></div>
+      </div>
+    </div>
+    <div class="cap">Три кадра одной сцены: общий вид, взгляд вдоль прохода, фасад ряда. Рамы синие, балки оранжевые — как на объектах RAX PRO, а не «как у стоковой картинки».</div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">13</span></div>
+</section>
+
+<!-- ============ 14 · РАЗДЕЛИТЕЛЬ II ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Часть II</span><span>Инструменты</span></div>
+    <div style="margin-top:auto">
+      <div class="mono" style="font-size:54pt;font-weight:800;letter-spacing:-.05em;color:var(--acc-hi);line-height:.9">II</div>
+      <h1 style="margin-top:8mm">Инструменты<br>и расход</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:132mm;color:#9DA0A8">
+        Из чего собран генератор · два способа платить за нейросеть · мост на подписку ·
+        ключи, пароли и роли · сколько это стоит в месяц.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Полосы</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">15 — 18</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Провайдеров</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">3</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Режима оплаты</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">2</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Открытых портов</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">0</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15 · СТЕК ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>12</b> · Стек</span><span>Часть II · Инструменты</span></div>
+    <h2>Из чего собран генератор</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Генератор живёт внутри того же сайта, что и raxpro.uz — отдельного сервера,
+      отдельного хостинга и отдельного счёта у него нет. Нейросети подключаются
+      по одной на задачу, и каждая делает ровно одно дело.
+    </p>
+
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:38mm">Инструмент</th><th style="width:52mm">Что делает в генераторе</th><th style="width:26mm">Чей счёт</th><th>Можно ли без него</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Next.js · Vercel</td><td class="xs">Сам кабинет, расчёт, сборка документа и PDF на сервере.</td><td class="xs">Уже оплачен вместе с сайтом</td><td class="xs non">Нет — это и есть генератор.</td></tr>
+        <tr><td class="k">Хранилище Vercel Blob</td><td class="xs">Реестр КП, зашифрованные ключи, очередь заданий моста.</td><td class="xs">Копейки: задания живут минуты</td><td class="xs non">Нет, если нужен общий реестр на всех.</td></tr>
+        <tr><td class="k">Claude · Anthropic</td><td class="xs">Читает фотографию наброска и превращает её в геометрию склада.</td><td class="xs">Ключ RAX PRO, счёт от провайдера</td><td class="xs yes">Да — тогда габариты вводятся руками.</td></tr>
+        <tr><td class="k">Gemini · Google</td><td class="xs">Собирает кадр расстановки. Подстраховывает чтение наброска, если ключа Claude нет.</td><td class="xs">Ключ RAX PRO, счёт от провайдера</td><td class="xs yes">Да — тогда в КП идёт кадр 3D-сцены без фотореализма.</td></tr>
+        <tr><td class="k">Higgsfield</td><td class="xs">Тот же кадр, но на аккаунте владельца — запасной путь, пока у компании нет своих ключей.</td><td class="xs">Подписка владельца</td><td class="xs yes">Да, это временная подпорка.</td></tr>
+        <tr><td class="k">Three.js в браузере</td><td class="xs">Трёхмерная модель расстановки, которую крутит менеджер и клиент по ссылке.</td><td class="xs">Бесплатно, работает у клиента</td><td class="xs non">Нет — это вторая из двух уникальных страниц КП.</td></tr>
+        <tr><td class="k">Blender · локально</td><td class="xs">Тяжёлый рендер сцены тремя кадрами, когда нужно качество для печати.</td><td class="xs">Бесплатно, на маке</td><td class="xs yes">Да, это ручной прогон, а не кнопка на сайте.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Объём работы</div>
+        <div class="stat" style="font-size:15pt">10 205</div>
+        <p class="xxs muted" style="margin-top:1.5mm">строк кода в 61 файле: ядро расчёта, кабинет, документ, приёмка, мост.</p>
+      </div>
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Что считается без интернета</div>
+        <div class="stat" style="font-size:15pt">всё</div>
+        <p class="xxs muted" style="margin-top:1.5mm">Раскладка, спецификация, цена, приёмка и план — у клиента в браузере. Нейросеть нужна только для фото и фотореализма.</p>
+      </div>
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Где живёт КП клиента</div>
+        <div class="stat" style="font-size:15pt">в ссылке</div>
+        <p class="xxs muted" style="margin-top:1.5mm">Предложение целиком лежит в самом адресе: на сервере не хранится, ссылка не протухает, часть после решётки вообще не уходит с устройства клиента.</p>
+      </div>
+    </div>
+
+    <table class="tiny" style="margin-bottom:5mm">
+      <thead><tr><th style="width:52mm">Если завтра перестанет работать</th><th>Что будет с генератором</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Ключ Claude</td><td class="xs">Чтение наброска выключится и честно скажет об этом. Остальное работает. Если подключён Gemini — он подхватит распознавание.</td></tr>
+        <tr><td class="k">Ключ Google</td><td class="xs">Кадр не будет фотореалистичным. В КП пойдёт снимок 3D-сцены — он и так строится из расчёта.</td></tr>
+        <tr><td class="k">Мост на маке владельца</td><td class="xs">Ничего, если у компании есть свои ключи. Мост — подпорка на время, а не часть конструкции.</td></tr>
+        <tr><td class="k">Интернет у менеджера</td><td class="xs">Раскладка, смета, цена и приёмка продолжат считаться: они работают в браузере. Не уйдут только PDF и запись в реестр.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Принцип подключения нейросетей</div>
+      <p class="sm">Каждая функция кабинета устроена так, чтобы честно выключаться. Нет ключа Claude — кнопка чтения наброска прямо говорит: «Не подключён ключ ИИ» и ведёт в настройки. Нет ключа Google — кадр не рисуется, но КП выпускается. <strong>Ни одна функция не падает молча и ни одна не тянет за собой остальные.</strong></p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">15</span></div>
+</section>
+
+<!-- ============ 16 · МОСТ НА ПОДПИСКУ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>13</b> · Мост</span><span>Часть II · Инструменты</span></div>
+    <h2>Как кабинет работает, пока у компании нет своих ключей</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Ключей провайдера у RaxPro пока нет. Показывать кабинет с двумя мёртвыми кнопками нельзя,
+      покупать баланс ради демонстрации — тем более. Поэтому есть третий путь: работу выполняет
+      машина владельца на его подписке.
+    </p>
+
+    <div class="flow" style="margin-bottom:4mm">
+      <div class="st"><div class="bnum">01</div><h4 class="xs">Кабинет</h4><p class="xxs muted" style="margin-top:1.5mm">Менеджер нажимает «Прочитать набросок». Сервер кладёт задание в хранилище.</p></div>
+      <div class="st"><div class="bnum">02</div><h4 class="xs">Хранилище</h4><p class="xxs muted" style="margin-top:1.5mm">Задание лежит в закрытой папке. Это обычное хранилище кабинета, никаких туннелей.</p></div>
+      <div class="st hi"><div class="bnum">03</div><h4 class="xs">Мак владельца</h4><p class="xxs muted" style="margin-top:1.5mm">Раз в полторы секунды забирает задания. Сам никого не слушает — только ходит наружу.</p></div>
+      <div class="st"><div class="bnum">04</div><h4 class="xs">Ответ</h4><p class="xxs muted" style="margin-top:1.5mm">Результат кладётся обратно в хранилище, кабинет его забирает. Разницы менеджер не видит.</p></div>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-bottom:4mm">
+      <div class="box-acc pad3">
+        <div class="label" style="margin-bottom:2mm">Почему это безопасно</div>
+        <ul class="ticks xs">
+          <li>Мак не открывает ни одного порта и снаружи невидим</li>
+          <li>Связь идёт только исходящая, в уже существующее хранилище кабинета</li>
+          <li>Инструменты воркера урезаны до одного: прочитать картинку. Ни записи, ни команд, ни доступа в сеть</li>
+          <li>Каждые 20 секунд мак отмечается «я на связи» — кабинет заранее знает, работает мост или нет</li>
+        </ul>
+      </div>
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Почему это временно</div>
+        <p class="xs muted" style="margin-bottom:2.5mm">Мост работает, пока открыт ноутбук. Закрыли крышку — кнопка честно говорит, что чтение наброска сейчас недоступно, вместо того чтобы две минуты крутить ожидание при клиенте.</p>
+        <p class="xs muted">Как только RaxPro подключит свои ключи, настройки выигрывают автоматически, и эта ветка больше не вызывается. Ни одной правки в коде для перехода не нужно.</p>
+      </div>
+    </div>
+
+    <table class="tiny" style="margin-bottom:4mm">
+      <thead><tr><th style="width:44mm">Вид работы</th><th style="width:34mm">Чем выполняется</th><th style="width:26mm">Сколько идёт</th><th>Что возвращает</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Чтение наброска</td><td class="xs">Claude на подписке владельца</td><td class="mono xs">~3 минуты</td><td class="xs">Геометрию строго по схеме: контур, колонны, ворота, ряды, зоны.</td></tr>
+        <tr><td class="k">Кадр расстановки</td><td class="xs">Higgsfield на аккаунте владельца</td><td class="mono xs">60–90 секунд</td><td class="xs">Готовую картинку внутри документа, а не ссылку на чужой сервер.</td></tr>
+        <tr><td class="k">Предложение расстановки</td><td class="xs">Codex на подписке владельца</td><td class="mono xs">в работе</td><td class="xs">2–3 варианта раскладки на выбор, строго по JSON-схеме.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:4mm">
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Зачем вообще мост</div><p class="xxs muted">Чтобы показать рабочий кабинет до того, как компания заведёт платные аккаунты. Решение о ключах принимается на живом инструменте, а не на описании.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Что видит менеджер</div><p class="xxs muted">Ничего особенного: те же две кнопки и тот же результат. Какой путь сработал — ключ компании или мост — в интерфейсе не отражается.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Как переключиться</div><p class="xxs muted">Вставить ключ в «Ключи ИИ». Настройки компании выигрывают автоматически, мост перестаёт вызываться. Правок в коде не нужно.</p></div>
+    </div>
+
+    <div class="box-warn pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Одна деталь, которая стоила отдельного разбора</div>
+      <p class="sm">Картинка уходит в документ не ссылкой на сервер провайдера, а самим изображением. Ссылки провайдеров протухают за часы или дни — КП, открытое клиентом через неделю, показало бы пустой прямоугольник на самой важной странице. Поэтому кадр скачивается, ужимается до 1600 пикселей и вшивается в документ.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">16</span></div>
+</section>
+
+<!-- ============ 17 · КЛЮЧИ И ДОСТУП ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>14</b> · Доступ</span><span>Часть II · Инструменты</span></div>
+    <h2>Ключи, пароли и кто что видит</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      В кабинете видны цены за единицу и скидки — то, что не должно попадать ни к клиенту,
+      ни в поиск. Поэтому страница закрыта от индексации, вход по паролю, а у каждого
+      сотрудника свой.
+    </p>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:5mm">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>raxpro.uz/kp · ключи ИИ</span><em class="new">кабинет</em></div>
+        <div class="shot"><img src="img/gen/keys.jpg" alt="Экран ключей ИИ-сервисов"></div>
+        <div class="cap">Ключи вставляются один раз. Модель выбирается из списка — счёт приходит компании, поэтому выбор её.</div>
+      </div>
+      <div>
+        <div class="box-acc pad3" style="margin-bottom:3mm">
+          <div class="label" style="margin-bottom:2mm">Что сделано с ключами</div>
+          <ul class="ticks xs">
+            <li>Хранятся зашифрованными на сервере</li>
+            <li>В браузер не возвращаются — даже администратору</li>
+            <li>В исходном коде не лежат ни в каком виде</li>
+            <li>После вставки ключ сразу проверяется: доступ к моделям у разных ключей разный</li>
+          </ul>
+        </div>
+        <div class="box pad3" style="margin-bottom:3mm">
+          <div class="label" style="margin-bottom:2mm">Что сделано с паролями</div>
+          <ul class="ticks xs">
+            <li>Хранятся только как необратимый хеш</li>
+            <li>Восстановить чужой пароль нельзя — можно задать новый</li>
+            <li>Пароль нового сотрудника показывается один раз при заведении</li>
+          </ul>
+        </div>
+        <div class="box pad3">
+          <div class="label" style="margin-bottom:2mm">Роли</div>
+          <p class="xs muted">Владелец видит ключи и сотрудников. Менеджер делает КП. В реестре видно, кто именно выпустил документ — история предложений, которой у компании раньше не было вообще.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="tiny" style="margin-bottom:5mm">
+      <thead><tr><th style="width:44mm">Что закрыто</th><th>Как именно</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Страница кабинета</td><td class="xs">Закрыта от индексации: в поиске её нет. Вход по паролю, у каждого сотрудника свой.</td></tr>
+        <tr><td class="k">Цены за единицу и скидки</td><td class="xs">Видны только внутри кабинета. В ссылке для клиента их нет — там итог и цена за место.</td></tr>
+        <tr><td class="k">Ключи провайдеров</td><td class="xs">Зашифрованы на сервере, в браузер не возвращаются, в коде не лежат.</td></tr>
+        <tr><td class="k">Пароли сотрудников</td><td class="xs">Только необратимый хеш. Восстановить нельзя, можно задать новый.</td></tr>
+        <tr><td class="k">КП клиента</td><td class="xs">Лежит в самой ссылке, а не на сервере: нечего взломать и нечему протухнуть.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-top:auto">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>raxpro.uz/kp · сотрудники</span><em class="new">кабинет</em></div>
+        <div class="shot"><img src="img/gen/team.jpg" alt="Экран сотрудников"></div>
+      </div>
+      <div>
+        <div class="box-fill pad3">
+          <div class="label" style="margin-bottom:2mm">Почему выбор модели отдан компании</div>
+          <p class="xs muted" style="margin-bottom:2.5mm">Счёт за распознавание и генерацию приходит напрямую владельцу ключа. Значит, и решение «взять модель подороже и поточнее или подешевле и попроще» принимает тот, кто платит, а не тот, кто писал код.</p>
+          <p class="xs muted">По умолчанию стоит самая сильная из доступных: рукописный набросок замерщика — задача на зрение, и разница между моделями здесь видна невооружённым глазом.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">17</span></div>
+</section>
+
+<!-- ============ 18 · РАСХОД ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>15</b> · Расход</span><span>Часть II · Инструменты</span></div>
+    <h2>Во что обходится работа генератора</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Считать расход в деньгах до подключения ключей было бы гаданием: тариф зависит от
+      выбранной модели и меняется у провайдеров несколько раз в год. Поэтому считаем в том,
+      что не меняется — в количестве обращений. Умножить на свой тариф компания сможет сама
+      в тот день, когда вставит ключ.
+    </p>
+
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:44mm">Статья</th><th style="width:30mm">На одно КП</th><th style="width:30mm">На 30 КП в месяц</th><th>Когда не тратится вовсе</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Расчёт раскладки</td><td class="mono xs">0 обращений</td><td class="mono xs">0</td><td class="xs">Всегда. Считает браузер менеджера.</td></tr>
+        <tr><td class="k">Спецификация и цена</td><td class="mono xs">0 обращений</td><td class="mono xs">0</td><td class="xs">Всегда. Арифметика на той же странице.</td></tr>
+        <tr><td class="k">План объекта</td><td class="mono xs">0 обращений</td><td class="mono xs">0</td><td class="xs">Всегда. Векторный чертёж рисуется кодом.</td></tr>
+        <tr><td class="k">3D-модель в КП</td><td class="mono xs">0 обращений</td><td class="mono xs">0</td><td class="xs">Всегда. Сцена собирается у клиента в браузере.</td></tr>
+        <tr><td class="k">PDF документа</td><td class="mono xs">0 обращений</td><td class="mono xs">0</td><td class="xs">Всегда. Собирается сервером сайта.</td></tr>
+        <tr><td class="k warn">Чтение наброска</td><td class="mono xs">1 обращение</td><td class="mono xs">до 30</td><td class="xs">Когда габариты вводят руками — а это большинство повторных объектов.</td></tr>
+        <tr><td class="k warn">Фотореалистичный кадр</td><td class="mono xs">1 обращение</td><td class="mono xs">до 30</td><td class="xs">Когда в КП идёт кадр 3D-сцены без фотореализма.</td></tr>
+        <tr><td class="k">Хранилище</td><td class="xs">запись реестра</td><td class="xs">30 записей</td><td class="xs">Объём измеряется килобайтами: в реестре лежит ввод формы, а не готовые страницы.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box-acc pad3">
+        <div class="stat acc">2</div>
+        <div class="label" style="margin-top:1mm">платных обращения на КП — потолок</div>
+        <p class="xxs muted" style="margin-top:2mm">И оба необязательные. КП, сделанное без фотографии наброска и без фотореализма, ничего не стоит сверх уже оплаченного хостинга.</p>
+      </div>
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Что уходит в одно обращение</div>
+        <p class="xxs muted">Чтение наброска: одна фотография листа плюс инструкция на 585 слов. Ответ — структура на 17 полей, без свободного текста.</p>
+        <p class="xxs muted" style="margin-top:2mm">Кадр: описание сцены на восемь строк плюс снимок 3D-модели как референс.</p>
+      </div>
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Сколько ждать</div>
+        <p class="xxs muted">Чтение наброска — около трёх минут: модель разбирает почерк, а не просто отвечает. Кадр — 60–90 секунд.</p>
+        <p class="xxs muted" style="margin-top:2mm">Всё остальное — доли секунды, потому что считается на месте.</p>
+      </div>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-top:auto">
+      <div class="box-fill pad3">
+        <div class="label" style="margin-bottom:2mm">Два режима оплаты</div>
+        <table class="tiny">
+          <tbody>
+            <tr><td class="k">Ключи компании</td><td class="xs">Счёт приходит RAX PRO напрямую от провайдера. Выбор модели — за компанией. Работает круглосуточно и не зависит ни от чьего ноутбука.</td></tr>
+            <tr><td class="k">Мост на подписке</td><td class="xs">За обращение не платится ничего: работа идёт на уже оплаченной подписке владельца. Ограничение — мак должен быть включён.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="box-warn pad3">
+        <div class="label" style="margin-bottom:2mm">Что нужно подтвердить перед запуском в бой</div>
+        <ul class="dash xs">
+          <li>Какой из двух режимов включаем на старте</li>
+          <li>Кто держит ключи: владелец или отдельный технический аккаунт компании</li>
+          <li>Лимит расхода в месяц, после которого кнопки выключаются сами</li>
+        </ul>
+        <p class="xxs faint" style="margin-top:2mm">Тарифы провайдеров в этой полосе намеренно не названы: они меняются, и подставлять сегодняшнее число в документ, который будут читать через полгода, — ровно та ошибка, ради которой писалась приёмка.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">18</span></div>
+</section>
+
+<!-- ============ 19 · РАЗДЕЛИТЕЛЬ III ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Часть III</span><span>Инструкция</span></div>
+    <div style="margin-top:auto">
+      <div class="mono" style="font-size:54pt;font-weight:800;letter-spacing:-.05em;color:var(--acc-hi);line-height:.9">III</div>
+      <h1 style="margin-top:8mm">Инструкция<br>менеджеру</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:132mm;color:#9DA0A8">
+        Шесть шагов от входа до файла у клиента · что делать, когда приёмка красная ·
+        шпаргалка на один экран.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Полосы</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">20 — 25</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Шагов</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">6</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Полей вручную</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">6</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Способов выдачи</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">3</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 20 · ШАГ 1–2 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>16</b> · Шаги 1–2</span><span>Часть III · Инструкция</span></div>
+    <h2>Вход, клиент, продукт</h2>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:4mm">
+      <div>
+        <div class="blockrow" style="grid-template-columns:1fr">
+          <div>
+            <div class="bnum">ШАГ 01 · ВОЙТИ</div>
+            <h4>raxpro.uz/kp, свой логин и пароль</h4>
+            <p class="xs muted" style="margin-top:2mm">Страница закрыта от индексации: в поиске её нет. Черновик сохраняется в браузере — можно закрыть вкладку, уехать на замер и вернуться к тому же документу.</p>
+          </div>
+        </div>
+        <div class="blockrow" style="grid-template-columns:1fr">
+          <div>
+            <div class="bnum">ШАГ 02 · КЛИЕНТ И ПРОДУКТ</div>
+            <h4>Название пишется так, как пойдёт в договор</h4>
+            <p class="xs muted" style="margin-top:2mm">Три поля: клиент, тип стеллажа, язык документа — русский или узбекский. Язык переключает весь документ целиком, а не только заголовки.</p>
+            <div class="was">
+              <div class="label">Пресеты из реальных КП</div>
+              <div class="xs muted">Четыре кнопки вверху — Fathulla, Doniyor, BLOOMSHOP, Star Distribution. Пресет заполняет геометрию и показывает эталонную сумму. Разошлось больше чем на 5 % — цены устарели.</div>
+            </div>
+          </div>
+        </div>
+        <div class="box-warn pad3" style="margin-top:4mm">
+          <div class="label" style="margin-bottom:2mm">Про типы «цена под проект»</div>
+          <p class="xs muted">Торговый, набивной и мезонин требуют ввести цены руками: прайса на них компания не давала. Генератор скажет об этом сразу при выборе типа, а не на последнем шаге.</p>
+        </div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>raxpro.uz/kp · документ</span><em class="new">кабинет</em></div>
+        <div class="shot"><img src="img/gen/cabinet.jpg" alt="Кабинет генератора КП"></div>
+        <div class="cap">Слева форма, справа живой документ. Каждое изменение в форме сразу видно в КП — менеджер работает не вслепую, а смотрит на то, что уйдёт клиенту.</div>
+      </div>
+    </div>
+
+    <table class="tiny" style="margin-bottom:5mm">
+      <thead><tr><th style="width:44mm">Пресет</th><th style="width:34mm">Тип и объём</th><th>Для чего он нужен</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Fathulla</td><td class="xs">Паллетный · 31 секция</td><td class="xs">Небольшой объект. Быстро проверить, что цены за единицу ещё живые.</td></tr>
+        <tr><td class="k">Doniyor</td><td class="xs">Паллетный · 101 секция</td><td class="xs">Крупный объект. На нём заметнее всего расхождение в цене рамы.</td></tr>
+        <tr><td class="k">BLOOMSHOP</td><td class="xs">Среднегрузовой · 54 секции</td><td class="xs">Непаллетный тип: полки вместо мест, настил в спецификации.</td></tr>
+        <tr><td class="k">Star Distribution</td><td class="xs">Среднегрузовой · 10 секций</td><td class="xs">Самый маленький заказ в архиве — проверка на краю диапазона.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g3" style="gap:3mm;margin-top:auto">
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Слева</div><p class="xs muted">Форма: клиент, помещение, геометрия, цены, условия. Полос ввода девять, все с подсказками.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Справа</div><p class="xs muted">Документ целиком, каким его увидит клиент: обложка, что он получает, план, модель, спецификация, компания, условия.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Сверху</div><p class="xs muted">Полоса приёмки. Всегда на виду, всегда знает текущее состояние документа, кнопки выпуска — там же.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">20</span></div>
+</section>
+
+<!-- ============ 21 · ШАГ 3 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>17</b> · Шаг 3</span><span>Часть III · Инструкция</span></div>
+    <h2>Помещение: девять полей и кнопка</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Этот шаг заменил собой ожидание проектировщика. Раньше между замером и КП стоял человек
+      с 3ds Max и очередью задач. Теперь между ними одна кнопка.
+    </p>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:4mm">
+      <div>
+        <table class="tiny" style="margin-bottom:4mm">
+          <thead><tr><th style="width:40mm">Поле</th><th>Что вводить</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Ширина и глубина</td><td class="xs">Габариты помещения в миллиметрах, с замера.</td></tr>
+            <tr><td class="k">Высота потолка</td><td class="xs">До нижней точки: балки перекрытия, спринклеры, воздуховод.</td></tr>
+            <tr><td class="k">Техника</td><td class="xs">Ричтрак, штабелёр или вилочный погрузчик. Отсюда берётся ширина прохода.</td></tr>
+            <tr><td class="k">Длина балки</td><td class="xs">2700 мм — три европаллеты, 3300 мм — четыре.</td></tr>
+            <tr><td class="k">Высота и вес паллеты</td><td class="xs">Что реально хранит клиент. Высота задаёт шаг яруса.</td></tr>
+            <tr><td class="k">Глубина ряда</td><td class="xs">1050 мм одиночный ряд, 2150 мм спаренный.</td></tr>
+            <tr><td class="k">Шаг колонн X и Y</td><td class="xs">Сетка колонн здания — ряды обходят их, а не проходят насквозь.</td></tr>
+            <tr><td class="k">Колонна</td><td class="xs">Сторона квадрата колонны, обычно 400 мм.</td></tr>
+          </tbody>
+        </table>
+        <div class="box-acc pad3">
+          <div class="label" style="margin-bottom:2mm">Что появится после нажатия</div>
+          <p class="xs muted">План с размерами прямо в документе и строка результата под ним: сколько рядов, сколько секций, сколько ярусов, какая высота рамы и какой процент площади занят стеллажами. Ниже — предупреждения, если они есть.</p>
+        </div>
+      </div>
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>план объекта · 45,0 × 24,0 м</span><em class="new">векторный чертёж</em></div>
+        <div class="shot" style="background:#fff"><img src="img/gen/plan.jpg" alt="План расстановки с размерами"></div>
+        <div class="cap">9 рядов · 141 секция · 3 яруса · рама 5400 мм · заполнение 37 %. Размеры проставлены по обеим осям — этот лист клиент показывает своему прорабу.</div>
+        <div class="box-warn pad3" style="margin-top:4mm">
+          <div class="label" style="margin-bottom:2mm">Если генератор предложил мезонин</div>
+          <p class="xs muted">Значит, ярусы упёрлись в предел высоты рамы 6000 мм, а не в потолок. Под таким потолком имеет смысл считать второй уровень хранения. Это повод перезвонить клиенту с более дорогим и более выгодным ему решением, а не ошибка расчёта.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box-bad pad3"><div class="label" style="margin-bottom:2mm">Частая ошибка · потолок</div><p class="xxs muted">Пишут высоту до конька, а не до нижней точки. Под балками перекрытия и спринклерами теряется до метра — это целый ярус хранения, которого на объекте не окажется.</p></div>
+      <div class="box-bad pad3"><div class="label" style="margin-bottom:2mm">Частая ошибка · техника</div><p class="xxs muted">Ставят ричтрак «по умолчанию», а у клиента вилочный погрузчик. Проход вырастает с 2,9 до 3,8 метра, и посчитанные ряды на объект не встают.</p></div>
+      <div class="box-bad pad3"><div class="label" style="margin-bottom:2mm">Частая ошибка · колонны</div><p class="xxs muted">Оставляют шаг колонн по умолчанию, не спросив у замерщика. Ряд проходит сквозь колонну только на бумаге.</p></div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Проверка себя за десять секунд</div>
+      <p class="sm">Заполнение площади стеллажами для паллетного склада обычно выходит в диапазоне 30–40 %. Если генератор показал 15 % — скорее всего, перепутаны ширина и глубина или поставлена не та техника. Если 60 % — проверьте, не забыли ли отметить зоны приёмки и упаковки.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">21</span></div>
+</section>
+
+<!-- ============ 22 · ШАГ 4 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>18</b> · Шаг 4</span><span>Часть III · Инструкция</span></div>
+    <h2>Фотография листа замерщика</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Необязательный шаг, который экономит больше всего времени. Замерщик рисует склад ручкой
+      на листе: контур, подписанные метры, квадратики колонн, стрелку на ворота. Раньше
+      менеджер переносил это в форму руками и обводил контур мышью.
+    </p>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3">
+        <div class="bnum">01 · СНЯТЬ</div>
+        <h4 class="xs">Сфотографировать лист</h4>
+        <p class="xxs muted" style="margin-top:2mm">JPG, PNG или WEBP до 6 МБ. Скриншот из галереи телефона подойдёт. Перетащить в рамку или выбрать файлом.</p>
+      </div>
+      <div class="box pad3">
+        <div class="bnum">02 · ПРОЧИТАТЬ</div>
+        <h4 class="xs">Нажать «Прочитать набросок»</h4>
+        <p class="xxs muted" style="margin-top:2mm">Кнопка честно пишет: «Читаю набросок… до 3 минут». Это не зависание — модель разбирает почерк.</p>
+      </div>
+      <div class="box pad3">
+        <div class="bnum">03 · СВЕРИТЬ</div>
+        <h4 class="xs">Проверить «Что распознано»</h4>
+        <p class="xxs muted" style="margin-top:2mm">Список всего прочитанного дословно. Сверить с листом и нажать «Перенести в форму».</p>
+      </div>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2.5mm">Что модель снимает с листа</div>
+        <table class="tiny">
+          <tbody>
+            <tr><td class="k">Контур</td><td class="xs">Честный многоугольник со скосом, нишей или вырезом — в этом и есть ценность наброска.</td></tr>
+            <tr><td class="k">Колонны</td><td class="xs">Только те, что реально нарисованы. Регулярную сетку выдумывать запрещено.</td></tr>
+            <tr><td class="k">Ворота</td><td class="xs">Центр по контуру и ширина проёма.</td></tr>
+            <tr><td class="k">Ряды</td><td class="xs">Подписи как есть: «A blok 26.6 metr», глубина «215 sm», ширины секций подряд.</td></tr>
+            <tr><td class="k">Зоны</td><td class="xs">Упаковка, приёмка, лестница, офис, проезд — участки, которые стеллажами не занимают.</td></tr>
+            <tr><td class="k">Числа плана</td><td class="xs">Шаг секции, глубина ряда, ширина прохода, потолок, ярусы, длина балки, техника.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="box-acc pad3" style="margin-bottom:3mm">
+          <div class="label" style="margin-bottom:2mm">Три уровня доверия, которые показывает кабинет</div>
+          <ul class="dash xs">
+            <li><strong>Прочитано уверенно</strong> — контур и оба габарита читаются однозначно.</li>
+            <li><strong>Часть чисел выведена — сверьте</strong> — что-то пришлось достраивать.</li>
+            <li><strong>Прочитано неуверенно — проверьте каждое число</strong> — это скорее догадка.</li>
+          </ul>
+        </div>
+        <div class="box-warn pad3">
+          <div class="label" style="margin-bottom:2mm">Зачем отмечать зоны</div>
+          <p class="xs muted">Подписанный участок под упаковку или приёмку — это площадь, которую стеллажами не занимают. Не отметишь — расчёт займёт её секциями, и счёт клиенту будет завышен. Клиент это заметит на объекте, а не в КП.</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="tiny" style="margin-bottom:5mm">
+      <thead><tr><th style="width:44mm">Что написано на листе</th><th style="width:26mm">Как понимает модель</th><th>Почему так</th></tr></thead>
+      <tbody>
+        <tr><td class="k mono">45 м · 45м · 45.5</td><td class="mono xs">45 000 мм</td><td class="xs">Всё приводится к миллиметрам: дальше считает ядро, а оно знает одну единицу.</td></tr>
+        <tr><td class="k mono">215 sm</td><td class="mono xs">2 150 мм</td><td class="xs">Спаренный ряд. Узбекские замерщики пишут в сантиметрах.</td></tr>
+        <tr><td class="k mono">270 sm</td><td class="mono xs">2 700 мм</td><td class="xs">Шаг секции — он же длина балки под три европаллеты.</td></tr>
+        <tr><td class="k mono">A blok 26.6 metr</td><td class="xs">Ряд «A blok», 26 600 мм</td><td class="xs">Подпись сохраняется как есть — менеджер узнаёт её на листе.</td></tr>
+        <tr><td class="k mono">Qadoqlash zonasi</td><td class="xs">Зона упаковки</td><td class="xs">Участок исключается из раскладки, иначе счёт будет завышен.</td></tr>
+        <tr><td class="k mono">45000</td><td class="mono xs">45 000 мм</td><td class="xs">Число больше 1000 считается уже миллиметрами.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-fill pad3" style="border-left:2px solid var(--acc);margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Правило, записанное в задание модели последней строкой</div>
+      <p class="sm">«Ничего не придумывай. Пустое поле лучше выдуманного числа: <strong>по этому наброску компания выставит клиенту счёт на сотни миллионов сум</strong>». Поэтому модель обязана вернуть ещё два списка: что она реально прочитала на листе дословно и что вызвало у неё сомнение. Менеджер сверяет именно их, а не готовые числа в форме.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">22</span></div>
+</section>
+
+<!-- ============ 23 · ШАГ 5 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>19</b> · Шаг 5</span><span>Часть III · Инструкция</span></div>
+    <h2>Модель, ракурс и кадр в документе</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      В документе живёт трёхмерная модель именно этой расстановки. Её можно крутить —
+      и менеджеру в кабинете, и клиенту по ссылке с телефона.
+    </p>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:4mm">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>КП-260905-305 · интерактивная модель</span><em class="new">документ</em></div>
+        <div class="shot"><img src="img/gen/kp-3d.jpg" alt="Интерактивная модель в КП"></div>
+        <div class="cap">«Тянуть — поворот · колесо — приближение». Три кнопки над сценой: Здание, Груз, Снять кадр в КП.</div>
+      </div>
+      <div>
+        <ul class="num xs" style="margin-bottom:4mm">
+          <li><strong>Поставить ракурс.</strong> Покрутить сцену так, как будет понятнее клиенту: общий вид, вдоль прохода или на фасад ряда.</li>
+          <li><strong>Снять кадр в КП.</strong> Кадр встаёт на лист «Решение». В модели ровно столько секций и ярусов, сколько в спецификации.</li>
+          <li><strong>Включить фотореализм.</strong> Тот же кадр уходит генератору как образец, и возвращается фотографией склада — с тем же ракурсом и тем же числом рядов.</li>
+          <li><strong>Или загрузить свою картинку.</strong> Если есть готовый рендер из 3ds Max, он ставится вместо сгенерированного.</li>
+        </ul>
+        <div class="box pad3" style="margin-bottom:3mm">
+          <div class="label" style="margin-bottom:2mm">Что написано в задании генератору</div>
+          <p class="xxs muted">Помещение в метрах и высота потолка · число рядов и ярусов · синие рамы и оранжевые балки, как на объектах RAX PRO · груз на европаллетах в стретч-плёнке · названная техника в проходе · линейные светодиоды под потолком · промышленная архитектурная съёмка, без людей, без текста, без логотипов.</p>
+        </div>
+        <div class="box-warn pad3">
+          <div class="label" style="margin-bottom:2mm">Если нужен рендер под печать</div>
+          <p class="xs muted">Кнопка «сцена для Blender» выгружает ту же сцену файлом. Локальный прогон даёт три кадра высокого качества: общий вид, взгляд вдоль прохода и фасад ряда. На сервере это не работает и не должно — это ручной шаг для баннера или каталога.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g3" style="gap:3mm;margin-top:auto">
+      <div><div class="shot"><img src="img/gen/3d-overview.jpg" alt="Общий вид"></div><div class="cap">Общий вид</div></div>
+      <div><div class="shot"><img src="img/gen/3d-aisle.jpg" alt="Вдоль прохода"></div><div class="cap">Вдоль прохода</div></div>
+      <div><div class="shot"><img src="img/gen/3d-detail.jpg" alt="Фасад секции"></div><div class="cap">Фасад секции крупно</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">23</span></div>
+</section>
+
+<!-- ============ 24 · ШАГ 6 ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>20</b> · Шаг 6</span><span>Часть III · Инструкция</span></div>
+    <h2>Цена, приёмка и три способа отдать КП клиенту</h2>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:4mm">
+      <div>
+        <div class="blockrow" style="grid-template-columns:1fr">
+          <div>
+            <div class="bnum">ЦЕНЫ ЗА ЕДИНИЦУ</div>
+            <p class="xs muted">Подставлены значения, вычисленные из фактических КП. Правьте их, когда завод меняет прайс, и сверяйтесь по пресету: разошлось больше чем на 5 % — значит, цены пора обновить.</p>
+          </div>
+        </div>
+        <div class="blockrow" style="grid-template-columns:1fr">
+          <div>
+            <div class="bnum">СКИДКА</div>
+            <p class="xs muted">Процент нельзя поставить без причины — печать заблокируется. Причина попадает в документ рядом со скидкой: клиент видит, за что получил цену, и не считает её случайной.</p>
+          </div>
+        </div>
+        <div class="blockrow" style="grid-template-columns:1fr">
+          <div>
+            <div class="bnum">УСЛОВИЯ</div>
+            <p class="xs muted">Одна схема оплаты, а не две. Срок поставки в часах. Обе проверки блокирующие.</p>
+          </div>
+        </div>
+        <div class="blockrow" style="grid-template-columns:1fr">
+          <div>
+            <div class="bnum">ПРИЁМКА</div>
+            <p class="xs muted">Полоса вверху: красная — печать заблокирована и замечания перечислены ниже; жёлтая — выпустить можно, но чего-то не хватает; зелёная — замечаний нет.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Три способа выдать документ</div>
+        <div class="box pad3" style="margin-bottom:3mm">
+          <h4 class="xs">Скачать PDF</h4>
+          <p class="xxs muted" style="margin-top:1.5mm">Файл собирает сервер — поля и шрифты одинаковые у всех сотрудников, с любого компьютера. Имя файла — номер КП.</p>
+        </div>
+        <div class="box-acc pad3" style="margin-bottom:3mm">
+          <h4 class="xs">Ссылка для клиента</h4>
+          <p class="xxs muted" style="margin-top:1.5mm">Копируется в буфер сразу. Открывается без пароля, работает с телефона, показывает план и трёхмерную модель, которую можно покрутить. Предложение целиком лежит в самой ссылке: на сервере не хранится, не протухает, а часть после решётки вообще не уходит с устройства клиента.</p>
+        </div>
+        <div class="box pad3" style="margin-bottom:3mm">
+          <h4 class="xs">Печать</h4>
+          <p class="xxs muted" style="margin-top:1.5mm">Обычный диалог печати, если документ нужен на бумаге прямо сейчас.</p>
+        </div>
+        <div class="box-fill pad3">
+          <div class="label" style="margin-bottom:2mm">И обязательно — «Сохранить в реестр»</div>
+          <p class="xxs muted">Номер, клиент, продукт, геометрия, спецификация, сумма и автор. Так у компании появляется история предложений, которой сейчас нет: сколько выпущено, на какую сумму, кем и чем закончилось.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Когда слать PDF</div><p class="xxs muted">Закупщику, который подшивает документы, и в тендер. Файл одинаковый у всех сотрудников: поля и шрифты собирает сервер, а не браузер конкретного человека.</p></div>
+      <div class="box-acc pad3"><div class="label" style="margin-bottom:1.5mm">Когда слать ссылку</div><p class="xxs muted">Директору и собственнику — тем, кто читает с телефона. В ссылке живёт 3D-модель, которую можно покрутить: это единственный формат, где видно, как встанет их склад.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Когда печатать</div><p class="xxs muted">На встречу и на объект. Печатная версия — тот же документ, а не отдельная вёрстка.</p></div>
+    </div>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-top:auto">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>КП-260905-305 · кто выполнит работу</span><em class="new">документ</em></div>
+        <div class="shot"><img src="img/gen/kp-company.jpg" alt="Страница о компании в КП"></div>
+      </div>
+      <div class="box-fill pad3">
+        <div class="label" style="margin-bottom:2mm">Страницы, которые менеджер не пишет вообще</div>
+        <p class="xs muted" style="margin-bottom:2.5mm">«Кто выполнит работу», сертификаты, этапы, гарантия, что входит в поставку — собираются из справочника компании. Стаж считается от года основания, число объектов и клиентов берётся из одного места.</p>
+        <p class="xs muted">Поменялись реквизиты, сертификат или срок гарантии — правится одна строка справочника, и они меняются сразу во всех будущих КП. Именно это и не работало раньше: факты жили в десятке копий Word-файла.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">24</span></div>
+</section>
+
+<!-- ============ 25 · ШПАРГАЛКА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>21</b> · Шпаргалка</span><span>Часть III · Инструкция</span></div>
+    <h2>Что делать, когда приёмка не пускает</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Красная полоса не означает поломку. Она означает, что в документе есть ровно то,
+      что уже уезжало клиентам раньше. Ниже — что именно делать по каждому замечанию.
+    </p>
+
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:56mm">Что говорит приёмка</th><th style="width:44mm">Что произошло</th><th>Что сделать</th></tr></thead>
+      <tbody>
+        <tr><td class="k bad">Не указан клиент</td><td class="xs">Поле пустое или в нём одни кавычки.</td><td class="xs">Вписать название так, как оно пойдёт в договор.</td></tr>
+        <tr><td class="k bad">Замков не вдвое больше балок</td><td class="xs">Спецификацию правили руками.</td><td class="xs">Нажать «Рассчитать раскладку» заново — числа пересоберутся из геометрии.</td></tr>
+        <tr><td class="k bad">Рядов больше, чем секций</td><td class="xs">Геометрия введена вручную и невозможна.</td><td class="xs">Проверить два поля: рядов и секций всего. Секций всегда больше.</td></tr>
+        <tr><td class="k bad">Ярусов меньше 1 или больше 6</td><td class="xs">Значение вне рабочего диапазона линейки.</td><td class="xs">Вернуться к расчёту раскладки: ярусы считаются из потолка, а не назначаются.</td></tr>
+        <tr><td class="k bad">Две схемы оплаты сразу</td><td class="xs">В тексте упомянуты обе.</td><td class="xs">Оставить одну — ту, о которой договорились с клиентом.</td></tr>
+        <tr><td class="k bad">Скидка без причины</td><td class="xs">Поставлен процент, не выбрано основание.</td><td class="xs">Выбрать причину из пяти. «Решение директора» требует комментария текстом.</td></tr>
+        <tr><td class="k bad">Нулевая цена за единицу</td><td class="xs">У типа «цена под проект» нет прайса.</td><td class="xs">Ввести цены руками — по торговому, набивному и мезонину прайса у компании нет.</td></tr>
+        <tr><td class="k bad">Размер в пять и более цифр в тексте</td><td class="xs">В свободном тексте что-то вроде «33000×1200».</td><td class="xs">Проверить: балка такой длины не бывает. Скорее всего, лишний ноль.</td></tr>
+        <tr><td class="k bad">Опыт или число клиентов в тексте</td><td class="xs">Факт компании вписан руками.</td><td class="xs">Убрать число из текста — оно подставится из справочника само и будет одинаковым во всех КП.</td></tr>
+        <tr><td class="k warn">Нет плана объекта</td><td class="xs">Раскладка не рассчитана и план не загружен.</td><td class="xs">Рассчитать раскладку. Это одна из двух страниц, ради которых клиент открывает файл.</td></tr>
+        <tr><td class="k warn">Нет рендера расстановки</td><td class="xs">Кадр не снят и картинка не загружена.</td><td class="xs">Снять кадр из 3D-модели одной кнопкой.</td></tr>
+        <tr><td class="k warn">Скидка больше 25 %</td><td class="xs">Больше четверти суммы.</td><td class="xs">Согласовать с директором и выпускать осознанно.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-fill pad3" style="margin-bottom:5mm">
+      <div class="label" style="margin-bottom:2mm">Порядок действий, когда полоса красная</div>
+      <p class="sm">Сначала снимите блокирующие замечания сверху вниз — они перечислены под полосой в том же порядке, в каком идут по документу. Потом нажмите «Рассчитать раскладку» ещё раз: большинство замечаний по спецификации снимаются этим одним действием, потому что числа пересобираются из геометрии. И только после этого правьте текст руками — вручную в документе правится ровно то, чего нет в расчёте: комментарий к скидке и свободные абзацы.</p>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-top:auto">
+      <div class="box-acc pad3">
+        <div class="label" style="margin-bottom:2mm">Норма работы</div>
+        <p class="xs muted">Зелёная полоса на паллетном стеллаже достигается за пять минут: клиент, тип, габариты, кнопка раскладки, цены, условия, кадр. Всё остальное документ соберёт сам.</p>
+      </div>
+      <div class="box-warn pad3">
+        <div class="label" style="margin-bottom:2mm">Чего делать не надо</div>
+        <p class="xs muted">Не править спецификацию руками, чтобы «подогнать сумму». Скидка для этого и существует — с причиной, видимой клиенту. Ручная правка ломает связь между планом и сметой, а это ровно то, за что клиент перестаёт верить документу.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">25</span></div>
+</section>
+
+<!-- ============ 26 · РАЗДЕЛИТЕЛЬ IV ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Часть IV</span><span>Промпты и результаты</span></div>
+    <div style="margin-top:auto">
+      <div class="mono" style="font-size:54pt;font-weight:800;letter-spacing:-.05em;color:var(--acc-hi);line-height:.9">IV</div>
+      <h1 style="margin-top:8mm">Промпты<br>и результаты</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:132mm;color:#9DA0A8">
+        Задание на чтение наброска дословно · схема ответа · задание на кадр ·
+        шесть типов, шесть выпущенных КП с реальными числами.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Полосы</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">27 — 31</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Правил в промпте</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">15</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Полей ответа</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">17</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Выпущено КП</div><div class="mono" style="font-size:9pt;font-weight:700;color:#ECEDF0">6</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 27 · ПРОМПТ I ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>22</b> · Промпт чтения наброска</span><span>Часть IV · Промпты и результаты</span></div>
+    <h2>Задание модели, дословно · часть первая</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:4mm">
+      Это тот самый текст, который уходит вместе с фотографией. Он не про вежливость и не про
+      «будь внимателен» — каждая строка закрывает конкретную ошибку, которую модель делала
+      на прогонах.
+    </p>
+
+    <div class="box-fill pad3" style="margin-bottom:4mm">
+      <div class="label" style="margin-bottom:2mm">Начало</div>
+      <p class="xs" style="font-style:italic">«Ты читаешь фотографию рукописного наброска складского помещения, сделанного замерщиком компании RAX PRO (металлические стеллажи, Ташкент). Твоя работа — снять с листа геометрию помещения И расстановку рядов, как её задумал замерщик, и перевести всё в миллиметры.</p>
+      <p class="xs" style="font-style:italic;margin-top:2mm">Лист бывает двух видов, и оба нужно уметь читать: пустой контур с габаритами — и готовый план расстановки, где прогоны уже подписаны («A blok 26.6 metr», «B blok»), рядом стоит глубина ряда («215 sm»), ширина секции («240 sm»), ширина прохода и подписанные участки под упаковку и приёмку. <strong>Второй вид встречается чаще.</strong>»</p>
+    </div>
+
+    <table class="tiny">
+      <thead><tr><th style="width:8mm">№</th><th style="width:88mm">Правило</th><th>Зачем оно там</th></tr></thead>
+      <tbody>
+        <tr><td class="k mono">1</td><td class="xs">Все размеры возвращай в миллиметрах. На листах пишут по-разному: «45 м», «45м», «45000», «45.5», «24 метра», «215 sm», «270 sm». 45 м → 45000; 215 sm → 2150. Число больше 1000 считай уже миллиметрами.</td><td class="xxs muted">Замерщики пишут в метрах, сантиметрах и миллиметрах на одном листе. Без правила ответ приходил в смеси единиц.</td></tr>
+        <tr><td class="k mono">2</td><td class="xs">Контур — по часовой стрелке от угла, ближайшего к левому нижнему. Первая точка [0,0], последнюю не повторяй. Для прямоугольника ровно 4 точки. Если есть скос, ниша, выступ или вырез — обведи их честно, это и есть ценность наброска.</td><td class="xxs muted">Иначе модель возвращала прямоугольник вместо реального помещения — и вся ценность фотографии терялась.</td></tr>
+        <tr><td class="k mono">3</td><td class="xs">Колонны: центр в миллиметрах и сторона квадрата, обычно 400 мм. Ставь только те, что реально нарисованы. Не выдумывай регулярную сетку, если нарисованы две колонны.</td><td class="xxs muted">Модель достраивала «логичную» сетку 6×6 там, где её не было. Ряды после этого обходили несуществующие препятствия.</td></tr>
+        <tr><td class="k mono">4</td><td class="xs">Ворота или проёмы: центр по контуру и ширина, по умолчанию 3000 мм.</td><td class="xxs muted">У ворот нельзя ставить стеллаж — это влияет на раскладку.</td></tr>
+        <tr><td class="k mono">5</td><td class="xs">Ряды стеллажей, если они нарисованы: подпись с листа как есть («A blok», «1-qator»), концы оси прогона, глубина, ширины секций подряд, если расписаны поштучно. <strong>Не выдумывай ряды, которых на листе нет: пустой список честнее придуманной расстановки.</strong></td><td class="xxs muted">Главное правило всей системы, повторённое на языке этой задачи.</td></tr>
+        <tr><td class="k mono">6</td><td class="xs">Зоны, которые стеллажами НЕ занимают: «Qadoqlash zonasi» (упаковка), «yuk kirish joyi» (приёмка), «Zina» (лестница), офис, проезд. Эти участки решают, сколько секций встанет: не отметишь — расчёт займёт их стеллажами и счёт клиенту будет завышен.</td><td class="xxs muted">Листы приходят на узбекском. Подписи перечислены прямо в задании, чтобы модель их узнавала.</td></tr>
+        <tr><td class="k mono">7</td><td class="xs">Шаг секции, если он подписан один на весь план (обычно 2400, 2700 или 3300). Глубина ряда и ширина рабочего прохода — если подписаны. <strong>Чего нет на листе — null.</strong></td><td class="xxs muted">Пустое поле кабинет показывает как «не найдено», и менеджер вводит сам. Выдуманное — молча уедет в счёт.</td></tr>
+        <tr><td class="k mono">8</td><td class="xs">Режим: «rows», если прогоны идут через зал параллельно; «perimeter», если стеллажи стоят вдоль стен, а середина оставлена под проезд. Не понял — null.</td><td class="xxs muted">Два принципиально разных типа складов, и раскладка у них разная.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">27</span></div>
+</section>
+
+<!-- ============ 28 · ПРОМПТ II + СХЕМА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>23</b> · Промпт и схема ответа</span><span>Часть IV · Промпты и результаты</span></div>
+    <h2>Задание модели, дословно · часть вторая</h2>
+
+    <table class="tiny" style="margin-bottom:4mm">
+      <thead><tr><th style="width:8mm">№</th><th style="width:88mm">Правило</th><th>Зачем оно там</th></tr></thead>
+      <tbody>
+        <tr><td class="k mono">9</td><td class="xs">Высота потолка в миллиметрах, если она подписана. Если нет — null. <strong>Не угадывай.</strong></td><td class="xxs muted">От потолка считаются ярусы. Угаданный потолок — это угаданная половина спецификации.</td></tr>
+        <tr><td class="k mono">10</td><td class="xs">Тип стеллажа, если он подписан или очевиден: паллетный фронтальный, набивной, среднегрузовой, архивный, торговый, мезонин. Если не написано — null.</td><td class="xxs muted">Тип задаёт движок раскладки. Ошибка здесь стоит всего расчёта.</td></tr>
+        <tr><td class="k mono">11</td><td class="xs">Число ярусов балок, длина балки (2700 или 3300) и техника (ричтрак, погрузчик, штабелёр) — если подписаны.</td><td class="xxs muted">Эти три величины замерщик часто помечает прямо на листе. Забирать их руками — терять минуты на каждом КП.</td></tr>
+        <tr><td class="k mono">12</td><td class="xs">Название компании клиента, если оно написано на листе.</td><td class="xxs muted">Подставляется в шапку — то самое поле, которое в КП Rapid Sales осталось пустым.</td></tr>
+        <tr><td class="k mono">13</td><td class="xs">Список того, что ты реально прочитал на листе, <strong>дословно</strong>: каждая надпись, каждое число с его подписью. Это то, по чему менеджер проверит распознавание.</td><td class="xxs muted">Ключевое поле всей схемы. Менеджер сверяет с листом именно его, а не готовые числа.</td></tr>
+        <tr><td class="k mono">14</td><td class="xs">Что вызвало сомнение: неразборчивая цифра, отсутствующий размер, противоречие. Коротко, по делу.</td><td class="xxs muted">Модель обязана признаваться в неуверенности, а не сглаживать её.</td></tr>
+        <tr><td class="k mono">15</td><td class="xs">Уверенность: high — контур и оба габарита читаются уверенно; medium — часть чисел пришлось выводить; low — это скорее догадка.</td><td class="xxs muted">Кабинет превращает это в цветную плашку над формой.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box-bad pad3" style="margin-bottom:4mm">
+      <div class="label" style="margin-bottom:2mm">Последняя строка задания</div>
+      <p class="sm" style="font-style:italic">«Ничего не придумывай. Пустое поле лучше выдуманного числа: по этому наброску компания выставит клиенту счёт на сотни миллионов сум.»</p>
+    </div>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-top:auto">
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Ответ приходит строго по схеме</div>
+        <p class="xs muted" style="margin-bottom:3mm">Модель не отвечает текстом. Она обязана вернуть структуру из 17 полей, и кабинет отказывается принимать всё, что в неё не укладывается. Свободный текст в документ попасть не может физически.</p>
+        <div class="box-fill pad3 mono" style="font-size:6.8pt;line-height:1.8">
+          confidence &nbsp;high | medium | low<br>
+          width · depth · ceiling<br>
+          polygon &nbsp;&nbsp;&nbsp;[[x,y], …]<br>
+          columns &nbsp;&nbsp;&nbsp;[{x, y, size}, …]<br>
+          docks &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[{x, y, width}, …]<br>
+          rows &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[{name, axis, start, end, …}]<br>
+          zones &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[{name, kind, polygon}, …]<br>
+          sectionWidth · rowDepth · aisle<br>
+          mode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rows | perimeter | null<br>
+          productKey · levels · beam · truck<br>
+          client<br>
+          readings &nbsp;&nbsp;["…", …]<br>
+          warnings &nbsp;&nbsp;["…", …]
+        </div>
+      </div>
+      <div>
+        <div class="box-acc pad3" style="margin-bottom:3mm">
+          <div class="label" style="margin-bottom:2mm">Два провайдера намеренно</div>
+          <p class="xs muted">Основной — Claude: задача на зрение, рукописный набросок он читает лучше. Запасной — Gemini: если у компании подключён только он, распознавание всё равно работает. Ключи всегда берутся из хранилища компании, зашитых ключей в коде нет ни одного.</p>
+        </div>
+        <div class="box pad3">
+          <div class="label" style="margin-bottom:2mm">Почему схема, а не просьба «ответь JSON»</div>
+          <p class="xs muted">Просьба выполняется не всегда: модель добавляет пояснение до или после, оборачивает ответ в разметку, меняет имя поля. Жёсткая схема снимает весь этот класс проблем — ответ либо укладывается в неё, либо не принимается вовсе.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">28</span></div>
+</section>
+
+<!-- ============ 29 · ПРОМПТ КАДРА ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>24</b> · Промпт кадра</span><span>Часть IV · Промпты и результаты</span></div>
+    <h2>Задание на картинку, дословно</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:4mm">
+      Промпт собирается не менеджером, а кодом — из тех же чисел, что ушли в спецификацию.
+      Поэтому на картинке физически не может оказаться другое число рядов.
+    </p>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:4mm">
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Когда есть снимок 3D-модели</div>
+        <div class="box-acc pad3" style="margin-bottom:3mm">
+          <p class="xs" style="font-style:italic">«Преврати эту 3D-схему склада в фотореалистичный снимок интерьера. Сохрани в точности ракурс, число рядов, ширину проходов, число ярусов и положение стеллажей — меняются только материалы, свет и детали.»</p>
+        </div>
+        <div class="label" style="margin-bottom:2.5mm">Когда снимка нет</div>
+        <div class="box pad3" style="margin-bottom:3mm">
+          <p class="xs" style="font-style:italic">«Фотореалистичный интерьер современного складского комплекса, широкоугольный кадр от пола, высота камеры 1,7 м.»</p>
+        </div>
+        <div class="box-warn pad3">
+          <div class="label" style="margin-bottom:2mm">Разница между этими двумя путями</div>
+          <p class="xs muted">В первом случае картинка наследует посчитанную геометрию. Во втором — нет, и это честно указано в самом задании. Второй путь оставлен как запасной для типов, у которых параметрической 3D-модели пока нет: набивной и мезонин.</p>
+        </div>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Остальные строки задания — всегда из расчёта</div>
+        <table class="tiny">
+          <tbody>
+            <tr><td class="k xs">Помещение</td><td class="xs">«Помещение 45 на 24 метра, потолок 10,5 м, светлые стены, наливной бетонный пол с разметкой проездов.»</td></tr>
+            <tr><td class="k xs">Расстановка</td><td class="xs">«В кадре 9 параллельных рядов металлических стеллажей (паллетные стеллажи), в каждом ярусе видно 3 уровня балок с паллетами.»</td></tr>
+            <tr><td class="k xs">Цвет</td><td class="xs">«Рамы стеллажей — синяя порошковая окраска, балки — оранжевые, ровно как на объектах RAX PRO; груз на европаллетах в стретч-плёнке.»</td></tr>
+            <tr><td class="k xs">Техника</td><td class="xs">«В проходе — ричтрак.» Подставляется та, которую выбрал менеджер, а не случайная.</td></tr>
+            <tr><td class="k xs">Свет</td><td class="xs">«Линейные светодиодные светильники под потолком, нейтральный белый свет, мягкие тени, без пересветов.»</td></tr>
+            <tr><td class="k xs">Стиль</td><td class="xs">«Промышленная архитектурная фотография, полный кадр в фокусе, без людей, без текста, без логотипов, без водяных знаков.»</td></tr>
+          </tbody>
+        </table>
+        <div class="box-fill pad3" style="margin-top:4mm">
+          <div class="label" style="margin-bottom:2mm">Почему «без текста и без логотипов»</div>
+          <p class="xs muted">Генераторы охотно дорисовывают вывески и надписи — на любом языке и с любыми ошибками. В документе, где рядом стоит настоящий логотип RAX PRO, выдуманная вывеска на стене читается как подделка.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-bottom:5mm">
+      <div class="label" style="margin-bottom:2mm">Почему промпт собирает код, а не менеджер</div>
+      <p class="sm">Если поле промпта отдать человеку, через неделю в нём окажется «красивый современный склад» — и картинка перестанет соответствовать смете. Здесь промпт не редактируется вовсе: каждая его строка подставляется из того же расчёта, что ушёл в спецификацию. Менеджер управляет картинкой единственным способом — меняя расчёт.</p>
+    </div>
+
+    <div class="grid g4" style="gap:3mm;margin-top:auto">
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Формат</div><p class="xxs muted">16:9, разрешение 2K — под ширину листа КП.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Время</div><p class="xxs muted">60–90 секунд вместе с импортом референса и скачиванием.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Вес</div><p class="xxs muted">Ужимается до 1600 пикселей: иначе документ и PDF раздуваются на порядок.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Хранение</div><p class="xxs muted">Картинка вшивается в документ, а не ссылается на чужой сервер.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">29</span></div>
+</section>
+
+<!-- ============ 30 · РЕЗУЛЬТАТЫ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>25</b> · Результаты</span><span>Часть IV · Промпты и результаты</span></div>
+    <h2>Шесть типов, шесть выпущенных документов</h2>
+    <p class="lede" style="max-width:162mm;margin-bottom:5mm">
+      Проверка не на бумаге: через генератор прогнаны все шесть типов линейки, каждый —
+      на своём реальном клиенте из архива компании. Ни один прогон не упал, ни в одном
+      не осталось блокирующего замечания.
+    </p>
+
+    <table class="tight" style="margin-bottom:5mm">
+      <thead><tr><th style="width:42mm">Тип</th><th style="width:38mm">Клиент</th><th style="width:26mm">Номер</th><th style="width:20mm">Паллето-мест</th><th style="width:30mm">Итого с НДС, сум</th><th>Приёмка</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Паллетный фронтальный</td><td class="xs">ООО «Oq Tepa Logistics»</td><td class="mono xxs">КП-260905-305</td><td class="mono xs">1 692</td><td class="mono xs">1 264 488 960</td><td class="xs yes">Готово · 1 замечание</td></tr>
+        <tr><td class="k">Паллетный набивной</td><td class="xs">ООО «Muzlatgich Servis»</td><td class="mono xxs">КП-260905-049</td><td class="mono xs">576</td><td class="mono xs">428 853 376</td><td class="xs yes">Готово · 2 замечания</td></tr>
+        <tr><td class="k">Среднегрузовой</td><td class="xs">ООО «BLOOMSHOP»</td><td class="mono xxs">КП-260905-565</td><td class="mono xs">—</td><td class="mono xs">209 294 494</td><td class="xs yes">Готово · 2 замечания</td></tr>
+        <tr><td class="k">Архивный</td><td class="xs">ООО «Rapid Sales»</td><td class="mono xxs">КП-260905-193</td><td class="mono xs">—</td><td class="mono xs">37 968 000</td><td class="xs yes">Готово · 2 замечания</td></tr>
+        <tr><td class="k">Торговый</td><td class="xs">Supermarket «Index»</td><td class="mono xxs">КП-260905-238</td><td class="mono xs">—</td><td class="mono xs">195 059 200</td><td class="xs yes">Готово · 2 замечания</td></tr>
+        <tr><td class="k">Мезонин</td><td class="xs">ООО «Star Distribution»</td><td class="mono xxs">КП-260905-140</td><td class="mono xs">—</td><td class="mono xs">321 651 904</td><td class="xs yes">Готово · 2 замечания</td></tr>
+      </tbody>
+    </table>
+
+    <div class="grid g4" style="gap:3mm;margin-bottom:5mm">
+      <div class="box-acc pad3"><div class="stat acc">6 / 6</div><div class="label" style="margin-top:1mm">типов посчитались и выпустились</div></div>
+      <div class="box pad3"><div class="stat">0</div><div class="label" style="margin-top:1mm">блокирующих замечаний</div></div>
+      <div class="box pad3"><div class="stat">11</div><div class="label" style="margin-top:1mm">предупреждений всего — все про план и рендер</div></div>
+      <div class="box pad3"><div class="stat">0</div><div class="label" style="margin-top:1mm">ошибок в расчёте</div></div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-bottom:5mm">
+      <div class="label" style="margin-bottom:2mm">Какие замечания остались в этих одиннадцати</div>
+      <p class="sm" style="margin-bottom:2.5mm">Ни одного про расчёт. Все одиннадцать — про комплектность документа, и оба вида снимаются одним действием менеджера:</p>
+      <div class="grid g2" style="gap:3mm">
+        <div class="box pad3" style="background:#fff"><div class="label" style="margin-bottom:1.5mm">«Нет плана объекта» · 5 документов</div><p class="xxs muted">Снимается нажатием «Рассчитать раскладку». В прогоне раскладку считали не для всех типов — параметрическая раскладка есть не у каждого.</p></div>
+        <div class="box pad3" style="background:#fff"><div class="label" style="margin-bottom:1.5mm">«Нет рендера расстановки» · 6 документов</div><p class="xxs muted">Снимается кнопкой «Снять кадр в КП». В прогоне картинки намеренно не генерировали: проверялся расчёт, а не оформление.</p></div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="gap:3mm;margin-top:auto">
+      <div class="box pad3">
+        <div class="label" style="margin-bottom:2mm">Что означает прочерк в колонке мест</div>
+        <p class="xs muted">Паллето-мест не бывает у среднегрузового, архивного, торгового и мезонина — там их и не должно быть. Первые три меряются полками, мезонин — квадратными метрами плиты. Генератор не подставляет им паллето-места «для красоты»: непаллетный тип обязан вернуть пустое поле, и регрессия это проверяет.</p>
+      </div>
+      <div class="box-warn pad3">
+        <div class="label" style="margin-bottom:2mm">Честно о точности</div>
+        <p class="xs muted">Фактическими документами подтверждён один тип из шести — паллетный фронтальный. У остальных пяти часть чисел выведена из геометрии, а не из чертежа: прайса и эталонных смет по ним компания не присылала. Все такие числа объявлены черновыми и показываются менеджеру списком. Суммы в таблице — рабочие, а не окончательные.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">30</span></div>
+</section>
+
+<!-- ============ 31 · ДОКУМЕНТ ЦЕЛИКОМ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>26</b> · Документ</span><span>Часть IV · Промпты и результаты</span></div>
+    <h2>Как выглядит то, что получает клиент</h2>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:4mm">
+      <div>
+        <div class="brow"><i></i><i></i><i></i><span>КП-260905-305 · обложка</span><em class="new">документ</em></div>
+        <div class="shot"><img src="img/gen/kp-cover.jpg" alt="Обложка коммерческого предложения"></div>
+        <div class="cap">Три числа на обложке — паллето-места, сумма с НДС и срок поставки и монтажа. Всё, что нужно закупщику, чтобы решить, читать ли дальше.</div>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Из чего состоит документ</div>
+        <table class="tiny" style="margin-bottom:4mm">
+          <tbody>
+            <tr><td class="k xs">Обложка</td><td class="xs">Номер, клиент, дата, срок действия, три главные цифры.</td></tr>
+            <tr><td class="k xs">Что вы получаете</td><td class="xs">Те же цифры крупно плюс описание решения на языке клиента.</td></tr>
+            <tr><td class="k xs warn">План объекта</td><td class="xs">Чертёж расстановки с размерами. Уникальная страница №1.</td></tr>
+            <tr><td class="k xs warn">Решение</td><td class="xs">Кадр расстановки: фотореалистичный или из 3D-сцены.</td></tr>
+            <tr><td class="k xs warn">Интерактивная модель</td><td class="xs">Живая 3D-сцена в ссылке для клиента. Уникальная страница №2.</td></tr>
+            <tr><td class="k xs">Спецификация</td><td class="xs">Позиции, количества, цены, итог, НДС, цена за паллето-место.</td></tr>
+            <tr><td class="k xs">За что вы платите</td><td class="xs">Структура суммы в процентах по позициям.</td></tr>
+            <tr><td class="k xs">Кто выполнит работу</td><td class="xs">Компания, стаж, объекты, клиенты, гарантия, как это делается.</td></tr>
+            <tr><td class="k xs">Сертификаты</td><td class="xs">Из справочника, без опечаток и без ручного ввода.</td></tr>
+            <tr><td class="k xs">Этапы и условия</td><td class="xs">Сроки, оплата, что входит в поставку, что делает монтаж.</td></tr>
+          </tbody>
+        </table>
+        <div class="box-acc pad3">
+          <div class="label" style="margin-bottom:2mm">Два языка одним переключателем</div>
+          <p class="xs muted">Русский и узбекский. Меняется весь документ: заголовки, описания позиций, условия, названия единиц измерения и форма юридического лица. Узбекская версия — не перевод заголовков поверх русского текста.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g3" style="gap:3mm;margin-bottom:5mm">
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Что читает закупщик</div><p class="xxs muted">Спецификацию и цену за место. Ему нужно сравнить вас с двумя другими поставщиками по одному числу — и теперь это число в документе есть.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Что смотрит директор</div><p class="xxs muted">План и картинку. Он проверяет, поместится ли это в его помещение и как оно будет выглядеть. Две страницы, ради которых открывают файл.</p></div>
+      <div class="box pad3"><div class="label" style="margin-bottom:1.5mm">Что ищет юрист</div><p class="xxs muted">Реквизиты, сертификаты, гарантию и условия оплаты. Всё из справочника — значит, одинаково в КП, договоре и счёте.</p></div>
+    </div>
+
+    <div class="box-fill pad3" style="margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Фраза, ради которой собран весь документ</div>
+      <p class="sm" style="font-style:italic">«Стеллаж — это не товар со склада, а конструкция под ваш пол, ваш потолок и вашу технику. Поэтому мы сначала считаем расстановку и паллето-места, и только потом называем сумму.»</p>
+      <p class="xxs faint" style="margin-top:2mm">Касимов Хуршидбек Хасанбаевич · основатель и директор RAX PRO</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">31</span></div>
+</section>
+
+<!-- ============ 32 · ЧТО ОСТАЛОСЬ ============ -->
+<section class="page">
+  <div class="pad">
+    <div class="kicker"><span><b>27</b> · Состояние</span><span>Что готово и что дальше</span></div>
+    <h2>Что работает сегодня и что стоит в очереди</h2>
+
+    <div class="grid g2" style="gap:5mm;align-items:start;margin-bottom:5mm">
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Работает</div>
+        <ul class="ticks xs" style="margin-bottom:4mm">
+          <li>Кабинет с входом, ролями и сотрудниками</li>
+          <li>Шесть типов стеллажей, три движка раскладки</li>
+          <li>Автоматическая раскладка с обходом колонн и зон</li>
+          <li>Векторный план объекта прямо в документе</li>
+          <li>Трёхмерная модель расстановки, которую крутит клиент</li>
+          <li>Спецификация формулами и паллето-места</li>
+          <li>Цена, скидка с причиной, НДС, цена за место</li>
+          <li>Приёмка из 23 правил, 16 из них блокирующие</li>
+          <li>Документ на двух языках</li>
+          <li>PDF, ссылка для клиента, печать, реестр</li>
+          <li>Чтение фотографии наброска замерщика</li>
+          <li>Фотореалистичный кадр по посчитанной сцене</li>
+          <li>Мост на подписку, пока у компании нет своих ключей</li>
+        </ul>
+        <div class="box pad3">
+          <div class="label" style="margin-bottom:2mm">В очереди на нашей стороне</div>
+          <ul class="dash xs">
+            <li>Выбор из 2–3 вариантов расстановки вместо одного</li>
+            <li>Параметрические 3D-модели для набивного и мезонина</li>
+            <li>Третий режим цены: за паллето-место, за м² плиты, за погонный метр</li>
+            <li>Предупреждение приёмки, когда черновое число доехало до КП</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom:2.5mm">Нужно от RAX PRO — без этого точность не вырастет</div>
+        <div class="box-warn pad3" style="margin-bottom:3mm">
+          <ul class="num xs">
+            <li><strong>Цены за единицу от завода</strong> — рама по высотам, балка по длинам, замок, анкер, настил, защита. Сейчас они выведены обратным счётом из готовых КП.</li>
+            <li><strong>Прайс на торговый, набивной и мезонин</strong> — три типа из шести до сих пор считаются вручную.</li>
+            <li><strong>Эталонное КП или чертёж на набивной и мезонин</strong> — из них выводятся формулы спецификации. Сейчас их нет ни одного.</li>
+            <li><strong>Правило анкеров</strong> — когда 4 на раму, а когда 8. В документах встречаются оба варианта.</li>
+            <li><strong>Два-три исходника 3ds Max с точным контуром</strong> — единственный способ сверить раскладку с фактом. В нынешних моделях объекты названы Box281 и Plane1126.</li>
+          </ul>
+        </div>
+        <div class="box-bad pad3">
+          <div class="label" style="margin-bottom:2mm">Что будет, если этого не дать</div>
+          <p class="xs muted">Генератор продолжит работать — он не сломается. Но пять типов из шести останутся с черновыми числами, и каждое КП по ним придётся проверять руками. То есть вернётся ровно та работа, ради снятия которой он и написан.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g4" style="gap:3mm;margin-bottom:5mm">
+      <div class="box-acc pad3"><div class="stat acc" style="font-size:15pt">1 / 6</div><div class="label" style="margin-top:1mm">типов подтверждён фактическими КП</div></div>
+      <div class="box pad3"><div class="stat" style="font-size:15pt">3 / 6</div><div class="label" style="margin-top:1mm">типов ждут прайса — считаются вручную</div></div>
+      <div class="box pad3"><div class="stat" style="font-size:15pt">2</div><div class="label" style="margin-top:1mm">типа без единого чертежа в архиве</div></div>
+      <div class="box pad3"><div class="stat" style="font-size:15pt">5</div><div class="label" style="margin-top:1mm">вещей, которые нужны от завода</div></div>
+    </div>
+
+    <div class="box-fill pad3" style="border-left:2px solid var(--acc);margin-top:auto">
+      <div class="label" style="margin-bottom:2mm">Что мы предлагаем сделать первым</div>
+      <p class="sm">Прислать прайс завода за единицу и одно эталонное КП на набивной. Две эти вещи закрывают половину очереди справа: цены перестают быть выведенными, а у второго по востребованности типа появляются проверенные формулы. Всё остальное можно добирать по ходу.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Prototype · RAX PRO · Генератор КП</span><span class="n">32</span></div>
+</section>
+
+<!-- ============ 33 · ФИНАЛ ============ -->
+<section class="page dark">
+  <div class="grid-bg"></div>
+  <div class="pad">
+    <div class="kicker"><span>Prototype Agency</span><span>Генератор КП · RAX PRO</span></div>
+    <div style="margin-top:auto">
+      <h1 style="max-width:150mm">КП — это не документ.<br>Это расчёт, который<br>научился печататься.</h1>
+      <div class="rule"></div>
+      <p class="lede" style="max-width:138mm;color:#9DA0A8">
+        Пока предложение собирали копией прошлого файла, ошибка жила в шаблоне и уезжала
+        к каждому следующему клиенту. Теперь документ вырастает из посчитанной расстановки:
+        план, модель, спецификация и сумма — одно и то же число, показанное четырьмя способами.
+        Менеджеру остаётся то, что машина не сделает, — разговор.
+      </p>
+    </div>
+    <div style="margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;border-top:1px solid var(--line-d);padding-top:5mm">
+      <div><div class="label" style="margin-bottom:1.5mm">Типов</div><div class="mono" style="font-size:12pt;font-weight:800;color:var(--acc-hi)">6</div><div class="xxs faint" style="margin-top:1mm">от паллетного до мезонина</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Правил приёмки</div><div class="mono" style="font-size:12pt;font-weight:800;color:#ECEDF0">23</div><div class="xxs faint" style="margin-top:1mm">каждое из своей ошибки</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Обращений к ИИ на КП</div><div class="mono" style="font-size:12pt;font-weight:800;color:#ECEDF0">0—2</div><div class="xxs faint" style="margin-top:1mm">и оба необязательные</div></div>
+      <div><div class="label" style="margin-bottom:1.5mm">Цифр от нейросети</div><div class="mono" style="font-size:12pt;font-weight:800;color:#ECEDF0">0</div><div class="xxs faint" style="margin-top:1mm">считает только код</div></div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
