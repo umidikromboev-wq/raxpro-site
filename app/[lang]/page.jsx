@@ -238,6 +238,15 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
+      {/* PRICE — из чего складывается цена: состав секции, что входит, оплата */}
+      <PriceBreakdown lang={L} />
+
+      {/* STAGES — «Этапы и сроки»: карточки проявляются по скроллу (components/Stages) */}
+      <Stages lang={L} />
+
+      {/* WHY RAXPRO — bento по макету: вместимость, наличие, гарантия, безопасность… + CTA (components/WhyRaxPro) */}
+      <WhyRaxPro lang={L} />
+
       {/* CALCULATOR */}
       <section
         id="kalkulyator"
@@ -272,15 +281,6 @@ export default async function Home({ params, searchParams }) {
           </div>
         </div>
       </section>
-
-      {/* PRICE — из чего складывается цена: состав секции, что входит, оплата */}
-      <PriceBreakdown lang={L} />
-
-      {/* STAGES — «Этапы и сроки»: карточки проявляются по скроллу (components/Stages) */}
-      <Stages lang={L} />
-
-      {/* WHY RAXPRO — bento по макету: вместимость, наличие, гарантия, безопасность… + CTA (components/WhyRaxPro) */}
-      <WhyRaxPro lang={L} />
 
       {/* COMPARISON — factory vs artisan: два крупных плана узла, под каждым — своя колонка */}
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
