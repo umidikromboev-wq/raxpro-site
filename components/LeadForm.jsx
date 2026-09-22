@@ -307,29 +307,18 @@ export default function LeadForm({
         <a href={href(lang, "/politika-konfidencialnosti")} className="underline hover:text-navy-800">{t.consentLink}</a>
       </p>
 
-      {/* Мессенджеры — второй по важности путь, поэтому кнопки, а не строка мелким */}
+      {/* Telegram — второй по важности путь, поэтому кнопка, а не строка мелким (WhatsApp убран 22.09) */}
       <div className="mt-4 pt-4 border-t border-cloud-100">
         <div className="text-center text-xs text-slate-500">{t.altContact}</div>
-        <div className="mt-2 grid grid-cols-2 gap-2">
-          <a
-            href={SITE.telegram}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => track("lead_messenger_click", { messenger: "telegram" })}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 font-semibold text-sm py-2.5 hover:bg-sky-100 transition"
-          >
-            <IcoTg className="w-4 h-4" /> Telegram
-          </a>
-          <a
-            href={SITE.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => track("lead_messenger_click", { messenger: "whatsapp" })}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-200 bg-green-50 text-green-700 font-semibold text-sm py-2.5 hover:bg-green-100 transition"
-          >
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8Zm-3.1 4.4c-.2 0-.5 0-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.5 0 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.1-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5.3-.5c.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6Z" /></svg> WhatsApp
-          </a>
-        </div>
+        <a
+          href={SITE.telegram}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => track("lead_messenger_click", { messenger: "telegram" })}
+          className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 font-semibold text-sm py-2.5 hover:bg-sky-100 transition"
+        >
+          <IcoTg className="w-4 h-4" /> Telegram
+        </a>
       </div>
     </form>
   );

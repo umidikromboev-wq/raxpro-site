@@ -149,12 +149,12 @@ export default function Comparison({ lang = 'ru' }) {
       </Reveal>
 
       {/* Честный ответ про цену + следующий шаг */}
-      <Reveal delay={80} className="mt-4 sm:mt-5 rounded-xl2 bg-navy-900 text-white p-6 sm:p-8 lg:p-10 grid lg:grid-cols-[minmax(0,1fr),auto] gap-6 lg:gap-12 items-center notch-tr">
-        <div>
+      <Reveal delay={80} className="mt-4 sm:mt-5 rounded-xl2 bg-navy-900 text-white p-6 sm:p-8 lg:p-10 grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr),auto] gap-6 lg:gap-12 items-center notch-tr overflow-hidden">
+        <div className="min-w-0">
           <h3 className="font-display font-medium text-xl sm:text-2xl lg:text-[28px] leading-tight">{c.priceTitle}</h3>
           <p className="mt-3 text-cloud-200/85 text-[15px] leading-relaxed max-w-2xl">{c.priceText}</p>
         </div>
-        <a href={href(L, '/konstruktor')} className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-navy-900 font-bold px-5 py-3.5 transition whitespace-nowrap">
+        <a href={href(L, '/konstruktor')} className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-navy-900 font-bold px-5 py-3.5 transition text-center lg:whitespace-nowrap">
           {c.cta} <IcoArrow className="w-4 h-4" />
         </a>
       </Reveal>

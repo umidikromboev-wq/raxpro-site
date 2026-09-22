@@ -185,11 +185,15 @@ export default async function Home({ params, searchParams }) {
         <SplitHead title={t.dirTitle} desc={t.dirText} hideDescOnMobile />
         {/* На телефоне — горизонтальная лента с прилипанием: одна карточка на экран,
             край следующей виден. С md — сетка 2 колонки. */}
-        <div className="flex md:grid md:grid-cols-2 gap-4 md:gap-5 mt-6 md:mt-10 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-5 px-5 md:mx-0 md:px-0 pb-2 md:pb-0 scrollbar-none">
+        {/* Один Reveal на всю ленту со stagger: карточки не «подпрыгивают» по одной при боковом свайпе */}
+        <Reveal
+          variant="fade"
+          stagger={80}
+          className="flex md:grid md:grid-cols-2 gap-4 md:gap-5 mt-6 md:mt-10 overflow-x-auto md:overflow-visible snap-x snap-mandatory overscroll-x-contain -mx-5 px-5 scroll-pl-5 md:mx-0 md:px-0 md:scroll-pl-0 pb-2 md:pb-0 scrollbar-none"
+        >
           {directions.map((d, i) => (
-            <Reveal
+            <div
               key={d.t}
-              delay={i * 80}
               className={`shrink-0 w-[82vw] max-w-[360px] snap-start md:shrink md:w-auto md:max-w-none ${
                 i === directions.length - 1 && directions.length % 2
                   ? "md:col-span-2"
@@ -236,9 +240,9 @@ export default async function Home({ params, searchParams }) {
                   </div>
                 </div>
               </div>
-            </Reveal>
+            </div>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       {/* PRICE — из чего складывается цена: состав секции, что входит, оплата */}
@@ -516,9 +520,14 @@ export default async function Home({ params, searchParams }) {
             {t.blogAll} <IcoArrow className="w-5 h-5" />
           </a>
         </div>
-        <div className="grid md:grid-cols-3 gap-5 mt-10">
-          {latest.map((a, i) => (
-            <Reveal key={a.slug} delay={i * 80}>
+        {/* На телефоне — лента со снапом, с md сетка 3 колонки */}
+        <Reveal
+          variant="fade"
+          stagger={80}
+          className="flex md:grid md:grid-cols-3 gap-4 md:gap-5 mt-6 md:mt-10 overflow-x-auto md:overflow-visible snap-x snap-mandatory overscroll-x-contain -mx-5 px-5 scroll-pl-5 md:mx-0 md:px-0 md:scroll-pl-0 pb-2 md:pb-0 scrollbar-none"
+        >
+          {latest.map((a) => (
+            <div key={a.slug} className="snap-start shrink-0 w-[82vw] max-w-[360px] md:shrink md:w-auto md:max-w-none">
               <a
                 href={href(L, `/blog/${a.slug}`)}
                 className="group block h-full rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition"
@@ -544,9 +553,9 @@ export default async function Home({ params, searchParams }) {
                   </p>
                 </div>
               </a>
-            </Reveal>
+            </div>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <Footer lang={L} />

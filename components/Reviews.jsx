@@ -91,18 +91,23 @@ export default function Reviews({ items, lang = 'ru', allHref, total }) {
       {videos.length > 0 && (
         <div className="mt-10">
           <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 mb-4">{u.videos} · {videos.length}</div>
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 -mx-5 px-5 sm:mx-0 sm:px-0 scrollbar-none">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 -mx-5 px-5 scroll-pl-5 sm:mx-0 sm:px-0 sm:scroll-pl-0 scrollbar-none">
             {videos.map((r) => <VideoCard key={r.id} r={r} u={u} />)}
           </div>
         </div>
       )}
 
-      {/* Переписки и голосовые — ровная сетка, карточки одной высоты в ряду */}
+      {/* Переписки и голосовые — на телефоне слайдер (одна карточка на экран),
+          с sm ровная сетка, карточки одной высоты в ряду */}
       {texts.length > 0 && (
         <div className="mt-10">
           <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 mb-4">{u.texts} · {texts.length}</div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {texts.map((r) => <TextCard key={r.id} r={r} u={u} />)}
+          <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory pb-3 sm:pb-0 -mx-5 px-5 scroll-pl-5 sm:mx-0 sm:px-0 sm:scroll-pl-0 scrollbar-none">
+            {texts.map((r) => (
+              <div key={r.id} className="snap-start shrink-0 w-[82vw] max-w-[360px] sm:shrink sm:w-auto sm:max-w-none">
+                <TextCard r={r} u={u} />
+              </div>
+            ))}
           </div>
         </div>
       )}
