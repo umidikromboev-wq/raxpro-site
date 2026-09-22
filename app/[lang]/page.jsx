@@ -10,6 +10,7 @@ import { directionCards } from "../../lib/directionCards";
 import VideoHero from "../../components/hero/VideoHero";
 import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
 import PriceBreakdown from "../../components/PriceBreakdown";
+import Stages from "../../components/Stages";
 import { SplitHead, Eyebrow } from "../../components/Section";
 import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
 import { T, EXTRA, normalizeLang } from "../../lib/i18n";
@@ -49,7 +50,6 @@ const IMG = {
   drivein: "/directions/drive-in.jpg",
   welder: "/works/w6.jpg",
 };
-const STEP_ICONS = [IcoRuler, IcoDraft, IcoFactory, IcoWrench];
 const DIR_META = [
   {
     Ico: IcoPallet,
@@ -111,7 +111,6 @@ export default async function Home({ params, searchParams }) {
       acceptedAnswer: { "@type": "Answer", text: f.a },
     })),
   };
-  const steps = t.steps.map((s, i) => ({ ...s, Ico: STEP_ICONS[i] }));
   const cards = directionCards(L);
   const directions = t.directions.map((d, i) => ({ ...d, ...DIR_META[i], ...cards[i] }));
   const adv = t.adv.map((a, i) => ({ ...a, Ico: ADV_ICONS[i] }));
@@ -294,40 +293,8 @@ export default async function Home({ params, searchParams }) {
       {/* PRICE — из чего складывается цена: состав секции, что входит, оплата */}
       <PriceBreakdown lang={L} />
 
-      {/* PROCESS */}
-      <section
-        id="o-kompanii"
-        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20"
-      >
-        <SplitHead
-          eyebrow={t.procEyebrow}
-          title={t.procTitle}
-          desc={t.procText}
-        />
-        {/* Editorial numbered timeline (not uniform cards) */}
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 relative">
-          {steps.map((s, i) => (
-            <Reveal key={s.t} delay={i * 90}>
-              <div className="relative">
-                {/* connector line */}
-                {i < steps.length - 1 && (
-                  <span className="hidden lg:block absolute top-7 left-16 right-[-2rem] h-px bg-gradient-to-r from-cloud-300 to-transparent" />
-                )}
-                <div className="flex items-end gap-3">
-                  <span className="font-display text-6xl leading-[0.8] text-navy-800/12">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <s.Ico className="w-8 h-8 text-sky-600 mb-1" />
-                </div>
-                <h3 className="font-bold text-xl text-navy-800 mt-5">{s.t}</h3>
-                <p className="text-slate-500 text-[15px] mt-2 leading-relaxed max-w-xs">
-                  {s.d}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      {/* STAGES — «Этапы и сроки»: карточки проявляются по скроллу (components/Stages) */}
+      <Stages lang={L} />
 
       {/* INCOME */}
       <section className="bg-cloud-50 border-y border-cloud-200">
