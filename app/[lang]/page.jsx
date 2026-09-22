@@ -72,6 +72,8 @@ const DIR_META = [
     img: IMG.drivein,
     href: "/napravleniya/nabivnye-stellazhi",
   },
+  // Шестая карточка — мезонин: страницы направления нет, ведёт в карточку каталога
+  { Ico: IcoLayers, img: "/products/gen/mezzanine-1.jpg", href: "/katalog/mezonin" },
 ];
 const ADV_ICONS = [
   IcoShield,
