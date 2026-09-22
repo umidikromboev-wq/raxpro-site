@@ -197,7 +197,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
                   }}
                 >
                   <img loading="lazy" decoding="async"
-                    src="/images/head1.png"
+                    src="/images/head1.jpg"
                     alt=""
                     style={{
                       width: "100%",
@@ -215,7 +215,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
                   }}
                 >
                   <img loading="lazy" decoding="async"
-                    src="/images/head2.png"
+                    src="/images/head2.jpg"
                     alt=""
                     style={{
                       width: "100%",
@@ -291,7 +291,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
                   }}
                 >
                   <img loading="lazy" decoding="async"
-                    src="/images/head1.png"
+                    src="/images/head1.jpg"
                     alt=""
                     style={{
                       width: "100%",
@@ -309,7 +309,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
                   }}
                 >
                   <img loading="lazy" decoding="async"
-                    src="/images/head2.png"
+                    src="/images/head2.jpg"
                     alt=""
                     style={{
                       width: "100%",
