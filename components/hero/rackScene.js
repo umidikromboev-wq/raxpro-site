@@ -220,8 +220,8 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     activeCamera = portrait; scene.fog = fog;
     portrait.aspect = aspect; portrait.fov = ORBIT_FOV * (1 + end * 0.04);
     const target = [0, c.ty, 0];
-    // Маленький холст (телефон, модель под текстом): камера ближе, иначе стеллаж — пятно в углу
-    const dist = c.dist * (width < 700 ? 0.78 : 1);
+    // Маленький холст (телефон, модель под текстом): камера чуть дальше, иначе стены цеха режутся краями холста
+    const dist = c.dist * (width < 700 ? 1.1 : 1);
     portrait.position.set(
       target[0] + dist * Math.cos(c.el) * Math.cos(c.az),
       target[1] + dist * Math.sin(c.el),

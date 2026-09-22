@@ -441,7 +441,7 @@ html {
 @media (max-width: 1023px) {
   .rack-hero[data-mode='live'] { height: auto; }
   [data-mode='live'] .rack-sticky { position: relative; top: auto; height: auto; min-height: 0; display: flex; flex-direction: column; padding: 104px 6% 28px; }
-  .rack-viewport { position: relative; inset: auto; order: 2; width: 100%; height: clamp(230px, 62vw, 340px); margin-top: 22px; border-radius: 14px; overflow: hidden; }
+  .rack-viewport { position: relative; inset: auto; order: 2; width: 100%; height: clamp(250px, 76vw, 420px); margin-top: 22px; }
   .rack-shade { display: none; }
   [data-mode='live'] .rack-editorial { display: contents; }
   .rack-intro { order: 1; }
