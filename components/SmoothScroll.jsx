@@ -31,7 +31,15 @@ export default function SmoothScroll() {
       const el = document.querySelector(hash);
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(el, { offset: -72, duration: 1.2 });
+      // Прыжок через всю страницу (кнопка первого экрана → форма внизу, ~17 000 px)
+      // плавной прокруткой не доезжает: Lenis обрывает её от любого касания или
+      // колеса, и человек остаётся посреди страницы — на направлениях. Далеко —
+      // переносим сразу; близко — плавно, но на время анимации ввод заблокирован,
+      // чтобы она не оборвалась на полпути.
+      const far = Math.abs(el.getBoundingClientRect().top) > window.innerHeight * 3;
+      lenis.scrollTo(el, far
+        ? { offset: -72, force: true, immediate: true }
+        : { offset: -72, force: true, lock: true, duration: 1.2 });
     };
     document.addEventListener('click', onClick);
     // Scene navigation must interrupt the same Lenis instance that owns wheel easing.
