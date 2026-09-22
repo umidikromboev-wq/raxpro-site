@@ -227,6 +227,12 @@ export default function LeadForm({
           className={`${field} appearance-none pr-10 ${f.product ? "text-ink" : "text-slate-400"}`}
         >
           <option value="">{t.selectDefault}</option>
+          {/* Подставленный тип может не совпасть со списком (набивные, мезонин,
+              конфигурация из конструктора) — тогда показываем его отдельной
+              строкой, иначе селект молча откатывался бы на плейсхолдер. */}
+          {f.product && !t.options.includes(f.product) && (
+            <option value={f.product} className="text-ink">{f.product}</option>
+          )}
           {t.options.map((o) => (
             <option key={o} value={o} className="text-ink">
               {o}

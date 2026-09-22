@@ -8,6 +8,7 @@ import { DIRECTIONS, DIR_UI, getDirection } from '../../../../lib/directions';
 import { getArticle, localize } from '../../../../lib/articles';
 import { normalizeLang } from '../../../../lib/i18n';
 import { IcoCheck, IcoArrow } from '../../../../components/Icons';
+import { leadProductFor } from "../../../../lib/leadProduct";
 import { directionCards, directionSizes, SIZES_T } from '../../../../lib/directionCards';
 
 export function generateStaticParams() {
@@ -80,7 +81,7 @@ export default async function DirectionPage({ params }) {
             </div>
           </div>
           <div className="w-full max-w-md lg:justify-self-end">
-            <LeadForm compact lang={L} />
+            <LeadForm compact lang={L} initialProduct={leadProductFor(L, { directionSlug: d.slug, fallback: c.name })} />
           </div>
         </div>
       </section>
@@ -187,7 +188,7 @@ export default async function DirectionPage({ params }) {
             <h2 className="font-display font-medium text-3xl sm:text-4xl tracking-tight">{ui.calcShort} {c.short.toLowerCase()}</h2>
             <p className="mt-4 text-cloud-200/80 max-w-lg">{ui.formText}</p>
           </div>
-          <div className="w-full max-w-md lg:justify-self-end"><LeadForm lang={L} /></div>
+          <div className="w-full max-w-md lg:justify-self-end"><LeadForm lang={L} initialProduct={leadProductFor(L, { directionSlug: d.slug, fallback: c.name })} /></div>
         </div>
       </section>
 

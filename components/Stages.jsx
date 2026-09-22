@@ -11,7 +11,8 @@ import { href } from '../lib/lang';
 //
 // Цифры в квадратных скобках макета — [7] дней, [N] тонн, [14–28] дней —
 // PLACEHOLDER (Умид: «пока фейковые, потом заменим оригиналом»). Остальное —
-// факты сайта: замер 24 ч, монтаж до 300 м² за день, гарантия 10 лет, 5 минут.
+// факты сайта: замер 24 ч, план и КП в день замера, монтаж до 300 м² за день,
+// гарантия 10 лет, 5 минут.
 
 const TOTAL_DAYS = 7; // подтверждено Умидом 22.09: один срок на весь сайт
 const STOCK_TONS = '150'; // подтверждено Умидом 22.09
@@ -59,7 +60,7 @@ const COPY = {
     inStock: 'Всё в наличии',
     steps: [
       { n: '01 · 1 день', t: 'Замер', d: 'Бесплатный выезд в течение 24 часов. Меряем помещение, высоту, проёмы и нагрузку на пол.', r: 'План помещения с размерами' },
-      { n: '02 · 1–2 дня', t: 'Проект и смета', d: 'Расставляем стеллажи под ваш товар и технику, считаем паллетоместа.', r: '3D-расстановку и точную смету — сумма фиксируется в договоре' },
+      { n: '02 · в день замера', t: 'Проект и смета', d: 'Расставляем стеллажи под ваш товар и технику, считаем паллетоместа. План, 3D-модель и КП отдаём в тот же день.', r: '3D-расстановку и точную смету — сумма фиксируется в договоре' },
       { n: '03 · 1 день', t: 'Комплектация со склада', d: 'Собираем заказ с нашего склада в Ташкенте. Всё уже на месте — ждать нечего.', r: 'Комплект и доставку на объект' },
       { n: '04 · 1–3 дня', t: 'Монтаж', d: 'Собираем и анкеруем к полу. До 300 м² — за 1 день. По Ташкенту бесплатно.', r: 'Акт сдачи, инструктаж персонала и гарантию 10 лет по договору' },
     ],
@@ -91,7 +92,7 @@ const COPY = {
     inStock: 'Hammasi mavjud',
     steps: [
       { n: '01 · 1 kun', t: 'Oʻlchov', d: '24 soat ichida bepul chiqamiz. Xona, balandlik, oʻtish joylari va polga yuklamani oʻlchaymiz.', r: 'Oʻlchamlari bilan xona rejasi' },
-      { n: '02 · 1–2 kun', t: 'Loyiha va smeta', d: 'Stellajlarni tovar va texnikangizga moslab joylashtiramiz, palleta oʻrinlarini hisoblaymiz.', r: '3D joylashuv va aniq smeta — summa shartnomada qayd etiladi' },
+      { n: '02 · oʻlchov kuni', t: 'Loyiha va smeta', d: 'Stellajlarni tovar va texnikangizga moslab joylashtiramiz, palleta oʻrinlarini hisoblaymiz. Reja, 3D model va tijorat taklifini oʻsha kuniyoq beramiz.', r: '3D joylashuv va aniq smeta — summa shartnomada qayd etiladi' },
       { n: '03 · 1 kun', t: 'Ombordan butlash', d: 'Buyurtmani Toshkentdagi omborimizdan yigʻamiz. Hammasi joyida — kutish shart emas.', r: 'Toʻliq komplekt va obyektga yetkazib berish' },
       { n: '04 · 1–3 kun', t: 'Montaj', d: 'Yigʻamiz va polga ankerlaymiz. 300 m² gacha — 1 kunda. Toshkent boʻylab bepul.', r: 'Topshirish dalolatnomasi, xodimlar uchun yoʻriqnoma va shartnoma boʻyicha 10 yil kafolat' },
     ],

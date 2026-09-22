@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Header from "../../../../components/Header";
 import Footer from "../../../../components/Footer";
+import { leadProductFor } from "../../../../lib/leadProduct";
 import LeadForm from "../../../../components/LeadForm";
 import { IcoCheck, IcoArrow } from "../../../../components/Icons";
 import { PRODUCTS, getProduct, formatPrice, isProjectPriced } from "../../../../lib/products";
@@ -282,7 +283,8 @@ export default async function ProductPage({ params }) {
             </p>
           </div>
           <div className="w-full max-w-md lg:justify-self-end">
-            <LeadForm lang={L} />
+            {/* Тип стеллажей уже выбран покупателем — подставляем его в форму */}
+            <LeadForm lang={L} initialProduct={leadProductFor(L, { directionSlug: p.directionSlug, fallback: c.short })} />
           </div>
         </div>
       </section>

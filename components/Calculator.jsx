@@ -36,12 +36,12 @@ const CT = {
   ru: { step: 'Шаг', of: 'из', back: '← Назад', contactQ: 'Куда прислать расчёт?',
     contactSub: 'Оставьте телефон — менеджер посчитает стоимость и ответит за 5 минут. Ни к чему не обязывает.',
     name: 'Ваше имя', phone: 'Телефон *', submit: 'Получить расчёт', sending: 'Отправляем…',
-    okTitle: 'Заявка принята!', okText: 'Менеджер подготовит расчёт и свяжется с вами — обычно отвечаем в течение 5 минут. Замер и проект — бесплатно, за 24 часа.',
+    okTitle: 'Заявка принята!', okText: 'Менеджер подготовит расчёт и свяжется с вами — обычно отвечаем в течение 5 минут. Замер и проект — бесплатно, план и точная цена в день замера.',
     callOr: 'Или позвоните:', err: 'Ошибка. Позвоните:', consent: 'Нажимая кнопку, вы соглашаетесь на обработку персональных данных' },
   uz: { step: 'Bosqich', of: '/', back: '← Orqaga', contactQ: 'Hisobni qayerga yuboraylik?',
     contactSub: 'Telefon qoldiring — menejer narxni hisoblab, 5 daqiqada javob beradi. Hech narsaga majbur qilmaydi.',
     name: 'Ismingiz', phone: 'Telefon *', submit: 'Hisobni olish', sending: 'Yuborilmoqda…',
-    okTitle: 'Ariza qabul qilindi!', okText: 'Menejer hisob-kitobni tayyorlab, siz bilan bogʻlanadi — odatda 5 daqiqada javob beramiz. Oʻlchov va loyiha — bepul, 24 soatda.',
+    okTitle: 'Ariza qabul qilindi!', okText: 'Menejer hisob-kitobni tayyorlab, siz bilan bogʻlanadi — odatda 5 daqiqada javob beramiz. Oʻlchov va loyiha — bepul, reja va aniq narx oʻlchov kuni.',
     callOr: 'Yoki qoʻngʻiroq qiling:', err: 'Xatolik. Qoʻngʻiroq qiling:', consent: 'Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz' },
 };
 
