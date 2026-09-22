@@ -28,6 +28,7 @@ export default function sitemap() {
     ...PRODUCTS.flatMap((p) => entry(`/katalog/${p.slug}`, now, 'weekly', 0.9)),
     ...entry('/o-kompanii', now, 'monthly', 0.7),
     ...entry('/kontakty', now, 'monthly', 0.7),
+    ...entry('/otzyvy', new Date('2026-09-22'), 'monthly', 0.7),
     ...POLICY_SLUGS.flatMap((s) => entry(`/${s}`, now, 'yearly', 0.4)),
     ...entry('/blog', now, 'weekly', 0.8),
     ...entry('/experts', now, 'monthly', 0.6),

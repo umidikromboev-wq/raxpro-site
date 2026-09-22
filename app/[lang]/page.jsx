@@ -11,13 +11,14 @@ import VideoHero from "../../components/hero/VideoHero";
 import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
 import PriceBreakdown from "../../components/PriceBreakdown";
 import Stages from "../../components/Stages";
+import WhyRaxPro from "../../components/WhyRaxPro";
 import { SplitHead, Eyebrow } from "../../components/Section";
 import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
 import { T, EXTRA, normalizeLang } from "../../lib/i18n";
 import Faq from "../../components/Faq";
 import { getLatest, localize } from "../../lib/articles";
 import { organizationSchema, JsonLd } from "../../lib/schema";
-import { REVIEWS, localizeReview } from "../../lib/reviews";
+import { REVIEWS, featuredReviews, localizeReview } from "../../lib/reviews";
 import CaseSlider from "../../components/CaseSlider";
 import Reviews from "../../components/Reviews";
 import { CASES, localizeCase } from "../../lib/cases";
@@ -75,15 +76,6 @@ const DIR_META = [
   // Шестая карточка — мезонин: страницы направления нет, ведёт в карточку каталога
   { Ico: IcoLayers, img: "/products/gen/mezzanine-1.jpg", href: "/katalog/mezonin" },
 ];
-const ADV_ICONS = [
-  IcoShield,
-  IcoWeight,
-  IcoFactory,
-  IcoWeight,
-  IcoWrench,
-  IcoClock,
-];
-const INC_ICONS = [IcoLayers, IcoShield, IcoShop];
 
 /** «32 отзыва» / «21 отзыв» / «5 отзывов»; uz — без склонений. */
 function reviewsWord(n, lang) {
@@ -113,10 +105,10 @@ export default async function Home({ params, searchParams }) {
   };
   const cards = directionCards(L);
   const directions = t.directions.map((d, i) => ({ ...d, ...DIR_META[i], ...cards[i] }));
-  const adv = t.adv.map((a, i) => ({ ...a, Ico: ADV_ICONS[i] }));
-  const income = t.income.map((a, i) => ({ ...a, Ico: INC_ICONS[i] }));
   const cases = CASES.map((c) => localizeCase(c, L));
-  const reviews = REVIEWS.map((r) => localizeReview(r, L));
+  // На главной — только отзывы с конкретикой; все 31 — на /otzyvy
+  const reviewsTotal = REVIEWS.length;
+  const reviews = featuredReviews().map((r) => localizeReview(r, L));
 
   const certificates = [
     {
@@ -296,33 +288,8 @@ export default async function Home({ params, searchParams }) {
       {/* STAGES — «Этапы и сроки»: карточки проявляются по скроллу (components/Stages) */}
       <Stages lang={L} />
 
-      {/* INCOME */}
-      <section className="bg-cloud-50 border-y border-cloud-200">
-        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
-          <SplitHead
-            eyebrow={t.incEyebrow}
-            title={t.incTitle}
-            desc={t.incText}
-          />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-            {income.map((a, i) => (
-              <Reveal key={a.t} delay={i * 70}>
-                <div className="h-full rounded-xl2 bg-white border border-cloud-200 shadow-card p-6">
-                  <div className="w-12 h-12 rounded-xl bg-brand-grad text-white grid place-items-center shadow-glow">
-                    <a.Ico className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-bold text-lg text-navy-800 mt-4">
-                    {a.t}
-                  </h3>
-                  <p className="text-slate-500 text-sm mt-2 leading-relaxed">
-                    {a.d}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* WHY RAXPRO — bento по макету: вместимость, наличие, гарантия, безопасность… + CTA (components/WhyRaxPro) */}
+      <WhyRaxPro lang={L} />
 
       {/* COMPARISON — factory vs artisan: два крупных плана узла, под каждым — своя колонка */}
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
@@ -422,57 +389,6 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
-      {/* ADVANTAGES */}
-      <section
-        id="preimushchestva"
-        className="bg-cloud-50 border-y border-cloud-200"
-      >
-        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
-          <SplitHead
-            eyebrow={t.advEyebrow}
-            title={t.advTitle}
-            desc={t.advText}
-          />
-          {/* Bento — first advantage is a large dark feature card, rest varied */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 lg:auto-rows-[1fr]">
-            {adv.map((a, i) => {
-              const big = i === 0;
-              return (
-                <Reveal
-                  key={a.t}
-                  delay={i * 60}
-                  className={big ? "sm:col-span-2 lg:row-span-2" : ""}
-                >
-                  {big ? (
-                    <div className="relative h-full rounded-xl2 bg-navy-900 text-white p-8 overflow-hidden flex flex-col justify-between min-h-[240px]">
-                      <div className="absolute inset-0 bg-brand-grad opacity-90" />
-                      <div className="absolute inset-0 grid-lines opacity-25" />
-                      <div className="relative">
-                        <a.Ico className="w-10 h-10 text-white" />
-                        <h3 className="font-display font-medium text-2xl sm:text-3xl mt-6 leading-tight">
-                          {a.t}
-                        </h3>
-                      </div>
-                      <p className="relative text-white/85 mt-4 leading-relaxed max-w-md">
-                        {a.d}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="h-full rounded-xl2 bg-white border border-cloud-200 p-6 hover:border-sky-300 hover:shadow-card transition">
-                      <a.Ico className="w-8 h-8 text-sky-600" />
-                      <h3 className="font-bold text-navy-800 mt-4">{a.t}</h3>
-                      <p className="text-slate-500 text-sm mt-2 leading-relaxed">
-                        {a.d}
-                      </p>
-                    </div>
-                  )}
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* FOUNDER */}
       <section
         id="osnovatel"
@@ -506,18 +422,11 @@ export default async function Home({ params, searchParams }) {
                 <p key={i}>{p}</p>
               ))}
             </div>
-            <div className="mt-7">
-              <div className="text-slate-400 text-sm mb-2">{t.certsLabel}</div>
-              <div className="flex flex-wrap gap-2.5">
-                {ISO_CERTS.map((c) => (
-                  <span
-                    key={c}
-                    className="inline-flex items-center gap-2 rounded-lg bg-cloud-50 border border-cloud-200 px-3.5 py-2 text-sm font-semibold text-navy-800"
-                  >
-                    <IcoShield className="w-4 h-4 text-sky-600" /> {c}
-                  </span>
-                ))}
-              </div>
+            <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+              <span className="inline-flex items-center gap-2 text-slate-600"><IcoShield className="w-4 h-4 text-sky-600 shrink-0" /> {t.certsLabel}</span>
+              <a href="#sertifikaty" className="inline-flex items-center gap-1.5 font-bold text-navy-900 border-b-2 border-sky-500 pb-0.5 hover:text-sky-600 transition">
+                {t.certsLink} <IcoArrow className="w-4 h-4" />
+              </a>
             </div>
           </div>
         </div>
@@ -547,13 +456,13 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
-      {/* REVIEWS — один блок: видеоинтервью + цитаты из переписок и голосовых с фото объекта */}
+      {/* REVIEWS — витрина: отобранные видео и цитаты без фото, ссылка на страницу всех отзывов */}
       <section id="otzyvy" className="bg-cloud-50 border-y border-cloud-200 overflow-hidden">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
           <div className="grid lg:grid-cols-[auto,1fr] gap-8 lg:gap-14 items-end">
             <div className="flex items-baseline gap-3">
-              <span className="font-display font-medium text-[88px] sm:text-[120px] leading-none tracking-tight text-navy-900">{reviews.length}</span>
-              <span className="text-slate-500 text-lg leading-tight max-w-[120px]">{reviewsWord(reviews.length, L)}</span>
+              <span className="font-display font-medium text-[88px] sm:text-[120px] leading-none tracking-tight text-navy-900">{reviewsTotal}</span>
+              <span className="text-slate-500 text-lg leading-tight max-w-[120px]">{reviewsWord(reviewsTotal, L)}</span>
             </div>
             <div>
               <Eyebrow>{t.revEyebrow}</Eyebrow>
@@ -563,38 +472,33 @@ export default async function Home({ params, searchParams }) {
               <p className="mt-3 text-slate-500 max-w-xl">{t.revText}</p>
             </div>
           </div>
-          <Reviews items={reviews} lang={L} />
+          <Reviews items={reviews} lang={L} allHref={href(L, "/otzyvy")} total={reviewsTotal} />
         </div>
       </section>
 
-      {/* NEW CERTIFICATES SECTION */}
-      <section className="w-full px-5 sm:px-8  py-16 sm:py-20 bg-[#f8fafc]">
-        <div className="text-center max-w-4xl mx-auto mb-12">
-          <h2 className="font-display font-medium text-3xl sm:text-4xl text-navy-800 tracking-tight">
-            {L === "uz" ? "Bizning Sertifikatlar" : "Наши Сертификаты"}
-          </h2>
-        </div>
-
-        {/* Certificates Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1340px] mx-auto">
-          {certificates.map((cert, idx) => (
-            <Reveal key={cert.id} delay={idx * 60}>
-              <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-between h-full group hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300">
-                <div className="w-full aspect-[4/5] bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center border border-slate-200/60">
-                  <img loading="lazy" decoding="async"
-                    src={cert.img}
-                    alt={cert.title}
-                    width={1336}
-                    height={1670}
-                    className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.02]"
-                  />
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+      {/* CERTIFICATES — одна строка про завод-производитель, сканы раскрываются по кнопке */}
+      <section id="sertifikaty" className="bg-white border-y border-cloud-200">
+        <details className="group/certs w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-8 sm:py-10">
+          <summary className="list-none cursor-pointer flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 [&::-webkit-details-marker]:hidden">
+            <span className="flex items-center gap-3 flex-1">
+              <span className="w-10 h-10 rounded-xl bg-cloud-50 border border-cloud-200 grid place-items-center text-sky-600 shrink-0"><IcoShield className="w-5 h-5" /></span>
+              <span className="font-semibold text-navy-900">{t.certsLabel}</span>
+            </span>
+            <span className="btn-11 inline-flex items-center gap-2 border border-navy-800 text-navy-800 font-semibold px-5 py-2.5 rounded-xl group-hover/certs:bg-navy-800 group-hover/certs:text-white transition shrink-0">
+              <span className="group-open/certs:hidden">{t.certsLink}</span>
+              <span className="hidden group-open/certs:inline">{t.certsHide}</span>
+              <IcoArrow className="w-4 h-4 group-open/certs:-rotate-90 transition" />
+            </span>
+          </summary>
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {certificates.map((cert) => (
+              <a key={cert.id} href={cert.img} target="_blank" rel="noopener" className="block rounded-xl border border-cloud-200 bg-cloud-50 overflow-hidden hover:border-sky-300 hover:shadow-card transition" title={cert.title}>
+                <img loading="lazy" decoding="async" src={cert.img} alt={cert.title} width={1336} height={1670} className="w-full h-auto object-contain" />
+              </a>
+            ))}
+          </div>
+        </details>
       </section>
-
 
       {/* BLOG */}
       <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">

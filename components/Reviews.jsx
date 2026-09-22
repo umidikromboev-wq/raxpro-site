@@ -1,22 +1,32 @@
 'use client';
 import { useState } from 'react';
-import { IcoQuote } from './Icons';
+import { IcoQuote, IcoArrow } from './Icons';
 
-// Один блок отзывов: видеоинтервью лентой, ниже — цитаты из переписок и
-// голосовых с фото объекта. Данные уже локализованы (lib/reviews.js).
+// Блок отзывов: видеоинтервью лентой, ниже — цитаты из переписок и голосовых.
+// Только текст, без фото объектов — карточки одной высоты ритма. Данные уже
+// локализованы (lib/reviews.js). С `allHref` блок работает как витрина для
+// главной: показывает всё, что передали, и ведёт на страницу всех отзывов.
+
+// «31 отзыв» / «22 отзыва» / «5 отзывов»
+function plural(n, [one, few, many]) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+}
 
 const UI = {
   ru: {
-    videos: 'Видеоотзывы', play: 'Смотреть отзыв', voice: 'Голосовое сообщение', chat: 'Из переписки',
-    more: (n) => `Показать ещё ${n}`, less: 'Свернуть', photo: 'Фото объекта', count: (n) => `${n} отзыва`,
+    videos: 'Видеоотзывы', texts: 'Из переписок и голосовых', play: 'Смотреть отзыв',
+    voice: 'Голосовое сообщение', chat: 'Из переписки',
+    all: (n) => `Все ${n} ${plural(n, ['отзыв', 'отзыва', 'отзывов'])}`, allNote: 'Видео, переписки и голосовые — без купюр',
   },
   uz: {
-    videos: 'Videosharhlar', play: 'Sharhni koʻrish', voice: 'Ovozli xabar', chat: 'Yozishmadan',
-    more: (n) => `Yana ${n} tasini koʻrsatish`, less: 'Yigʻish', photo: 'Obyekt surati', count: (n) => `${n} ta sharh`,
+    videos: 'Videosharhlar', texts: 'Yozishmalar va ovozli xabarlardan', play: 'Sharhni koʻrish',
+    voice: 'Ovozli xabar', chat: 'Yozishmadan',
+    all: (n) => `Barcha ${n} ta sharh`, allNote: 'Video, yozishma va ovozli xabarlar — toʻliq',
   },
 };
-
-const INITIAL_TEXT = 9;
 
 function IcoPlay(p) { return <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M8 5.5v13l11-6.5z" /></svg>; }
 function IcoMic(p) { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" {...p}><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>; }
@@ -51,59 +61,58 @@ function VideoCard({ r, u }) {
 function TextCard({ r, u }) {
   const Badge = r.kind === 'voice' ? IcoMic : IcoChat;
   return (
-    <figure className="break-inside-avoid mb-5 rounded-xl2 bg-white border border-cloud-200 shadow-card overflow-hidden">
-      {r.photos?.[0] && (
-        <div className="relative aspect-[4/3] bg-cloud-100">
-          <img src={r.photos[0]} alt={`${u.photo} — ${r.name}`} width={800} height={600} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
-        </div>
-      )}
-      <div className="p-6">
-        <div className="flex items-center justify-between">
-          <IcoQuote className="w-8 h-8 text-sky-500/30" />
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-            <Badge className="w-3.5 h-3.5" /> {r.kind === 'voice' ? u.voice : u.chat}
-          </span>
-        </div>
-        <blockquote className="mt-3 text-slate-700 leading-relaxed">{r.text}</blockquote>
-        <figcaption className="mt-5 pt-4 border-t border-cloud-200 flex items-center gap-3">
-          <span className="w-10 h-10 rounded-full bg-brand-grad text-white grid place-items-center font-display font-medium shrink-0">{r.name.charAt(0)}</span>
-          <span className="min-w-0">
-            <span className="block font-bold text-navy-800 leading-tight truncate">{r.name}</span>
-            <span className="block text-slate-400 text-sm mt-0.5 truncate">{r.role}</span>
-          </span>
-        </figcaption>
+    <figure className="h-full flex flex-col rounded-xl2 bg-white border border-cloud-200 shadow-card p-6">
+      <div className="flex items-center justify-between">
+        <IcoQuote className="w-8 h-8 text-sky-500/30" />
+        <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          <Badge className="w-3.5 h-3.5" /> {r.kind === 'voice' ? u.voice : u.chat}
+        </span>
       </div>
+      <blockquote className="mt-3 text-slate-700 leading-relaxed flex-1">{r.text}</blockquote>
+      <figcaption className="mt-5 pt-4 border-t border-cloud-200 flex items-center gap-3">
+        <span className="w-10 h-10 rounded-full bg-brand-grad text-white grid place-items-center font-display font-medium shrink-0">{r.name.charAt(0)}</span>
+        <span className="min-w-0">
+          <span className="block font-bold text-navy-800 leading-tight truncate">{r.name}</span>
+          <span className="block text-slate-400 text-sm mt-0.5 truncate">{r.role}</span>
+        </span>
+      </figcaption>
     </figure>
   );
 }
 
-export default function Reviews({ items, lang = 'ru' }) {
+export default function Reviews({ items, lang = 'ru', allHref, total }) {
   const u = UI[lang] || UI.ru;
-  const [all, setAll] = useState(false);
   const videos = items.filter((r) => r.kind === 'video');
   const texts = items.filter((r) => r.kind !== 'video');
-  const shown = all ? texts : texts.slice(0, INITIAL_TEXT);
-  const hidden = texts.length - shown.length;
 
   return (
     <div>
       {/* Видео — горизонтальная лента со снапом; на десктопе видно 4–5 карточек */}
-      <div className="mt-10">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 mb-4">{u.videos} · {videos.length}</div>
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 -mx-5 px-5 sm:mx-0 sm:px-0 scrollbar-none">
-          {videos.map((r) => <VideoCard key={r.id} r={r} u={u} />)}
+      {videos.length > 0 && (
+        <div className="mt-10">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 mb-4">{u.videos} · {videos.length}</div>
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 -mx-5 px-5 sm:mx-0 sm:px-0 scrollbar-none">
+            {videos.map((r) => <VideoCard key={r.id} r={r} u={u} />)}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Переписки и голосовые — masonry в 3 колонки */}
-      <div className="mt-10 columns-1 sm:columns-2 lg:columns-3 gap-5">
-        {shown.map((r) => <TextCard key={r.id} r={r} u={u} />)}
-      </div>
-      {texts.length > INITIAL_TEXT && (
-        <div className="flex justify-center mt-2">
-          <button type="button" onClick={() => setAll((v) => !v)} className="btn-11 inline-flex items-center gap-2 border border-navy-800 text-navy-800 font-semibold px-6 py-3 rounded-xl hover:bg-navy-800 hover:text-white transition">
-            {all ? u.less : u.more(hidden)}
-          </button>
+      {/* Переписки и голосовые — ровная сетка, карточки одной высоты в ряду */}
+      {texts.length > 0 && (
+        <div className="mt-10">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 mb-4">{u.texts} · {texts.length}</div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {texts.map((r) => <TextCard key={r.id} r={r} u={u} />)}
+          </div>
+        </div>
+      )}
+
+      {allHref && (
+        <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+          <a href={allHref} className="btn-11 inline-flex items-center justify-center gap-2 bg-navy-900 text-white font-semibold px-6 py-3.5 rounded-xl hover:bg-navy-800 transition">
+            {u.all(total ?? items.length)} <IcoArrow className="w-4 h-4" />
+          </a>
+          <span className="text-sm text-slate-500">{u.allNote}</span>
         </div>
       )}
     </div>

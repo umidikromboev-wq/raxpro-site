@@ -70,7 +70,7 @@ export default function Footer({ lang = 'ru' }) {
     { href: SITE.instagram, label: 'Instagram', Ico: IcoIg },
     { href: SITE.telegram, label: 'Telegram', Ico: IcoTg },
     { href: SITE.whatsapp, label: 'WhatsApp', Ico: IcoWa },
-    { href: SITE.reviewsChannel, label: t.reviews, Ico: IcoStar },
+    { href: href(L, '/otzyvy'), label: t.reviews, Ico: IcoStar, internal: true },
   ].filter((s) => s.href);
 
   return (
@@ -99,8 +99,8 @@ export default function Footer({ lang = 'ru' }) {
           <img loading="lazy" decoding="async" src="/brand/raxpro-logo-white.png" alt="RAXPRO" width={790} height={363} className="h-10 w-auto" />
           <div className="mt-8 text-[11px] font-semibold uppercase tracking-[0.16em] text-cloud-200/45">{t.follow}</div>
           <div className="flex flex-wrap gap-2.5 mt-4">
-            {socials.map(({ href: h, label, Ico }) => (
-              <a key={label} href={h} target="_blank" rel="noopener noreferrer" aria-label={label} title={label} className="w-11 h-11 grid place-items-center rounded-full border border-white/15 text-cloud-200 hover:bg-white hover:text-navy-900 hover:border-white transition">
+            {socials.map(({ href: h, label, Ico, internal }) => (
+              <a key={label} href={h} target={internal ? undefined : '_blank'} rel={internal ? undefined : 'noopener noreferrer'} aria-label={label} title={label} className="w-11 h-11 grid place-items-center rounded-full border border-white/15 text-cloud-200 hover:bg-white hover:text-navy-900 hover:border-white transition">
                 <Ico className="w-5 h-5" />
               </a>
             ))}
