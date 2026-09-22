@@ -139,12 +139,14 @@ export default async function Home({ params, searchParams }) {
     <div className="bg-white text-ink">
       <Header lang={L} />
 
-      {/* HERO — скролл-сцена: замер → проект → сборка → загрузка (components/hero) */}
+      {/* HERO — скролл-сцена: замер → проект → сборка → загрузка (components/hero).
+          Главная кнопка ведёт в форму заявки, а не в конструктор (Умид, 22.09):
+          с первого экрана человек оставляет контакт, а не уходит считать сам. */}
       {heroMode === "mp4"
         ? <VideoHeroMp4 lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
         : heroMode === "video"
           ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
-          : <RackHero lang={L} ctaHref={href(L, "/konstruktor")} konHref={href(L, "/konstruktor")} cta2Href={href(L, "/katalog")} />}
+          : <RackHero lang={L} ctaHref="#zayavka" konHref={href(L, "/konstruktor")} cta2Href={href(L, "/katalog")} />}
 
       {/* CLIENTS + NUMBERS — один белый блок: цифра в заголовке, факты сеткой, логотипы как мини-кейсы */}
       <section className="bg-white border-b border-cloud-200" aria-labelledby="clients-title">
