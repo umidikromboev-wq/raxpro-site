@@ -84,7 +84,7 @@ export default function Footer({ lang = 'ru' }) {
           </h2>
           <p className="mt-6 text-cloud-200/65 max-w-md text-base sm:text-lg">{t.sub}</p>
         </div>
-        <a href={home + '#kalkulyator'} className="inline-flex items-center gap-4 self-start lg:self-end rounded-full bg-white text-navy-900 font-bold text-sm sm:text-base pl-7 pr-1.5 py-1.5 hover:bg-sky-100 transition">
+        <a href={home + '#kalkulyator'} className="inline-flex items-center gap-4 self-start justify-self-start lg:self-end lg:justify-self-end rounded-full bg-white text-navy-900 font-bold text-sm sm:text-base pl-7 pr-1.5 py-1.5 hover:bg-sky-100 transition">
           {t.cta}
           <span className="w-12 h-12 rounded-full bg-navy-900 text-white grid place-items-center"><IcoArrow className="w-5 h-5" /></span>
         </a>

@@ -36,23 +36,24 @@ export default function SpecialistsSection({ t }) {
       </div>
 
       {/* --- MOBIL KO'RINISH (Pastma-past, 1 ustun) --- */}
-      <div className="grid grid-cols-1 gap-6 sm:hidden w-full">
+      {/* Телефон: основатель одним рядом на всю ширину, остальные — по двое (правка 22.09) */}
+      <div className="grid grid-cols-2 gap-3 sm:hidden w-full">
         {specialists.map((person, idx) => (
-          <div key={person.id || idx} className="w-full">
+          <div key={person.id || idx} className={idx === 0 ? "col-span-2" : ""}>
             <Reveal delay={(idx % 4) * 80}>
-              <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden group shadow-sm">
+              <div className={`relative ${idx === 0 ? "aspect-[4/5] rounded-[2rem]" : "aspect-[3/4] rounded-2xl"} overflow-hidden group shadow-sm`}>
                 <img loading="lazy" decoding="async"
                   src={person.img || "/images/team/xurshidbek.jpg"}
                   alt={person.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute bottom-0 left-0 z-30 p-4 w-full pointer-events-none">
-                  <div className="bg-white text-navy-900 py-3 px-4 rounded-2xl shadow-lg w-full pointer-events-auto leading-tight">
-                    <div className="font-semibold text-sm sm:text-base">
+                <div className={`absolute bottom-0 left-0 z-30 w-full pointer-events-none ${idx === 0 ? "p-4" : "p-2"}`}>
+                  <div className={`bg-white text-navy-900 shadow-lg w-full pointer-events-auto leading-tight ${idx === 0 ? "py-3 px-4 rounded-2xl" : "py-2 px-3 rounded-xl"}`}>
+                    <div className={`font-semibold ${idx === 0 ? "text-sm" : "text-[13px]"}`}>
                       {person.name}
                     </div>
                     {person.role && (
-                      <div className="text-xs text-slate-500 mt-1 font-normal">
+                      <div className={`text-slate-500 mt-0.5 font-normal ${idx === 0 ? "text-xs" : "text-[11px] line-clamp-2"}`}>
                         {person.role}
                       </div>
                     )}
