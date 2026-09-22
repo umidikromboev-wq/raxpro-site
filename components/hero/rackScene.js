@@ -199,7 +199,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
       sprite.scale.copy(sprite.userData.baseScale).multiplyScalar(hide ? 0.0001 : k);
     });
   }
-  let aspect = 1, lastProgress = -1;
+  let aspect = 1, width = 1, lastProgress = -1;
   function cameraLayout(progress) {
     const end = Math.max(0, (progress - 0.94) / 0.06);
     if (aspect < 1) {
@@ -220,10 +220,12 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     activeCamera = portrait; scene.fog = fog;
     portrait.aspect = aspect; portrait.fov = ORBIT_FOV * (1 + end * 0.04);
     const target = [0, c.ty, 0];
+    // Маленький холст (телефон, модель под текстом): камера ближе, иначе стеллаж — пятно в углу
+    const dist = c.dist * (width < 700 ? 0.78 : 1);
     portrait.position.set(
-      target[0] + c.dist * Math.cos(c.el) * Math.cos(c.az),
-      target[1] + c.dist * Math.sin(c.el),
-      target[2] + c.dist * Math.cos(c.el) * Math.sin(c.az),
+      target[0] + dist * Math.cos(c.el) * Math.cos(c.az),
+      target[1] + dist * Math.sin(c.el),
+      target[2] + dist * Math.cos(c.el) * Math.sin(c.az),
     );
     portrait.lookAt(...target); portrait.updateProjectionMatrix();
   }
@@ -294,7 +296,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     return { ...s, filled, floorPositions: floorCount, introMoving: intro < 1 && s.people > 0.01 };
   }
   function resize(w, h) {
-    aspect = w / Math.max(h, 1); renderer.setSize(w, h, false); scaleLabels();
+    aspect = w / Math.max(h, 1); width = w; renderer.setSize(w, h, false); scaleLabels();
     cameraLayout(lastProgress < 0 ? 0 : lastProgress);
   }
   function dispose() {

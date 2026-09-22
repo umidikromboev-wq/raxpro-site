@@ -4,12 +4,10 @@ import Script from "next/script";
 import FloatingContact from "../../components/FloatingContact";
 import SmoothScroll from "../../components/SmoothScroll";
 import ScrollProgress from "../../components/ScrollProgress";
-import MobileCta from "../../components/MobileCta";
 import { CartProvider } from "../../components/CartProvider";
 import {
   alternatesFor,
   normalizeLang,
-  href,
   LANGS,
   SITE_ORIGIN,
 } from "../../lib/lang";
@@ -252,8 +250,8 @@ export default async function RootLayout({ children, params }) {
             переживать переходы между каталогом и карточкой товара. */}
         <CartProvider>
           {children}
+          {/* Фиксированная панель «Рассчитать / Позвонить» на телефоне убрана (Умид, 22.09) — остаётся только виджет */}
           <FloatingContact />
-          <MobileCta lang={lang} calcHref={href(lang, "/") + "#kalkulyator"} />
         </CartProvider>
       </body>
     </html>

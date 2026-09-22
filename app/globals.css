@@ -391,6 +391,9 @@ html {
 .rack-actions { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 [data-mode='live'] .rack-actions--stages { position: absolute; bottom: 0; left: 0; margin: 0; opacity: 0; visibility: hidden; }
 [data-mode='static'] .rack-actions--stages { display: none; }
+/* Обёртка стадий на десктопе прозрачна для раскладки; панель «Замер» — только телефон */
+.rack-stages { display: contents; }
+.rack-stage--measure { display: none; }
 .rack-cta { display: inline-flex; align-items: center; gap: 14px; min-height: 56px; padding: 4px 4px 4px 26px; border-radius: 999px; color: #064679; background: #fff; font-size: 14px; font-weight: 700; transition: background 0.15s; }
 .rack-cta i { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #064679; color: #fff; }
 .rack-cta:hover { background: #eaf6ff; }
@@ -432,66 +435,51 @@ html {
   .rack-facts { margin-top: 20px; }
   .rack-secondary { margin-top: 12px; }
 }
+/* Телефон и планшет (Умид, 22.09): сначала текст на чистом фоне, под ним маленькая
+   3D-модель цеха, которая собирается сама, а не по скроллу; под моделью — заголовки
+   стадий, они сменяются в том же ритме, и таймлайн. Ничего не липнет, высота обычная. */
 @media (max-width: 1023px) {
-  .rack-hero[data-mode='live'] { height: 380svh; }
-  [data-mode='live'] .rack-sticky { min-height: 740px; }
-  .rack-viewport { inset: 0; width: auto; height: auto; }
-  .rack-shade { display: block; background: linear-gradient(180deg, rgba(7, 59, 103, 0.94) 0%, rgba(7, 59, 103, 0.8) 34%, rgba(7, 59, 103, 0.35) 48%, rgba(7, 59, 103, 0) 58%, rgba(7, 59, 103, 0) 70%, rgba(7, 59, 103, 0.8) 84%, rgba(7, 59, 103, 0.95) 100%); }
-  [data-mode='live'] .rack-editorial { top: 104px; left: 6%; right: 6%; width: auto; bottom: auto; height: auto; max-width: none; z-index: 3; }
+  .rack-hero[data-mode='live'] { height: auto; }
+  [data-mode='live'] .rack-sticky { position: relative; top: auto; height: auto; min-height: 0; display: flex; flex-direction: column; padding: 104px 6% 28px; }
+  .rack-viewport { position: relative; inset: auto; order: 2; width: 100%; height: clamp(230px, 62vw, 340px); margin-top: 22px; border-radius: 14px; overflow: hidden; }
+  .rack-shade { display: none; }
+  [data-mode='live'] .rack-editorial { display: contents; }
+  .rack-intro { order: 1; }
+  [data-mode='live'] .rack-intro { opacity: 1 !important; visibility: visible !important; transform: none !important; }
+  .rack-stages { display: block; order: 3; position: relative; min-height: 210px; margin-top: 16px; }
+  [data-mode='live'] .rack-stage { inset: 0 0 auto; }
+  .rack-stage--measure { display: block; }
+  [data-mode='live'] .rack-actions--stages { display: none; }
   .rack-editorial h1, .rack-editorial h2 { font-size: clamp(32px, 5vw, 47px); }
+  .rack-stage h2 { font-size: 24px; }
   .rack-kicker { font-size: 9px; margin-bottom: 15px; }
   .rack-segments { margin-bottom: 14px; gap: 6px; }
   .rack-segments a { font-size: 11px; padding: 6px 11px; }
-  .rack-facts > div { max-width: 120px; }
   .rack-description { margin-top: 14px; max-width: 410px; font-size: 13px; line-height: 1.65; }
-  [data-mode='live'] .rack-actions--stages { top: calc(100svh - 265px); bottom: auto; z-index: 3; }
+  .rack-stage .rack-description { margin-top: 10px; font-size: 12px; }
   .rack-actions--intro { margin-top: 18px; }
   .rack-cta { min-height: 48px; font-size: 12px; padding: 3px 3px 3px 20px; gap: 10px; }
   .rack-cta i { width: 42px; height: 42px; }
   .rack-secondary, .rack-chips, .rack-price { display: none; }
-  .rack-facts { margin-top: 16px; gap: 24px; }
-  [data-mode='live'] .rack-stage h2 { max-width: 100%; }
-  .rack-facts dd { font-size: 25px; }
-  .rack-facts dt { font-size: 10px; }
-  [data-mode='live'] .rack-footer { bottom: 32px; left: 6%; right: 6%; }
-  .rack-navigation { width: 100%; gap: 15px; }
-  .rack-navigation button { font-size: 10px; min-height: 44px; padding-bottom: 14px; }
-  .rack-navigation button > span { font-size: 9px; margin-right: 5px; }
-  .rack-scroll-hint { display: none; }
-  .rack-capacity { right: 6%; bottom: 218px; width: 130px; padding: 10px 12px; z-index: 3; }
-  .rack-capacity-label { font-size: 8px; }
-  .rack-capacity strong { font-size: 32px; }
-  .rack-capacity div > span { font-size: 16px; }
-  [data-mode='static'] .rack-editorial { max-width: 100%; padding: 130px 6% 30px; }
-  [data-mode='static'] .rack-facts { position: static; flex-direction: row; margin-top: 20px; }
-  [data-mode='static'] .rack-viewport { inset: 0; }
-}
-@media (max-width: 600px) {
-  [data-mode='live'] .rack-sticky { min-height: 0; }
-  [data-mode='live'] .rack-editorial { top: 108px; }
-  .rack-editorial h1, .rack-editorial h2 { font-size: 32px; }
-  [data-mode='live'] .rack-stage h2 { font-size: 31px; }
-  [data-mode='live'] .rack-stage h2, [data-mode='live'] .rack-stage .rack-description { max-width: 100%; }
-  .rack-stage .rack-description { font-size: 11px; line-height: 1.6; max-width: 330px; }
-  .rack-facts { position: static; flex-direction: row; gap: 30px; margin-top: 16px; }
+  .rack-facts { position: static; flex-direction: row; gap: 24px; margin-top: 14px; }
   .rack-facts > div { max-width: 150px; gap: 3px; }
   .rack-facts dd { font-size: 23px; }
   .rack-facts dt { font-size: 9px; }
-  [data-mode='live'] .rack-actions--stages { top: calc(100svh - 354px); bottom: auto; }
-  [data-mode='live'] .rack-footer { bottom: 84px; }
-  .rack-capacity { display: none; }
-  .rack-navigation { gap: 10px; width: calc(100% - 58px); }
-  .rack-navigation button { font-size: 9px; }
-  .rack-navigation button > span { display: block; margin: 0 0 4px; }
+  .rack-capacity, .rack-scroll-hint { display: none; }
+  [data-mode='live'] .rack-footer { position: relative; order: 4; bottom: auto; left: auto; right: auto; padding: 6px 0 0; }
+  .rack-navigation { width: 100%; gap: 10px; }
+  .rack-navigation button { font-size: 9px; min-height: 44px; padding-bottom: 14px; }
+  .rack-navigation button > span { display: block; font-size: 9px; margin: 0 0 4px; }
+  /* Запасной режим без WebGL: те же блоки столбиком, стадии не накладываются */
+  [data-mode='static'] .rack-sticky { display: flex; flex-direction: column; padding: 104px 6% 28px; }
+  [data-mode='static'] .rack-editorial { display: contents; }
+  [data-mode='static'] .rack-stage { position: static; margin-top: 22px; }
+  [data-mode='static'] .rack-stages { order: 3; }
+  [data-mode='static'] .rack-footer { order: 4; padding: 0; }
 }
 @media (max-width: 600px) and (max-height: 740px) {
-  [data-mode='live'] .rack-editorial { top: 99px; }
-  .rack-editorial h1, .rack-editorial h2, [data-mode='live'] .rack-stage h2 { font-size: 27px; }
+  .rack-editorial h1 { font-size: 28px; }
   .rack-kicker { margin-bottom: 10px; }
-  .rack-stage .rack-description { margin-top: 10px; font-size: 10px; }
-  .rack-facts { margin-top: 10px; }
-  .rack-facts dd { font-size: 19px; }
-  [data-mode='live'] .rack-actions--stages { top: calc(100svh - 341px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .rack-hero *, .rack-hero *::before, .rack-hero *::after { animation: none !important; transition: none !important; }

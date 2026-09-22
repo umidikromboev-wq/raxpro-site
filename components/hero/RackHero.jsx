@@ -16,11 +16,26 @@ const Actions = ({ copy, ctaHref, cta2Href, innerRef, className = '' }) => (
 );
 
 const STOPS = [0, 0.23, 0.57, 1];
+// Телефон: сцена собирается сама, без скролла. Вперёд ~11 с, пауза на готовом складе,
+// быстрый откат и снова. Заголовки стадий и таймлайн идут по тому же прогрессу.
+const AUTO = { forward: 11000, hold: 2800, back: 1200, rest: 500 };
+const AUTO_TOTAL = AUTO.forward + AUTO.hold + AUTO.back + AUTO.rest;
+const easeInOutSine = (t) => 0.5 - 0.5 * Math.cos(Math.PI * t);
+function autoProgress(ms) {
+  const t = ms % AUTO_TOTAL;
+  if (t < AUTO.forward) return easeInOutSine(t / AUTO.forward);
+  if (t < AUTO.forward + AUTO.hold) return 1;
+  if (t < AUTO.forward + AUTO.hold + AUTO.back) return 1 - easeInOutSine((t - AUTO.forward - AUTO.hold) / AUTO.back);
+  return 0;
+}
+/** Сколько мс от начала цикла даёт нужный прогресс на прямом ходе. */
+const autoTimeFor = (p) => (Math.acos(1 - 2 * Math.min(1, Math.max(0, p))) / Math.PI) * AUTO.forward;
 export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Href = '#zayavka', konHref = '/ru/konstruktor' }) {
   const copy = HERO_COPY[lang] || HERO_COPY.ru;
   const positions = countPositions(), floor = floorPositions();
   const sectionRef = useRef(null), canvasRef = useRef(null), introRef = useRef(null), stageActionsRef = useRef(null);
   const panels = useRef({}), navigationRef = useRef(null), capacityRef = useRef(null), filledRef = useRef(null);
+  const measureRef = useRef(null), jumpRef = useRef(null);
   // Раскладка «live» рендерится сразу на сервере: интро и таймлайн на месте, стадии скрыты,
   // холст прозрачный, пока сцена не собрана (`ready`). Раньше стартовали со «static» — на секунду
   // загрузки three.js показывались постер-картинка и все четыре стадии столбиком, потом всё
@@ -33,9 +48,19 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
     if (!canvas || !section) return;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (motion.matches) { setMode('static'); return; }
+    // До 1024px сцена маленькая, под текстом, и собирается сама (см. CSS @media 1023px)
+    const auto = window.matchMedia('(max-width: 1023px)').matches;
     let disposed = false, api = null, raf = 0, observer = null;
     let lastProgress = -1, visible = true;
     let start = performance.now();
+    const setNavigation = (p) => {
+      const current = p < 0.055 ? 0 : p < 0.28 ? 1 : p < 0.66 ? 2 : 3;
+      navigationRef.current?.querySelectorAll('button').forEach((button, index) => {
+        button.dataset.active = String(index === current);
+        button.dataset.done = String(index < current);
+        if (index === current) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
+      });
+    };
     const progress = () => {
       const rect = section.getBoundingClientRect();
       const travel = section.offsetHeight - section.querySelector('.rack-sticky').offsetHeight;
@@ -59,12 +84,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
         show(introRef.current, state.intro);
         show(stageActionsRef.current, 1 - state.intro);
         for (const key of STAGE_ORDER) show(panels.current[key], state.panels[key]);
-        const current = p < 0.055 ? 0 : p < 0.28 ? 1 : p < 0.66 ? 2 : 3;
-        navigationRef.current?.querySelectorAll('button').forEach((button, index) => {
-          button.dataset.active = String(index === current);
-          button.dataset.done = String(index < current);
-          if (index === current) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
-        });
+        setNavigation(p);
         if (capacityRef.current) {
           capacityRef.current.style.opacity = String(state.panels.load);
           capacityRef.current.style.setProperty('--filled', `${state.filled / positions * 100}%`);
@@ -74,7 +94,22 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
       }
       if (state.introMoving) raf = requestAnimationFrame(loop);
     };
-    const kick = () => { if (!raf && !disposed) raf = requestAnimationFrame(loop); };
+    // Телефон: прогресс идёт от времени, интро не гаснет, стадии сменяются под моделью
+    const loopAuto = () => {
+      raf = 0;
+      if (!api || disposed || !visible || document.hidden) return;
+      const now = performance.now();
+      const p = autoProgress(now - start);
+      const state = api.update(p, (now - start) / 1000);
+      api.render();
+      show(measureRef.current, state.intro);
+      for (const key of STAGE_ORDER) show(panels.current[key], state.panels[key]);
+      setNavigation(p);
+      raf = requestAnimationFrame(loopAuto);
+    };
+    const tick = auto ? loopAuto : loop;
+    const kick = () => { if (!raf && !disposed) raf = requestAnimationFrame(tick); };
+    jumpRef.current = auto ? (index) => { start = performance.now() - autoTimeFor(STOPS[index]); kick(); } : null;
     const resize = () => {
       if (!api) return;
       api.resize(canvas.clientWidth, canvas.clientHeight); lastProgress = -1; kick();
@@ -101,7 +136,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
         observer = new ResizeObserver(resize); observer.observe(canvas);
         intersection = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) kick(); });
         intersection.observe(section);
-        window.addEventListener('scroll', kick, { passive: true });
+        if (!auto) window.addEventListener('scroll', kick, { passive: true });
         document.addEventListener('visibilitychange', kick);
         canvas.addEventListener('webglcontextlost', contextLost);
         motion.addEventListener('change', motionChanged);
@@ -119,6 +154,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
   }, [lang, positions]);
 
   const jump = (index) => {
+    if (jumpRef.current) { jumpRef.current(index); return; }
     const section = sectionRef.current;
     const travel = section.offsetHeight - section.querySelector('.rack-sticky').offsetHeight;
     const top = window.scrollY + section.getBoundingClientRect().top + travel * STOPS[index];
@@ -157,6 +193,17 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
             </ul>
             <p className="rack-price">{copy.price}</p>
           </div>
+          <div className="rack-stages">
+          <div className="rack-stage rack-stage--measure" ref={measureRef}>
+            <span className="rack-kicker">{copy.stages.measure.kicker}</span>
+            <h2>{copy.stages.measure.title}</h2>
+            <p className="rack-description">{copy.stages.measure.text}</p>
+            <dl className="rack-facts">
+              {copy.stages.measure.facts.map((fact) => (
+                <div key={fact.l}><dt>{fact.l}</dt><dd>{fact.n}</dd></div>
+              ))}
+            </dl>
+          </div>
           {STAGE_ORDER.map((key) => (
             <div key={key} className="rack-stage" ref={(element) => { panels.current[key] = element; }}>
               <span className="rack-kicker">{copy.stages[key].kicker}</span>
@@ -169,6 +216,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
               </dl>
             </div>
           ))}
+          </div>
           <Actions copy={copy} ctaHref={ctaHref} cta2Href={cta2Href} innerRef={stageActionsRef} className="rack-actions--stages" />
         </div>
         <div className="rack-capacity" ref={capacityRef} aria-hidden="true">

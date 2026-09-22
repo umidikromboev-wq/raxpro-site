@@ -19,9 +19,27 @@ export default function Header({ lang = "ru" }) {
   const navHref = (h) => (h.startsWith("/#") ? home + h.slice(1) : href(L, h));
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // Телефон: меню прячется, пока листают вниз, и возвращается на первом же движении вверх
+  // (Умид, 22.09). На десктопе шапка всегда на месте. Открытое меню не прячем.
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const mobile = window.matchMedia("(max-width: 1023px)");
+    const HIDE_AFTER = 80; // px от верха — выше шапка не прячется
+    const STEP = 6; // px — мелкие дрожания пальца не переключают
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 12);
+      if (mobile.matches) {
+        if (y < HIDE_AFTER) setHidden(false);
+        else if (y - last > STEP) setHidden(true);
+        else if (last - y > STEP) setHidden(false);
+      } else {
+        setHidden(false);
+      }
+      last = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -47,7 +65,7 @@ export default function Header({ lang = "ru" }) {
   );
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50">
+    <header className={`fixed top-0 inset-x-0 z-50 transition-transform duration-300 ease-out ${hidden && !open ? "-translate-y-[120%]" : "translate-y-0"}`}>
       <div className="w-full px-4 sm:px-6 lg:px-10 mt-3">
         <div
           className={`relative bg-navy-900/90 flex items-center gap-4 h-16 rounded-2xl px-4 sm:px-5 border transition-all ${scrolled ? "bg-navy-900/90 backdrop-blur-md border-white/10 shadow-band" : "bg-navy-900/90 backdrop-blur-md border-white/15"}`}
