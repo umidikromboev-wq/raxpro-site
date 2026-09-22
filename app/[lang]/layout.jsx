@@ -5,6 +5,7 @@ import FloatingContact from "../../components/FloatingContact";
 import SmoothScroll from "../../components/SmoothScroll";
 import ScrollProgress from "../../components/ScrollProgress";
 import { CartProvider } from "../../components/CartProvider";
+import CalcModal from "../../components/CalcModal";
 import {
   alternatesFor,
   normalizeLang,
@@ -252,6 +253,9 @@ export default async function RootLayout({ children, params }) {
           {children}
           {/* Фиксированная панель «Рассчитать / Позвонить» на телефоне убрана (Умид, 22.09) — остаётся только виджет */}
           <FloatingContact />
+          {/* Опросник расчёта — поп-ап на весь сайт: любая ссылка на #kalkulyator
+              (блок на главной, футер, карточки) открывает одни и те же вопросы. */}
+          <CalcModal lang={lang} />
         </CartProvider>
       </body>
     </html>

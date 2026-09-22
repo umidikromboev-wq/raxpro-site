@@ -45,7 +45,9 @@ const CT = {
     callOr: 'Yoki qoʻngʻiroq qiling:', err: 'Xatolik. Qoʻngʻiroq qiling:', consent: 'Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz' },
 };
 
-export default function Calculator({ lang = 'ru' }) {
+// `bare` — опросник внутри поп-апа (components/CalcModal): рамка и тень там свои,
+// а вторая карточка внутри карточки читается как ошибка вёрстки.
+export default function Calculator({ lang = 'ru', bare = false }) {
   const L = lang === 'uz' ? 'uz' : 'ru';
   const STEPS = STEPS_BY_LANG[L];
   const c = CT[L];
@@ -86,7 +88,7 @@ export default function Calculator({ lang = 'ru' }) {
 
   if (state === 'ok') {
     return (
-      <div className="rounded-xl2 bg-white border border-cloud-200 shadow-card p-8 sm:p-10 text-center">
+      <div className={`rounded-xl2 bg-white p-8 sm:p-10 text-center ${bare ? '' : 'border border-cloud-200 shadow-card'}`}>
         <div className="w-16 h-16 mx-auto rounded-full bg-brand-grad grid place-items-center text-white mb-4 shadow-glow">
           <IcoCheck className="w-9 h-9" />
         </div>
@@ -103,13 +105,13 @@ export default function Calculator({ lang = 'ru' }) {
   const cur = STEPS[step];
 
   return (
-    <div className="rounded-xl2 bg-white border border-cloud-200 shadow-card overflow-hidden">
+    <div className={`rounded-xl2 bg-white overflow-hidden ${bare ? '' : 'border border-cloud-200 shadow-card'}`}>
       {/* Progress */}
       <div className="h-1.5 bg-cloud-100">
         <div className="h-full bg-brand-grad transition-all" style={{ width: `${Math.max(progress, 8)}%` }} />
       </div>
 
-      <div className="p-6 sm:p-8">
+      <div className={bare ? 'pt-5' : 'p-6 sm:p-8'}>
         <div className="flex items-center justify-between mb-5">
           <span className="text-xs font-semibold uppercase tracking-wide text-sky-600">
             {c.step} {Math.min(step + 1, total)} {c.of} {total}

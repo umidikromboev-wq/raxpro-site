@@ -2,7 +2,6 @@ import Header from "../../components/Header";
 import { alternatesFor, href, absHref, LANGS } from "../../lib/lang";
 import Footer from "../../components/Footer";
 import LeadForm from "../../components/LeadForm";
-import Calculator from "../../components/Calculator";
 import Reveal from "../../components/Reveal";
 import Parallax from "../../components/Parallax";
 import RackHero from "../../components/hero/RackHero";
@@ -298,8 +297,31 @@ export default async function Home({ params, searchParams }) {
               ))}
             </ul>
           </div>
+          {/* Опросник переехал в поп-ап (правка 22.09): здесь — приглашение и список
+              вопросов, чтобы было видно, на что уходит минута. Кнопка — обычная
+              ссылка на #kalkulyator, модалка (components/CalcModal) ловит клик. */}
           <div className="w-full max-w-xl lg:justify-self-end">
-            <Calculator lang={L} />
+            <div className="rounded-xl2 bg-white/[0.06] border border-white/15 p-6 sm:p-8 backdrop-blur-sm">
+              {/* На телефоне список вопросов скрыт: секция и так длинная, а сами
+                  вопросы названы в тексте слева. */}
+              <ol className="hidden sm:block space-y-3">
+                {t.calcSteps.map((q, i) => (
+                  <li key={q} className="flex items-center gap-3.5 text-cloud-200/90">
+                    <span className="w-8 h-8 shrink-0 rounded-full border border-white/20 text-sky-300 text-sm font-semibold grid place-items-center tabular-nums">
+                      {i + 1}
+                    </span>
+                    {q}
+                  </li>
+                ))}
+              </ol>
+              <a
+                href="#kalkulyator"
+                className="sm:mt-7 w-full inline-flex items-center justify-center gap-3 bg-brand-grad text-white font-bold text-base sm:text-lg px-6 py-4 rounded-xl shadow-glow hover:brightness-110 transition"
+              >
+                {t.calcOpen} <IcoArrow className="w-5 h-5" />
+              </a>
+              <p className="mt-3 text-center text-cloud-200/60 text-sm">{t.calcOpenNote}</p>
+            </div>
           </div>
         </div>
       </section>
