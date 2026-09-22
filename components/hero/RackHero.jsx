@@ -21,13 +21,18 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
   const positions = countPositions(), floor = floorPositions();
   const sectionRef = useRef(null), canvasRef = useRef(null), introRef = useRef(null), stageActionsRef = useRef(null);
   const panels = useRef({}), navigationRef = useRef(null), capacityRef = useRef(null), filledRef = useRef(null);
-  // Server-rendered content is fully readable before WebGL progressively enhances it.
-  const [mode, setMode] = useState('static');
+  // Раскладка «live» рендерится сразу на сервере: интро и таймлайн на месте, стадии скрыты,
+  // холст прозрачный, пока сцена не собрана (`ready`). Раньше стартовали со «static» — на секунду
+  // загрузки three.js показывались постер-картинка и все четыре стадии столбиком, потом всё
+  // перескакивало в 3D. «static» теперь только запасной режим: reduced-motion или WebGL упал.
+  const [mode, setMode] = useState('live');
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current, section = sectionRef.current;
+    if (!canvas || !section) return;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!canvas || !section || motion.matches) return;
+    if (motion.matches) { setMode('static'); return; }
     let disposed = false, api = null, raf = 0, observer = null;
     let lastProgress = -1, visible = true;
     let start = performance.now();
@@ -79,7 +84,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
       api?.dispose(); api = null;
       show(introRef.current, 1);
       for (const panel of Object.values(panels.current)) show(panel, 1);
-      if (!disposed) setMode('static');
+      if (!disposed) { setMode('static'); setReady(false); }
     };
     const contextLost = (event) => { event.preventDefault(); stop(); };
     const motionChanged = () => { if (motion.matches) stop(); };
@@ -92,7 +97,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
         if (disposed) return;
         api = createRackScene(THREE, canvas, lang, { RoomEnvironment });
         start = performance.now();
-        setMode('live');
+        setReady(true);
         observer = new ResizeObserver(resize); observer.observe(canvas);
         intersection = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) kick(); });
         intersection.observe(section);
@@ -130,7 +135,7 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
     .replace('{ratio}', ratio).replace('{room}', room).replace('{height}', height);
 
   return (
-    <section ref={sectionRef} className="rack-hero" data-mode={mode} aria-label={copy.eyebrow}>
+    <section ref={sectionRef} className="rack-hero" data-mode={mode} data-ready={ready ? 'true' : 'false'} aria-label={copy.eyebrow}>
       <div className="rack-sticky">
         <div className="rack-viewport">
           <img className="rack-poster" src="/works/hero.jpg" alt="" width="1600" height="1200" aria-hidden="true" />
@@ -141,7 +146,8 @@ export default function RackHero({ lang = 'ru', ctaHref = '#kalkulyator', cta2Hr
           <div className="rack-intro" ref={introRef}>
             <div className="rack-segments" role="group" aria-label={copy.eyebrow}>
               <span className="rack-kicker">{copy.eyebrow}</span>
-              {copy.segments.map((s) => <a key={s.type} href={`${konHref}?type=${s.type}`}>{s.label}</a>)}
+              {/* Сегменты с `type` ведут в конструктор; набивные и мезонин считаются по проекту — ведут на свои страницы */}
+              {copy.segments.map((s) => <a key={s.label} href={s.type ? `${konHref}?type=${s.type}` : `/${lang}${s.href}`}>{s.label}</a>)}
             </div>
             <h1>{copy.title} <em>{copy.titleAccent}</em></h1>
             <p className="rack-description">{copy.text}</p>

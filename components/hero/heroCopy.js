@@ -4,7 +4,7 @@
 export const HERO_COPY = {
   ru: {
     eyebrow: 'Стеллажи для',
-    segments: [{ label: 'Склад', type: 'pallet' }, { label: 'Магазин', type: 'retail' }, { label: 'Архив-гараж', type: 'archive' }],
+    segments: [{ label: 'Склад', type: 'pallet' }, { label: 'Магазин', type: 'retail' }, { label: 'Архив-гараж', type: 'archive' }, { label: 'Набивной', href: '/napravleniya/nabivnye-stellazhi' }, { label: 'Мезонин', href: '/katalog/mezonin' }],
     title: 'Больше товара', titleAccent: 'на той же площади склада.',
     text: 'Проектируем, производим и монтируем стеллажи по всему Узбекистану. Нагрузка до 4 тонн · гарантия 10 лет по договору.',
     cta1: 'Узнать вместимость моего склада', cta2: 'Смотреть каталог',
@@ -24,7 +24,7 @@ export const HERO_COPY = {
   },
   uz: {
     eyebrow: 'Stellajlar:',
-    segments: [{ label: 'Ombor', type: 'pallet' }, { label: 'Doʻkon', type: 'retail' }, { label: 'Arxiv-garaj', type: 'archive' }],
+    segments: [{ label: 'Ombor', type: 'pallet' }, { label: 'Doʻkon', type: 'retail' }, { label: 'Arxiv-garaj', type: 'archive' }, { label: 'Drive-in', href: '/napravleniya/nabivnye-stellazhi' }, { label: 'Mezonin', href: '/katalog/mezonin' }],
     title: 'Oʻsha maydonda —', titleAccent: 'koʻproq tovar.',
     text: 'Butun Oʻzbekiston boʻylab stellajlarni loyihalaymiz, ishlab chiqaramiz va oʻrnatamiz. Yuk koʻtarish 4 tonnagacha · shartnoma boʻyicha 10 yil kafolat.',
     cta1: 'Omborim sigʻimini bilish', cta2: 'Katalogni koʻrish',

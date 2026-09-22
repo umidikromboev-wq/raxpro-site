@@ -1,4 +1,3 @@
-import { PRODUCTS } from "../lib/products";
 import { SCOPE, TERMS } from "../lib/rack/company";
 import { Eyebrow } from "./Section";
 import { IcoArrow, IcoCheck } from "./Icons";
@@ -6,9 +5,9 @@ import { href } from "../lib/lang";
 
 // «Из чего складывается цена» — снимает главный страх покупателя стеллажей:
 // «назовут одну цену, а в договоре будет другая». Состав секции — из BOM
-// движка lib/rack (рамы, балки, замки, анкеры, защита), пример цены — из
-// прайса клиента lib/products.js, условия — из lib/rack/company.ts.
-// Ни одного числа, которого нет в этих трёх файлах.
+// движка lib/rack (рамы, балки, замки, анкеры, защита), условия — из
+// lib/rack/company.ts. «Пример из прайса» (7 032 128 сум за секцию) убран
+// по замечанию Умида 22.09: одна цифра без контекста пугала, а не объясняла.
 
 const COPY = {
   ru: {
@@ -22,9 +21,6 @@ const COPY = {
       { t: "Анкеры 120×12 мм", d: "Четыре на раму, крепление к бетонному полу." },
       { t: "Защита стоек", d: "Отбойники на рамы у проходов техники." },
     ],
-    example: "Пример из прайса",
-    exampleNote: "секция, 3 яруса, до 1 т на ярус",
-    perSection: "сум за секцию",
     scope: "Что входит в цену",
     payment: "Схемы оплаты",
     installment: "Для частных и небольших заказов — рассрочка Uzum Nasiya до 25 млн сум, условия уточняем при заявке.",
@@ -41,9 +37,6 @@ const COPY = {
       { t: "Anker 120×12 mm", d: "Har ramaga toʻrttadan, beton polga mahkamlash." },
       { t: "Ustun himoyasi", d: "Texnika yoʻlaklari yonidagi ramalarga toʻsiqlar." },
     ],
-    example: "Narxnomadan misol",
-    exampleNote: "seksiya, 3 yarus, har yarusga 1 t gacha",
-    perSection: "soʻm bir seksiya",
     scope: "Narxga nima kiradi",
     payment: "Toʻlov sxemalari",
     installment: "Jismoniy shaxslar va kichik buyurtmalar uchun — Uzum Nasiya orqali 25 mln soʻmgacha boʻlib toʻlash, shartlarini ariza paytida aniqlaymiz.",
@@ -54,7 +47,6 @@ const COPY = {
 export default function PriceBreakdown({ lang = "ru" }) {
   const L = lang === "uz" ? "uz" : "ru";
   const c = COPY[L];
-  const example = PRODUCTS.find((p) => p.directionSlug === "palletnye-stellazhi");
   const payments = Object.values(TERMS.payment).map((p) => p[L]);
 
   return (
@@ -72,13 +64,6 @@ export default function PriceBreakdown({ lang = "ru" }) {
               </li>
             ))}
           </ol>
-          {example && (
-            <div className="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-              <span className="text-xs uppercase tracking-widest text-slate-400">{c.example}</span>
-              <span className="font-display text-2xl sm:text-3xl text-navy-800 tracking-tight">{example.price.toLocaleString("ru-RU")}</span>
-              <span className="text-sm text-slate-500">{c.perSection} · {example.dims.h}×{example.dims.w}×{example.dims.d} мм, {c.exampleNote}</span>
-            </div>
-          )}
         </div>
 
         <div className="rounded-xl2 bg-cloud-50 border border-cloud-200 p-6 sm:p-8">

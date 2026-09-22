@@ -161,34 +161,33 @@ export default async function Home({ params, searchParams }) {
           ? <VideoHero lang={L} ctaHref="#kalkulyator" cta2Href="#napravleniya" />
           : <RackHero lang={L} ctaHref={href(L, "/konstruktor")} konHref={href(L, "/konstruktor")} cta2Href={href(L, "/katalog")} />}
 
-      {/* CLIENTS + NUMBERS — один белый блок: кому сделали и в каких цифрах */}
+      {/* CLIENTS + NUMBERS — один белый блок: цифра в заголовке, факты сеткой, логотипы как мини-кейсы */}
       <section className="bg-white border-b border-cloud-200" aria-labelledby="clients-title">
         <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pt-16 sm:pt-20">
           <div className="grid lg:grid-cols-[minmax(0,1fr),minmax(0,1.5fr)] gap-10 lg:gap-20 items-end">
             <div>
-              <Eyebrow>{t.numsEyebrow}</Eyebrow>
-              <h2 id="clients-title" className="mt-4 font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-navy-900">
-                {t.clients}
+              <h2 id="clients-title" className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-navy-900 text-balance">
+                {t.trustTitle.before}
+                <span className="text-sky-600">{t.trustTitle.n}</span>
+                {t.trustTitle.after}
               </h2>
-              <p className="mt-5 text-slate-600 max-w-md leading-relaxed">
-                <strong className="text-navy-900 font-semibold">{t.clientsCount}</strong> {t.clientsText}. {t.numsText}
-              </p>
+              <p className="mt-5 text-slate-600 max-w-md leading-relaxed">{t.trustText}</p>
             </div>
             <Reveal as="dl" variant="fade" stagger={60} className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-cloud-200 border-y border-cloud-200">
-              {t.stats.map((s) => (
+              {t.trustStats.map((s) => (
                 <div key={s.l} className="bg-white py-6 px-5 sm:px-6">
-                  <dd className="font-display font-medium text-4xl sm:text-[44px] leading-none text-navy-900 tracking-tight">
+                  <dd className="font-display font-medium text-4xl sm:text-[44px] leading-none text-navy-900 tracking-tight whitespace-nowrap">
                     {s.n}
                     {s.s && <span className="text-xl text-sky-600 ml-1">{s.s}</span>}
                   </dd>
-                  <dt className="mt-2 text-sm text-slate-500 leading-snug max-w-[180px]">{s.l}</dt>
+                  <dt className="mt-2 text-sm text-slate-500 leading-snug max-w-[200px]">{s.l}</dt>
                 </div>
               ))}
             </Reveal>
           </div>
         </div>
         <div className="mt-12 sm:mt-16 pb-16 sm:pb-20">
-          <LogoMarquee logos={CLIENT_LOGOS} />
+          <LogoMarquee logos={CLIENT_LOGOS} lang={L} />
         </div>
       </section>
 
