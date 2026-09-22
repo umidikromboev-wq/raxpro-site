@@ -37,7 +37,7 @@ const A = {
     ],
     isoTitle: 'Сертификация',
     isoText:
-      'Завод-производитель сертифицирован по ISO 9001, 14001 и 45001 — качество, экология и охрана труда. Сертификаты подтверждены органом IQNET / CISQ.',
+      'Завод-партнёр, который выпускает наши стеллажи, сертифицирован по ISO 9001, 14001 и 45001 — качество, экология и охрана труда. Сертификаты подтверждены органом IQNET / CISQ.',
     clientsTitle: 'Нам доверяют',
     teamTitle: 'Команда',
     teamText: 'Стеллажную систему ведёт не менеджер, а инженер: от замера до подписанного акта.',
@@ -74,7 +74,7 @@ const A = {
     ],
     isoTitle: 'Sertifikatlash',
     isoText:
-      'Ishlab chiqaruvchi zavod ISO 9001, 14001 va 45001 boʻyicha sertifikatlangan — sifat, ekologiya va mehnat muhofazasi. Sertifikatlar IQNET / CISQ organi tomonidan tasdiqlangan.',
+      'Stellajlarimizni ishlab chiqaruvchi hamkor zavod ISO 9001, 14001 va 45001 boʻyicha sertifikatlangan — sifat, ekologiya va mehnat muhofazasi. Sertifikatlar IQNET / CISQ organi tomonidan tasdiqlangan.',
     clientsTitle: 'Bizga ishonishadi',
     teamTitle: 'Jamoa',
     teamText: 'Stellaj tizimini menejer emas, muhandis olib boradi: oʻlchovdan imzolangan dalolatnomagacha.',

@@ -229,13 +229,17 @@ export default async function Home({ params, searchParams }) {
                     ))}
                   </div>
                   <p className="hidden md:block mt-3 text-xs text-slate-500 max-w-md"><b className="text-navy-800 font-semibold">{d.forWhom}:</b> {d.useCases}</p>
-                  <div className="mt-auto pt-4 md:pt-5 flex flex-wrap items-center gap-x-5 gap-y-2 pointer-events-auto">
-                    <a href={d.cta.href} className="relative z-[2] inline-flex items-center gap-2 bg-navy-900 hover:bg-sky-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition">
-                      {d.cta.label} <IcoArrow className="w-4 h-4" />
+                  {/* Две кнопки на карточке (правка Умида 22.09): заявка и страница типа */}
+                  <div className="mt-auto pt-4 md:pt-5 grid grid-cols-2 gap-2.5 md:flex md:flex-wrap md:items-center pointer-events-auto">
+                    <a href={d.cta.href} className="relative z-[2] inline-flex items-center justify-center md:justify-start gap-2 bg-navy-900 hover:bg-sky-600 text-white text-[13px] md:text-sm font-semibold px-3 md:px-4 py-2.5 rounded-xl transition">
+                      {d.cta.label} <IcoArrow className="hidden md:block w-4 h-4" />
                     </a>
-                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 group-hover:text-navy-800">
-                      {d.more} <IcoArrow className="w-4 h-4" />
-                    </span>
+                    <a href={href(L, d.href)} className="relative z-[2] inline-flex items-center justify-center md:justify-start gap-2 border border-navy-900/15 text-navy-800 hover:border-sky-500 hover:text-sky-600 text-[13px] md:text-sm font-semibold px-3 md:px-4 py-2.5 rounded-xl transition">
+                      {/* на телефоне ярлык короче — иначе кнопка ломается на две строки */}
+                      <span className="md:hidden">{d.moreShort}</span>
+                      <span className="hidden md:inline">{d.more}</span>
+                      <IcoArrow className="hidden md:block w-4 h-4" />
+                    </a>
                   </div>
                 </div>
               </div>
