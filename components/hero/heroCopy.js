@@ -1,10 +1,12 @@
 // Capacity is an illustration calculated from rackModel, not a promised customer saving.
+// Чип «Склад» ведёт в конструктор со среднегрузовыми (правка Умида 22.09):
+// склад малого и среднего бизнеса начинается с них, паллетные — отдельным чипом.
 // Правила текста героя: каждый факт звучит один раз (гарантия — в описании, «5 минут» — в шапке),
 // единица — паллетоместо, один срок на обещание: конструктор — 1 минута, точный расчёт — 24 ч.
 export const HERO_COPY = {
   ru: {
     eyebrow: 'Стеллажи для',
-    segments: [{ label: 'Склад', type: 'pallet' }, { label: 'Магазин', type: 'retail' }, { label: 'Архив-гараж', type: 'archive' }, { label: 'Набивной', href: '/napravleniya/nabivnye-stellazhi' }, { label: 'Мезонин', href: '/katalog/mezonin' }],
+    segments: [{ label: 'Склад', type: 'medium' }, { label: 'Паллеты', type: 'pallet' }, { label: 'Магазин', type: 'retail' }, { label: 'Архив-гараж', type: 'archive' }, { label: 'Набивной', href: '/napravleniya/nabivnye-stellazhi' }, { label: 'Мезонин', href: '/katalog/mezonin' }],
     title: 'Больше товара', titleAccent: 'на той же площади склада.',
     text: 'Импортные стеллажи с сертифицированного завода-партнёра: 150 тонн на складе в Ташкенте — привезём завтра. Проектируем и монтируем по всему Узбекистану. Нагрузка до 4 тонн · гарантия 10 лет по договору.',
     cta1: 'Узнать вместимость моего склада', cta2: 'Смотреть каталог',
@@ -27,7 +29,7 @@ export const HERO_COPY = {
   },
   uz: {
     eyebrow: 'Stellajlar:',
-    segments: [{ label: 'Ombor', type: 'pallet' }, { label: 'Doʻkon', type: 'retail' }, { label: 'Arxiv-garaj', type: 'archive' }, { label: 'Drive-in', href: '/napravleniya/nabivnye-stellazhi' }, { label: 'Mezonin', href: '/katalog/mezonin' }],
+    segments: [{ label: 'Ombor', type: 'medium' }, { label: 'Palletlar', type: 'pallet' }, { label: 'Doʻkon', type: 'retail' }, { label: 'Arxiv-garaj', type: 'archive' }, { label: 'Drive-in', href: '/napravleniya/nabivnye-stellazhi' }, { label: 'Mezonin', href: '/katalog/mezonin' }],
     title: 'Oʻsha maydonda —', titleAccent: 'koʻproq tovar.',
     text: 'Sertifikatlangan hamkor zavoddan import stellajlar: Toshkent omborida 150 tonna — ertaga yetkazamiz. Butun Oʻzbekiston boʻylab loyihalaymiz va oʻrnatamiz. Yuk koʻtarish 4 tonnagacha · shartnoma boʻyicha 10 yil kafolat.',
     cta1: 'Omborim sigʻimini bilish', cta2: 'Katalogni koʻrish',

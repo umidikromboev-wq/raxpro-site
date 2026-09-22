@@ -17,7 +17,7 @@ import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
 import { T, EXTRA, normalizeLang } from "../../lib/i18n";
 import Faq from "../../components/Faq";
 import { getLatest, localize } from "../../lib/articles";
-import { organizationSchema, JsonLd } from "../../lib/schema";
+
 import { REVIEWS, featuredReviews, localizeReview } from "../../lib/reviews";
 import CaseSlider from "../../components/CaseSlider";
 import Reviews from "../../components/Reviews";
@@ -419,7 +419,6 @@ export default async function Home({ params, searchParams }) {
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
           />
-          <JsonLd data={organizationSchema(L)} />
           <h2 className="font-display font-medium text-3xl sm:text-4xl text-navy-800">
             {x.faqTitle}
           </h2>

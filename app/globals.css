@@ -378,7 +378,7 @@ html {
 .rack-kicker { display: block; color: #b9e4f7; font-size: 11px; font-weight: 500; letter-spacing: 0.19em; text-transform: uppercase; margin-bottom: 23px; }
 /* Сегменты в герое: «Стеллажи для → Склад / Магазин / Архив-гараж», ведут в конструктор с типом */
 .rack-segments { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 22px; }
-/* Кикер на своей строке: пять сегментов (+ Набивной, Мезонин) иначе рвутся на две */
+/* Кикер на своей строке: шесть сегментов (+ Паллеты, Набивной, Мезонин) иначе рвутся на две */
 .rack-segments .rack-kicker { flex-basis: 100%; margin: 0 0 4px; }
 .rack-segments a { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: #eaf6fd; padding: 7px 13px; border: 1px solid #ffffff3a; border-radius: 999px; background: #ffffff0f; transition: background 0.18s, border-color 0.18s, color 0.18s; }
 .rack-segments a:hover, .rack-segments a:focus-visible { background: #fff; color: #064679; border-color: #fff; outline: none; }

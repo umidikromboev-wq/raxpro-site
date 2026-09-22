@@ -6,6 +6,7 @@ import SmoothScroll from "../../components/SmoothScroll";
 import ScrollProgress from "../../components/ScrollProgress";
 import { CartProvider } from "../../components/CartProvider";
 import CalcModal from "../../components/CalcModal";
+import { organizationSchema, JsonLd } from "../../lib/schema";
 import {
   alternatesFor,
   normalizeLang,
@@ -106,7 +107,7 @@ export async function generateMetadata({ params }) {
       card: "summary_large_image",
       title: m.ogTitle,
       description: m.ogDescription,
-      images: [`${SITE_ORIGIN}/og-image.jpg`],
+      images: [`${SITE_ORIGIN}/works/hero.jpg`],
     },
     alternates: alternatesFor("/", L),
     robots: {
@@ -136,64 +137,13 @@ export const viewport = {
 export default async function RootLayout({ children, params }) {
   const lang = normalizeLang((await params).lang);
 
-  // Schema.org structured  (JSON-LD) for LocalBusiness + AI Search (GEO)
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": ["LocalBusiness", "Manufacturer"],
-        "@id": SITE_ORIGIN,
-        name: "RAXPRO",
-        alternateName: "Стеллажи в Ташкенте от RaxPro",
-        image: `${SITE_ORIGIN}/works/hero.jpg`,
-        url: SITE_ORIGIN,
-        telephone: "+998785551555",
-        priceRange: "$$",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Parkent ko'chasi",
-          addressLocality: "Tashkent",
-          addressRegion: "Tashkent",
-          addressCountry: "UZ",
-          postalCode: "100200",
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: 41.3157068,
-          longitude: 69.3286053,
-        },
-        hasMap: "https://maps.google.com/?cid=13073703618530234946",
-        openingHoursSpecification: {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-          ],
-          opens: "08:00",
-          closes: "21:00",
-        },
-        sameAs: [
-          "https://www.instagram.com/raxpro_stellaj/",
-          "https://t.me/raxproo",
-        ],
-      },
-      // FAQPage qismi o'zgarishsiz qoladi...
-    ],
-  };
-
   return (
     <html lang={lang} className={`${manrope.variable} ${onest.variable}`}>
       <head>
-        {/* Schema.org Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        {/* Schema.org: один источник на весь сайт — lib/schema.js.
+            Раньше здесь лежала вторая копия LocalBusiness со своими часами,
+            телефоном, адресом и мёртвой ссылкой t.me/raxproo. */}
+        <JsonLd data={organizationSchema(lang)} />
 
         {/* Google Tag Manager - Head Script */}
         <Script id="google-tag-manager" strategy="afterInteractive">

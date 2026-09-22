@@ -115,7 +115,7 @@ export default async function DirectionPage({ params }) {
                 </tbody>
               </table>
             </div>
-            <p className="mt-3 text-sm text-slate-500">{st.note}</p>
+            <p className="mt-3 text-sm text-slate-500">{sizes.rows.some((r) => r.price) ? st.note : st.noteNoPrice}</p>
           </div>
         )}
 

@@ -6,7 +6,7 @@ import { SITE, siteLoc } from '../../../lib/site';
 import { SHOP } from '../../../lib/shop';
 import { normalizeLang } from '../../../lib/i18n';
 import { alternatesFor, href } from '../../../lib/lang';
-import { breadcrumbSchema, organizationSchema, JsonLd } from '../../../lib/schema';
+import { breadcrumbSchema, JsonLd } from '../../../lib/schema';
 
 const K = {
   ru: {
@@ -77,7 +77,6 @@ export default async function ContactsPage({ params }) {
   return (
     <div className="bg-white text-ink">
       <JsonLd data={crumbs} />
-      <JsonLd data={organizationSchema(L)} />
       <Header lang={L} />
 
       <section className="relative pt-28 pb-14 bg-navy-900 text-white overflow-hidden">
