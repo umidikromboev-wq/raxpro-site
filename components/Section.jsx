@@ -9,7 +9,7 @@ export function Eyebrow({ children, light = false }) {
   );
 }
 
-export function SplitHead({ eyebrow, title, desc, light = false }) {
+export function SplitHead({ eyebrow, title, desc, light = false, hideDescOnMobile = false }) {
   return (
     <div className="grid lg:grid-cols-2 gap-4 lg:gap-10 items-end">
       <div>
@@ -19,7 +19,7 @@ export function SplitHead({ eyebrow, title, desc, light = false }) {
         </h2>
       </div>
       {desc && (
-        <p className={`text-[15px] leading-relaxed lg:text-right max-w-md lg:justify-self-end ${light ? 'text-cloud-200/70' : 'text-slate-500'}`}>
+        <p className={`${hideDescOnMobile ? 'hidden sm:block ' : ''}text-[15px] leading-relaxed lg:text-right max-w-md lg:justify-self-end ${light ? 'text-cloud-200/70' : 'text-slate-500'}`}>
           {desc}
         </p>
       )}

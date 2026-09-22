@@ -1,11 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SITE } from "../lib/site";
+import { href } from "../lib/lang";
+import { IcoTg } from "./Icons";
+import { isWorkingHours, nextWorkingDay } from "../lib/workingHours";
 
 const FT = {
   ru: {
-    name: "Ваше имя *",
+    name: "Ваше имя",
     phone: "Телефон (например: +998 90 123 45 67) *",
     phoneErr: "Введите корректный номер Узбекистана (+998 XX XXX XX XX)",
     selectDefault: "Тип стеллажей (необязательно)",
@@ -16,20 +19,23 @@ const FT = {
       "Торговые стеллажи",
       "Не знаю — нужна консультация",
     ],
-    comment: "Комментарий: объём, размеры, задача…",
+    comment: "Объём, размеры, задача — что знаете",
+    addDetails: "+ Добавить детали",
     submit: "Получить бесплатный расчёт",
     sending: "Отправляем…",
     err: "Ошибка отправки. Позвоните:",
-    consent: "Нажимая кнопку, вы соглашаетесь на обработку персональных данных",
-    altContact: "Не любите звонки? Напишите в",
+    consent: "Нажимая кнопку, вы соглашаетесь на обработку персональных данных —",
+    consentLink: "политика конфиденциальности",
+    altContact: "Не любите звонки? Напишите нам",
     photo: "Фото или чертёж помещения",
     photoHint: "JPG, PNG или PDF до 10 МБ — так расчёт точнее",
     photoRemove: "Убрать",
-    fast: "Ответим за 5 минут в рабочее время",
+    fast: "Ответим за 5 минут",
+    offHours: { today: "Сейчас нерабочее время — ответим сегодня с 9:00", tomorrow: "Сейчас нерабочее время — ответим завтра с 9:00", monday: "Сейчас нерабочее время — ответим в понедельник с 9:00" },
     tgFirst: "Написать в Telegram",
   },
   uz: {
-    name: "Ismingiz *",
+    name: "Ismingiz",
     phone: "Telefon (masalan: +998 90 123 45 67) *",
     phoneErr:
       "Oʻzbekiston telefon raqamini toʻgʻri kiriting (+998 XX XXX XX XX)",
@@ -41,17 +47,20 @@ const FT = {
       "Savdo stellajlari",
       "Bilmayman — konsultatsiya kerak",
     ],
-    comment: "Izoh: hajm, oʻlchamlar, vazifa…",
+    comment: "Hajm, oʻlchamlar, vazifa — bilganingizni yozing",
+    addDetails: "+ Tafsilot qoʻshish",
     submit: "Bepul hisob-kitob olish",
     sending: "Yuborilmoqda…",
     err: "Yuborishda xatolik. Qoʻngʻiroq qiling:",
     consent:
-      "Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz",
-    altContact: "Qoʻngʻiroqni yoqtirmaysizmi? Yozing:",
+      "Tugmani bosish orqali shaxsiy maʼlumotlarni qayta ishlashga rozilik bildirasiz —",
+    consentLink: "maxfiylik siyosati",
+    altContact: "Qoʻngʻiroqni yoqtirmaysizmi? Bizga yozing",
     photo: "Xona surati yoki chizmasi",
     photoHint: "JPG, PNG yoki PDF, 10 MB gacha — hisob-kitob aniqroq boʻladi",
     photoRemove: "Olib tashlash",
-    fast: "Ish vaqtida 5 daqiqada javob beramiz",
+    fast: "5 daqiqada javob beramiz",
+    offHours: { today: "Hozir ish vaqti emas — bugun 9:00 dan javob beramiz", tomorrow: "Hozir ish vaqti emas — ertaga 9:00 dan javob beramiz", monday: "Hozir ish vaqti emas — dushanba 9:00 dan javob beramiz" },
     tgFirst: "Telegramga yozish",
   },
 };
@@ -75,6 +84,16 @@ export default function LeadForm({
   });
   const [file, setFile] = useState(null);
   const [state, setState] = useState("idle");
+  const [isDetailsOpen, setDetailsOpen] = useState(false);
+  // Ловушка для ботов: поле не видно людям, заполненное — заявка молча отбрасывается.
+  const [trap, setTrap] = useState("");
+  // Статус «ответим за 5 минут / нерабочее время» считается на клиенте,
+  // чтобы серверный HTML не расходился с часами посетителя.
+  const [hours, setHours] = useState(null);
+  useEffect(() => {
+    const now = new Date();
+    setHours(isWorkingHours(now) ? "open" : nextWorkingDay(now));
+  }, []);
 
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
 
@@ -112,7 +131,7 @@ export default function LeadForm({
 
   async function submit(e) {
     e.preventDefault();
-    if (!f.name.trim() || !f.phone.trim()) return;
+    if (!f.phone.trim()) return;
 
     // Tekshirish uchun faqat raqamlarni olamiz
     const digitsOnly = f.phone.replace(/\D/g, "");
@@ -134,17 +153,19 @@ export default function LeadForm({
         fd.append("phone", f.phone);
         fd.append("product", f.product);
         fd.append("message", message);
+        fd.append("website", trap);
         fd.append("file", file);
         r = await fetch("/api/lead", { method: "POST", body: fd });
       } else {
         r = await fetch("/api/lead", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...f, message, phone: f.phone }),
+          body: JSON.stringify({ ...f, message, phone: f.phone, website: trap }),
         });
       }
 
       if (r.ok) {
+        track("lead_submit", { product: f.product || "" });
         setF({ name: "", phone: "+998 ", product: "", message: "" });
         setFile(null);
         setState("idle");
@@ -157,19 +178,27 @@ export default function LeadForm({
     }
   }
 
+  const track = (event, data = {}) => {
+    if (typeof window === "undefined") return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event, lang, ...data });
+  };
+
+  const fastLine = hours === "open" ? t.fast : hours ? t.offHours[hours] : t.fast;
+
   const field =
     "w-full bg-cloud-50 border border-cloud-200 rounded-xl px-4 py-3 text-ink outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400 transition";
 
   return (
     <form
       onSubmit={submit}
-      className={`rounded-xl2 bg-white border border-cloud-200 shadow-card ${compact ? "p-5" : "p-6 sm:p-7"}`}
+      className={`relative rounded-xl2 bg-white border border-cloud-200 shadow-card ${compact ? "p-5" : "p-6 sm:p-7"}`}
     >
       <div className="grid sm:grid-cols-2 gap-3">
         <input
           value={f.name}
           onChange={set("name")}
-          required
+          autoComplete="name"
           placeholder={t.name}
           className={field}
         />
@@ -178,6 +207,8 @@ export default function LeadForm({
           onChange={handlePhoneChange}
           required
           type="tel"
+          inputMode="tel"
+          autoComplete="tel"
           placeholder={t.phone}
           className={`${field} ${state === "phone_invalid" ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""}`}
         />
@@ -189,28 +220,45 @@ export default function LeadForm({
         </p>
       )}
 
-      <select
-        value={f.product}
-        onChange={set("product")}
-        className={`${field} mt-3 ${f.product ? "text-ink" : "text-slate-400"}`}
-      >
-        <option value="">{t.selectDefault}</option>
-        {t.options.map((o) => (
-          <option key={o} value={o} className="text-ink">
-            {o}
-          </option>
-        ))}
-      </select>
+      <div className="relative mt-3">
+        <select
+          value={f.product}
+          onChange={set("product")}
+          className={`${field} appearance-none pr-10 ${f.product ? "text-ink" : "text-slate-400"}`}
+        >
+          <option value="">{t.selectDefault}</option>
+          {t.options.map((o) => (
+            <option key={o} value={o} className="text-ink">
+              {o}
+            </option>
+          ))}
+        </select>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"><path d="m6 9 6 6 6-6" /></svg>
+      </div>
 
-      {!compact && (
+      {!compact && !isDetailsOpen && (
+        <button type="button" onClick={() => setDetailsOpen(true)} className="mt-3 text-sm font-semibold text-sky-600 hover:text-sky-700">
+          {t.addDetails}
+        </button>
+      )}
+      {!compact && isDetailsOpen && (
         <textarea
           value={f.message}
           onChange={set("message")}
           rows={3}
+          autoFocus
           placeholder={t.comment}
           className={`${field} mt-3`}
         />
       )}
+
+      {/* honeypot */}
+      <div className="absolute -left-[9999px] top-0 w-px h-px overflow-hidden" aria-hidden="true">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} />
+        </label>
+      </div>
 
       {withPhoto && (
         <label className={`${field} mt-3 flex items-center gap-3 cursor-pointer`}>
@@ -245,7 +293,7 @@ export default function LeadForm({
         {state === "sending" ? t.sending : submitLabel || t.submit}
       </button>
       <p className="mt-2 text-center text-xs font-semibold text-sky-700 inline-flex w-full justify-center items-center gap-1.5">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" /> {t.fast}
+        <span className={`w-1.5 h-1.5 rounded-full ${hours && hours !== "open" ? "bg-amber-400" : "bg-emerald-500"}`} aria-hidden="true" /> {fastLine}
       </p>
 
       {state === "err" && (
@@ -254,27 +302,34 @@ export default function LeadForm({
         </p>
       )}
 
-      <p className="text-slate-400 text-xs mt-3 text-center">{t.consent}</p>
+      <p className="text-slate-400 text-xs mt-3 text-center">
+        {t.consent}{" "}
+        <a href={href(lang, "/politika-konfidencialnosti")} className="underline hover:text-navy-800">{t.consentLink}</a>
+      </p>
 
-      <div className="mt-3 pt-3 border-t border-cloud-100 text-center text-sm text-slate-500">
-        {t.altContact}{" "}
-        <a
-          href={SITE.telegram}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold text-sky-600 hover:text-sky-700"
-        >
-          Telegram
-        </a>
-        {" · "}
-        <a
-          href={SITE.whatsapp}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold text-green-600 hover:text-green-700"
-        >
-          WhatsApp
-        </a>
+      {/* Мессенджеры — второй по важности путь, поэтому кнопки, а не строка мелким */}
+      <div className="mt-4 pt-4 border-t border-cloud-100">
+        <div className="text-center text-xs text-slate-500">{t.altContact}</div>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          <a
+            href={SITE.telegram}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("lead_messenger_click", { messenger: "telegram" })}
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 font-semibold text-sm py-2.5 hover:bg-sky-100 transition"
+          >
+            <IcoTg className="w-4 h-4" /> Telegram
+          </a>
+          <a
+            href={SITE.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("lead_messenger_click", { messenger: "whatsapp" })}
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-200 bg-green-50 text-green-700 font-semibold text-sm py-2.5 hover:bg-green-100 transition"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8Zm-3.1 4.4c-.2 0-.5 0-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.5 0 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.1-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5.3-.5c.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6Z" /></svg> WhatsApp
+          </a>
+        </div>
       </div>
     </form>
   );

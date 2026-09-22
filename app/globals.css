@@ -166,10 +166,18 @@ button {
   background: #26b8f2;
 }
 
-.no-scrollbar::-webkit-scrollbar {
+/* Закрытый <details> не должен показывать даже край содержимого: в части
+   браузеров контент получает размер и торчит из-под секции (баг с сертификатами). */
+details:not([open]) > :not(summary) {
   display: none;
 }
-.no-scrollbar {
+
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar,
+.scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }

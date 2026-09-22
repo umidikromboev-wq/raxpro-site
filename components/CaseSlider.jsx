@@ -11,12 +11,12 @@ import { SEGMENTS } from '../lib/cases';
 const UI = {
   ru: {
     kicker: 'Кейс', all: 'Все', prev: 'Предыдущий кейс', next: 'Следующий кейс', cta: 'Хочу так же',
-    photos: 'Фото объекта', task: 'Задача', solution: 'Решение', more: 'Другие кейсы',
+    photos: 'Фото объекта', task: 'Задача', solution: 'Решение', more: 'Другие кейсы', story: 'Задача и решение', hide: 'Свернуть',
     seg: { warehouse: 'Склад', shop: 'Магазин', marketplace: 'Маркетплейс', production: 'Производство' },
   },
   uz: {
     kicker: 'Keys', all: 'Barchasi', prev: 'Oldingi keys', next: 'Keyingi keys', cta: 'Menga ham shunday',
-    photos: 'Obyekt suratlari', task: 'Vazifa', solution: 'Yechim', more: 'Boshqa keyslar',
+    photos: 'Obyekt suratlari', task: 'Vazifa', solution: 'Yechim', more: 'Boshqa keyslar', story: 'Vazifa va yechim', hide: 'Yigʻish',
     seg: { warehouse: 'Ombor', shop: 'Doʻkon', marketplace: 'Marketpleys', production: 'Ishlab chiqarish' },
   },
 };
@@ -28,6 +28,9 @@ export default function CaseSlider({ items, lang = 'ru' }) {
   const [seg, setSeg] = useState('all');
   const [key, setKey] = useState(items[0]?.key);
   const [shot, setShot] = useState(0);
+  // На телефоне история (задача → решение → цитата) свёрнута: карточка должна
+  // помещаться в один экран, раскрывает сам читатель. На sm+ видна всегда.
+  const [isStoryOpen, setStoryOpen] = useState(false);
   const touchX = useRef(null);
   const rootRef = useRef(null);
 
@@ -37,7 +40,7 @@ export default function CaseSlider({ items, lang = 'ru' }) {
   const c = list[i] || list[0];
   const photos = [c.img, ...(c.gallery || [])];
 
-  const pick = (k) => { setKey(k); setShot(0); };
+  const pick = (k) => { setKey(k); setShot(0); setStoryOpen(false); };
   const go = (d) => pick(list[(i + d + n) % n].key);
   const choose = (s) => { setSeg(s); const first = (s === 'all' ? items : items.filter((x) => x.segment === s))[0]; if (first) pick(first.key); };
 
@@ -62,7 +65,7 @@ export default function CaseSlider({ items, lang = 'ru' }) {
   };
 
   const num = (v) => String(v).padStart(2, '0');
-  const chip = (active) => `shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${active ? 'bg-navy-900 text-white' : 'bg-white border border-cloud-200 text-navy-800 hover:border-sky-300'}`;
+  const chip = (active) => `shrink-0 rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 text-[13px] sm:text-sm font-semibold transition ${active ? 'bg-navy-900 text-white' : 'bg-white border border-cloud-200 text-navy-800 hover:border-sky-300'}`;
 
   return (
     <div className="case-block">
@@ -80,14 +83,14 @@ export default function CaseSlider({ items, lang = 'ru' }) {
       <div
         ref={rootRef}
         tabIndex={0}
-        className="case-slider group/case relative mt-5 rounded-xl2 border border-cloud-200 bg-white overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+        className="case-slider group/case relative mt-4 sm:mt-5 rounded-xl2 border border-cloud-200 bg-white overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         aria-roledescription="carousel"
       >
         <div className="grid lg:grid-cols-[minmax(0,0.9fr),minmax(0,1.1fr)]">
           {/* Фото */}
-          <div className="relative bg-cloud-100 aspect-[4/3] lg:aspect-auto lg:min-h-[560px]">
+          <div className="relative bg-cloud-100 aspect-[16/9] sm:aspect-[4/3] lg:aspect-auto lg:min-h-[560px]">
             <img
               key={`${c.key}-${shot}`}
               src={photos[shot]}
@@ -100,7 +103,7 @@ export default function CaseSlider({ items, lang = 'ru' }) {
             />
             <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-navy-900/60 to-transparent pointer-events-none" />
             {photos.length > 1 && (
-              <div className="absolute left-4 bottom-4 flex gap-2" aria-label={u.photos}>
+              <div className="absolute left-4 bottom-4 hidden sm:flex gap-2" aria-label={u.photos}>
                 {photos.map((src, k) => (
                   <button
                     key={src}
@@ -121,21 +124,22 @@ export default function CaseSlider({ items, lang = 'ru' }) {
           </div>
 
           {/* История клиента */}
-          <div key={c.key} className="flex flex-col p-6 sm:p-8 lg:p-10 animate-fadeup">
+          <div key={c.key} className="flex flex-col p-5 sm:p-8 lg:p-10 animate-fadeup">
             <div className="flex items-center justify-between gap-4">
               <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                [ {num(i + 1)} / {u.kicker} ] · <span className="text-navy-800">{c.client}</span>
+                <span className="hidden sm:inline">[ {num(i + 1)} / {u.kicker} ] · </span><span className="text-navy-800">{c.client}</span>
               </span>
               {c.logo && (
                 <img src={c.logo} alt={c.client} width={120} height={40} loading="lazy" decoding="async" className="h-8 w-auto max-w-[140px] object-contain" />
               )}
             </div>
 
-            <h3 className="font-display font-medium text-2xl sm:text-3xl lg:text-[34px] leading-[1.1] tracking-tight text-navy-900 mt-5 text-balance">
+            <h3 className="font-display font-medium text-xl sm:text-3xl lg:text-[34px] leading-[1.15] sm:leading-[1.1] tracking-tight text-navy-900 mt-3 sm:mt-5 text-balance">
               {c.title}
             </h3>
 
-            <dl className="mt-6 space-y-3 text-[15px] leading-relaxed">
+            <div className={`${isStoryOpen ? 'block' : 'hidden'} sm:block`}>
+              <dl className="mt-4 sm:mt-6 space-y-3 text-[15px] leading-relaxed">
               <div className="flex flex-col sm:flex-row gap-1 sm:gap-3">
                 <dt className="sm:w-[84px] shrink-0 font-bold text-navy-900">{u.task}:</dt>
                 <dd className="text-slate-600">{c.task}</dd>
@@ -145,19 +149,20 @@ export default function CaseSlider({ items, lang = 'ru' }) {
                 <dd className="text-slate-600">{c.solution}</dd>
               </div>
             </dl>
+            </div>
 
             {/* Цифры в ряд — как в bento, только на реальном объекте */}
-            <div className={`mt-7 grid gap-3 ${c.stats.length >= 4 ? 'grid-cols-2 sm:grid-cols-4' : c.stats.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
+            <div className={`mt-4 sm:mt-7 grid gap-2 sm:gap-3 ${c.stats.length >= 4 ? 'grid-cols-2 sm:grid-cols-4' : c.stats.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
               {c.stats.map(([v, l]) => (
-                <div key={l} className="rounded-xl bg-cloud-50 border border-cloud-200 px-3 sm:px-4 py-3.5">
-                  <div className="font-display font-medium text-2xl sm:text-[28px] leading-none text-navy-900 tracking-tight whitespace-nowrap">{v}</div>
-                  <div className="mt-1.5 text-xs text-slate-500 leading-snug">{l}</div>
+                <div key={l} className="rounded-xl bg-cloud-50 border border-cloud-200 px-3 sm:px-4 py-2.5 sm:py-3.5">
+                  <div className="font-display font-medium text-xl sm:text-[28px] leading-none text-navy-900 tracking-tight whitespace-nowrap">{v}</div>
+                  <div className="mt-1 sm:mt-1.5 text-[11px] sm:text-xs text-slate-500 leading-snug">{l}</div>
                 </div>
               ))}
             </div>
 
             {c.quote && (
-              <blockquote className="mt-6 flex gap-3">
+              <blockquote className={`${isStoryOpen ? 'flex' : 'hidden'} sm:flex mt-5 sm:mt-6 gap-3`}>
                 <IcoQuote className="w-7 h-7 text-sky-500/40 shrink-0" />
                 <div>
                   <p className="text-navy-800 leading-snug">«{c.quote.text}»</p>
@@ -166,12 +171,22 @@ export default function CaseSlider({ items, lang = 'ru' }) {
               </blockquote>
             )}
 
-            <div className="mt-auto pt-8 flex items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={() => setStoryOpen((v) => !v)}
+              aria-expanded={isStoryOpen}
+              className="sm:hidden mt-4 self-start inline-flex items-center gap-1.5 text-sm font-semibold text-sky-600"
+            >
+              {isStoryOpen ? u.hide : u.story}
+              <IcoArrow className={`w-4 h-4 transition-transform ${isStoryOpen ? '-rotate-90' : 'rotate-90'}`} />
+            </button>
+
+            <div className="mt-auto pt-5 sm:pt-8 flex items-center justify-between gap-4">
               <div className="flex gap-2">
-                <button type="button" onClick={() => go(-1)} aria-label={u.prev} className="w-12 h-12 grid place-items-center rounded-full border border-navy-800/25 text-navy-900 hover:bg-navy-900 hover:text-white transition">
+                <button type="button" onClick={() => go(-1)} aria-label={u.prev} className="w-11 h-11 sm:w-12 sm:h-12 grid place-items-center rounded-full border border-navy-800/25 text-navy-900 hover:bg-navy-900 hover:text-white transition">
                   <IcoArrow className="w-5 h-5 rotate-180" />
                 </button>
-                <button type="button" onClick={() => go(1)} aria-label={u.next} className="w-12 h-12 grid place-items-center rounded-full border border-navy-800/25 text-navy-900 hover:bg-navy-900 hover:text-white transition">
+                <button type="button" onClick={() => go(1)} aria-label={u.next} className="w-11 h-11 sm:w-12 sm:h-12 grid place-items-center rounded-full border border-navy-800/25 text-navy-900 hover:bg-navy-900 hover:text-white transition">
                   <IcoArrow className="w-5 h-5" />
                 </button>
               </div>
@@ -185,7 +200,7 @@ export default function CaseSlider({ items, lang = 'ru' }) {
 
       {/* Превью остальных кейсов: видно, что их много, и можно перейти сразу в нужный */}
       {n > 1 && (
-        <div className="mt-5 flex gap-3 overflow-x-auto -mx-5 px-5 sm:mx-0 sm:px-0 pb-2 snap-x scrollbar-none" aria-label={u.more}>
+        <div className="mt-5 hidden sm:flex gap-3 overflow-x-auto pb-2 snap-x scrollbar-none" aria-label={u.more}>
           {list.map((x, k) => (
             <button
               key={x.key}

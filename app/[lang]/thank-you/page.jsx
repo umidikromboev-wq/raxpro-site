@@ -3,6 +3,10 @@ import { alternatesFor, href, absHref, LANGS } from "../../../lib/lang";
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import { T, normalizeLang } from "../../../lib/i18n";
+import { SITE } from "../../../lib/site";
+
+// Главная конверсия для рекламы: событие в GTM на странице «спасибо».
+const THANK_YOU_EVENT = "window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_thank_you'});";
 
 const TY_META = {
   ru: { title: 'Заявка принята — RAXPRO', description: 'Спасибо за заявку. Свяжемся с вами в ближайшее время.' },
@@ -60,10 +64,20 @@ export default async function ThankYouPage({ params }) {
               "Bizga ishonch bildirganingiz uchun rahmat. Mutaxassislarimiz tez orada siz bilan bog‘lanishadi."}
           </p>
 
-          {/* Bosh sahifaga qaytish tugmasi */}
+          <script dangerouslySetInnerHTML={{ __html: THANK_YOU_EVENT }} />
+
+          {/* Самый горячий момент — переписка начинается сразу */}
+          <a
+            href={SITE.telegram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center w-full py-4 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-medium text-base shadow-glow hover:shadow-lg transition-all duration-300 transform active:scale-[0.98]"
+          >
+            {t.continueTg}
+          </a>
           <a
             href={href(L, "/")}
-            className="inline-flex items-center justify-center w-full py-4 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-medium text-base shadow-glow hover:shadow-lg transition-all duration-300 transform active:scale-[0.98]"
+            className="mt-3 inline-flex items-center justify-center w-full py-3.5 px-6 rounded-xl border border-cloud-200 text-navy-900 font-medium text-base hover:bg-cloud-50 transition"
           >
             {t.backToHome || "Bosh sahifaga qaytish"}
           </a>
@@ -73,7 +87,7 @@ export default async function ThankYouPage({ params }) {
             <p className="text-xs text-slate-400">
               {t.haveQuestions || "Shoshilinch savollar bormi?"}{" "}
               <a
-                href="tel:+998"
+                href={`tel:${SITE.phoneMain}`}
                 className="text-sky-500 hover:underline font-medium ml-1"
               >
                 {t.callUs || "Bizga qo‘ng‘iroq qiling"}

@@ -13,7 +13,7 @@ const FT = {
     sub: 'Замер, проект, поставка со склада и монтаж по всему Узбекистану.',
     cta: 'Рассчитать стоимость',
     sections: 'Разделы', products: 'Продукция', info: 'Покупателю', follow: 'Мы в соцсетях',
-    prod: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи', 'Набивные (Drive-in) стеллажи'],
+    prod: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи', 'Набивные (Drive-in) стеллажи', 'Мезонин'],
     rights: 'Все права защищены.', tail: 'Стеллажи и системы хранения · Ташкент, Узбекистан', madeBy: 'Сделано в', reviews: 'Отзывы клиентов',
     infoLinks: [
       { label: 'Каталог с ценами', href: '/katalog' },
@@ -21,8 +21,6 @@ const FT = {
       { label: 'Возврат и обмен', href: '/vozvrat-i-obmen' },
       { label: 'Публичная оферта', href: '/publichnaya-oferta' },
       { label: 'Политика конфиденциальности', href: '/politika-konfidencialnosti' },
-      { label: 'О компании', href: '/o-kompanii' },
-      { label: 'Контакты', href: '/kontakty' },
     ],
   },
   uz: {
@@ -30,7 +28,7 @@ const FT = {
     sub: 'Butun Oʻzbekiston boʻylab oʻlchov, loyiha, ombordan yetkazish va montaj.',
     cta: 'Narxni hisoblash',
     sections: 'Boʻlimlar', products: 'Mahsulotlar', info: 'Xaridorga', follow: 'Ijtimoiy tarmoqlarda',
-    prod: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari', 'Zich (Drive-in) stellajlar'],
+    prod: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari', 'Zich (Drive-in) stellajlar', 'Mezonin'],
     rights: 'Barcha huquqlar himoyalangan.', tail: 'Stellajlar va saqlash tizimlari · Toshkent, Oʻzbekiston', madeBy: 'Ishlab chiqildi', reviews: 'Mijozlar sharhlari',
     infoLinks: [
       { label: 'Narxlar bilan katalog', href: '/katalog' },
@@ -38,16 +36,17 @@ const FT = {
       { label: 'Qaytarish va almashtirish', href: '/vozvrat-i-obmen' },
       { label: 'Ommaviy oferta', href: '/publichnaya-oferta' },
       { label: 'Maxfiylik siyosati', href: '/politika-konfidencialnosti' },
-      { label: 'Kompaniya haqida', href: '/o-kompanii' },
-      { label: 'Aloqa', href: '/kontakty' },
     ],
   },
 };
 
+// В «Разделах» футера не повторяем то, что есть в соседних колонках.
+const FOOTER_SKIP = new Set(['/#napravleniya', '/katalog']);
+
 const PROD_HREFS = [
   '/napravleniya/palletnye-stellazhi', '/napravleniya/srednegruzovye-stellazhi',
   '/napravleniya/arhivnye-stellazhi', '/napravleniya/torgovye-stellazhi',
-  '/napravleniya/nabivnye-stellazhi',
+  '/napravleniya/nabivnye-stellazhi', '/katalog/mezonin',
 ];
 
 function IcoWa(p) {
@@ -57,7 +56,6 @@ function IcoWa(p) {
     </svg>
   );
 }
-function IcoStar(p) { return <svg viewBox="0 0 24 24" fill="currentColor" {...p}><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" /></svg>; }
 
 export default function Footer({ lang = 'ru' }) {
   const L = normalizeLang(lang);
@@ -70,7 +68,6 @@ export default function Footer({ lang = 'ru' }) {
     { href: SITE.instagram, label: 'Instagram', Ico: IcoIg },
     { href: SITE.telegram, label: 'Telegram', Ico: IcoTg },
     { href: SITE.whatsapp, label: 'WhatsApp', Ico: IcoWa },
-    { href: href(L, '/otzyvy'), label: t.reviews, Ico: IcoStar, internal: true },
   ].filter((s) => s.href);
 
   return (
@@ -108,7 +105,7 @@ export default function Footer({ lang = 'ru' }) {
         </div>
 
         <FooterCol title={t.sections}>
-          {nav.map((n) => <li key={n.href}><a href={navHref(n.href)} className="hover:text-white transition">{n.label}</a></li>)}
+          {nav.filter((n) => !FOOTER_SKIP.has(n.href)).map((n) => <li key={n.href}><a href={navHref(n.href)} className="hover:text-white transition">{n.label}</a></li>)}
         </FooterCol>
         <FooterCol title={t.products}>
           {t.prod.map((p, i) => <li key={p}><a href={href(L, PROD_HREFS[i])} className="hover:text-white transition">{p}</a></li>)}

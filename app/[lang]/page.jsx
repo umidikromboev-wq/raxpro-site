@@ -12,6 +12,7 @@ import VideoHeroMp4 from "../../components/hero/VideoHeroMp4";
 import PriceBreakdown from "../../components/PriceBreakdown";
 import Stages from "../../components/Stages";
 import WhyRaxPro from "../../components/WhyRaxPro";
+import Comparison from "../../components/Comparison";
 import { SplitHead } from "../../components/Section";
 import { SITE, CLIENT_LOGOS, ISO_CERTS, siteLoc } from "../../lib/site";
 import { T, EXTRA, normalizeLang } from "../../lib/i18n";
@@ -148,30 +149,30 @@ export default async function Home({ params, searchParams }) {
 
       {/* CLIENTS + NUMBERS — один белый блок: цифра в заголовке, факты сеткой, логотипы как мини-кейсы */}
       <section className="bg-white border-b border-cloud-200" aria-labelledby="clients-title">
-        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pt-16 sm:pt-20">
-          <div className="grid lg:grid-cols-[minmax(0,1fr),minmax(0,1.5fr)] gap-10 lg:gap-20 items-end">
+        <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 pt-12 sm:pt-20">
+          <div className="grid lg:grid-cols-[minmax(0,1fr),minmax(0,1.5fr)] gap-8 lg:gap-20 items-end">
             <div>
               <h2 id="clients-title" className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight text-navy-900 text-balance">
                 {t.trustTitle.before}
                 <span className="text-sky-600">{t.trustTitle.n}</span>
                 {t.trustTitle.after}
               </h2>
-              <p className="mt-5 text-slate-600 max-w-md leading-relaxed">{t.trustText}</p>
+              <p className="mt-4 sm:mt-5 text-slate-600 max-w-md leading-relaxed">{t.trustText}</p>
             </div>
             <Reveal as="dl" variant="fade" stagger={60} className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-cloud-200 border-y border-cloud-200">
               {t.trustStats.map((s) => (
-                <div key={s.l} className="bg-white py-6 px-5 sm:px-6">
-                  <dd className="font-display font-medium text-4xl sm:text-[44px] leading-none text-navy-900 tracking-tight whitespace-nowrap">
+                <div key={s.l} className="bg-white py-4 sm:py-6 px-4 sm:px-6">
+                  <dd className="font-display font-medium text-3xl sm:text-[44px] leading-none text-navy-900 tracking-tight whitespace-nowrap">
                     {s.n}
                     {s.s && <span className="text-xl text-sky-600 ml-1">{s.s}</span>}
                   </dd>
-                  <dt className="mt-2 text-sm text-slate-500 leading-snug max-w-[200px]">{s.l}</dt>
+                  <dt className="mt-1.5 sm:mt-2 text-[13px] sm:text-sm text-slate-500 leading-snug max-w-[200px]">{s.l}</dt>
                 </div>
               ))}
             </Reveal>
           </div>
         </div>
-        <div className="mt-12 sm:mt-16 pb-16 sm:pb-20">
+        <div className="mt-8 sm:mt-16 pb-12 sm:pb-20">
           <LogoMarquee logos={CLIENT_LOGOS} lang={L} />
         </div>
       </section>
@@ -181,17 +182,19 @@ export default async function Home({ params, searchParams }) {
         id="napravleniya"
         className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20"
       >
-        <SplitHead title={t.dirTitle} desc={t.dirText} />
-        <div className="grid md:grid-cols-2 gap-5 mt-10">
+        <SplitHead title={t.dirTitle} desc={t.dirText} hideDescOnMobile />
+        {/* На телефоне — горизонтальная лента с прилипанием: одна карточка на экран,
+            край следующей виден. С md — сетка 2 колонки. */}
+        <div className="flex md:grid md:grid-cols-2 gap-4 md:gap-5 mt-6 md:mt-10 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-5 px-5 md:mx-0 md:px-0 pb-2 md:pb-0 scrollbar-none">
           {directions.map((d, i) => (
             <Reveal
               key={d.t}
               delay={i * 80}
-              className={
+              className={`shrink-0 w-[82vw] max-w-[360px] snap-start md:shrink md:w-auto md:max-w-none ${
                 i === directions.length - 1 && directions.length % 2
                   ? "md:col-span-2"
-                  : undefined
-              }
+                  : ""
+              }`}
             >
               <div className="group relative h-full flex flex-col rounded-xl2 overflow-hidden bg-white border border-cloud-200 shadow-card hover:shadow-card-hover transition">
                 {/* Вся карточка — ссылка на страницу направления; кнопка конструктора лежит поверх */}
@@ -214,16 +217,16 @@ export default async function Home({ params, searchParams }) {
                   </div>
                 </div>
                 {/* Описание — отдельная белая панель */}
-                <div className="relative flex-1 flex flex-col p-6 pointer-events-none">
-                  <h3 className="font-display font-bold text-2xl text-navy-800">{d.t}</h3>
-                  <p className="text-slate-600 text-sm mt-2 max-w-md leading-relaxed">{d.d}</p>
+                <div className="relative flex-1 flex flex-col p-5 md:p-6 pointer-events-none">
+                  <h3 className="font-display font-bold text-xl md:text-2xl text-navy-800">{d.t}</h3>
+                  <p className="text-slate-600 text-sm mt-2 max-w-md leading-relaxed line-clamp-3 md:line-clamp-none">{d.d}</p>
                   <div className="mt-4 flex flex-wrap gap-2 text-xs">
                     {d.specs.map((sp) => (
                       <span key={sp.k} className="rounded-full border border-cloud-200 bg-cloud-50 px-3 py-1.5 text-navy-800">{sp.k}: {sp.v}</span>
                     ))}
                   </div>
-                  <p className="mt-3 text-xs text-slate-500 max-w-md"><b className="text-navy-800 font-semibold">{d.forWhom}:</b> {d.useCases}</p>
-                  <div className="mt-auto pt-5 flex flex-wrap items-center gap-x-5 gap-y-2 pointer-events-auto">
+                  <p className="hidden md:block mt-3 text-xs text-slate-500 max-w-md"><b className="text-navy-800 font-semibold">{d.forWhom}:</b> {d.useCases}</p>
+                  <div className="mt-auto pt-4 md:pt-5 flex flex-wrap items-center gap-x-5 gap-y-2 pointer-events-auto">
                     <a href={d.cta.href} className="relative z-[2] inline-flex items-center gap-2 bg-navy-900 hover:bg-sky-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition">
                       {d.cta.label} <IcoArrow className="w-4 h-4" />
                     </a>
@@ -282,99 +285,20 @@ export default async function Home({ params, searchParams }) {
         </div>
       </section>
 
-      {/* COMPARISON — factory vs artisan: два крупных плана узла, под каждым — своя колонка */}
-      <section className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20">
-        <SplitHead title={x.cmpTitle} desc={x.cmpText} />
-        <div className="grid md:grid-cols-2 gap-4 mt-10">
-          <Reveal className="rounded-xl2 bg-navy-900 text-white overflow-hidden flex flex-col">
-            <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden">
-              <img
-                src="/images/cmp-factory.jpg"
-                alt={x.cmpUs}
-                width={1168}
-                height={880}
-                loading="lazy"
-                decoding="async"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-navy-900 to-transparent" />
-              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white text-navy-900 text-xs font-bold px-3 py-1.5">
-                <IcoCheck className="w-3.5 h-3.5" />
-                {x.cmpUs}
-              </div>
-            </div>
-            <div className="relative p-6 sm:p-8 -mt-6">
-              <div className="font-display font-medium text-xl sm:text-2xl">
-                {x.cmpUs}
-              </div>
-              <ul className="mt-5 space-y-3">
-                {x.cmpRows.map((r) => (
-                  <li key={r.us} className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-sky-500/25 grid place-items-center shrink-0 mt-0.5">
-                      <IcoCheck className="w-4 h-4 text-sky-300" />
-                    </span>
-                    <span className="text-white/95">{r.us}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-          <Reveal delay={80} className="rounded-xl2 bg-white border border-cloud-200 shadow-card overflow-hidden flex flex-col">
-            <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden">
-              <img
-                src="/images/cmp-crude.jpg"
-                alt={x.cmpThem}
-                width={1168}
-                height={880}
-                loading="lazy"
-                decoding="async"
-                className="absolute inset-0 w-full h-full object-cover grayscale-[35%]"
-              />
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
-              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-slate-800 text-white text-xs font-bold px-3 py-1.5">
-                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
-                {x.cmpThem}
-              </div>
-            </div>
-            <div className="relative p-6 sm:p-8 -mt-6">
-              <div className="font-display font-medium text-xl sm:text-2xl text-slate-500">
-                {x.cmpThem}
-              </div>
-              <ul className="mt-5 space-y-3">
-                {x.cmpRows.map((r) => (
-                  <li key={r.them} className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-cloud-100 grid place-items-center shrink-0 mt-0.5 text-slate-400">
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="14"
-                        height="14"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.2"
-                        strokeLinecap="round"
-                      >
-                        <path d="M6 6l12 12M18 6L6 18" />
-                      </svg>
-                    </span>
-                    <span className="text-slate-500">{r.them}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* COMPARISON — заводские против кустарных: таблица пар, безопасность, честно про цену */}
+      <Comparison lang={L} />
 
       {/* PROJECTS SLIDER */}
       <section
         id="proekty"
-        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20"
+        className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-12 sm:py-20"
       >
         <SplitHead
           title={t.projTitle}
           desc={t.projText}
+          hideDescOnMobile
         />
-        <div className="mt-10">
+        <div className="mt-6 sm:mt-10">
           <CaseSlider items={cases} lang={L} />
         </div>
       </section>
@@ -479,7 +403,7 @@ export default async function Home({ params, searchParams }) {
         className="relative bg-navy-900 overflow-hidden notch-tr"
       >
         <div className="absolute inset-0 grid-lines opacity-25" />
-        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-16 sm:py-20 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-12 sm:py-20 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="text-white">
             <h2 className="font-display font-medium text-3xl sm:text-4xl">
               {t.formTitle}
@@ -488,7 +412,7 @@ export default async function Home({ params, searchParams }) {
               {t.formText}
             </p>
             {/* «После заявки» — короткой колонкой у полей: страх оставить заявку снимается там, где он возникает */}
-            <div className="mt-8 max-w-lg border-t border-white/10 pt-6">
+            <div className="mt-6 sm:mt-8 max-w-lg border-t border-white/10 pt-5 sm:pt-6">
               <div className="text-xs font-bold uppercase tracking-wider text-sky-300">{x.afterTitle}</div>
               <ol className="mt-4 space-y-3">
                 {x.afterSteps.map((s) => (
@@ -500,25 +424,17 @@ export default async function Home({ params, searchParams }) {
               </ol>
               <p className="mt-4 text-white font-semibold text-sm">{x.afterNote}</p>
             </div>
-            <div className="mt-7 space-y-3 text-cloud-200/90">
-              <a
-                href={`tel:${SITE.phoneMain}`}
-                className="flex items-center gap-3 font-semibold hover:text-sky-300"
-              >
-                <span className="w-10 h-10 rounded-lg bg-white/10 grid place-items-center text-sky-300">
-                  <IcoPhone className="w-5 h-5" />
-                </span>
-                {SITE.phoneMainHuman}
-              </a>
-              <div className="flex items-center gap-3 text-cloud-200/70">
-                <span className="w-10 h-10 rounded-lg bg-white/10 grid place-items-center text-sky-300">
-                  <IcoPin className="w-5 h-5" />
-                </span>
-                {loc.addressCity}, {loc.address}
-              </div>
-            </div>
+            <a
+              href={`tel:${SITE.phoneMain}`}
+              className="mt-7 inline-flex items-center gap-3 font-semibold text-cloud-200/90 hover:text-sky-300"
+            >
+              <span className="w-10 h-10 rounded-lg bg-white/10 grid place-items-center text-sky-300">
+                <IcoPhone className="w-5 h-5" />
+              </span>
+              {SITE.phoneMainHuman}
+            </a>
           </div>
-          <div className="w-full max-w-md lg:justify-self-end">
+          <div className="w-full max-w-md lg:max-w-lg lg:justify-self-start">
             <LeadForm lang={L} />
           </div>
         </div>

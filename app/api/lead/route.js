@@ -116,16 +116,19 @@ async function readLead(req) {
       phone: String(fd.get('phone') || ''),
       product: String(fd.get('product') || ''),
       message: String(fd.get('message') || ''),
+      website: String(fd.get('website') || ''),
       file,
     };
   }
-  const { name, phone, product, message } = await req.json();
-  return { name, phone, product, message, file: null };
+  const { name, phone, product, message, website } = await req.json();
+  return { name, phone, product, message, website: String(website || ''), file: null };
 }
 
 export async function POST(req) {
   try {
-    const { name, phone, product, message, file } = await readLead(req);
+    const { name, phone, product, message, website, file } = await readLead(req);
+    // Honeypot: люди это поле не видят; заполнено — бот, отвечаем «ок» и ничего не шлём.
+    if (website) return Response.json({ ok: true });
     if (!phone || String(phone).trim().length < 5) {
       return Response.json({ error: 'phone required' }, { status: 400 });
     }
