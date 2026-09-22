@@ -14,11 +14,13 @@ import { href } from '../lib/lang';
 // факты сайта: замер 24 ч, план и КП в день замера, монтаж до 300 м² за день,
 // гарантия 10 лет, 5 минут.
 
-const TOTAL_DAYS = 7; // подтверждено Умидом 22.09: один срок на весь сайт
+const TOTAL_DAYS = 5; // Умид 22.09: план, 3D и КП отдаём в день замера,
+// поэтому цепочка стала 1 + 1 + 3 = 5 дней. Цифра одна на весь сайт.
 const STOCK_TONS = '150'; // подтверждено Умидом 22.09
 const FACTORY_LEAD = '14–28'; // PLACEHOLDER
 // Диаграмма сроков — одна шкала дней для обеих строк. PLACEHOLDER: завод 14 дней
-// гарантированно + до 28 (неопределённость), потом монтаж 3; у нас 1+2+1+3 = 7.
+// гарантированно + до 28 (неопределённость), потом монтаж 3; у нас 1+1+3 = 5:
+// замер и проект укладываются в один день.
 const FACTORY_SEGMENTS = [
   { key: 'make', days: 14 },
   { key: 'wait', days: 14, uncertain: true },
@@ -26,7 +28,6 @@ const FACTORY_SEGMENTS = [
 ];
 const OUR_SEGMENTS = [
   { key: 'measure', days: 1 },
-  { key: 'design', days: 2 },
   { key: 'stock', days: 1, dark: true },
   { key: 'mount', days: 3 },
 ];
@@ -54,8 +55,8 @@ const COPY = {
     cmpTail: 'склад уже работает',
     cmpDays: 'дней',
     cmpTailDays: 'дня',
-    seg: { make: `изготовление и доставка — ${FACTORY_LEAD} дней`, wait: 'возможная задержка завода', mount: 'монтаж', measure: 'замер', design: 'проект', stock: 'комплектация со склада' },
-    dayLabels: ['День 1', 'Дни 2–3', 'День 4', 'Дни 5–7 · склад работает'],
+    seg: { make: `изготовление и доставка — ${FACTORY_LEAD} дней`, wait: 'возможная задержка завода', mount: 'монтаж', measure: 'замер и проект', stock: 'комплектация со склада' },
+    dayLabels: ['День 1', 'День 1 · в тот же день', 'День 2', 'Дни 3–5 · склад работает'],
     get: 'Вы получаете',
     inStock: 'Всё в наличии',
     steps: [
@@ -86,8 +87,8 @@ const COPY = {
     cmpTail: 'ombor allaqachon ishlayapti',
     cmpDays: 'kun',
     cmpTailDays: 'kun',
-    seg: { make: `ishlab chiqarish va yetkazish — ${FACTORY_LEAD} kun`, wait: 'zavodning ehtimoliy kechikishi', mount: 'montaj', measure: 'oʻlchov', design: 'loyiha', stock: 'ombordan butlash' },
-    dayLabels: ['1-kun', '2–3-kunlar', '4-kun', '5–7-kunlar · ombor ishlaydi'],
+    seg: { make: `ishlab chiqarish va yetkazish — ${FACTORY_LEAD} kun`, wait: 'zavodning ehtimoliy kechikishi', mount: 'montaj', measure: 'oʻlchov va loyiha', stock: 'ombordan butlash' },
+    dayLabels: ['1-kun', '1-kun · oʻsha kuniyoq', '2-kun', '3–5-kunlar · ombor ishlaydi'],
     get: 'Siz olasiz',
     inStock: 'Hammasi mavjud',
     steps: [
@@ -104,7 +105,7 @@ const COPY = {
 
 const ICONS = [IcoRuler, IcoDraft, IcoTruck, IcoWrench];
 // Доля каждого этапа в полоске дней: 1 + 2 + 1 + 3 = 7
-const DAY_SHARE = [1, 2, 1, 3];
+const DAY_SHARE = [1, 1, 1, 3];
 const HIGHLIGHT = 2; // карточка «Комплектация со склада» — тёмная, это и есть отличие
 
 /** 0…1 — насколько ряд карточек прошёл через нижнюю половину экрана. */

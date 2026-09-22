@@ -15,7 +15,7 @@ const PAYBACK_MONTHS = '6';  // месяцев до того, как стелл�
 const TIER_STEP_MM = '50';   // шаг регулировки яруса
 const STEEL_GRADE = 'Сталь 08ПС · 1,5 мм';
 const STEEL_GRADE_UZ = 'Poʻlat 08PS · 1,5 mm';
-const DAYS = '7';            // склад под ключ — как в блоке «Этапы»
+const DAYS = '5';            // склад под ключ — как в блоке «Этапы»
 
 const RACK_PLACES = FLOOR_PALLETS * (RACK_LEVELS + 1);
 
