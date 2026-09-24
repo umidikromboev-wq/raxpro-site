@@ -106,6 +106,24 @@ export function wallTexture(THREE, widthMeters, heightMeters) {
 }
 
 /** Секционные ворота: ламели и синяя рама. */
+/** Плитка торгового зала: светлая, с тонкими швами — магазин читается светлее склада. */
+export function tileTexture(THREE, repeat) {
+  return canvasTexture(THREE, 128, 128, (ctx, w, h) => {
+    ctx.fillStyle = '#e9eef2'; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(8, 8, w / 2, h / 3);
+    ctx.strokeStyle = '#b9c5cf'; ctx.lineWidth = 3; ctx.strokeRect(0, 0, w, h);
+  }, repeat);
+}
+
+/** Перфорированная спинка торговой гондолы: светлый лист с рядами отверстий. */
+export function pegboardTexture(THREE, repeat) {
+  return canvasTexture(THREE, 64, 64, (ctx, w, h) => {
+    ctx.fillStyle = '#eef1f4'; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#8f9ba6';
+    for (let y = 8; y < h; y += 16) for (let x = 8; x < w; x += 16) { ctx.beginPath(); ctx.arc(x, y, 2.6, 0, Math.PI * 2); ctx.fill(); }
+  }, repeat);
+}
+
 export function gateTexture(THREE) {
   return canvasTexture(THREE, 256, 288, (ctx, w, h) => {
     for (let y = 0; y < h; y += 16) { ctx.fillStyle = y % 32 ? '#b9cad7' : '#9cb0c0'; ctx.fillRect(0, y, w, 16); }

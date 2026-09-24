@@ -1,8 +1,9 @@
 import { sceneState, stagger, dropOffset, easeOutCubic, smoothstep, span as spanOf, STAGES } from './timeline.js';
 import { rackModel, ROOM, BAY_WIDTH, RACK_DEPTH, floorPositions, FLOOR_SPOTS, CARRY_LEVEL } from './rackModel.js';
-import { cartonTexture, cartonTapeTexture, wrapTexture, loadLabelTexture, textSprite, createWorker, WORKER } from './sceneAssets.js';
+import { cartonTexture, cartonTapeTexture, wrapTexture, loadLabelTexture, pegboardTexture, textSprite, createWorker, WORKER } from './sceneAssets.js';
 import { buildRoom } from './sceneRoom.js';
 import { addRackDetails, addPalletLoad, addPalletJack, addFloorPallets } from './sceneProps.js';
+import { buildShopShell, addShopRacks, SCENE_CENTER_X } from './sceneShop.js';
 export { countPositions } from './rackModel.js';
 
 const SLIDE_DISTANCE = 7;
@@ -10,12 +11,15 @@ const SLIDE_DISTANCE = 7;
 const CARRY_ARC = 0.75;
 const JACK_AT = [-1.6, 0.9];
 const LEFT_WALL_X = -ROOM.width / 2;
-const LABEL_TEXT = { ru: ['до 4 т / ярус', 'Ваше помещение', '17 м', '13 м', '2,3 м', '6,3 м', '1,3 м', 'Стеллажи под ваш бизнес'], uz: ['4 t gacha / yarus', 'Sizning omboringiz', '17 m', '13 m', '2,3 m', '6,3 m', '1,3 m', 'Biznesingiz uchun stellajlar'] };
+const LABEL_TEXT = { ru: ['до 4 т / ярус', 'Ваше помещение', '17 м', '13 м', '2,3 м', '6,3 м', '1,3 м', 'Стеллажи под ваш бизнес', 'Торговые стеллажи'], uz: ['4 t gacha / yarus', 'Sizning omboringiz', '17 m', '13 m', '2,3 m', '6,3 m', '1,3 m', 'Biznesingiz uchun stellajlar', 'Savdo stellajlari'] };
 // Портретная камера: перспектива, от замерщиков вблизи до общего вида собранного стеллажа.
 const PORTRAIT_FROM = { position: [4.4, 3.6, 10.6], target: [-1.6, 1.0, 2.5], fov: 46 };
 const PORTRAIT_TO = { position: [12.5, 8.2, 12.8], target: [-1.2, 2.3, -0.4], fov: 40 };
 const FOG_COLOR = 0x0b4f80;
 const ORBIT_FOV = 38;
+// Две комнаты (склад + магазин): камера смотрит в их общий центр и стоит дальше.
+// phone — узкий холст телефона: ближе, чтобы модель была крупнее (просьба Умида 24.09).
+const VIEW = { shift: 1.12, desktop: 1.24, az: 0.2, ty: -1.5, phoneFrom: 0.78, phoneTo: 1.12, deskFrom: 0.5 };
 // Ключи облёта на десктопе: az — азимут (рад, камера в квадранте +x +z, стены
 // сзади не перекрывают), el — высота, dist — расстояние до цели, ty — высота цели.
 const ORBIT = [
@@ -59,9 +63,11 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
   }
   scene.add(new THREE.HemisphereLight(0xdceefc, 0x48627a, RoomEnvironment ? 1.0 : 1.7));
   const sun = new THREE.DirectionalLight(0xfff3dd, 2.6);
-  sun.position.set(-7, 17, 10); sun.castShadow = true;
+  sun.position.set(SCENE_CENTER_X - 7, 17, 10); sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
-  Object.assign(sun.shadow.camera, { left: -16, right: 16, top: 16, bottom: -16, near: 1, far: 60 });
+  Object.assign(sun.shadow.camera, { left: -21, right: 21, top: 21, bottom: -21, near: 1, far: 70 });
+  // Тень покрывает обе комнаты: цель солнца — центр склада и магазина.
+  sun.target.position.set(SCENE_CENTER_X, 0, 0); scene.add(sun.target);
   sun.shadow.normalBias = 0.04; sun.shadow.bias = -0.0002;
   scene.add(sun);
   const fill = new THREE.DirectionalLight(0xc7eaff, 1.6); fill.position.set(9, 7, -10); scene.add(fill);
@@ -78,6 +84,13 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     drum: material(0x2b62b8, 0.35, 0.3), label: new THREE.MeshStandardMaterial({ map: loadLabelTexture(THREE, text[0]), roughness: 0.5 }),
     jackBody: material(0xf0731a, 0.45, 0.25), floor: material(0x5f7488, 0.98), column: material(0x93a2ad, 0.98),
     extinguisher: material(0xd12b2b, 0.4, 0.3), extinguisherSign: material(0xe03030, 0.7),
+    // Магазин: светлые гондолы и перфорированная спинка — как торговый стеллаж в каталоге.
+    gondola: material(0xe3e8ed, 0.42, 0.35), gondolaBase: material(0x8e9aa5, 0.5, 0.4), priceStrip: material(0xf8fafc, 0.4),
+    pegboard: new THREE.MeshStandardMaterial({ map: pegboardTexture(THREE, [40, 12]), roughness: 0.5, metalness: 0.2 }),
+    counter: material(0x1b3b8f, 0.5, 0.2), fridge: material(0xdfe5ea, 0.35, 0.45),
+    goodsBlue: material(0x2a5bd7, 0.55), goodsYellow: material(0xf2c230, 0.55), goodsRed: material(0xd8342c, 0.5),
+    goodsOil: material(0xe7b92a, 0.2, 0.1), goodsGreen: material(0x2f9e4f, 0.45, 0.3), goodsWhite: material(0xf1efe8, 0.6),
+    goodsOrange: material(0xf07a1f, 0.55),
   };
 
   // Одинаковые детали складываются в InstancedMesh; владелец (owner) говорит, на каком этапе деталь падает на место.
@@ -104,6 +117,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     part(size, name, [x, y, z], owner, [tilt, -f.rot, 0]);
   }
   buildRoom(THREE, scene, part, text[7]);
+  buildShopShell(THREE, scene, part, text[8]);
 
   const draftPoints = [];
   function line(a, b) { draftPoints.push(...a, ...b); }
@@ -157,6 +171,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
   });
   addFloorPallets(part);
   addPalletJack(part, JACK_AT[0], JACK_AT[1]);
+  addShopRacks(part);
 
   const floorBase = mats.floor.color.clone();
   const blueprintFloor = new THREE.Color(0x163653);
@@ -168,7 +183,7 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
       : new THREE.BoxGeometry(...batch.size);
     const mesh = new THREE.InstancedMesh(geometry, mats[batch.name], batch.items.length);
     mesh.frustumCulled = false;
-    mesh.castShadow = !['floor', 'hole', 'label', 'film'].includes(batch.name); mesh.receiveShadow = batch.name !== 'film';
+    mesh.castShadow = !['floor', 'hole', 'label', 'film', 'priceStrip'].includes(batch.name); mesh.receiveShadow = batch.name !== 'film';
     if (batch.name === 'film') mesh.renderOrder = 1;
     for (const [i, item] of batch.items.entries()) {
       dummy.position.set(...item.position); dummy.quaternion.copy(item.quaternion); dummy.updateMatrix(); mesh.setMatrixAt(i, dummy.matrix);
@@ -246,13 +261,19 @@ export function createRackScene(THREE, canvas, lang = 'ru', { RoomEnvironment } 
     const c = orbitAt(progress);
     activeCamera = portrait; scene.fog = fog;
     portrait.aspect = aspect; portrait.fov = ORBIT_FOV * (1 + end * 0.04);
-    const target = [0, c.ty, 0];
+    // Телефон: начинаем крупно на складе, на загрузке отъезжаем, чтобы в кадр вошёл и магазин.
+    const phone = width < 700;
+    // Десктоп: на старте склад правее, чтобы стена не заходила под заголовок.
+    const reveal = phone ? smoothstep(spanOf(progress, STAGES.load.from, 1)) : VIEW.deskFrom + (1 - VIEW.deskFrom) * smoothstep(spanOf(progress, 0, 0.5));
+    const target = [SCENE_CENTER_X * VIEW.shift * reveal, c.ty + VIEW.ty, 0];
+    // Поворот к фронту набирается к загрузке: на старте стена склада не заходит на заголовок.
+    const az = c.az + VIEW.az * smoothstep(spanOf(progress, 0.15, 0.9));
     // Маленький холст (телефон, модель под текстом): камера чуть дальше, иначе стены цеха режутся краями холста
-    const dist = c.dist * (width < 700 ? 1.1 : 1);
+    const dist = c.dist * (phone ? VIEW.phoneFrom + (VIEW.phoneTo - VIEW.phoneFrom) * reveal : VIEW.desktop);
     portrait.position.set(
-      target[0] + dist * Math.cos(c.el) * Math.cos(c.az),
+      target[0] + dist * Math.cos(c.el) * Math.cos(az),
       target[1] + dist * Math.sin(c.el),
-      target[2] + dist * Math.cos(c.el) * Math.sin(c.az),
+      target[2] + dist * Math.cos(c.el) * Math.sin(az),
     );
     portrait.lookAt(...target); portrait.updateProjectionMatrix();
   }
