@@ -173,7 +173,8 @@ function Siblings({ L, items, title }) {
  */
 export default function LandingPage({ lang: L, landing, crumbs, siblings = [], siblingsTitle, leadProduct }) {
   const c = landing[L];
-  const ui = LANDING_UI[L];
+  // Подписи блоков: торговые — «для вашего магазина», остальные группы — свои.
+  const ui = { ...LANDING_UI[L], ...(LANDING_UI[L].byGroup[landing.group] || {}) };
   const cases = pickCases(landing.caseKeys || [], L);
   const reviews = pickReviews(landing.reviewIds || [], L);
   const products = (landing.productSlugs || []).map(getProduct).filter(Boolean);

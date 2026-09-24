@@ -40,6 +40,8 @@ export default function sitemap() {
     ...entry('/portfolio', now, 'monthly', 0.8),
     ...CASES.flatMap((c) => entry(`/portfolio/${c.key}`, now, 'monthly', 0.6)),
     ...entry('/shourum', now, 'monthly', 0.7),
+    ...entry('/uslugi', now, 'monthly', 0.7),
+    ...entry('/pokupatelyam', now, 'monthly', 0.6),
     ...ARTICLES.flatMap((a) => entry(`/blog/${a.slug}`, new Date(a.date), 'monthly', 0.7)),
   ];
 }

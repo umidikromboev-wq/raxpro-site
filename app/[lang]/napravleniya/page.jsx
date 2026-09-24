@@ -2,7 +2,7 @@ import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import { IcoArrow } from "../../../components/Icons";
 import { DIRECTIONS } from "../../../lib/directions";
-import { retailSubs, LANDING_UI } from "../../../lib/landings";
+import { getLanding, retailSubs, useLandings, LANDING_UI } from "../../../lib/landings";
 import { normalizeLang } from "../../../lib/i18n";
 import { alternatesFor, href } from "../../../lib/lang";
 import { breadcrumbSchema, JsonLd } from "../../../lib/schema";
@@ -63,6 +63,9 @@ export default async function DirectionsHub({ params }) {
             {DIRECTIONS.map((d) => (
               <li key={d.slug}><Tile L={L} path={`/napravleniya/${d.slug}`} cover={d.cover} name={d[L].short} large /></li>
             ))}
+            {[getLanding("/napravleniya/mezonin")].map((m) => (
+              <li key={m.slug}><Tile L={L} path={m.path} cover={m.cover} name={m[L].short} large /></li>
+            ))}
           </ul>
         </section>
 
@@ -75,6 +78,15 @@ export default async function DirectionsHub({ params }) {
               ))}
             </ul>
           </div>
+        </section>
+
+        <section aria-labelledby="use" className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14">
+          <h2 id="use" className="font-display font-medium text-2xl sm:text-3xl text-navy-800 tracking-tight">{ui.hubUse}</h2>
+          <ul className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {useLandings().map((s) => (
+              <li key={s.slug}><Tile L={L} path={s.path} cover={s.cover} name={s[L].short} /></li>
+            ))}
+          </ul>
         </section>
       </main>
       <Footer lang={L} />

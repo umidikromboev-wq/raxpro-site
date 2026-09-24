@@ -226,7 +226,7 @@ function DesktopMenu({ label, href: to, menu, L }) {
         <span aria-hidden className="text-[10px] opacity-70 transition group-hover/dd:rotate-180">▾</span>
       </a>
       <div className="invisible opacity-0 translate-y-1 group-hover/dd:visible group-hover/dd:opacity-100 group-hover/dd:translate-y-0 group-focus-within/dd:visible group-focus-within/dd:opacity-100 group-focus-within/dd:translate-y-0 transition absolute left-1/2 -translate-x-1/2 top-full pt-4">
-        <div className="w-[560px] rounded-2xl bg-navy-900 border border-white/10 shadow-band p-6 grid grid-cols-2 gap-6">
+        <div className="w-[820px] max-w-[calc(100vw-2rem)] rounded-2xl bg-navy-900 border border-white/10 shadow-band p-6 grid grid-cols-3 gap-6">
           {menu.groups.map((g) => (
             <div key={g.title}>
               <div className="text-[11px] uppercase tracking-wider text-white/45 mb-2">{g.title}</div>
@@ -237,7 +237,7 @@ function DesktopMenu({ label, href: to, menu, L }) {
               </ul>
             </div>
           ))}
-          <a href={href(L, menu.all.path)} className="col-span-2 border-t border-white/10 pt-4 text-sky-300 font-medium hover:text-sky-200">{menu.all.label} →</a>
+          <a href={href(L, menu.all.path)} className="col-span-3 border-t border-white/10 pt-4 text-sky-300 font-medium hover:text-sky-200">{menu.all.label} →</a>
         </div>
       </div>
     </div>

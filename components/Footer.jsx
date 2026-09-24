@@ -12,11 +12,14 @@ const FT = {
     statement: ['Соберём', 'ваш склад.'],
     sub: 'Замер, проект, поставка со склада и монтаж по всему Узбекистану.',
     cta: 'Рассчитать стоимость',
-    sections: 'Разделы', products: 'Продукция', info: 'Покупателю', follow: 'Мы в соцсетях',
+    sections: 'Разделы', products: 'Продукция', info: 'Покупателям', follow: 'Мы в соцсетях',
     prod: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи', 'Набивные (Drive-in) стеллажи', 'Мезонин'],
     rights: 'Все права защищены.', tail: 'Стеллажи и системы хранения · Ташкент, Узбекистан', madeBy: 'Сделано в', reviews: 'Отзывы клиентов',
     infoLinks: [
       { label: 'Каталог с ценами', href: '/katalog' },
+      { label: 'Услуги', href: '/uslugi' },
+      { label: 'Монтаж стеллажей', href: '/uslugi/montazh-stellazhej' },
+      { label: 'Гарантия 10 лет', href: '/pokupatelyam/garantiya' },
       { label: 'Доставка и оплата', href: '/dostavka-i-oplata' },
       { label: 'Возврат и обмен', href: '/vozvrat-i-obmen' },
       { label: 'Публичная оферта', href: '/publichnaya-oferta' },
@@ -27,11 +30,14 @@ const FT = {
     statement: ['Omboringizni', 'yigʻib beramiz.'],
     sub: 'Butun Oʻzbekiston boʻylab oʻlchov, loyiha, ombordan yetkazish va montaj.',
     cta: 'Narxni hisoblash',
-    sections: 'Boʻlimlar', products: 'Mahsulotlar', info: 'Xaridorga', follow: 'Ijtimoiy tarmoqlarda',
+    sections: 'Boʻlimlar', products: 'Mahsulotlar', info: 'Xaridorlarga', follow: 'Ijtimoiy tarmoqlarda',
     prod: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari', 'Zich (Drive-in) stellajlar', 'Mezonin'],
     rights: 'Barcha huquqlar himoyalangan.', tail: 'Stellajlar va saqlash tizimlari · Toshkent, Oʻzbekiston', madeBy: 'Ishlab chiqildi', reviews: 'Mijozlar sharhlari',
     infoLinks: [
       { label: 'Narxlar bilan katalog', href: '/katalog' },
+      { label: 'Xizmatlar', href: '/uslugi' },
+      { label: 'Stellajlarni montaj qilish', href: '/uslugi/montazh-stellazhej' },
+      { label: '10 yillik kafolat', href: '/pokupatelyam/garantiya' },
       { label: 'Yetkazib berish va toʻlov', href: '/dostavka-i-oplata' },
       { label: 'Qaytarish va almashtirish', href: '/vozvrat-i-obmen' },
       { label: 'Ommaviy oferta', href: '/publichnaya-oferta' },
@@ -46,7 +52,7 @@ const FOOTER_SKIP = new Set(['/#napravleniya', '/katalog']);
 const PROD_HREFS = [
   '/napravleniya/palletnye-stellazhi', '/napravleniya/srednegruzovye-stellazhi',
   '/napravleniya/arhivnye-stellazhi', '/napravleniya/torgovye-stellazhi',
-  '/napravleniya/nabivnye-stellazhi', '/katalog/mezonin',
+  '/napravleniya/nabivnye-stellazhi', '/napravleniya/mezonin',
 ];
 
 function IcoWa(p) {
