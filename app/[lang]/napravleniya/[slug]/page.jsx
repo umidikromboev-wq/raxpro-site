@@ -10,6 +10,7 @@ import { normalizeLang } from '../../../../lib/i18n';
 import { IcoCheck, IcoArrow } from '../../../../components/Icons';
 import { leadProductFor } from "../../../../lib/leadProduct";
 import { directionCards, directionSizes, SIZES_T } from '../../../../lib/directionCards';
+import { LANDINGS, LANDING_UI } from '../../../../lib/landings';
 
 export function generateStaticParams() {
   return LANGS.flatMap((lang) => DIRECTIONS.map((d) => ({ lang, slug: d.slug })));
@@ -42,6 +43,7 @@ export default async function DirectionPage({ params }) {
   const card = directionCards(L).find((x) => x.slug === d.slug);
   const sizes = directionSizes(d.slug);
   const st = SIZES_T[L];
+  const subs = LANDINGS.filter((l) => l.parent === d.slug);
 
   const crumbs = breadcrumbSchema(L, [
     { name: ui.home, path: '/' },
@@ -179,6 +181,30 @@ export default async function DirectionPage({ params }) {
           </a>
         )}
       </section>
+
+      {/* SUBCATEGORIES — подкатегории по типу магазина (ТЗ 24.09), только у торговых */}
+      {subs.length > 0 && (
+        <section aria-labelledby="subs" className="bg-cloud-50 border-y border-cloud-200">
+          <div className="w-full px-5 sm:px-8 lg:px-14 2xl:px-24 py-14">
+            <h2 id="subs" className="font-display font-medium text-2xl sm:text-3xl text-navy-800 tracking-tight">{LANDING_UI[L].hubTrade}</h2>
+            <ul className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {subs.map((s) => (
+                <li key={s.slug}>
+                  <a href={href(L, s.path)} className="group block rounded-xl2 overflow-hidden bg-white border border-cloud-200 hover:border-sky-300 transition">
+                    <div className="aspect-[4/3] overflow-hidden bg-cloud-100">
+                      <img loading="lazy" decoding="async" src={s.cover} alt={s[L].name} width={800} height={600} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                    </div>
+                    <div className="px-4 py-3 flex items-center justify-between gap-2">
+                      <span className="font-semibold text-navy-800 text-sm sm:text-base group-hover:text-sky-600">{s[L].short}</span>
+                      <IcoArrow className="w-4 h-4 text-navy-700 shrink-0" />
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* CTA FORM */}
       <section id="zayavka" className="relative bg-navy-900 overflow-hidden">

@@ -1,3 +1,20 @@
+## 2026-09-24 — ветка feat/structure: этап 1–2 ТЗ (структура как у Prostellaj)
+
+**Сделано**
+- ТЗ: https://claude.ai/artifact/QB3377PUAU3N3js4h1kq9B
+- Ветка `feat/structure` от `feat/site-v3`. `lib/landings/` (retail.js — 8 подкатегорий RU+UZ, index.js, menu.js), `components/landing/LandingPage.jsx` (9 блоков по порядку Prostellaj).
+- Маршруты: `/napravleniya` (хаб), `/napravleniya/torgovye-stellazhi/{produktovyj-magazin,kosmetika,apteka,magazin-elektroniki,hoztovary,bytovaya-tehnika,gipermarket,minimarket}`; sitemap; FAQPage + BreadcrumbList.
+- Шапка: выпадашка у «Продукция» (десктоп hover/focus, телефон details). Пункт по-прежнему ведёт на #napravleniya.
+- На `/napravleniya/torgovye-stellazhi` добавлен блок плиток подкатегорий (единственная правка существующей страницы).
+
+**Решения**
+- DIRECTIONS не расширяли: главная рендерит карточки из него. Меню — отдельный лёгкий файл, чтобы тексты страниц не ехали в клиентский бандл.
+- Цены у торговых — «по проекту» (в прайсе нет). Кейсы/отзывы — только существующие ключи.
+
+**Осталось**
+- [ ] Этап 3 карточка с выбором полок · 4 шоурум+портфолио · 5 /stellazhi, услуги, покупателям · 6 фото · 7 орфография · 8 сравнение
+- [ ] Ответы Умида на вопросы 1–7 из ТЗ; фото шоурума от Муродбека
+
 ## 2026-09-23 (ночь, 12) — обе деки Prototype готовы и отправлены
 
 **Сделано**

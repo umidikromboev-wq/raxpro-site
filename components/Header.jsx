@@ -8,10 +8,12 @@ import { NAV_T, T, normalizeLang } from "../lib/i18n";
 const FAST = { ru: "Ответим за 5 минут", uz: "5 daqiqada javob beramiz" };
 import { IcoTg, IcoPhone } from "./Icons";
 import { href, switchLangPath } from "../lib/lang";
+import { PRODUCT_MENU, MENU_ANCHOR } from "../lib/landings/menu";
 
 export default function Header({ lang = "ru" }) {
   const L = normalizeLang(lang);
   const nav = NAV_T[L];
+  const menu = PRODUCT_MENU[L];
   const tr = T[L];
   const pathname = usePathname();
   const home = href(L, "/");
@@ -87,15 +89,19 @@ export default function Header({ lang = "ru" }) {
           {/* gap ужат: в меню появился «Каталог», при gap-6 восьмой пункт
               наезжал на телефон на 1440. */}
           <nav className="hidden xl:flex flex-1 items-center justify-center gap-4 2xl:gap-5 text-[14px] 2xl:text-[15px] font-normal text-white/85">
-            {nav.map((n) => (
-              <a
-                key={n.href}
-                href={navHref(n.href)}
-                className="hover:text-sky-300 transition-colors whitespace-nowrap"
-              >
-                {n.label}
-              </a>
-            ))}
+            {nav.map((n) =>
+              n.href === MENU_ANCHOR ? (
+                <DesktopMenu key={n.href} label={n.label} href={navHref(n.href)} menu={menu} L={L} />
+              ) : (
+                <a
+                  key={n.href}
+                  href={navHref(n.href)}
+                  className="hover:text-sky-300 transition-colors whitespace-nowrap"
+                >
+                  {n.label}
+                </a>
+              ),
+            )}
           </nav>
 
           <div className="flex items-center gap-2.5 ml-auto xl:ml-0 shrink-0">
@@ -152,16 +158,36 @@ export default function Header({ lang = "ru" }) {
         {open && (
           <div className="xl:hidden mt-2 rounded-2xl bg-navy-900/95 backdrop-blur-md border border-white/10 px-4 py-4">
             <nav className="flex flex-col divide-y divide-white/10">
-              {nav.map((n) => (
-                <a
-                  key={n.href}
-                  href={navHref(n.href)}
-                  onClick={() => setOpen(false)}
-                  className="py-3 text-white/90 font-medium"
-                >
-                  {n.label}
-                </a>
-              ))}
+              {nav.map((n) =>
+                n.href === MENU_ANCHOR ? (
+                  <details key={n.href} className="group/m py-3">
+                    <summary className="list-none flex items-center justify-between text-white/90 font-medium cursor-pointer [&::-webkit-details-marker]:hidden">
+                      {n.label}
+                      <span aria-hidden className="text-white/60 transition group-open/m:rotate-180">▾</span>
+                    </summary>
+                    <div className="mt-2 pl-3 flex flex-col">
+                      <a href={href(L, menu.all.path)} onClick={() => setOpen(false)} className="py-2 text-sky-300 font-medium">{menu.all.label}</a>
+                      {menu.groups.map((g) => (
+                        <div key={g.title} className="mt-2">
+                          <div className="text-[11px] uppercase tracking-wider text-white/45">{g.title}</div>
+                          {g.items.map(([label, path]) => (
+                            <a key={path} href={href(L, path)} onClick={() => setOpen(false)} className="block py-1.5 text-white/85">{label}</a>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                ) : (
+                  <a
+                    key={n.href}
+                    href={navHref(n.href)}
+                    onClick={() => setOpen(false)}
+                    className="py-3 text-white/90 font-medium"
+                  >
+                    {n.label}
+                  </a>
+                ),
+              )}
             </nav>
             <div className="mt-3 flex items-center justify-between gap-2">
               <a
@@ -187,5 +213,33 @@ export default function Header({ lang = "ru" }) {
         )}
       </div>
     </header>
+  );
+}
+
+// Выпадашка «Продукция»: открывается наведением и с клавиатуры (focus-within),
+// сам пункт по-прежнему ведёт на блок направлений главной.
+function DesktopMenu({ label, href: to, menu, L }) {
+  return (
+    <div className="relative group/dd">
+      <a href={to} aria-haspopup="true" className="inline-flex items-center gap-1 hover:text-sky-300 transition-colors whitespace-nowrap">
+        {label}
+        <span aria-hidden className="text-[10px] opacity-70 transition group-hover/dd:rotate-180">▾</span>
+      </a>
+      <div className="invisible opacity-0 translate-y-1 group-hover/dd:visible group-hover/dd:opacity-100 group-hover/dd:translate-y-0 group-focus-within/dd:visible group-focus-within/dd:opacity-100 group-focus-within/dd:translate-y-0 transition absolute left-1/2 -translate-x-1/2 top-full pt-4">
+        <div className="w-[560px] rounded-2xl bg-navy-900 border border-white/10 shadow-band p-6 grid grid-cols-2 gap-6">
+          {menu.groups.map((g) => (
+            <div key={g.title}>
+              <div className="text-[11px] uppercase tracking-wider text-white/45 mb-2">{g.title}</div>
+              <ul className="space-y-1.5">
+                {g.items.map(([text, path]) => (
+                  <li key={path}><a href={href(L, path)} className="text-white/85 hover:text-sky-300">{text}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <a href={href(L, menu.all.path)} className="col-span-2 border-t border-white/10 pt-4 text-sky-300 font-medium hover:text-sky-200">{menu.all.label} →</a>
+        </div>
+      </div>
+    </div>
   );
 }
