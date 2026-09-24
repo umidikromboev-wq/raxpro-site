@@ -15,7 +15,7 @@ import { SplitHead } from "../Section";
 import { IcoArrow } from "../Icons";
 import { CASES, localizeCase } from "../../lib/cases";
 import { REVIEWS, localizeReview } from "../../lib/reviews";
-import { getProduct, formatPrice } from "../../lib/products";
+import { getProduct, formatPrice, variantsOf } from "../../lib/products";
 import { LANDING_UI } from "../../lib/landings";
 
 const WRAP = "w-full px-5 sm:px-8 lg:px-14 2xl:px-24";
@@ -32,6 +32,22 @@ function pickReviews(ids, L) {
     .map((id) => REVIEWS.find((r) => r.id === id))
     .filter(Boolean)
     .map((r) => localizeReview(r, L));
+}
+
+// Бейдж героя: если у готовых позиций страницы есть цена из каталога —
+// «от <минимальная>», иначе подпись группы («по проекту», «бесплатно»…).
+const PRICED_GROUPS = ["use", "retail", "type"];
+
+function heroBadge(landing, ui, L) {
+  if (!PRICED_GROUPS.includes(landing.group)) return ui.price;
+  const prices = (landing.productSlugs || [])
+    .map((slug) => getProduct(slug))
+    .filter(Boolean)
+    .flatMap((p) => variantsOf(p).map((v) => v.price))
+    .filter((v) => typeof v === "number");
+  if (!prices.length) return ui.price;
+  const from = formatPrice(Math.min(...prices), L);
+  return L === "uz" ? `${from}dan · oʻlchov bepul` : `от ${from} · замер бесплатно`;
 }
 
 function faqSchema(items) {
@@ -67,7 +83,7 @@ function Hero({ L, landing, c, ui, crumbs, leadProduct }) {
           </nav>
           <h1 className="font-display font-medium text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.08]">{c.name}</h1>
           <p className="mt-5 text-lg text-cloud-200/85 max-w-xl leading-relaxed">{c.lead}</p>
-          <p className="mt-5 inline-flex items-center rounded-full bg-white text-navy-900 font-semibold text-sm px-4 py-2">{ui.price}</p>
+          <p className="mt-5 inline-flex items-center rounded-full bg-white text-navy-900 font-semibold text-sm px-4 py-2">{heroBadge(landing, ui, L)}</p>
           <div className="flex flex-wrap gap-3 mt-6">
             <a href="#zayavka" className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">
               {ui.cta} <IcoArrow className="w-5 h-5" />
