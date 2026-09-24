@@ -1,6 +1,7 @@
 import { ARTICLES } from '../lib/articles';
 import { DIRECTIONS } from '../lib/directions';
 import { LANDINGS } from '../lib/landings';
+import { CASES } from '../lib/cases';
 import { PRODUCTS } from '../lib/products';
 import { POLICY_SLUGS } from '../lib/policies';
 import { LANGS, LANG_DEFAULT } from '../lib/i18n';
@@ -36,6 +37,9 @@ export default function sitemap() {
     ...entry('/napravleniya', now, 'monthly', 0.85),
     ...DIRECTIONS.flatMap((d) => entry(`/napravleniya/${d.slug}`, now, 'monthly', 0.9)),
     ...LANDINGS.flatMap((l) => entry(l.path, now, 'monthly', 0.8)),
+    ...entry('/portfolio', now, 'monthly', 0.8),
+    ...CASES.flatMap((c) => entry(`/portfolio/${c.key}`, now, 'monthly', 0.6)),
+    ...entry('/shourum', now, 'monthly', 0.7),
     ...ARTICLES.flatMap((a) => entry(`/blog/${a.slug}`, new Date(a.date), 'monthly', 0.7)),
   ];
 }
