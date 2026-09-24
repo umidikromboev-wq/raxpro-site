@@ -61,7 +61,7 @@ export default async function ThankYouPage({ params }) {
           {/* Dinamik tavsif */}
           <p className="text-slate-500 text-sm sm:text-base leading-relaxed mb-8">
             {t.thankYouDesc ||
-              "Bizga ishonch bildirganingiz uchun rahmat. Mutaxassislarimiz tez orada siz bilan bog‘lanishadi."}
+              "Bizga ishonch bildirganingiz uchun rahmat. Mutaxassislarimiz tez orada siz bilan bogʻlanishadi."}
           </p>
 
           <script dangerouslySetInnerHTML={{ __html: THANK_YOU_EVENT }} />
@@ -90,7 +90,7 @@ export default async function ThankYouPage({ params }) {
                 href={`tel:${SITE.phoneMain}`}
                 className="text-sky-500 hover:underline font-medium ml-1"
               >
-                {t.callUs || "Bizga qo‘ng‘iroq qiling"}
+                {t.callUs || "Bizga qoʻngʻiroq qiling"}
               </a>
             </p>
           </div>

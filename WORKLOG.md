@@ -1,3 +1,18 @@
+## 2026-09-24 — этап 7: вычитка RU/UZ («Imloviy hatolar» Муродбека)
+
+**Сделано**
+- UZ: ~50 правок в landings/*, shourum, cases, products, directions: pogruzchik→yuklagich, yacheyka→katak, yetkazish→yetkazib berish (в текстах), oʻrnatish→montaj, jonli→oʻz koʻzingiz bilan, Marshrut tuzish, avtoehtiyot, 3 грамматики в гарантии.
+- Статьи uz-articles-1/2: кириллические вставки из видимого текста убраны; metaTitle/metaDescription/keywords не трогал (перенос 1:1 по SEO).
+- Кривые ‘ и ASCII ' → ʻ/ʼ (i18n, thank-you, service).
+- RU — ошибок не найдено. Tahrirchi (/spell) по выборке: только «Palletli» (термин, ок).
+
+**Решения**
+- «hisob-faktura» = счёт-фактура → вместо неё «toʻlovdan oldin»; «oʻzboshimchalik» (негатив) → «mustaqil ravishda oʻzgartirish».
+- Короткие подписи «yetkazish va montaj» в цифрах кейсов оставлены — узко по месту.
+
+**Осталось**
+- [ ] В metaTitle uz-articles-1 опечатка «Палетные» — ждём «да» Умида.
+
 ## 2026-09-24 — этап 6: фото (Higgsfield), фото варианта меняется с ценой
 
 **Сделано**
