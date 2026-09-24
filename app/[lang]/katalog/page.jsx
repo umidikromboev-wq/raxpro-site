@@ -93,6 +93,7 @@ export default async function CatalogPage({ params }) {
                 >
                   <img
                     src={p.image}
+                    data-variant-img={p.slug}
                     alt={c.name}
                     width={1168}
                     height={880}
@@ -153,6 +154,7 @@ export default async function CatalogPage({ params }) {
                       defaultLevels={defaultVariant(p).levels}
                       lang={L}
                       productHref={href(L, `/katalog/${p.slug}`)}
+                      slug={p.slug}
                       labels={{ buy: t.buyNow, more: t.more }}
                     />
                   </div>

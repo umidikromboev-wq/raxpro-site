@@ -88,6 +88,7 @@ export default async function ProductPage({ params }) {
           <div className="rounded-xl2 overflow-hidden border border-cloud-200 bg-cloud-50 aspect-[4/3]">
             <img
               src={p.image}
+              data-variant-img={p.slug}
               alt={c.name}
               width={1168}
               height={880}
@@ -173,7 +174,7 @@ export default async function ProductPage({ params }) {
             ) : (
               <>
                 {variants.length > 1 ? (
-                  <ShelfPicker variants={variants} defaultLevels={defaultVariant(p).levels} lang={L} mode="page" />
+                  <ShelfPicker variants={variants} defaultLevels={defaultVariant(p).levels} lang={L} mode="page" slug={p.slug} />
                 ) : (
                   <>
                     <div className="text-sm text-slate-400">{t.from}</div>

@@ -18,6 +18,14 @@ const T = {
   uz: { shelves: "Polkalar soni", sku: "Artikul" },
 };
 
+/** Фото варианта: картинки товара помечены data-variant-img={slug}. */
+function showImage(slug, v) {
+  if (!slug || !v?.image) return;
+  document.querySelectorAll(`img[data-variant-img="${slug}"]`).forEach((img) => {
+    img.src = v.image;
+  });
+}
+
 /** Вариант из адреса страницы, если он есть в списке. */
 export function levelsFromUrl(variants) {
   if (typeof window === "undefined") return null;
@@ -49,10 +57,10 @@ function Chips({ variants, value, onChange, lang }) {
 
 /**
  * @param {{ variants: {levels:number, sku:string, price:number}[], defaultLevels: number,
- *   lang: "ru"|"uz", mode?: "card"|"page", productHref?: string,
+ *   lang: "ru"|"uz", mode?: "card"|"page", productHref?: string, slug?: string,
  *   labels?: { from?: string, buy?: string, more?: string } }} props
  */
-export default function ShelfPicker({ variants, defaultLevels, lang = "ru", mode = "card", productHref = "", labels = {} }) {
+export default function ShelfPicker({ variants, defaultLevels, lang = "ru", mode = "card", productHref = "", slug = "", labels = {} }) {
   const [levels, setLevels] = useState(defaultLevels);
   const current = variants.find((v) => v.levels === levels) || variants[0];
   const t = T[lang];
@@ -60,11 +68,14 @@ export default function ShelfPicker({ variants, defaultLevels, lang = "ru", mode
   useEffect(() => {
     if (mode !== "page") return;
     const fromUrl = levelsFromUrl(variants);
-    if (fromUrl) setLevels(fromUrl);
-  }, [mode, variants]);
+    if (!fromUrl) return;
+    setLevels(fromUrl);
+    showImage(slug, variants.find((v) => v.levels === fromUrl));
+  }, [mode, variants, slug]);
 
   const choose = (n) => {
     setLevels(n);
+    showImage(slug, variants.find((v) => v.levels === n));
     if (mode !== "page") return;
     const url = new URL(window.location.href);
     url.searchParams.set(VARIANT_PARAM, String(n));
