@@ -3,6 +3,11 @@
 **Ветка:** `feat/site-v3`, HEAD `31ad00d`, всё запушено. `main` не трогать.
 **Preview:** https://raxpro-site-git-feat-site-v3-umid-s-projects.vercel.app/ru (uz — `/uz`). Собирается автоматически из пуша, ~1 мин.
 
+## 24.09 — новая ветка `feat/structure` (структура как у Prostellaj)
+ТЗ: https://claude.ai/artifact/QB3377PUAU3N3js4h1kq9B · Preview: https://raxpro-site-git-feat-structure-umid-s-projects.vercel.app/ru/napravleniya (за логином Vercel — site-qa гонять локально, `next start -p 3123`).
+Готово: этапы 1–2 (хаб, 8 торговых подкатегорий RU+UZ, меню). Дальше: этап 3 — карточка с выбором полок (архивные 3–6).
+Ждём от Умида ответы 1–7 из ТЗ и фото шоурума от Муродбека.
+
 ## На чём остановились (22.09, ночь — сессию закрыли по просьбе Умида)
 
 **Задача в работе:** архитектура генератора КП на все виды стеллажей — от проекта до визуализации, с GPT внутри.
