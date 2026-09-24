@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 
-import { PRICED_PRODUCTS, formatPrice } from '../../../lib/products';
+import { OFFERS_BY_SKU, formatPrice } from '../../../lib/products';
 
 const STATUS_KEYBOARD = {
   inline_keyboard: [
@@ -16,7 +16,7 @@ const STATUS_KEYBOARD = {
   ],
 };
 
-const BY_SKU = Object.fromEntries(PRICED_PRODUCTS.map((p) => [p.sku, p]));
+const BY_SKU = OFFERS_BY_SKU;
 
 /**
  * Пересобираем заказ из каталога на сервере: цены и названия берём из
@@ -31,7 +31,7 @@ function rebuildOrder(raw) {
     const product = BY_SKU[item?.sku];
     if (!product) continue;
     const qty = Math.min(999, Math.max(1, Math.round(Number(item.qty) || 1)));
-    lines.push({ sku: product.sku, name: product.ru.name, qty, price: product.price });
+    lines.push({ sku: product.sku, name: product.name, qty, price: product.price });
   }
   const total = lines.reduce((sum, l) => sum + l.price * l.qty, 0);
   return { lines, total };

@@ -3,8 +3,10 @@ import Header from "../../../../components/Header";
 import Footer from "../../../../components/Footer";
 import { leadProductFor } from "../../../../lib/leadProduct";
 import LeadForm from "../../../../components/LeadForm";
+import ShelfPicker from "../../../../components/ShelfPicker";
+import VariantLeadForm from "../../../../components/VariantLeadForm";
 import { IcoCheck, IcoArrow } from "../../../../components/Icons";
-import { PRODUCTS, getProduct, formatPrice, isProjectPriced } from "../../../../lib/products";
+import { PRODUCTS, getProduct, formatPrice, isProjectPriced, variantsOf, defaultVariant, variantName } from "../../../../lib/products";
 import { getDirection } from "../../../../lib/directions";
 import { SHOP } from "../../../../lib/shop";
 import { normalizeLang } from "../../../../lib/i18n";
@@ -12,6 +14,7 @@ import { alternatesFor, href, LANGS } from "../../../../lib/lang";
 import {
   breadcrumbSchema,
   productOfferSchema,
+  productGroupSchema,
   JsonLd,
 } from "../../../../lib/schema";
 
@@ -49,6 +52,7 @@ export default async function ProductPage({ params }) {
   const direction = p.directionSlug ? getDirection(p.directionSlug) : null;
   const others = PRODUCTS.filter((x) => x.slug !== p.slug);
   const byProject = isProjectPriced(p);
+  const variants = variantsOf(p);
 
   const crumbs = breadcrumbSchema(L, [
     { name: t.home, path: "/" },
@@ -59,7 +63,7 @@ export default async function ProductPage({ params }) {
   return (
     <div className="bg-white text-ink">
       <JsonLd data={crumbs} />
-      <JsonLd data={productOfferSchema(L, p)} />
+      <JsonLd data={variants.length > 1 ? productGroupSchema(L, p, variants, (n) => variantName(p, L, n)) : productOfferSchema(L, p)} />
       <Header lang={L} />
 
       <div className="pt-24">
@@ -128,9 +132,11 @@ export default async function ProductPage({ params }) {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                   {t.inStock}
                 </span>
+                {variants.length === 1 && (
                 <span className="text-slate-400">
                   {t.sku}: {p.sku}
                 </span>
+                )}
               </>
             )}
           </div>
@@ -166,10 +172,16 @@ export default async function ProductPage({ params }) {
               </>
             ) : (
               <>
-                <div className="text-sm text-slate-400">{t.from}</div>
-                <div className="font-display font-medium text-4xl text-navy-800 mt-1">
-                  {formatPrice(p.price, L)}
-                </div>
+                {variants.length > 1 ? (
+                  <ShelfPicker variants={variants} defaultLevels={defaultVariant(p).levels} lang={L} mode="page" />
+                ) : (
+                  <>
+                    <div className="text-sm text-slate-400">{t.from}</div>
+                    <div className="font-display font-medium text-4xl text-navy-800 mt-1">
+                      {formatPrice(p.price, L)}
+                    </div>
+                  </>
+                )}
                 <div className="mt-2 text-sm text-slate-500">{t.priceNote}</div>
                 <div className="mt-1 text-sm text-slate-500">{t.madeDays}</div>
 
@@ -284,7 +296,16 @@ export default async function ProductPage({ params }) {
           </div>
           <div className="w-full max-w-md lg:justify-self-end">
             {/* Тип стеллажей уже выбран покупателем — подставляем его в форму */}
-            <LeadForm lang={L} initialProduct={leadProductFor(L, { directionSlug: p.directionSlug, fallback: c.short })} />
+            {variants.length > 1 ? (
+              <VariantLeadForm
+                lang={L}
+                initialProduct={leadProductFor(L, { directionSlug: p.directionSlug, fallback: c.short })}
+                variants={variants.map((v) => ({ ...v, name: variantName(p, "ru", v.levels) }))}
+                defaultLevels={defaultVariant(p).levels}
+              />
+            ) : (
+              <LeadForm lang={L} initialProduct={leadProductFor(L, { directionSlug: p.directionSlug, fallback: c.short })} />
+            )}
           </div>
         </div>
       </section>

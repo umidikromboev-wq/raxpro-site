@@ -1,3 +1,15 @@
+## 2026-09-24 — этап 3: карточка с выбором числа полок
+
+**Сделано**
+- `lib/products.js`: у архивного `variants` 3/4/5/6 → 1 000 000 / 1 200 000 / 1 400 000 / 1 600 000 (прайс 22.08, msg 91), SKU `RX-ARH-2010-3…6`; хелперы `variantsOf`, `variantName`, `OFFERS_BY_SKU`. `formatPrice` → `lib/format.js`.
+- `components/ShelfPicker.jsx` (карточка каталога + страница товара, `?polki=N`), `components/VariantLeadForm.jsx` — заявка несёт «Выбрано: … · SKU · цена» (проверено перехватом /api/lead).
+- Фид: 4 позиции с `item_group_id=arhivnyy-stellazh-2000x1000x400`, ссылки `?polki=N`. JSON-LD `ProductGroup` + `hasVariant`. `/api/order` знает все SKU вариантов.
+
+**Решения**
+- Страница товара остаётся статической; цена по `?polki` выставляется на клиенте, а для Google — ProductGroup-разметка с ценой каждого варианта в HTML.
+- «4 полки» сохранил старый SKU `RX-ARH-2010-4` — история в Merchant Center не рвётся.
+- Среднегрузовые без выбора: сайт 3 620 000 vs прайс 4 344 966 — ждём ответа.
+
 ## 2026-09-24 — ветка feat/structure: этап 1–2 ТЗ (структура как у Prostellaj)
 
 **Сделано**

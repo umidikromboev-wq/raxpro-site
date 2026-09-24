@@ -2,7 +2,8 @@ import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import LeadForm from "../../../components/LeadForm";
 import { IcoArrow, IcoCheck } from "../../../components/Icons";
-import { PRODUCTS, formatPrice, isProjectPriced } from "../../../lib/products";
+import { PRODUCTS, formatPrice, isProjectPriced, variantsOf, defaultVariant } from "../../../lib/products";
+import ShelfPicker from "../../../components/ShelfPicker";
 import { SHOP } from "../../../lib/shop";
 import { normalizeLang } from "../../../lib/i18n";
 import { alternatesFor, href, absHref } from "../../../lib/lang";
@@ -114,9 +115,11 @@ export default async function CatalogPage({ params }) {
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                           {t.inStock}
                         </span>
+                        {variantsOf(p).length === 1 && (
                         <span className="text-slate-400">
                           {t.sku}: {p.sku}
                         </span>
+                        )}
                       </>
                     )}
                   </div>
@@ -142,6 +145,18 @@ export default async function CatalogPage({ params }) {
                     ))}
                   </dl>
 
+                  {variantsOf(p).length > 1 ? (
+                  <div className="mt-auto pt-6">
+                    {/* Одна карточка — выбор числа полок, цена меняется сразу (ТЗ 24.09) */}
+                    <ShelfPicker
+                      variants={variantsOf(p)}
+                      defaultLevels={defaultVariant(p).levels}
+                      lang={L}
+                      productHref={href(L, `/katalog/${p.slug}`)}
+                      labels={{ buy: t.buyNow, more: t.more }}
+                    />
+                  </div>
+                  ) : (
                   <div className="mt-auto pt-6">
                     <div className="font-display font-medium text-2xl text-navy-800">
                       {byProject ? t.byProject : formatPrice(p.price, L)}
@@ -163,6 +178,7 @@ export default async function CatalogPage({ params }) {
                       </a>
                     </div>
                   </div>
+                  )}
                 </div>
               </article>
             );
