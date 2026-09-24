@@ -1,3 +1,18 @@
+## 2026-09-24 — этап 5: по назначению, мезонин, услуги, покупателям
+
+**Сделано** (коммит 286781a, ветка feat/structure)
+- `/stellazhi/<slug>` ×11 (на склад, ПВЗ, коробки, документы, офис, подсобка, хозяйственные, библиотеки, шины, СТО, гараж) — `lib/landings/use.js`, шаблон LandingPage.
+- `/napravleniya/mezonin`, `/uslugi/montazh-stellazhej`, `/pokupatelyam/garantiya` — `lib/landings/service.js` + `components/landing/landingRoute.jsx`; хабы `/uslugi`, `/pokupatelyam` — `lib/landings/hubs.js` + `InfoHub.jsx`.
+- Меню «Продукция» в 3 колонки (+«По назначению», +Мезонины); футер: Услуги/Монтаж/Гарантия, «Мезонин» → /napravleniya/mezonin. Хаб /napravleniya: плитка мезонина + секция «по назначению».
+- Все seoTitle ≤60 (включая торговые этапа 1–2).
+
+**Решения**
+- Подписи блоков LandingPage по группе: `LANDING_UI.byGroup` (use/type/service/buyers), торговые без изменений.
+- Факты только с сайта: монтаж по Ташкенту бесплатно, регионы — по объёму до оплаты счёта; исключения гарантии — из оферты. Рассрочку не пишем.
+
+**Грабли**
+- zsh: переменная `path` в цикле перетирает PATH → tr/mkdir «not found». Не называть переменные `path`.
+
 ## 2026-09-24 — этап 4: портфолио, шоурум, новые кейсы Муродбека
 
 **Сделано**
