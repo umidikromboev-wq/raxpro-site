@@ -9,6 +9,7 @@ const FAST = { ru: "Ответим за 5 минут", uz: "5 daqiqada javob ber
 import { IcoTg, IcoPhone } from "./Icons";
 import { href, switchLangPath } from "../lib/lang";
 import { PRODUCT_MENU, MENU_ANCHOR } from "../lib/landings/menu";
+import CatalogSearch from "./CatalogSearch";
 
 export default function Header({ lang = "ru" }) {
   const L = normalizeLang(lang);
@@ -116,6 +117,7 @@ export default function Header({ lang = "ru" }) {
                 <span className="text-[11px] font-normal text-sky-200/90">{FAST[L]}</span>
               </span>
             </a>
+            <CatalogSearch menu={menu} L={L} />
             <a
               href={SITE.telegram}
               target="_blank"
