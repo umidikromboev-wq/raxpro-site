@@ -4,6 +4,7 @@ import LeadForm from "../../../components/LeadForm";
 import { IcoArrow, IcoCheck } from "../../../components/Icons";
 import { PRODUCTS, formatPrice, isProjectPriced, variantsOf, defaultVariant } from "../../../lib/products";
 import ShelfPicker from "../../../components/ShelfPicker";
+import PopularCategories from "../../../components/PopularCategories";
 import { SHOP } from "../../../lib/shop";
 import { normalizeLang } from "../../../lib/i18n";
 import { alternatesFor, href, absHref } from "../../../lib/lang";
@@ -186,6 +187,8 @@ export default async function CatalogPage({ params }) {
             );
           })}
         </div>
+
+        <PopularCategories lang={L} />
 
         {/* Что входит в цену — снимает главный вопрос перед заказом */}
         <div className="mt-12 rounded-xl2 bg-cloud-50 border border-cloud-200 p-7">
