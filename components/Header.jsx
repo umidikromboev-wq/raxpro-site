@@ -6,6 +6,8 @@ import { NAV_T, T, normalizeLang } from "../lib/i18n";
 
 // Обещание из отчёта по нише: срок ответа стоит рядом с телефоном, а не в подвале.
 const FAST = { ru: "Ответим за 5 минут", uz: "5 daqiqada javob beramiz" };
+// Кнопка быстрого расчёта (Муродбек 25.09): ссылка #kalkulyator, модалку открывает CalcModal.
+const QUICK = { ru: "Быстрый расчёт", uz: "Tezkor hisob" };
 import { IcoTg, IcoPhone } from "./Icons";
 import { href, switchLangPath } from "../lib/lang";
 import { PRODUCT_MENU, MENU_ANCHOR } from "../lib/landings/menu";
@@ -128,8 +130,14 @@ export default function Header({ lang = "ru" }) {
               <IcoTg className="w-5 h-5" />
             </a>
             <a
+              href={home + "#kalkulyator"}
+              className="hidden lg:inline-flex text-sm font-semibold px-5 py-2.5 rounded-xl bg-sky-400 text-navy-900 hover:bg-sky-300 transition whitespace-nowrap"
+            >
+              {QUICK[L]}
+            </a>
+            <a
               href={home + "#zayavka"}
-              className="btn-11 hidden lg:inline-flex text-sm font-medium px-5 py-2.5 rounded-xl bg-white/12 !border !border-white/20 text-white hover:bg-white hover:text-navy-800 transition backdrop-blur-sm whitespace-nowrap"
+              className="btn-11 hidden 2xl:inline-flex text-sm font-medium px-5 py-2.5 rounded-xl bg-white/12 !border !border-white/20 text-white hover:bg-white hover:text-navy-800 transition backdrop-blur-sm whitespace-nowrap"
             >
               {tr.consult}
             </a>
@@ -204,6 +212,13 @@ export default function Header({ lang = "ru" }) {
               </a>
               <LangToggle />
             </div>
+            <a
+              href={home + "#kalkulyator"}
+              onClick={() => setOpen(false)}
+              className="mt-3 block bg-sky-400 text-navy-900 text-center font-semibold px-5 py-3 rounded-xl"
+            >
+              {QUICK[L]}
+            </a>
             <a
               href={home + "#zayavka"}
               onClick={() => setOpen(false)}
