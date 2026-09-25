@@ -43,7 +43,7 @@ export default function SpecialistsSection({ t }) {
             <Reveal delay={(idx % 4) * 80}>
               <div className={`relative ${idx === 0 ? "aspect-[4/5] rounded-[2rem]" : "aspect-[3/4] rounded-2xl"} overflow-hidden group shadow-sm`}>
                 <img loading="lazy" decoding="async"
-                  src={person.img || "/images/team/xurshidbek.jpg"}
+                  src={person.img || "/images/team/xurshidbek-real.jpg"}
                   alt={person.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -81,7 +81,7 @@ export default function SpecialistsSection({ t }) {
               <Reveal delay={(idx % itemsPerPage) * 80}>
                 <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden group shadow-sm">
                   <img loading="lazy" decoding="async"
-                    src={person.img || "/images/team/xurshidbek.jpg"}
+                    src={person.img || "/images/team/xurshidbek-real.jpg"}
                     alt={person.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
