@@ -5,6 +5,7 @@ import { leadProductFor } from "../../../../lib/leadProduct";
 import LeadForm from "../../../../components/LeadForm";
 import ShelfPicker from "../../../../components/ShelfPicker";
 import VariantLeadForm from "../../../../components/VariantLeadForm";
+import ConfigPicker, { ConfigLeadForm } from "../../../../components/ConfigPicker";
 import { IcoCheck, IcoArrow } from "../../../../components/Icons";
 import { PRODUCTS, getProduct, formatPrice, isProjectPriced, variantsOf, defaultVariant, variantName } from "../../../../lib/products";
 import { getDirection } from "../../../../lib/directions";
@@ -173,7 +174,9 @@ export default async function ProductPage({ params }) {
               </>
             ) : (
               <>
-                {variants.length > 1 ? (
+                {p.config ? (
+                  <ConfigPicker config={p.config} price={p.price} lang={L} stockNote={t.madeDays} />
+                ) : variants.length > 1 ? (
                   <ShelfPicker variants={variants} defaultLevels={defaultVariant(p).levels} lang={L} mode="page" slug={p.slug} />
                 ) : (
                   <>
@@ -183,8 +186,8 @@ export default async function ProductPage({ params }) {
                     </div>
                   </>
                 )}
-                <div className="mt-2 text-sm text-slate-500">{t.priceNote}</div>
-                <div className="mt-1 text-sm text-slate-500">{t.madeDays}</div>
+                {!p.config && <div className="mt-2 text-sm text-slate-500">{t.priceNote}</div>}
+                {!p.config && <div className="mt-1 text-sm text-slate-500">{t.madeDays}</div>}
 
                 <div className="mt-5 flex flex-col sm:flex-row gap-3">
                   {/* Корзины нет (решение 22.09). Форма заявки живёт на этой же странице —
@@ -297,7 +300,14 @@ export default async function ProductPage({ params }) {
           </div>
           <div className="w-full max-w-md lg:justify-self-end">
             {/* Тип стеллажей уже выбран покупателем — подставляем его в форму */}
-            {variants.length > 1 ? (
+            {p.config ? (
+              <ConfigLeadForm
+                lang={L}
+                initialProduct={leadProductFor(L, { directionSlug: p.directionSlug, fallback: c.short })}
+                config={p.config}
+                productName={p.ru.short}
+              />
+            ) : variants.length > 1 ? (
               <VariantLeadForm
                 lang={L}
                 initialProduct={leadProductFor(L, { directionSlug: p.directionSlug, fallback: c.short })}
