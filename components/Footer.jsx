@@ -9,8 +9,8 @@ import { href } from '../lib/lang';
 
 const FT = {
   ru: {
-    statement: ['Соберём', 'ваш склад.'],
-    sub: 'Замер, проект, поставка со склада и монтаж по всему Узбекистану.',
+    statement: ['Систематизируем', 'ваш склад.'],
+    sub: 'Каждый квадратный метр вашего склада — в работу. Замер, проект, поставка и монтаж по всему Узбекистану.',
     cta: 'Рассчитать стоимость',
     sections: 'Разделы', products: 'Продукция', info: 'Покупателям', follow: 'Мы в соцсетях',
     prod: ['Паллетные (Mega) стеллажи', 'Среднегрузовые стеллажи', 'Архивные стеллажи', 'Торговые стеллажи', 'Набивные (Drive-in) стеллажи', 'Мезонин'],
@@ -27,8 +27,8 @@ const FT = {
     ],
   },
   uz: {
-    statement: ['Omboringizni', 'yigʻib beramiz.'],
-    sub: 'Butun Oʻzbekiston boʻylab oʻlchov, loyiha, ombordan yetkazish va montaj.',
+    statement: ['Omboringizni', 'tizimlashtirib beramiz.'],
+    sub: 'Har bir kv m dan foydalanish imkoniyatini sizga taqdim etamiz.',
     cta: 'Narxni hisoblash',
     sections: 'Boʻlimlar', products: 'Mahsulotlar', info: 'Xaridorlarga', follow: 'Ijtimoiy tarmoqlarda',
     prod: ['Palletli (Mega) stellajlar', 'Oʻrta yuklamali stellajlar', 'Arxiv stellajlari', 'Savdo stellajlari', 'Zich (Drive-in) stellajlar', 'Mezonin'],

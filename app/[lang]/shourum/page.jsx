@@ -78,7 +78,6 @@ export default async function ShowroomPage({ params }) {
   const L = normalizeLang((await params).lang);
   const t = T[L];
   const loc = siteLoc(L);
-  const mapQuery = encodeURIComponent(`${loc.addressCity}, ${loc.address}`);
   const crumbs = [
     { name: t.home, path: "/" },
     { name: t.title, path: "/shourum" },
@@ -108,7 +107,7 @@ export default async function ShowroomPage({ params }) {
                 <div><dt className="text-sm text-cloud-200/60">{t.phone}</dt><dd className="mt-1 font-semibold"><a href={`tel:${SITE.phoneMain}`} className="hover:text-sky-300">{SITE.phoneMainHuman}</a></dd></div>
               </dl>
               <div className="flex flex-wrap gap-3 mt-8">
-                <a href={SITE.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">{t.route} <IcoArrow className="w-5 h-5" /></a>
+                <a href={SITE.yandexMapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-sky-400 hover:bg-sky-600 text-navy-900 font-bold px-7 py-3.5 rounded-xl">{t.route} <IcoArrow className="w-5 h-5" /></a>
                 <a href={`tel:${SITE.phoneMain}`} className="inline-flex items-center gap-2 border border-white/25 hover:border-sky-400 text-white px-7 py-3.5 rounded-xl font-semibold"><IcoPhone className="w-4 h-4" /> {t.call}</a>
               </div>
             </div>
@@ -148,7 +147,7 @@ export default async function ShowroomPage({ params }) {
           <div className={`${WRAP} py-14`}>
             <h2 id="where" className="font-display font-medium text-2xl sm:text-3xl text-navy-800 tracking-tight">{t.where}</h2>
             <div className="mt-6 rounded-xl2 overflow-hidden border border-cloud-200 bg-white">
-              <iframe title={t.where} src={`https://maps.google.com/maps?q=${mapQuery}&z=16&output=embed`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="w-full h-[380px] border-0" />
+              <iframe title={t.where} src={SITE.yandexMapEmbed} loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="w-full h-[380px] border-0" />
             </div>
           </div>
         </section>

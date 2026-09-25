@@ -12,8 +12,8 @@ export const HERO_COPY = {
     text: 'Импортные стеллажи с сертифицированного завода-партнёра: 150 тонн на складе в Ташкенте — привезём завтра. Проектируем и монтируем по всему Узбекистану. Нагрузка до 4 тонн · гарантия 10 лет по договору.',
     cta1: 'Узнать вместимость моего склада', cta2: 'Смотреть каталог',
     chips: ['150 тонн на складе — привезём завтра', 'Бесплатный замер и проект', 'Рассрочка и лизинг'],
-    price: 'Проекты от 1,2 млн сум · расчёт в конструкторе за 1 минуту',
-    scrollHint: 'Листайте — соберём ваш склад',
+    price: 'Цена от 800 000 сум · расчёт в конструкторе за 1 минуту',
+    scrollHint: 'Листайте — систематизируем ваш склад',
     navigation: 'Этапы создания стеллажа', labels: ['Замер', 'Проект', 'Сборка', 'Вместимость'],
     loaded: 'паллетомест занято', scale: 'Склад {room} · потолок {height}',
     stages: {
@@ -35,8 +35,8 @@ export const HERO_COPY = {
     text: 'Sertifikatlangan hamkor zavoddan import stellajlar: Toshkent omborida 150 tonna — ertaga yetkazamiz. Butun Oʻzbekiston boʻylab loyihalaymiz va oʻrnatamiz. Yuk koʻtarish 4 tonnagacha · shartnoma boʻyicha 10 yil kafolat.',
     cta1: 'Omborim sigʻimini bilish', cta2: 'Katalogni koʻrish',
     chips: ['Omborda 150 tonna — ertaga yetkazamiz', 'Bepul oʻlchov va loyiha', 'Boʻlib toʻlash va lizing'],
-    price: 'Loyihalar 1,2 mln soʻmdan · konstruktorda 1 daqiqada hisob-kitob',
-    scrollHint: 'Pastga suring — omborni yigʻamiz',
+    price: 'Narx 800 000 soʻmdan boshlanadi · konstruktorda 1 daqiqada hisob-kitob',
+    scrollHint: 'Pastga suring — omboringizni tizimlashtiramiz',
     navigation: 'Stellaj yaratish bosqichlari', labels: ['Oʻlchov', 'Loyiha', 'Yigʻish', 'Sigʻim'],
     loaded: 'pallet joyi band', scale: 'Ombor {room} · shift {height}',
     stages: {

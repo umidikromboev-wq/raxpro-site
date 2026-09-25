@@ -72,7 +72,6 @@ export default async function ContactsPage({ params }) {
     { name: k.title, path: '/kontakty' },
   ]);
 
-  const mapQuery = encodeURIComponent(`${loc.addressCity}, ${loc.address}`);
 
   return (
     <div className="bg-white text-ink">
@@ -180,7 +179,7 @@ export default async function ContactsPage({ params }) {
             <div className="mt-5 rounded-xl2 overflow-hidden border border-cloud-200 shadow-card">
               <iframe
                 title={k.mapTitle}
-                src={`https://maps.google.com/maps?q=${mapQuery}&z=16&output=embed`}
+                src={SITE.yandexMapEmbed}
                 width="100%"
                 height="380"
                 loading="lazy"

@@ -524,7 +524,7 @@ export default async function Home({ params, searchParams }) {
               <iframe
                 title="RAXPRO"
                 className="w-full h-full min-h-[260px]"
-                src="https://maps.google.com/maps?q=Стеллажи%20в%20Ташкенте%20от%20RaxPro,%20Тоshkent&z=15&output=embed"
+                src={SITE.yandexMapEmbed}
                 loading="lazy"
               />
             </div>

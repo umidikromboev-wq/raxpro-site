@@ -121,7 +121,7 @@ export default function Header({ lang = "ru" }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Telegram"
-              className="hidden md:grid place-items-center w-10 h-10 rounded-xl bg-white/12 border border-white/15 text-white hover:bg-sky-500 hover:border-sky-500 transition"
+              className="grid place-items-center w-10 h-10 rounded-xl bg-white/12 border border-white/15 text-white hover:bg-sky-500 hover:border-sky-500 transition"
             >
               <IcoTg className="w-5 h-5" />
             </a>

@@ -34,7 +34,7 @@ const K = {
     kinds: (v, t, a) => `${v} ta video · ${t} ta yozishma · ${a} ta ovozli`,
     channel: 'Telegramdagi sharhlar kanali',
     ctaTitle: 'Sizga ham shunday kerakmi?',
-    ctaText: 'Oʻlchovga kelamiz, hisoblaymiz va omborni mavjud stellajlardan yigʻib beramiz.',
+    ctaText: 'Oʻlchovga kelamiz, hisoblaymiz va omboringizni mavjud stellajlar bilan tizimlashtirib beramiz.',
     cta: 'Oʻlchovga yozilish',
   },
 };

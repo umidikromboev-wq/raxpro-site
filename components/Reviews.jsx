@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { IcoQuote, IcoArrow } from './Icons';
+import { IcoQuote, IcoArrow, IcoTg } from './Icons';
+import { SITE } from '../lib/site';
 
 // Блок отзывов: видеоинтервью лентой, ниже — цитаты из переписок и голосовых.
 // Только текст, без фото объектов — карточки одной высоты ритма. Данные уже
@@ -19,12 +20,12 @@ const UI = {
   ru: {
     videos: 'Видеоотзывы', texts: 'Из переписок и голосовых', play: 'Смотреть отзыв',
     voice: 'Голосовое сообщение', chat: 'Из переписки',
-    all: (n) => `Все ${n} ${plural(n, ['отзыв', 'отзыва', 'отзывов'])}`, allNote: 'Видео, переписки и голосовые — без купюр',
+    all: (n) => `Все ${n} ${plural(n, ['отзыв', 'отзыва', 'отзывов'])}`, allNote: 'Видео, переписки и голосовые — без купюр', tg: 'Канал отзывов в Telegram',
   },
   uz: {
     videos: 'Videosharhlar', texts: 'Yozishmalar va ovozli xabarlardan', play: 'Sharhni koʻrish',
     voice: 'Ovozli xabar', chat: 'Yozishmadan',
-    all: (n) => `Barcha ${n} ta sharh`, allNote: 'Video, yozishma va ovozli xabarlar — toʻliq',
+    all: (n) => `Barcha ${n} ta sharh`, allNote: 'Video, yozishma va ovozli xabarlar — toʻliq', tg: 'Telegramdagi sharhlar kanali',
   },
 };
 
@@ -116,6 +117,9 @@ export default function Reviews({ items, lang = 'ru', allHref, total }) {
         <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
           <a href={allHref} className="btn-11 inline-flex items-center justify-center gap-2 bg-navy-900 text-white font-semibold px-6 py-3.5 rounded-xl hover:bg-navy-800 transition">
             {u.all(total ?? items.length)} <IcoArrow className="w-4 h-4" />
+          </a>
+          <a href={SITE.reviewsChannel} target="_blank" rel="noopener noreferrer" className="btn-11 inline-flex items-center justify-center gap-2 border border-navy-900 text-navy-900 font-semibold px-6 py-3.5 rounded-xl hover:bg-navy-900 hover:text-white transition">
+            <IcoTg className="w-4 h-4" /> {u.tg}
           </a>
           <span className="text-sm text-slate-500">{u.allNote}</span>
         </div>
